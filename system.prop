@@ -1,0 +1,20 @@
+# Chip
+ro.chipname=exynos7420
+
+# Display
+ro.sf.lcd_density=640
+ro.opengles.version=196609
+
+# NFC
+ro.nfc.sec_hal=true
+
+# Radio
+rild.libpath=/system/lib64/libsec-ril.so
+rild.libargs=-d /dev/ttyS0
+ro.use_data_netmgrd=false
+persist.data.netmgrd.qos.enable=false
+ro.ril.hsxpa=1
+ro.ril.gprsclass=10
+
+# Wifi
+wifi.interface=wlan0

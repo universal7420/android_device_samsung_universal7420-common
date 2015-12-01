@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glgps xmlns="http://www.glpals.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.glpals.com/ glconfig.xsd" >
+  <!--HAL Confguration  -->
+  <hal
+    PortName="lhd"
+    NvStorageDir="/data/system/gps/"
+
+    LogDirectory="/storage/sdcard0/gps/broadcom/storage"
+
+    WakeLock="geo"
+
+    TISEnabled="false"
+    TcpConnectionTimeout="20"
+    LPmode="false"
+    CpColdStart="false"
+    CpGuardTimeSec="1"
+    CpLppGuardTimeSec="0"
+    ReAidingOnHotStart="false"
+    ReAidingIntervalSec="7200"
+    AutoSUPLVersionForNI="false"
+    SuplSslMethod="SSLv23_NO_TLSv1_2"
+    SuplEnable="true"
+    SuplMsbCapable="true"
+    SuplMsaCapable="true"
+    SuplEcidCapable="true"
+    SuplUseApn="true"
+    UseEcidEarfcn="false"
+    SuplTlsCertPath="/system/bin/gps.cer"
+    SuplUT1Seconds="20"
+    SuplUT2Seconds="20"
+    SuplUT3Seconds="20"
+    SuplVersion="2"
+    SuplHmacHash="SHA256"
+    SuplLppCapable="false"
+    LppCpGlonassCapable="false"
+    SuplUseFwDns="true"
+
+    LbsEnable="false"
+    LbsServer="BCMLS2.glpals.com"
+    HttpSyncLto="true"
+    LbsCellEnable="false"
+    RtiEnable="false"
+    LtoDir="/data/system/gps/"
+    LtoSyncThresholdDays="1"
+
+    IgnoreJniTime="true"
+    AssertEnabled="false"
+   />
+
+  <gll
+    LogPriMask="LOG_INFO"
+    LogFacMask="LOG_GLLIO | LOG_GLLAPI | LOG_NMEA | LOG_RAWDATA"
+    FrqPlan="FRQ_PLAN_26MHZ_2PPM_26MHZ_300PPB"
+    RfType="GL_RF_47531_BRCM_EXT_LNA"
+    WarmStandbyTimeout1Seconds="10"
+    WarmStandbyTimeout2Seconds="23"
+  >
+  </gll>
+
+  <gll_features
+       EnableLowPowerPmm="true"
+       EnableBeidou="false"
+  />
+
+</glgps>
+
