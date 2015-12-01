@@ -7,7 +7,7 @@ LOCAL_PATH := $(call my-dir)
 ## Imported from the original makefile...
 KERNEL_CONFIG := $(KERNEL_OUT)/.config
 
-G2_DTS_FILES = $(wildcard $(TOP)/$(TARGET_KERNEL_SOURCE)/arch/arm64/boot/dts/exynos7420-zeroflte_*.dts)
+G2_DTS_FILES = $(wildcard $(TOP)/$(TARGET_KERNEL_SOURCE)/arch/arm64/boot/dts/exynos7420-zeroflte_kor_06.dts)
 G2_DTS_FILE = $(lastword $(subst /, ,$(1)))
 DTB_FILE = $(addprefix $(KERNEL_OUT)/arch/arm64/boot/dts/,$(patsubst %.dts,%.dtb,$(call G2_DTS_FILE,$(1))))
 ZIMG_FILE = $(addprefix $(KERNEL_OUT)/arch/arm64/boot/,$(patsubst %.dts,%-Image,$(call G2_DTS_FILE,$(1))))
@@ -22,7 +22,7 @@ $(foreach d, $(G2_DTS_FILES), \
 endef
 
 ## Run dtbtool
-DTBTOOL := $(LOCAL_PATH)/dtbTool
+DTBTOOL := $(LOCAL_PATH)/dtbtool
 INSTALLED_DTIMAGE_TARGET := $(PRODUCT_OUT)/dt.img
 
 $(INSTALLED_DTIMAGE_TARGET): $(DTBTOOL) $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr $(INSTALLED_KERNEL_TARGET)
