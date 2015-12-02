@@ -105,6 +105,9 @@ TARGET_RECOVERY_FSTAB := $(ZEROFLTE_PATH)/rootdir/etc/fstab.samsungexynos7420
 TARGET_BOARD_PLATFORM := exynos5
 TARGET_SLSI_VARIANT := blobs
 
+# Radio
+BOARD_RIL_CLASS := ../../../$(ZEROFLTE_PATH)/ril
+
 # Recovery
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_HAS_LARGE_FILESYSTEM := true
