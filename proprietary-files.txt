@@ -108,8 +108,10 @@ app/mcRegistry/fffffffff0000000000000000000001e.tlbin
 bin/cs
 
 # NFC
+etc/sec_s3fwrn5p_rfreg.bin
 lib/hw/nfc_nci.universal7420.so
 lib64/hw/nfc_nci.universal7420.so
+vendor/firmware/sec_s3fwrn5p_firmware.bin
 
 # Radio
 bin/cbd
