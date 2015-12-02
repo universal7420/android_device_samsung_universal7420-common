@@ -1,6 +1,3 @@
-# Chip
-ro.chipname=exynos7420
-
 # Display
 ro.sf.lcd_density=640
 ro.opengles.version=196609
