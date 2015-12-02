@@ -685,6 +685,12 @@ on fs
 #ARGOSD network_throughput
     chown system system /dev/network_throughput
 
+# deferred initcall
+service sec-sh /system/bin/sh /system/etc/init.sec.boot.sh
+    class main
+    user root
+    oneshot
+
 # DIAG
 service DIAG-daemon /system/bin/diagexe
     class main
