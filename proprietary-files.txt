@@ -128,6 +128,7 @@ lib/libsecril-client.so
 lib64/libsecril-client.so
 
 # Sensors
+bin/bcm_sensorhub_a2.patch
 lib/hw/sensorhubs.universal7420.so
 lib64/hw/sensorhubs.universal7420.so
 lib/hw/sensors.universal7420.so
