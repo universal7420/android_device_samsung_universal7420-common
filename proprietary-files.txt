@@ -1,21 +1,6 @@
 # Audio
 vendor/firmware/seiren_fw_dram.bin
 vendor/firmware/seiren_fw_sram.bin
-lib/hw/audio.primary.universal7420.so
-lib/libaudio-ril.so
-lib/libcontrolcsc.so
-lib64/libcontrolcsc.so
-lib/lib_DNSe_EP_ver216b.so
-#lib/lib_DNSe_NRSS_ver230.so
-lib/lib_Samsung_Resampler.so
-#lib/lib_SamsungRec_V04012_WNR002.so
-lib/libsamsungearcare.so
-lib/libsamsungRecord.so
-lib/libsamsungRecord_ns.so
-lib/libsamsungSoundbooster_ext.so
-lib/libsamsungSoundbooster_pgb.so
-lib/libtinyalsa.so
-lib64/libtinyalsa.so
 
 # Bluetooth
 vendor/firmware/bcm4358A0_V0009.0033.hcd
