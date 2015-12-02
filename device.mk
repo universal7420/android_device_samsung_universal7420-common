@@ -110,6 +110,7 @@ PRODUCT_COPY_FILES += \
 # NFC
 PRODUCT_PACKAGES += \
     libnfc-nci \
+    libnfc_nci_jni \
     NfcNci \
     Tag \
     com.android.nfc_extras
