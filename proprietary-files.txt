@@ -133,6 +133,7 @@ lib64/hw/sensorhubs.universal7420.so
 lib/hw/sensors.universal7420.so
 lib64/hw/sensors.universal7420.so
 lib64/libagc_max.so
+lib64/libhr.so
 
 # Widevine
 vendor/lib/libwvdrm_L1.so
