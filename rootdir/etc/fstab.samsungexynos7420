@@ -12,4 +12,4 @@
 /dev/block/platform/15570000.ufs/by-name/USERDATA	/data		ext4	noatime,nosuid,nodev,noauto_da_alloc,discard,journal_async_commit,data=writeback,errors=panic	wait,check,encryptable=footer
 
 # VOLD
-/devices/15400000.usb/15400000.dwc3/xhci-hcd.2.auto	auto		auto	defaults	voldmanaged=usbdisk:auto
+/devices/15400000.usb/15400000.dwc3/xhci-hcd.2.auto/usb*               auto                auto      defaults                                                                                        voldmanaged=usbdisk:auto

@@ -5,6 +5,9 @@ ro.opengles.version=196609
 # NFC
 ro.nfc.sec_hal=true
 
+# OTG
+persist.sys.isUsbOtgEnabled=true
+
 # Radio
 rild.libpath=/system/lib64/libsec-ril.so
 rild.libargs=-d /dev/ttyS0
