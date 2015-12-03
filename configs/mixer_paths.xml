@@ -4141,4 +4141,8 @@
 		<ctl name="IN3L Digital Volume" value="120" />
 		<ctl name="LHPF2 Input 1 Volume" value="20" />
 	</path>
+
+    <path name="none">
+        <!-- Empty path -->
+    </path>
 </mixer>
