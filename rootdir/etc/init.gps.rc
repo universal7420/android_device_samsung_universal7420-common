@@ -14,6 +14,20 @@ on fs
 
     setprop ro.gps.chip.vendor BCM4773_EXERCISE
 
+# SensorHub Debugging File Node
+chown gps system /sys/devices/platform/bbd.0/BBD
+chown gps system /sys/devices/platform/bbd.0/DEV
+chown gps system /sys/devices/platform/bbd.0/ESW
+chown gps system /sys/devices/platform/bbd.0/baud
+chown gps system /sys/devices/platform/bbd.0/debug
+chown gps system /sys/devices/platform/bbd.0/buf
+chown gps system /sys/devices/platform/bbd.0/pl
+chown gps system /sys/devices/platform/bbd.0/passthru
+chown gps system /sys/devices/platform/bbd.0/ssi_xfer
+chown gps system /sys/devices/platform/bbd.0/ssi_count
+chown gps system /sys/devices/platform/bbd.0/ssi_trace
+chown gps system /sys/devices/platform/bbd.0/shmd
+
 # SensorHub (Location Hub)
 service lhd /system/bin/lhd /system/etc/lhd.conf
     class main

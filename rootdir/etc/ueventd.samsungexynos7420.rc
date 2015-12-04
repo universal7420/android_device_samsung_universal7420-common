@@ -84,6 +84,7 @@
 /dev/block/mmcblk0p13     0660   system     radio
 /dev/block/mmcblk0p15     0660   system     system
 /dev/umts*                0660   system     radio
+/dev/umts_csd             0660   system     loop_radio
 /dev/smd4		  0660	 system	    radio
 
 # sensor sysfs properties
@@ -127,3 +128,9 @@
 
 # Reactivation lock
 /dev/block/platform/15570000.ufs/by-name/STEADY    0660    system    system
+
+# Google FRP solution
+/dev/block/platform/15570000.ufs/by-name/PERSISTENT    0660    system    system
+
+# FM Radio
+/dev/radio0               0660   system     audio
