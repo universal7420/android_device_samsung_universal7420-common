@@ -149,8 +149,6 @@ lib/libexynosutils.so
 lib64/libexynosgscaler.so
 lib64/libexynosscaler.so
 lib64/libexynosutils.so
-vendor/lib/liblvverx_3.27.02.so
-vendor/lib/liblvvetx_3.27.02.so
 vendor/lib/egl/libGLES_mali.so
 vendor/lib64/egl/libGLES_mali.so
 
@@ -228,13 +226,8 @@ lib/libsecril-client.so
 lib64/libsecril-client.so
 
 # Sensors
-bin/bcm_sensorhub_a2.patch
-lib/hw/sensorhubs.universal7420.so
-lib64/hw/sensorhubs.universal7420.so
 lib/hw/sensors.universal7420.so
 lib64/hw/sensors.universal7420.so
-lib64/libagc_max.so
-lib64/libhr.so
 
 # Widevine
 vendor/lib/libwvdrm_L1.so
@@ -252,7 +245,6 @@ etc/wifi/bcmdhd_mfg.bin
 etc/wifi/bcmdhd_mfg.bin_a1
 etc/wifi/bcmdhd_sta.bin
 etc/wifi/bcmdhd_sta.bin_a1
-etc/wifi/cred.conf
 etc/wifi/nvram_mfg.txt
 etc/wifi/nvram_mfg.txt_a1
 etc/wifi/nvram_mfg.txt_b85_a1
@@ -271,4 +263,3 @@ etc/wifi/nvram_net.txt_murata_b85_a1
 etc/wifi/nvram_net.txt_wisol
 etc/wifi/nvram_net.txt_wisol_a1
 etc/wifi/nvram_net.txt_wisol_b85_a1
-etc/wifi/olsrd.conf
