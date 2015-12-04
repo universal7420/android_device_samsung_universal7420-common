@@ -157,6 +157,7 @@ vendor/lib64/egl/libGLES_mali.so
 # GPS
 bin/gps.cer
 bin/gpsd
+bin/lhd
 lib64/hw/gps.universal7420.so
 lib/libwrappergps.so
 lib64/libwrappergps.so
