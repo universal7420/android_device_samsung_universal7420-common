@@ -527,7 +527,7 @@ on fs
     chown system radio /sys/class/sec/tsp/cmd
     chown system system /sys/class/sec/tsp/input/enabled
 
-# Permissions for JFLTE PowerHAL
+# Permissions for ZEROFLTE PowerHAL
     chown system system /sys/class/input/input0/enabled
     chown system system /sys/class/input/input1/enabled
     chown system system /sys/class/input/input16/enabled
