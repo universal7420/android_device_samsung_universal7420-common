@@ -26,7 +26,6 @@ service cpboot-daemon /system/bin/cbd -d -t ss333 -b s -m l -P platform/15570000
     class main
     user root
     group radio cache inet misc audio sdcard_r sdcard_rw log shell
-    seclabel u:r:cbd:s0
 on property:persist.sys.cpboot=disable
     stop cpboot-daemon
 
