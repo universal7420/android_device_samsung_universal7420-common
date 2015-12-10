@@ -215,11 +215,6 @@ vendor/firmware/sec_s3fwrn5p_firmware.bin
 
 # Radio
 bin/cbd
-bin/rild
-lib/libreference-ril.so
-lib64/libreference-ril.so
-lib/libril.so
-lib64/libril.so
 lib/libsecnativefeature.so
 lib64/libsecnativefeature.so
 lib/libsec-ril.so
