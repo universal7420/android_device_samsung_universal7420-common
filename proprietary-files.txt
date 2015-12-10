@@ -204,6 +204,8 @@ app/mcRegistry/ffffffffd00000000000000000000017.tlbin
 app/mcRegistry/fffffffff0000000000000000000001b.tlbin
 app/mcRegistry/fffffffff0000000000000000000001e.tlbin
 bin/cs
+lib/libMcClient.so
+lib64/libMcClient.so
 
 # NFC
 etc/sec_s3fwrn5p_rfreg.bin
@@ -230,11 +232,12 @@ lib/hw/sensors.universal7420.so
 lib64/hw/sensors.universal7420.so
 
 # Widevine
+vendor/lib/drm/libdrmwvmplugin.so
+vendor/lib/libdrmdecrypt.so
 vendor/lib/libwvdrm_L1.so
 vendor/lib/libwvm.so
 vendor/lib/libWVStreamControlAPI_L1.so
-lib/libMcClient.so
-lib64/libMcClient.so
+vendor/lib/mediadrm/libwvdrmengine.so
 
 # Wifi
 etc/wifi/bcmdhd_apsta.bin
