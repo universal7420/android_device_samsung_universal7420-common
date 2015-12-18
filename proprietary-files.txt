@@ -143,6 +143,8 @@ lib64/hw/consumerir.exynos5.so
 # Graphics
 lib/hw/gralloc.exynos5.so
 lib64/hw/gralloc.exynos5.so
+lib/hw/hwcomposer.exynos5.so
+lib64/hw/hwcomposer.exynos5.so
 lib/libexynosgscaler.so
 lib/libexynosscaler.so
 lib/libexynosutils.so
