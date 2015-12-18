@@ -9,7 +9,6 @@ on early-init
 on init
     export LD_SHIM_LIBS /system/bin/gpsd|libdmitry.so
 
-    start watchdogd
     mkdir /preload 0771 system system
 
     # Support legacy paths
@@ -456,10 +455,6 @@ on boot
 
     # ASV
     chown system system /d/asv_summary
-
-# RTC logging daemon
-    chmod 0770 /system/bin/rtc_log.sh
-    chown system system /system/bin/rtc_log.sh
 
     chown bluetooth net_bt_stack /dev/ttySAC4
     chmod 0660 /dev/ttySAC4
@@ -958,15 +953,17 @@ service sec-sh /system/bin/sh /system/etc/init.sec.boot.sh
     user root
     oneshot
 
+# ARGOSD
+service argos-daemon /system/bin/argosd
+    class main
+    user system
+    group system radio
+
 # MobiCore startup
 service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF000000000000000000000001.drbin -r /system/app/mcRegistry/ffffffffd0000000000000000000000a.tlbin -r /system/app/mcRegistry/ffffffffd00000000000000000000016.tlbin
     class core
     user system
     group system
-
-# Set watchdog timer to 30 seconds and pet it every 10 seconds to get a 20 second margin
-service watchdogd /sbin/watchdogd 10 20
-    class core
 
 # on userdebug and eng builds, enable kgdb on the serial console
 on property:ro.debuggable=1
@@ -986,21 +983,12 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpu7/online 1
     write /sys/power/enable_dm_hotplug 1
 
-#
-# start netmgrd
-#
-on property:ro.use_data_netmgrd=true
-    start netmgrd
-
 on charger
-# Set cpu governor to powersave while in charging mode
+# Set cpu governor to interactive while in charging mode
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
-
-# EHCI runtime enable for LPA
-    write /sys/devices/platform/s5p-ehci/power/control auto
 
 # Do not set any USB mode while charging
     setprop sys.usb.config charging
