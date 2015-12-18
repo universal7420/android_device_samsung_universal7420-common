@@ -106,17 +106,9 @@ struct pcm_config pcm_config_sco = {
 
 struct pcm_config pcm_config_voice = {
     .channels = 2,
-    .rate = 8000,
-    .period_size = 1024,
-    .period_count = 2,
-    .format = PCM_FORMAT_S16_LE,
-};
-
-struct pcm_config pcm_config_voice_wide = {
-    .channels = 2,
     .rate = 16000,
-    .period_size = 1024,
-    .period_count = 2,
+    .period_size = 2048,
+    .period_count = 6,
     .format = PCM_FORMAT_S16_LE,
 };
 
@@ -286,9 +278,6 @@ static int get_input_source_id(audio_source_t source, bool wb_amr)
     case AUDIO_SOURCE_VOICE_COMMUNICATION:
         return IN_SOURCE_VOICE_COMMUNICATION;
     case AUDIO_SOURCE_VOICE_CALL:
-        if (wb_amr) {
-            return IN_SOURCE_VOICE_CALL_WB;
-        }
         return IN_SOURCE_VOICE_CALL;
     default:
         return IN_SOURCE_NONE;
@@ -359,7 +348,7 @@ static void select_devices(struct audio_device *adev)
     audio_route_update_mixer(adev->ar);
 
     /* FIXME: Turn on two mic control for earpiece and speaker */
-    if (input_source_id != IN_SOURCE_NONE) {
+/*    if (input_source_id != IN_SOURCE_NONE) {
         switch (output_device_id) {
         case OUT_DEVICE_EARPIECE:
         case OUT_DEVICE_SPEAKER:
@@ -377,7 +366,9 @@ static void select_devices(struct audio_device *adev)
     } else {
         ALOGV("%s: disabling two mic control", __func__);
         ril_set_two_mic_control(&adev->ril, AUDIENCE, TWO_MIC_SOLUTION_OFF);
-    }
+    }*/
+
+    adev->two_mic_control = false;
 
     adev_set_call_audio_path(adev);
 }
@@ -455,10 +446,7 @@ static int start_voice_call(struct audio_device *adev)
 
     ALOGV("%s: Opening voice PCMs", __func__);
 
-    if (adev->wb_amr)
-        voice_config = &pcm_config_voice_wide;
-    else
-        voice_config = &pcm_config_voice;
+    voice_config = &pcm_config_voice;
 
     /* Open modem PCM channels */
     adev->pcm_voice_rx = pcm_open(PCM_CARD, PCM_DEVICE_VOICE, PCM_OUT | PCM_MONOTONIC,
@@ -1488,11 +1476,11 @@ static int adev_set_parameters(struct audio_hw_device *dev, const char *kvpairs)
         ALOGV("%s: noise_suppression=%s", __func__, value);
 
         /* value is either off or auto */
-        if (strcmp(value, "off") == 0) {
+/*        if (strcmp(value, "off") == 0) {
             adev->two_mic_control = false;
         } else {
             adev->two_mic_control = true;
-        }
+        }*/
     }
 
     str_parms_destroy(parms);

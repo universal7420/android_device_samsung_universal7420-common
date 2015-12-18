@@ -51,7 +51,7 @@ struct route_config {
 
 const struct route_config voice_speaker = {
     "incall_default-speaker",
-    "incall_default-speaker-mic"
+    "incall_nb-speaker-mic"
 };
 
 const struct route_config voice_speaker_wb = {
@@ -61,7 +61,7 @@ const struct route_config voice_speaker_wb = {
 
 const struct route_config voice_earpiece = {
     "incall_default-handset",
-    "incall_default-handset-mic"
+    "incall_nb-handset-mic"
 };
 
 const struct route_config voice_earpiece_wb = {
