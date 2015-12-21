@@ -66,6 +66,12 @@ void vendor_load_properties()
         property_set("ro.build.description", "zerofltelgt-user 5.1.1 LMY47X G920LXXS3COK5 release-keys");
         property_set("ro.product.model", "SM-G920L");
         property_set("ro.product.device", "zerofltelgt");
+    } else if (strstr(bootloader, "G920I")) {
+        /* zerofltexx */
+        property_set("ro.build.fingerprint", "samsung/zerofltexx/zerofltexx:5.1.1/LMY47X/G920IXXS3COK5:user/release-keys");
+        property_set("ro.build.description", "zerofltexx-user 5.1.1 LMY47X G920IXXS3COK5 release-keys");
+        property_set("ro.product.model", "SM-G920I");
+        property_set("ro.product.device", "zerofltexx");
     } else {
         /* zerofltexx */
         property_set("ro.build.fingerprint", "samsung/zerofltexx/zerofltexx:5.1.1/LMY47X/G920FXXS3COK5:user/release-keys");
