@@ -79,7 +79,7 @@ BOARD_KERNEL_CMDLINE :=
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x10008000 --ramdisk_offset 0x11000000 --tags_offset 0x10000100 --dt $(ZEROFLTE_PATH)/dtb.img
 TARGET_KERNEL_CONFIG := cm_zerofltexx_defconfig
-TARGET_KERNEL_SOURCE := kernel/samsung/zeroflte
+TARGET_KERNEL_SOURCE := kernel/samsung/zero
 TARGET_USES_UNCOMPRESSED_KERNEL := true
 
 # Lights
