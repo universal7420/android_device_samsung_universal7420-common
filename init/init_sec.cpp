@@ -56,7 +56,7 @@ void vendor_load_properties()
         property_set("ro.product.device", "zeroflteskt");
     } else if (strstr(bootloader, "G920K")) {
         /* zerofltektt */
-        property_set("ro.build.fingerprint", "samsung/zerofltelgt/zerofltelgt:5.1.1/LMY47X/G920KXXS3COK5:user/release-keys");
+        property_set("ro.build.fingerprint", "samsung/zerofltektt/zerofltektt:5.1.1/LMY47X/G920KXXS3COK5:user/release-keys");
         property_set("ro.build.description", "zerofltektt-user 5.1.1 LMY47X G920KXXS3COK5 release-keys");
         property_set("ro.product.model", "SM-G920K");
         property_set("ro.product.device", "zerofltektt");
