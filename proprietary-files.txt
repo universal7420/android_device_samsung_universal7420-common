@@ -155,12 +155,12 @@ vendor/lib/egl/libGLES_mali.so
 vendor/lib64/egl/libGLES_mali.so
 
 # GPS
-bin/gps.cer
-bin/gpsd
+#bin/gps.cer
+#bin/gpsd
 bin/lhd
-lib64/hw/gps.universal7420.so
-lib/libwrappergps.so
-lib64/libwrappergps.so
+#lib64/hw/gps.universal7420.so
+#lib/libwrappergps.so
+#lib64/libwrappergps.so
 
 # Media
 vendor/firmware/fimc_is_fw2_imx240.bin
