@@ -7,7 +7,7 @@ on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 
 on init
-    #export LD_SHIM_LIBS /system/bin/gpsd|libdmitry.so
+    #export LD_SHIM_LIBS /system/bin/gpsd|libsamsung_symbols.so
 
     mkdir /preload 0771 system system
 

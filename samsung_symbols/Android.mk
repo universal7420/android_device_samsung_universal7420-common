@@ -1,4 +1,5 @@
-# Copyright (C) 2015 The Dokdo Project
+# Copyright (C) 2015 The Android Open Source Project
+# Written by Dmitry Grinberg
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,18 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# For 64 bit
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 
-# Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+LOCAL_PATH := $(call my-dir)
 
-# Inherit from zerofltexx device
-$(call inherit-product, device/samsung/zerofltexx/device.mk)
+include $(CLEAR_VARS)
 
-# Set those variables here to overwrite the inherited values.
-PRODUCT_NAME := full_zerofltexx
-PRODUCT_DEVICE := zerofltexx
-PRODUCT_BRAND := samsung
-PRODUCT_MANUFACTURER := samsung
-PRODUCT_MODEL := zerofltexx
+LOCAL_SRC_FILES := \
+    SensorManager.c
+
+LOCAL_SHARED_LIBRARIES := liblog libcutils libgui libbinder libutils
+LOCAL_MODULE := libsamsung_symbols
+LOCAL_MODULE_TAGS := optional
+
+include $(BUILD_SHARED_LIBRARY)

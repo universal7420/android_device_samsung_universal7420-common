@@ -19,10 +19,10 @@ LOCAL_PATH := device/samsung/zerofltexx
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Get non-open-source specific aspects
-$(call inherit-product-if-exists, vendor/samsung/zerofltexx/zerofltexx-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/zero-common/zero-common-vendor.mk)
 
 # Overlays
-DEVICE_PACKAGE_OVERLAYS += device/samsung/zerofltexx/overlay
+DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal
@@ -90,10 +90,6 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     setup_fs
 
-# GPS
-#PRODUCT_PACKAGES += \
-#    libdmitry
-
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps.conf:system/etc/gps.conf \
     $(LOCAL_PATH)/configs/gps.xml:system/etc/gps.xml \
@@ -154,12 +150,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     SamsungServiceMode
 
+# Samsung Symbols
+PRODUCT_PACKAGES += \
+    libsamsung_symbols
+
 # Wifi
 PRODUCT_PACKAGES += \
-    init.sec.boot.sh
-
-PRODUCT_PACKAGES += \
     dhcpcd.conf \
+    init.sec.boot.sh \
     hostapd \
     libnetcmdiface \
     macloader \

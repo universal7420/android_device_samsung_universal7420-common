@@ -14,14 +14,12 @@
 # limitations under the License.
 #
 
-TARGET_OTA_ASSERT_DEVICE := zeroflteskt,zerofltektt,zerofltelgt,zeroflte,zerofltexx
-
-ZEROFLTE_PATH := device/samsung/zerofltexx
+LOCAL_PATH := device/samsung/zero-common
 
 BOARD_VENDOR := samsung
 
 # Include path
-TARGET_SPECIFIC_HEADER_PATH := $(ZEROFLTE_PATH)/include
+TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
 # Architecture
 TARGET_ARCH := arm64
@@ -42,8 +40,8 @@ ENABLE_CPUSETS := true
 TARGET_USES_64_BIT_BINDER := true
 
 # Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(ZEROFLTE_PATH)/bluetooth
-BOARD_BLUEDROID_VENDOR_CONF := $(ZEROFLTE_PATH)/bluetooth/libbt_vndcfg.txt
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
+BOARD_BLUEDROID_VENDOR_CONF := $(LOCAL_PATH)/bluetooth/libbt_vndcfg.txt
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 
@@ -68,7 +66,7 @@ EXTENDED_FONT_FOOTPRINT := true
 TARGET_INIT_VENDOR_LIB := libinit_sec
 TARGET_UNIFIED_DEVICE := true
 
-#TARGET_RELEASETOOLS_EXTENSIONS := $(ZEROFLTE_PATH)
+#TARGET_RELEASETOOLS_EXTENSIONS := $(LOCAL_PATH)
 
 # Kernel
 TARGET_KERNEL_ARCH := arm64
@@ -77,9 +75,9 @@ TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_CMDLINE :=
 BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x10008000 --ramdisk_offset 0x11000000 --tags_offset 0x10000100 --dt $(ZEROFLTE_PATH)/dtb.img
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x10008000 --ramdisk_offset 0x11000000 --tags_offset 0x10000100 --dt device/samsung/$(TARGET_DEVICE)/dt.img
 TARGET_KERNEL_CONFIG := cm_zerofltexx_defconfig
-TARGET_KERNEL_SOURCE := kernel/samsung/zero
+TARGET_KERNEL_SOURCE := kernel/samsung/exynos7420
 TARGET_USES_UNCOMPRESSED_KERNEL := true
 
 # Lights
@@ -107,7 +105,7 @@ TARGET_SLSI_VARIANT := blobs
 # Radio
 BOARD_PROVIDES_LIBRIL := true
 BOARD_MODEM_TYPE := ss333
-BOARD_RIL_CLASS := ../../../$(ZEROFLTE_PATH)/ril
+BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril
 
 # Recovery
 BOARD_HAS_NO_SELECT_BUTTON := true
@@ -123,6 +121,11 @@ BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
 
 # Sensors
 TARGET_NO_SENSOR_PERMISSION_CHECK := true
+
+# Twrp
+ifneq ($(strip $(wildcard $(TOP)/bootable/recovery/variables.h)),)
+-include device/samsung/zero-common/twrp.mk
+endif
 
 # WEBGL
 ENABLE_WEBGL := true
@@ -141,4 +144,4 @@ WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wifi/bcmdhd_apsta.bin"
 WIFI_BAND                        := 802_11_ABG
 
 # inherit from the proprietary version
--include vendor/samsung/zerofltexx/BoardConfigVendor.mk
+-include vendor/samsung/zero-common/BoardConfigVendor.mk
