@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/zerofltexx
+LOCAL_PATH := device/samsung/zero-common
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
