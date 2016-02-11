@@ -87,9 +87,9 @@ extract()
             oat2dex /system/$FILE
         fi
     else
-        cp $SRC/system/$FILE $2/$FILE
+        cp $SRC/$FILE $2/$FILE
         if [ "${FILE##*.}" = "apk" ]; then
-            oat2dex $SRC/system/$FILE
+            oat2dex $SRC/$FILE
         fi
     fi
 
