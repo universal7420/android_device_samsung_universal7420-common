@@ -100,7 +100,6 @@ TARGET_SLSI_VARIANT := blobs
 
 # Radio
 BOARD_PROVIDES_LIBRIL := true
-BOARD_MODEM_TYPE := ss333
 BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril
 
 # Recovery
