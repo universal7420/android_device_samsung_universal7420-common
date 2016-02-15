@@ -161,6 +161,7 @@ on post-fs-data
 
     # mobicore
     mkdir /data/app/mcRegistry 0775 system system
+    mkdir /data/app/mcRegistry/TbStorage 0700 system system
     mkdir /efs/TEE  0770 radio system
 
     # MTP permission
@@ -458,8 +459,8 @@ on boot
 
     chown bluetooth net_bt_stack /dev/ttySAC4
     chmod 0660 /dev/ttySAC4
+
 # mobicore
-    mkdir /data/app/mcRegistry 0775 system system
     chmod 0660 /dev/s5p-smem
     chmod 0660 /dev/t-base-tui
     chown system system /dev/s5p-smem

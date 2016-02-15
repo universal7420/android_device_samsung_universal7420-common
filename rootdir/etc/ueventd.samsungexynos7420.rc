@@ -98,6 +98,13 @@
 /sys/devices/14d30000.spi/spi_master/spi1/spi1.0/iio:device*    buffer/length       0660    system    system
 /sys/bus/iio/devices/iio:device*    0664   system     radio
 
+# MobiCore
+/dev/mobicore             0700   system     system
+/dev/mobicore-user        0666   radio     system
+
+# Secure MEM driver
+/dev/s5p-smem             0660   system     system
+
 # FINGERPRINT
 /dev/vfsspi               0660   system     system
 
