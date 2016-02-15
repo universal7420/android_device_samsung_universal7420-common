@@ -227,6 +227,34 @@ lib64/libsecril-client.so
 lib/hw/sensors.universal7420.so
 lib64/hw/sensors.universal7420.so
 
+# Trustlet Connector (tlc)
+lib/libtlc_direct_comm.so
+lib64/libtlc_direct_comm.so
+lib/libtlc_proxy_comm.so
+lib64/libtlc_proxy_comm.so
+lib/libtlc_proxy_tui.so
+lib64/libtlc_proxy_tui.so
+lib/libtlc_spay.so
+lib64/libtlc_spay.so
+lib/libtlc_t2_ks_mi.so
+lib64/libtlc_t2_ks_mi.so
+lib/libtlc_tima_atn.so
+lib64/libtlc_tima_atn.so
+lib/libtlc_tima_pkm.so
+lib64/libtlc_tima_pkm.so
+lib/libtlc_tima_tui.so
+lib64/libtlc_tima_tui.so
+lib/libtlc_tz_ccm.so
+lib64/libtlc_tz_ccm.so
+lib/libtlc_tz_dcm.so
+lib64/libtlc_tz_dcm.so
+lib/libtlc_tz_esecomm.so
+lib64/libtlc_tz_esecomm.so
+lib/libtlc_tz_iccc.so
+lib64/libtlc_tz_iccc.so
+lib/libtlc_tz_keystore.so
+lib64/libtlc_tz_keystore.so
+
 # Widevine
 vendor/lib/drm/libdrmwvmplugin.so
 vendor/lib/libdrmdecrypt.so
