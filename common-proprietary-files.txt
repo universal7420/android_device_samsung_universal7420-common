@@ -139,6 +139,19 @@ lib64/libuniplugin.so
 lib/hw/consumerir.exynos5.so
 lib64/hw/consumerir.exynos5.so
 
+# Fingerprint
+bin/fingerprintd
+lib/libbauthserver.so
+lib64/libbauthserver.so
+lib/libbauthtzcommon.so
+lib64/libbauthtzcommon.so
+lib/libsynaFpSensorTestNwd.so
+lib64/libsynaFpSensorTestNwd.so
+lib/libegis_fp_normal_sensor_test.so
+lib64/libegis_fp_normal_sensor_test.so
+lib/hw/fingerprint.default.so
+lib64/hw/fingerprint.default.so
+
 # Graphics
 lib/hw/gralloc.exynos5.so
 lib64/hw/gralloc.exynos5.so
