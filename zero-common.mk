@@ -168,10 +168,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     SamsungServiceMode
 
-# Samsung Symbols
-PRODUCT_PACKAGES += \
-    libsamsung_symbols
-
 # Wifi
 PRODUCT_PACKAGES += \
     dhcpcd.conf \
