@@ -24,7 +24,7 @@ $(call inherit-product-if-exists, vendor/samsung/zero-common/zero-common-vendor.
 # Common Overlays
 DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay
 
-ifneq ($(filter zerofltespr zeroltespr),)
+ifneq ($(filter zerofltespr zeroltespr,$(PRODUCT_DEVICE)),)
 DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-cdma
 else
 DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-gsm

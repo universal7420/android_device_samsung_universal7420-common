@@ -8,7 +8,7 @@ LOCAL_SRC_FILES		:= etc/fstab.samsungexynos7420
 LOCAL_MODULE_PATH	:= $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
-ifneq ($(filter zerofltespr zeroltespr),)
+ifneq ($(filter zerofltespr zeroltespr,$(PRODUCT_DEVICE)),)
 include $(CLEAR_VARS)
 LOCAL_MODULE            := init.baseband.rc
 LOCAL_MODULE_TAGS       := optional eng
