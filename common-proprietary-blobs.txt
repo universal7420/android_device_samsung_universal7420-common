@@ -231,8 +231,6 @@ vendor/firmware/sec_s3fwrn5p_firmware.bin
 bin/cbd
 lib/libsecnativefeature.so
 lib64/libsecnativefeature.so
-lib/libsec-ril.so
-lib64/libsec-ril.so
 lib/libsecril-client.so
 lib64/libsecril-client.so
 
