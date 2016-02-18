@@ -98,6 +98,7 @@ on post-fs-data
     chown system audio /sys/class/earsmart/control/route_value
     chown system audio /sys/class/earsmart/control/veq_control_set
     chown system audio /sys/class/earsmart/control/extra_volume
+    chown system audio /sys/class/earsmart/control/always_stream_fs_on
 
 # permission for CHARGING
    chown system radio /sys/class/power_supply/battery/batt_discharging_check
@@ -483,11 +484,12 @@ on boot
     write /efs/prov/ffffffff00000000000000000000000c.tlbin 0
     chown radio system /efs/prov/ffffffff00000000000000000000000c.tlbin
     chmod 0660 /efs/prov/ffffffff00000000000000000000000c.tlbin
+
 # CS socket
     mkdir /dev/socket/cs_socket 0770 system system
 
-	# MSP FactoryApp
-	mkdir /efs/FactoryApp 0775 system system
+# MSP FactoryApp
+    mkdir /efs/FactoryApp 0775 system system
 
 # permissions for bluetooth.
     setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
@@ -560,6 +562,7 @@ on fs
     chown system radio /sys/class/sec/sec_touchkey/flip_mode
     chown system radio /sys/class/sec/sec_touchkey/keyboard_mode
     chown system radio /sys/class/sec/sec_touchkey/boost_level
+    chown system radio /sys/class/sec/sec_touchkey/tkey_int_ctrl
     chown system system /sys/class/sec/sec_touchkey/input/enabled
 
 # Permissions for gpio_keys
@@ -591,6 +594,9 @@ on fs
     chown system system /sys/class/lcd/panel/hmt_on
     chown system system /sys/class/lcd/panel/hmt_bright
     chown system system /sys/class/mdnie/mdnie/hmt_color_temperature
+
+# Permissions for LCD ALPM
+    chown system system /sys/class/lcd/panel/alpm
 
 # Permissions for LCD
     chown system radio /sys/class/lcd/panel/manufacture_code
@@ -737,6 +743,8 @@ on fs
     chown system radio /sys/class/sensors/grip_sensor/temp
     chown system radio /sys/class/sensors/grip_sensor/temp_cal
     chown system radio /sys/class/sensors/grip_sensor/capmain
+    chown system radio /sys/class/sensors/grip_sensor/select_reg
+    chown system radio /sys/class/sensors/grip_sensor/rw_reg_val
 
 # SensorHub
     chown system radio /sys/class/sensors/ssp_sensor/enable
@@ -747,6 +755,7 @@ on fs
     chown system radio /sys/class/sensors/ssp_sensor/mcu_update
     chown system radio /sys/class/sensors/ssp_sensor/mcu_sleep_test
     chown system radio /sys/class/sensors/ssp_sensor/ori_poll_delay
+    chown system radio /sys/class/sensors/ssp_sensor/mag_poll_delay
 
 # Sensorhub IIO
     chown system radio /sys/class/sensors/ssp_sensor/accel_poll_delay
@@ -764,7 +773,11 @@ on fs
     chown system radio /sys/class/sensors/ssp_sensor/step_cnt_poll_delay
     chown system radio /sys/class/sensors/ssp_sensor/uncal_gyro_poll_delay
     chown system radio /sys/class/sensors/ssp_sensor/interrupt_gyro_poll_delay
+    chown system radio /sys/class/sensors/ssp_sensor/tilt_poll_delay
+    chown system radio /sys/class/sensors/ssp_sensor/pickup_poll_delay
+    chown system radio /sys/class/sensors/ssp_sensor/motor_test_poll_delay
     chown system radio /sys/class/sensors/ssp_sensor/ssp_flush
+    chown system radio /sys/class/sensors/ssp_sensor/int_gyro_enable
     chmod 0600 /dev/batch_io
     chown system system /dev/batch_io
 
@@ -829,6 +842,8 @@ on fs
     chown system radio /sys/class/sec/switch/uart_en
     chown system radio /sys/class/sec/switch/otg_test
     chown system radio /sys/class/sec/switch/apo_factory
+    chown system radio /sys/class/sec/switch/afc_disable
+    chown system radio /sys/class/sec/switch/wireless
 
     # GPIO DVS
     chown radio system /sys/class/secgpio_check/secgpio_check_all/gpioinit_check
@@ -1009,3 +1024,14 @@ service cs_service /system/bin/cs
     disabled
 on property:sys.mobicoredaemon.enable=true
     start cs_service
+
+# IPSec for VOLTE
+    chown root system /dev/socket
+    chmod 0775 /dev/socket
+
+# IPSec for VOLTE
+service ipsec-daemon /system/bin/IPSecService
+    class main
+    socket ipsec_socket stream 660 system system
+    user system
+    group system net_raw inet net_admin

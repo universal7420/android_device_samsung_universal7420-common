@@ -8,21 +8,23 @@ LOCAL_SRC_FILES		:= etc/fstab.samsungexynos7420
 LOCAL_MODULE_PATH	:= $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
+ifneq ($(filter zerofltespr zeroltespr),)
 include $(CLEAR_VARS)
 LOCAL_MODULE            := init.baseband.rc
 LOCAL_MODULE_TAGS       := optional eng
 LOCAL_MODULE_CLASS      := ETC
-LOCAL_SRC_FILES         := etc/init.baseband.rc
+LOCAL_SRC_FILES         := etc/init.baseband.rc.cdma
 LOCAL_MODULE_PATH       := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
-
+else
 include $(CLEAR_VARS)
-LOCAL_MODULE            := init.carrier.rc
+LOCAL_MODULE            := init.baseband.rc
 LOCAL_MODULE_TAGS       := optional eng
 LOCAL_MODULE_CLASS      := ETC
-LOCAL_SRC_FILES         := etc/init.carrier.rc
+LOCAL_SRC_FILES         := etc/init.baseband.rc.gsm
 LOCAL_MODULE_PATH       := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
+endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE            := init.gps.rc

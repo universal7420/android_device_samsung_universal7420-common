@@ -133,6 +133,9 @@
 # QCOM MIF
 /dev/subsys_esoc*         0660   system     radio
 /dev/mhi_pipe_*             0660   radio      radio
+/dev/esoc-*             0660   system    radio
+/dev/ks_hsic_bridge       0660   system     system
+/dev/efs_hsic_bridge      0660   system     system
 
 # Reactivation lock
 /dev/block/platform/15570000.ufs/by-name/STEADY    0660    system    system
