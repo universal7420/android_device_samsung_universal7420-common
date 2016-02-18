@@ -21,8 +21,14 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 # Get non-open-source specific aspects
 $(call inherit-product-if-exists, vendor/samsung/zero-common/zero-common-vendor.mk)
 
-# Overlays
+# Common Overlays
 DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay
+
+ifneq ($(filter zerofltespr zeroltespr),)
+DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-cdma
+else
+DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-gsm
+endif
 
 # This device is 640dpi.  However the platform doesn't
 # currently contain all of the bitmaps at 560dpi density so
