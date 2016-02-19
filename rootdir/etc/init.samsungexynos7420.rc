@@ -979,7 +979,7 @@ service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF0000000000000
     user system
     group system
 
-service fingerprint /system/bin/fingerprintd
+service fingerprintd /system/bin/fingerprintd
     class late_start
     user system
     group input
