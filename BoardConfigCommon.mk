@@ -99,7 +99,6 @@ TARGET_BOARD_PLATFORM := exynos5
 TARGET_SLSI_VARIANT := blobs
 
 # Radio
-BOARD_PROVIDES_LIBRIL := true
 BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril
 
 # Recovery
