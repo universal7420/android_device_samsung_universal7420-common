@@ -122,10 +122,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libstlport
 
-# Lights
-PRODUCT_PACKAGES += \
-    lights.universal7420
-
 # Media profile
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
@@ -146,10 +142,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/nfcee_access.xml:system/etc/nfcee_access.xml \
     $(LOCAL_PATH)/configs/libnfc-sec-hal.conf:system/etc/libnfc-sec-hal.conf \
     $(LOCAL_PATH)/configs/libnfc-sec.conf:system/etc/libnfc-brcm.conf
-
-# Power
-PRODUCT_PACKAGES += \
-    power.universal7420
 
 # common build properties
 PRODUCT_PROPERTY_OVERRIDES += \

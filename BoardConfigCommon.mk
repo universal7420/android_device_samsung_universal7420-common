@@ -79,9 +79,6 @@ BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x10008000 --ramdisk_offset 0x11000000 -
 TARGET_KERNEL_SOURCE := kernel/samsung/exynos7420
 TARGET_USES_UNCOMPRESSED_KERNEL := true
 
-# Lights
-TARGET_PROVIDES_LIBLIGHT := true
-
 # NFC
 BOARD_NFC_HAL_SUFFIX := universal7420
 
