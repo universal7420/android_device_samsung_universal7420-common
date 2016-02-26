@@ -1,5 +1,6 @@
 <mixer>
 	<pcmdai playback_link="6" />
+	<pcmdai playback_jam_link="7" />
 	<pcmdai playback_deep_link="3" />
 	<pcmdai capture_link="0" />
 	<pcmdai baseband_link="1" />
@@ -23,6 +24,7 @@
 	<ctl name="Noise Gate Switch" value="0" />
 	<ctl name="HPOUT1 Digital Switch" value="1" />
 	<ctl name="HPOUT3 Digital Switch" value="1" />
+	<ctl name="SPK Enable Switch" value="Enable" />
 
 	<ctl name="HPOUT1 DRE Switch" value="0" />
 	<ctl name="HPOUT3 DRE Switch" value="0" />
@@ -1294,6 +1296,15 @@
 		<path name="media-bt-sco-headset-in" />
 	</path>
 
+	<!-- jam voice input -->
+	<path name="recording-jam-mic">
+		<path name="media-mic" />
+	</path>
+
+	<path name="recording-jam-headset-mic">
+		<path name="media-headset-mic" />
+	</path>
+
 	<!-- interview input -->
 	<path name="interview-mic">
 		<ctl name="Sample Rate 2" value="24kHz" />
@@ -2519,6 +2530,7 @@
 		<param name="HPOUT3 Digital Switch" id="0" />
 		<param name="HPOUT1 Digital Switch" id="1" />
 		<param name="HPOUT3 Digital Switch" id="1" />
+		<param name="SPK Enable Switch" id="0" />
 	</path>
 
 	<!-- Output volume stage -->
@@ -3693,6 +3705,18 @@
 		<ctl name="AIF1TX2 Input 1 Volume" value="32" />
 	</path>
 
+	<!-- jam voice recording input volume -->
+	<path name="gain-recording-jam-mic">
+		<ctl name="IN1L Digital Volume" value="128" />
+		<ctl name="LHPF1 Input 1 Volume" value="32" />
+	</path>
+
+	<path name="gain-recording-jam-headset-mic">
+		<ctl name="IN2L Volume" value="31" />
+		<ctl name="IN2L Digital Volume" value="128" />
+		<ctl name="LHPF1 Input 1 Volume" value="32" />
+	</path>
+
 	<!-- interview input volume -->
 	<path name="gain-interview-mic">
 		<ctl name="IN1L Digital Volume" value="152" />
@@ -4693,9 +4717,5 @@
 		<ctl name="LHPF1 Input 1 Volume" value="20" />
 		<ctl name="IN3L Digital Volume" value="120" />
 		<ctl name="LHPF2 Input 1 Volume" value="20" />
-	</path>
-
-	<path name="none">
-		<!-- Empty path -->
 	</path>
 </mixer>
