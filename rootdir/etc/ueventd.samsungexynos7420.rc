@@ -145,3 +145,9 @@
 
 # FM Radio
 /dev/radio0               0660   system     audio
+
+# Blowfish
+/dev/tzdev                0660   system     system
+/dev/ionfd2phys           0660   system     radio
+/dev/tuihw                0660   system     system
+/dev/tzirs                0660   system     system
