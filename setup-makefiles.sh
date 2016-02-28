@@ -112,8 +112,6 @@ LINEEND=" \\"
 COUNT=`wc -l ../zero-common/common-proprietary-blobs.txt | awk {'print $1'}`
 DISM=`egrep -c '(^#|^$)' ../zero-common/common-proprietary-blobs.txt`
 COUNT=`expr $COUNT - $DISM`
-echo >> $MAKEFILE
-echo "## zero-common/common-proprietary-blobs.txt">> $MAKEFILE
 for FILE in `egrep -v '(^#|^$)' ../zero-common/common-proprietary-blobs.txt`; do
   COUNT=`expr $COUNT - 1`
   if [ $COUNT = "0" ]; then
