@@ -90,10 +90,6 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     tinymix
 
-# Bluetooth
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
-
 # Charger
 PRODUCT_PACKAGES += \
     charger_res_images
