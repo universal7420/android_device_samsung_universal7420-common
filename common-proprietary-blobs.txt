@@ -149,8 +149,8 @@ lib/libsynaFpSensorTestNwd.so
 lib64/libsynaFpSensorTestNwd.so
 lib/libegis_fp_normal_sensor_test.so
 lib64/libegis_fp_normal_sensor_test.so
-lib/hw/fingerprint.default.so
-lib64/hw/fingerprint.default.so
+lib/hw/fingerprint.default.so:lib/hw/fingerprint.universal7420.so
+lib64/hw/fingerprint.default.so:lib64/hw/fingerprint.universal7420.so
 
 # Graphics
 vendor/lib/egl/libGLES_mali.so
