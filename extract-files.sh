@@ -64,41 +64,41 @@ oat2dex()
 extract()
 {
     for FILE in `egrep -v '(^#|^$)' $1`; do
-    OLDIFS=$IFS IFS=":" PARSING_ARRAY=($FILE) IFS=$OLDIFS
-    FILE=${PARSING_ARRAY[0]}
-    DEST=${PARSING_ARRAY[1]}
-    if [ -z $DEST ]
-    then
-        DEST=$FILE
-    fi
-    DIR=`dirname $FILE`
-    if [ ! -d $2/$DIR ]; then
-        mkdir -p $2/$DIR
-    fi
-
-    if [ "$SRC" = "adb" ]; then
-        adb pull /system/$FILE $2/$DEST
-        # if file does not exist try destination
-        if [ "$?" != "0" ]
+        OLDIFS=$IFS IFS=":" PARSING_ARRAY=($FILE) IFS=$OLDIFS
+        FILE=${PARSING_ARRAY[0]}
+        DEST=${PARSING_ARRAY[1]}
+        if [ -z $DEST ]
         then
-            adb pull /system/$DEST $2/$DEST
+            DEST=$FILE
         fi
-        if [ "${FILE##*.}" = "apk" ]; then
-            oat2dex /system/$FILE
+        DIR=`dirname $FILE`
+        if [ ! -d $2/$DIR ]; then
+            mkdir -p $2/$DIR
         fi
-    else
-        cp $SRC/$FILE $2/$FILE
-        if [ "${FILE##*.}" = "apk" ]; then
-            oat2dex $SRC/$FILE
-        fi
-    fi
 
-    if [ -e /tmp/classes.dex ]; then
-        zip -gjq $2/$FILE /tmp/classes.dex
-        rm /tmp/classes.dex
-    fi
+        if [ "$SRC" = "adb" ]; then
+            adb pull /system/$FILE $2/$DEST
+            # if file does not exist try destination
+            if [ "$?" != "0" ]
+            then
+                adb pull /system/$FILE $2/$DEST
+            fi
+            if [ "${FILE##*.}" = "apk" ]; then
+                oat2dex /system/$FILE
+            fi
+        else
+            cp $SRC/$FILE $2/$DEST
+            if [ "${FILE##*.}" = "apk" ]; then
+               oat2dex $SRC/$FILE
+            fi
+        fi
 
-done
+        if [ -e /tmp/classes.dex ]; then
+            zip -gjq $2/$DEST /tmp/classes.dex
+            rm /tmp/classes.dex
+        fi
+
+    done
 }
 
 BASE=../../../vendor/$VENDOR/zero-common/proprietary
