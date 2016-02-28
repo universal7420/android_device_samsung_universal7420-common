@@ -155,6 +155,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.nfc.sec_hal=true \
     wifi.interface=wlan0
 
+# Radio
+PRODUCT_PACKAGES += \
+    libxml2 \
+    libprotobuf-cpp-full
+
+
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.samsungexynos7420 \
