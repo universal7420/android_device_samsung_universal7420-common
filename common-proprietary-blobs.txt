@@ -225,6 +225,7 @@ lib64/libsecril-client.so
 # Sensors
 lib/hw/sensors.universal7420.so
 lib64/hw/sensors.universal7420.so
+bin/bcm_sensorhub_a2.patch
 
 # Trustlet Connector (tlc)
 lib/libtlc_direct_comm.so
