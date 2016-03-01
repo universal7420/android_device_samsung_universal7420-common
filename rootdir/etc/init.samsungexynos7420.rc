@@ -100,6 +100,10 @@ on post-fs-data
     chown system audio /sys/class/earsmart/control/extra_volume
     chown system audio /sys/class/earsmart/control/always_stream_fs_on
 
+# Vibrations
+    chown system system /sys/class/timed_output/vibrator/enable
+    chown system system /sys/class/timed_output/vibrator/intensity
+
 # permission for CHARGING
    chown system radio /sys/class/power_supply/battery/batt_discharging_check
    chown system radio /sys/class/power_supply/battery/batt_discharging_check_adc
@@ -201,6 +205,9 @@ on boot
     write /sys/devices/system/cpu/cpu5/online 1
     write /sys/devices/system/cpu/cpu6/online 1
     write /sys/devices/system/cpu/cpu7/online 1
+
+    # Set vibrator intensity 100%
+    write /sys/devices/timed_output/vibrator/intensity 10000
 
     # update foreground cpuset now that processors are up
     write /dev/cpuset/foreground/cpus 0-7
