@@ -22,7 +22,7 @@ on fs
     chown radio system /sys/devices/virtual/misc/umts_dm0/dm_state
 
 # CP Boot Daemon (CBD)
-service cpboot-daemon /system/bin/cbd -d -t ss333 -b s -m l -P platform/15570000.ufs/by-name/RADIO
+service cpboot-daemon /sbin/cbd -d -t ss333 -b s -m l -P platform/15570000.ufs/by-name/RADIO
     class main
     user root
     group radio cache inet misc audio sdcard_r sdcard_rw log shell
