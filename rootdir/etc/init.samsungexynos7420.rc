@@ -207,7 +207,7 @@ on boot
     write /sys/devices/system/cpu/cpu7/online 1
 
     # Set vibrator intensity 100%
-    write /sys/devices/timed_output/vibrator/intensity 10000
+    write /sys/devices/virtual/timed_output/vibrator/intensity 10000
 
     # update foreground cpuset now that processors are up
     write /dev/cpuset/foreground/cpus 0-7
