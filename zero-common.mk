@@ -191,7 +191,6 @@ PRODUCT_PACKAGES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
-    dhcpcd.conf \
     init.sec.boot.sh \
     hostapd \
     libnetcmdiface \
