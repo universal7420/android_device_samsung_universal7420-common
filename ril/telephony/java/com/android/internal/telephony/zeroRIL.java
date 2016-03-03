@@ -280,13 +280,8 @@ public class zeroRIL extends RIL implements CommandsInterface {
         }
 
         ret = new ArrayList<OperatorInfo>(strings.length / mQANElements);
-        Operators init = null;
-        if (strings.length != 0) {
-            init = new Operators();
-        }
-
         for (int i = 0 ; i < strings.length ; i += mQANElements) {
-            String strOperatorLong = init.unOptimizedOperatorReplace(strings[i+0]);
+            String strOperatorLong = strings[i+0];
             String strOperatorNumeric = strings[i+2];
             String strState = strings[i+3].toLowerCase();
 
