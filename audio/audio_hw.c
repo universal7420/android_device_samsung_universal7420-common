@@ -1776,11 +1776,18 @@ static int adev_open(const hw_module_t* module, const char* name,
     /* RIL */
     ril_open(&adev->ril);
 
-    /* register callback for wideband AMR setting */
-    if (property_get_bool("audio_hal.force_wideband", false))
-        force_wideband(adev);
-    else
+    char voice_config[PROPERTY_VALUE_MAX];
+
+    if (property_get("audio_hal.force_voice_config", voice_config, "") > 0) {
+        if ((strncmp(voice_config, "narrow", 6)) == 0)
+            adev->wb_amr = false;
+        else if ((strncmp(voice_config, "wide", 4)) == 0)
+            adev->wb_amr = true;
+        ALOGV("%s: Forcing voice config: %s", __func__, voice_config);
+    } else {
+        /* register callback for wideband AMR setting */
         ril_register_set_wb_amr_callback(adev_set_wb_amr_callback, (void *)adev);
+    }
 
     *device = &adev->hw_device.common;
 
