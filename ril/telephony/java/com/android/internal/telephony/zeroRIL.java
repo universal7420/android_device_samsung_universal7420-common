@@ -267,38 +267,4 @@ public class zeroRIL extends RIL implements CommandsInterface {
         rr.mParcel.writeInt(0);
         send(rr);
     }
-
-    // This method is used in the search network functionality.
-    // See mobile network setting -> network operators
-    @Override
-    protected Object
-    responseOperatorInfos(Parcel p) {
-        String strings[] = (String[])responseStrings(p);
-        ArrayList<OperatorInfo> ret;
-
-        if (strings.length % mQANElements != 0) {
-            throw new RuntimeException("RIL_REQUEST_QUERY_AVAILABLE_NETWORKS: invalid response. Got "
-                                       + strings.length + " strings, expected multiple of " + mQANElements);
-        }
-
-        ret = new ArrayList<OperatorInfo>(strings.length / mQANElements);
-        for (int i = 0 ; i < strings.length ; i += mQANElements) {
-            String strOperatorLong = strings[i+0];
-            String strOperatorNumeric = strings[i+2];
-            String strState = strings[i+3].toLowerCase();
-
-            Rlog.v(RILJ_LOG_TAG,
-                   "ss333: Add OperatorInfo: " + strOperatorLong +
-                   ", " + strOperatorLong +
-                   ", " + strOperatorNumeric +
-                   ", " + strState);
-
-            ret.add(new OperatorInfo(strOperatorLong, // operatorAlphaLong
-                                     strOperatorLong, // operatorAlphaShort
-                                     strOperatorNumeric,    // operatorNumeric
-                                     strState));  // stateString
-        }
-
-        return ret;
-    }
 }
