@@ -145,6 +145,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/libnfc-sec-hal.conf:system/etc/libnfc-sec-hal.conf \
     $(LOCAL_PATH)/configs/libnfc-sec.conf:system/etc/libnfc-brcm.conf
 
+# Power
+PRODUCT_PACKAGES += \
+    power.universal7420
+
 # common build properties
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=640 \
