@@ -47,6 +47,7 @@ on post-fs-data
     chown media system /data/firmware
 
     # Permissions Camera
+    mkdir /data/camera 0770 media system
     chown system radio /sys/class/camera/rear/rear_camfw
     chown system radio /sys/class/camera/rear/rear_camfw_full
     chown system radio /sys/class/camera/rear/rear_checkfw_user
@@ -60,6 +61,7 @@ on post-fs-data
     chown system radio /sys/class/camera/rear/fw_update
     chown system radio /sys/class/camera/rear/from_write
     chown system radio /sys/class/camera/flash/rear_flash
+    chown media system /sys/class/camera/flash/torch_flash
     chown system radio /sys/class/camera/front/front_camfw
     chown system radio /sys/class/camera/front/front_camfw_full
     chown system radio /sys/class/camera/front/front_checkfw_factory
@@ -117,6 +119,7 @@ on post-fs-data
     mkdir /data/nfc/param 0700 nfc nfc
     mkdir /data/bcmnfc 0700 nfc nfc
     mkdir /data/bcmnfc/param 0700 nfc nfc
+    mkdir /efs/sec_efs/nfc 0500 nfc nfc
 
     # sec_efs_file
     mkdir /efs/sec_efs 0775 radio system
@@ -692,6 +695,7 @@ on fs
     chown system radio /sys/class/sensors/barometer_sensor/vendor
     chown system radio /sys/class/sensors/barometer_sensor/name
     chown system radio /sys/class/sensors/barometer_sensor/calibration
+    chown system radio /sys/class/sensors/barometer_sensor/temperature
 
 # Magnetic_sensor
     chown system radio /sys/class/sensors/magnetic_sensor/raw_data
@@ -750,8 +754,6 @@ on fs
     chown system radio /sys/class/sensors/grip_sensor/temp
     chown system radio /sys/class/sensors/grip_sensor/temp_cal
     chown system radio /sys/class/sensors/grip_sensor/capmain
-    chown system radio /sys/class/sensors/grip_sensor/select_reg
-    chown system radio /sys/class/sensors/grip_sensor/rw_reg_val
 
 # SensorHub
     chown system radio /sys/class/sensors/ssp_sensor/enable
@@ -762,7 +764,6 @@ on fs
     chown system radio /sys/class/sensors/ssp_sensor/mcu_update
     chown system radio /sys/class/sensors/ssp_sensor/mcu_sleep_test
     chown system radio /sys/class/sensors/ssp_sensor/ori_poll_delay
-    chown system radio /sys/class/sensors/ssp_sensor/mag_poll_delay
 
 # Sensorhub IIO
     chown system radio /sys/class/sensors/ssp_sensor/accel_poll_delay
@@ -782,9 +783,9 @@ on fs
     chown system radio /sys/class/sensors/ssp_sensor/interrupt_gyro_poll_delay
     chown system radio /sys/class/sensors/ssp_sensor/tilt_poll_delay
     chown system radio /sys/class/sensors/ssp_sensor/pickup_poll_delay
-    chown system radio /sys/class/sensors/ssp_sensor/motor_test_poll_delay
     chown system radio /sys/class/sensors/ssp_sensor/ssp_flush
     chown system radio /sys/class/sensors/ssp_sensor/int_gyro_enable
+    chown system radio /sys/class/sensors/ssp_sensor/sensor_state
     chmod 0600 /dev/batch_io
     chown system system /dev/batch_io
 
