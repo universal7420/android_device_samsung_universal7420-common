@@ -201,11 +201,6 @@ Only the three quirks included above are recognized at this point:
             <Limit name="size" min="64x64" max="2048x2048" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
-        <MediaCodec name="OMX.SEC.hevc.sw.dec" type="video/hevc" >
-            <Quirk name="decoder-ignores-streamcorrupt-error" />
-            <Limit name="size" min="64x64" max="2048x2048" />
-            <Feature name="adaptive-playback" />
-        </MediaCodec>
         <MediaCodec name="OMX.SEC.mpeg4.sw.dec" type="video/mp4v-es" >
             <Quirk name="decoder-ignores-streamcorrupt-error" />
         </MediaCodec>
@@ -306,6 +301,13 @@ Only the three quirks included above are recognized at this point:
         </MediaCodec>
     </Encoders>
     <Include href="media_codecs_google_video.xml" />
+    <Decoders>
+        <MediaCodec name="OMX.SEC.hevc.sw.dec" type="video/hevc" >
+            <Quirk name="decoder-ignores-streamcorrupt-error" />
+            <Limit name="size" min="64x64" max="2048x2048" />
+            <Feature name="adaptive-playback" />
+        </MediaCodec>
+    </Decoders>
     <Include href="media_codecs_google_audio.xml" />
     <Include href="media_codecs_google_telephony.xml" />
 </MediaCodecs>
