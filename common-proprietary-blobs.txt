@@ -116,8 +116,8 @@ vendor/firmware/seiren_fw_dram.bin
 vendor/firmware/seiren_fw_sram.bin
 
 # Bluetooth
-vendor/firmware/bcm4358A3_V0062.0099.hcd
-vendor/firmware/bcm4358A3_V0062.0099_wisol.hcd       
+vendor/firmware/bcm4358A3_V0064.0105.hcd
+vendor/firmware/bcm4358A3_V0064.0105_wisol.hcd
 
 # Camera
 #lib/hw/camera.exynos5.so
