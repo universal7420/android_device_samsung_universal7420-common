@@ -123,6 +123,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libstlport
 
+# MDNIE
+PRODUCT_PACKAGES += \
+    AdvancedDisplay
+
 # Media profile
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
