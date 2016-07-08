@@ -147,10 +147,6 @@ TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.samsungexynos7420
 BOARD_SUPPRESS_SECURE_ERASE := true
 BOARD_HAS_DOWNLOAD_MODE := true
 
-# Renderscript
-BOARD_OVERRIDE_RS_CPU_VARIANT_32 := cortex-a53
-BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
-
 # Samsung Seiren audio
 BOARD_USE_ALP_AUDIO := true
 BOARD_USE_SEIREN_AUDIO := true
