@@ -90,6 +90,14 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     tinymix
 
+# Browser
+PRODUCT_PACKAGES += \
+    Gello
+
+# Camera
+PRODUCT_PACKAGES += \
+    Snap
+
 # Charger
 PRODUCT_PACKAGES += \
     charger_res_images
