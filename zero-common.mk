@@ -161,7 +161,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     af.fast_track_multiplier=1 \
     audio_hal.force_voice_config=wide \
     ro.nfc.sec_hal=true \
-    wifi.interface=wlan0
+    wifi.interface=wlan0 \
+    debug.hwc.force_gpu=1
 
 # Radio
 PRODUCT_PACKAGES += \
