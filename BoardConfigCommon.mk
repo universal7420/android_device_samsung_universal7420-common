@@ -142,6 +142,9 @@ BOARD_USE_SEIREN_AUDIO := true
 # Sensors
 TARGET_NO_SENSOR_PERMISSION_CHECK := true
 
+# Sepolicy
+BOARD_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+
 # Twrp
 ifneq ($(strip $(wildcard $(TOP)/bootable/recovery/variables.h)),)
 -include device/samsung/zero-common/twrp.mk
