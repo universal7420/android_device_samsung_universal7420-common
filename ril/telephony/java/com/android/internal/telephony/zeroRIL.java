@@ -122,15 +122,25 @@ public class zeroRIL extends RIL implements CommandsInterface {
             dc.als = p.readInt();
             voiceSettings = p.readInt();
             dc.isVoice = (0 == voiceSettings) ? false : true;
-            p.readInt(); // samsung call detail
-            p.readInt(); // samsung call detail
-            p.readString(); // samsung call detail
+            int call_type = p.readInt(); // samsung call detail
+            int call_domain = p.readInt(); // samsung call detail
+            String csv = p.readString(); // samsung call detail
+
             dc.isVoicePrivacy = (0 != p.readInt());
+
             dc.number = p.readString();
-            int np = p.readInt();
-            dc.numberPresentation = DriverCall.presentationFromCLIP(np);
+            if (RILJ_LOGV) {
+                riljLog("responseCallList dc.number=" + dc.number);
+            }
+
+            dc.numberPresentation = DriverCall.presentationFromCLIP(p.readInt());
             dc.name = p.readString();
-            dc.namePresentation = p.readInt();
+            if (RILJ_LOGV) {
+                riljLog("responseCallList dc.name=" + dc.name);
+            }
+            // according to ril.h, namePresentation should be handled as numberPresentation;
+            dc.namePresentation = DriverCall.presentationFromCLIP(p.readInt());
+
             int uusInfoPresent = p.readInt();
             if (uusInfoPresent == 1) {
                 dc.uusInfo = new UUSInfo();
