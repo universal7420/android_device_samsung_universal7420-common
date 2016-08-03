@@ -40,6 +40,7 @@ import com.android.internal.telephony.uicc.IccCardStatus;
 public class zeroRIL extends RIL implements CommandsInterface {
 
     private boolean DBG = false;
+    private boolean isGsm = false;
 
     public zeroRIL(Context context, int preferredNetworkType,
             int cdmaSubscription, Integer instanceId) {
@@ -96,6 +97,12 @@ public class zeroRIL extends RIL implements CommandsInterface {
         return cardStatus;
     }
 
+    @Override
+    public void setPhoneType(int phoneType){
+        super.setPhoneType(phoneType);
+        isGsm = (phoneType != RILConstants.CDMA_PHONE);
+    }
+
     protected Object
     responseCallList(Parcel p) {
         int num;
@@ -120,11 +127,13 @@ public class zeroRIL extends RIL implements CommandsInterface {
             dc.isMpty = (0 != p.readInt());
             dc.isMT = (0 != p.readInt());
             dc.als = p.readInt();
-            voiceSettings = p.readInt();
-            dc.isVoice = (0 == voiceSettings) ? false : true;
-            int call_type = p.readInt(); // samsung call detail
-            int call_domain = p.readInt(); // samsung call detail
-            String csv = p.readString(); // samsung call detail
+            dc.isVoice = (0 != p.readInt());
+
+            if (!isGsm) {
+                int call_type = p.readInt(); // samsung call detail
+                int call_domain = p.readInt(); // samsung call detail
+                String csv = p.readString(); // samsung call detail
+            }
 
             dc.isVoicePrivacy = (0 != p.readInt());
 
