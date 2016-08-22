@@ -120,20 +120,23 @@ vendor/firmware/bcm4358A3_V0064.0105.hcd
 vendor/firmware/bcm4358A3_V0064.0105_wisol.hcd
 
 # Camera
-#lib/hw/camera.exynos5.so
-#lib64/hw/camera.exynos5.so
-#lib/hw/camera.universal7420.so
-#lib64/hw/camera.universal7420.so
+lib/hw/camera.exynos5.so
+lib64/hw/camera.exynos5.so
+lib/hw/camera.universal7420.so:lib/hw/camera.vendor.universal7420.so
+lib64/hw/camera.universal7420.so:lib64/hw/camera.vendor.universal7420.so
 lib/libexynoscamera3.so
 lib64/libexynoscamera3.so
 lib/libexynoscamera.so
 lib64/libexynoscamera.so
 lib/libexynosv4l2.so
 lib64/libexynosv4l2.so
+lib/libhwjpeg.so
+lib64/libhwjpeg.so
 lib/libsensorlistener.so
 lib64/libsensorlistener.so
 lib/libuniplugin.so
 lib64/libuniplugin.so
+vendor/firmware/setfile_2p2.bin
 
 # Consumer IR
 lib/hw/consumerir.exynos5.so
