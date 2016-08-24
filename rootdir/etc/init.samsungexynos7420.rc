@@ -10,7 +10,6 @@ on init
     mkdir /preload 0771 system system
 
     # Support legacy paths
-    symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
     symlink /storage/usbdisk /mnt/usbdisk
 
