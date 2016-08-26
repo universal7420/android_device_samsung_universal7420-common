@@ -31,62 +31,84 @@
    Author : Sunghun Ra
  */
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "vendor_init.h"
-#include "property_service.h"
 #include "log.h"
+#include "property_service.h"
 #include "util.h"
+#include "vendor_init.h"
+
+#include "init_sec.h"
+
+std::string bootloader;
+std::string device;
+char* devicename;
+
+device_variant check_device_and_get_variant()
+{
+    std::string platform = property_get("ro.board.platform");
+    if (platform != ANDROID_TARGET) {
+        return UNKNOWN;
+    }
+
+    bootloader = property_get("ro.bootloader");
+    return match(bootloader);
+}
 
 void vendor_load_properties()
 {
-    char platform[PROP_VALUE_MAX];
-    char bootloader[PROP_VALUE_MAX];
-    char device[PROP_VALUE_MAX];
-    char devicename[PROP_VALUE_MAX];
+    device_variant variant = check_device_and_get_variant();
 
-    property_get("ro.bootloader", bootloader);
-
-    if (strstr(bootloader, "G920S")) {
-        /* zeroflteskt */
-        property_set("ro.build.fingerprint", "samsung/zeroflteskt/zeroflteskt:5.1.1/LMY47X/G920SXXS3COK5:user/release-keys");
-        property_set("ro.build.description", "zeroflteskt-user 5.1.1 LMY47X G920SXXS3COK5 release-keys");
-        property_set("ro.product.model", "SM-G920S");
-        property_set("ro.product.device", "zeroflteskt");
-    } else if (strstr(bootloader, "G920K")) {
-        /* zerofltektt */
-        property_set("ro.build.fingerprint", "samsung/zerofltektt/zerofltektt:5.1.1/LMY47X/G920KXXS3COK5:user/release-keys");
-        property_set("ro.build.description", "zerofltektt-user 5.1.1 LMY47X G920KXXS3COK5 release-keys");
-        property_set("ro.product.model", "SM-G920K");
-        property_set("ro.product.device", "zerofltektt");
-    } else if (strstr(bootloader, "G920L")) {
-        /* zerofltelgt */
-        property_set("ro.build.fingerprint", "samsung/zerofltelgt/zerofltelgt:5.1.1/LMY47X/G920LXXS3COK5:user/release-keys");
-        property_set("ro.build.description", "zerofltelgt-user 5.1.1 LMY47X G920LXXS3COK5 release-keys");
-        property_set("ro.product.model", "SM-G920L");
-        property_set("ro.product.device", "zerofltelgt");
-    } else if (strstr(bootloader, "G920P")) {
-        /* zerofltespr */
-        property_set("ro.build.fingerprint", "samsung/zerofltespr/zerofltespr:5.1.1/LMY47X/G920PVPU3BOL1:user/release-keys");
-        property_set("ro.build.description", "zerofltespr-user 5.1.1 LMY47X G920PVPU3BOL1 release-keys");
-        property_set("ro.product.model", "SM-G920P");
-        property_set("ro.product.device", "zerofltespr");
-    } else if (strstr(bootloader, "G920I")) {
-        /* zerofltexx */
-        property_set("ro.build.fingerprint", "samsung/zerofltexx/zerofltexx:5.1.1/LMY47X/G920IXXS3COK5:user/release-keys");
-        property_set("ro.build.description", "zerofltexx-user 5.1.1 LMY47X G920IXXS3COK5 release-keys");
-        property_set("ro.product.model", "SM-G920I");
-        property_set("ro.product.device", "zerofltexx");
-    } else {
-        /* zerofltexx */
-        property_set("ro.build.fingerprint", "samsung/zerofltexx/zerofltexx:6.0.1/MMB29K/G920FXXU3DPBG:user/release-keys");
-        property_set("ro.build.description", "zerofltexx-user 6.0.1 MMB29K G920FXXU3DPBG release-keys");
-        property_set("ro.product.model", "SM-G920F");
-        property_set("ro.product.device", "zerofltexx");
+    switch (variant) {
+        case G920S:
+            /* zeroflteskt */
+            property_set("ro.build.fingerprint", "samsung/zeroflteskt/zeroflteskt:5.1.1/LMY47X/G920SXXS3COK5:user/release-keys");
+            property_set("ro.build.description", "zeroflteskt-user 5.1.1 LMY47X G920SXXS3COK5 release-keys");
+            property_set("ro.product.model", "SM-G920S");
+            property_set("ro.product.device", "zeroflteskt");
+            break;
+        case G920K:
+            /* zerofltektt */
+            property_set("ro.build.fingerprint", "samsung/zerofltektt/zerofltektt:5.1.1/LMY47X/G920KXXS3COK5:user/release-keys");
+            property_set("ro.build.description", "zerofltektt-user 5.1.1 LMY47X G920KXXS3COK5 release-keys");
+            property_set("ro.product.model", "SM-G920K");
+            property_set("ro.product.device", "zerofltektt");
+            break;
+        case G920L:
+            /* zerofltelgt */
+            property_set("ro.build.fingerprint", "samsung/zerofltelgt/zerofltelgt:5.1.1/LMY47X/G920LXXS3COK5:user/release-keys");
+            property_set("ro.build.description", "zerofltelgt-user 5.1.1 LMY47X G920LXXS3COK5 release-keys");
+            property_set("ro.product.model", "SM-G920L");
+            property_set("ro.product.device", "zerofltelgt");
+            break;
+        case G920P:
+            /* zerofltespr */
+            property_set("ro.build.fingerprint", "samsung/zerofltespr/zerofltespr:5.1.1/LMY47X/G920PVPU3BOL1:user/release-keys");
+            property_set("ro.build.description", "zerofltespr-user 5.1.1 LMY47X G920PVPU3BOL1 release-keys");
+            property_set("ro.product.model", "SM-G920P");
+            property_set("ro.product.device", "zerofltespr");
+            break;
+        case G920I:
+            /* zerofltexx */
+            property_set("ro.build.fingerprint", "samsung/zerofltexx/zerofltexx:5.1.1/LMY47X/G920IXXS3COK5:user/release-keys");
+            property_set("ro.build.description", "zerofltexx-user 5.1.1 LMY47X G920IXXS3COK5 release-keys");
+            property_set("ro.product.model", "SM-G920I");
+            property_set("ro.product.device", "zerofltexx");
+            break;
+        case G920F:
+            /* zerofltexx */
+            property_set("ro.build.fingerprint", "samsung/zerofltexx/zerofltexx:6.0.1/MMB29K/G920FXXU3DPBG:user/release-keys");
+            property_set("ro.build.description", "zerofltexx-user 6.0.1 MMB29K G920FXXU3DPBG release-keys");
+            property_set("ro.product.model", "SM-G920F");
+            property_set("ro.product.device", "zerofltexx");
+            break;
+        default:
+            ERROR("Unknown bootloader id %s detected. bailing...\n", bootloader.c_str());
+            return;
     }
-
-    property_get("ro.product.device", device);
-    strlcpy(devicename, device, sizeof(devicename));
-    ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader, devicename);
+    device = property_get("ro.product.device");
+    INFO("Found bootloader id %s setting build properties for %s device\n", bootloader.c_str(), device.c_str());
 }
+
