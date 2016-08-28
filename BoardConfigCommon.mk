@@ -155,6 +155,9 @@ BOARD_HAS_DOWNLOAD_MODE := true
 # Sensors
 TARGET_NO_SENSOR_PERMISSION_CHECK := true
 
+# Seccomp filters
+BOARD_SECCOMP_POLICY += device/samsung/zero-common/seccomp
+
 # Sepolicy
 BOARD_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
 
