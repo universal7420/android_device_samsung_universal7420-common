@@ -43,7 +43,7 @@ on post-fs-data
     chown system radio /efs/maxim/temp_cal
     chown system radio /efs/maxim/rdc_cal
     chmod 0660 /efs/maxim/temp_cal
-    chmod 0660 /efs/maxim/rdc_cal 
+    chmod 0660 /efs/maxim/rdc_cal
     chown media system /data/firmware
 
     # Permissions Camera
@@ -188,8 +188,8 @@ on post-fs-data
     chown drm system /data/data/.drm/.playready
     chmod 0775 /data/data/.drm/.playready
 
-    # Vibetonz 
-    chmod 0660 /dev/tspdrv 
+    # Vibetonz
+    chmod 0660 /dev/tspdrv
     chown vibe vibe /dev/tspdrv
 
     # for BT MAC address
@@ -840,7 +840,7 @@ on fs
     chmod 0660 /sys/class/sec_touchkey/input/enabled
     chown system system /sys/class/sec/sec_touchkey/input/enabled
     chown system radio /sys/class/sec/sec_touchkey/brightness
-	
+
     chmod 0660 /sys/class/sec/sec_epen/input/enabled
     chown system system /sys/class/sec/sec_epen/input/enabled
 
@@ -1012,13 +1012,16 @@ on property:sys.boot_completed=1
 
 on charger
 # Set cpu governor to interactive while in charging mode
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor powersave
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor powersave
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor powersave
 
 # Do not set any USB mode while charging
     setprop sys.usb.config charging
+
+# EHCI runtime enable for LPA
+    write /sys/devices/platform/s5p-ehci/power/control auto
 
 service battery_charger /sbin/healthd -c
     class charger
