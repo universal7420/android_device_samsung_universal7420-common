@@ -38,7 +38,7 @@ service lhd /system/bin/lhd /system/etc/lhd.conf
 service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     class main
     user gps
-    group system inet net_raw
+    group system wakelock inet net_raw
     disabled
 
 on property:init.svc.bootanim=stopped
