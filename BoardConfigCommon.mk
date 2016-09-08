@@ -34,8 +34,6 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53
 
-ENABLE_CPUSETS := true
-
 # Binder
 TARGET_USES_64_BIT_BINDER := true
 
@@ -56,6 +54,9 @@ BOARD_BATTERY_DEVICE_NAME := battery
 BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
 CHARGING_ENABLED_PATH := "/sys/class/power_supply/battery/batt_lp_charging"
+
+# CPU sets
+ENABLE_CPUSETS := true
 
 # FIMG2D
 BOARD_USES_SKIA_FIMGAPI := true

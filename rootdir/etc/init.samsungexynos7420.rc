@@ -208,6 +208,12 @@ on boot
     write /sys/devices/system/cpu/cpu6/online 1
     write /sys/devices/system/cpu/cpu7/online 1
 
+    # Configure foreground and background cpuset
+    write /dev/cpuset/foreground/cpus 0-7
+    write /dev/cpuset/foreground/boost/cpus 4-7
+    write /dev/cpuset/background/cpus 0
+    write /dev/cpuset/system-background/cpus 0-3
+
     # Set vibrator intensity 75%
     write /sys/devices/virtual/timed_output/vibrator/intensity 7500
 
