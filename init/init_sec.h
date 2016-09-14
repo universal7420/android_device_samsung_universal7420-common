@@ -27,17 +27,17 @@ enum device_variant {
 
 device_variant match(std::string bl)
 {
-    if (bl == "G920S") {
+    if (bl.find("G920S") != std::string::npos) {
         return G920S;
-    } else if (bl == "G920K") {
+    } else if (bl.find("G920K") != std::string::npos) {
         return G920K;
-    } else if (bl == "G920L") {
+    } else if (bl.find("G920L") != std::string::npos) {
         return G920L;
-    } else if (bl == "G920P") {
+    } else if (bl.find("G920P") != std::string::npos) {
         return G920P;
-    } else if (bl == "G920I") {
+    } else if (bl.find("G920I") != std::string::npos) {
         return G920I;
-    } else if (bl == "G920F") {
+    } else if (bl.find("G920F") != std::string::npos) {
         return G920F;
     } else {
         return UNKNOWN;
