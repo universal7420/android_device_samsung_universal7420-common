@@ -80,6 +80,12 @@ service macloader /system/bin/macloader
     class main
     oneshot
 
+# Run deferred initcalls of builtin kernel modules (bcmdhd)
+service wifiloader /system/bin/wifiloader
+    class main
+    oneshot
+    seclabel u:r:wifiloader:s0
+
 on property:init.svc.macloader=stopped
     chown system root /data/.cid.info
     chmod 0664 /data/.cid.info

@@ -195,10 +195,10 @@ PRODUCT_PACKAGES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
-    bcmdhd-loader \
     hostapd \
     libnetcmdiface \
     macloader \
+    wifiloader \
     wpa_supplicant \
     wpa_supplicant.conf
 

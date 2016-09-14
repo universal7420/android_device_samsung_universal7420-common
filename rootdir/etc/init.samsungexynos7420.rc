@@ -967,12 +967,6 @@ on fs
     chown system usb /sys/class/usb_notify/usb_control/disable
     chmod 0664 /sys/class/usb_notify/usb_control/disable
 
-service bcmdhd-loader /system/bin/bcmdhd-loader
-    class main
-    user root
-    oneshot
-    seclabel u:r:bcmdhd-loader:s0
-
 # ARGOSD
 service argos-daemon /system/bin/argosd
     class main
