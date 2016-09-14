@@ -1,0 +1,6 @@
+#### bcmdhd-loader
+#
+type bcmdhd-loader, domain, domain_deprecated;
+type bcmdhd-loader_exec, exec_type, file_type;
+
+init_daemon_domain(bcmdhd-loader)
