@@ -5,7 +5,6 @@ type cpboot-daemon_exec, exec_type, file_type;
 net_domain(cpboot-daemon)
 init_daemon_domain(cpboot-daemon)
 wakelock_use(cpboot-daemon)
-unix_socket_connect(cpboot-daemon, property, init)
 
 allow cpboot-daemon self:capability { dac_override setuid setgid };
 

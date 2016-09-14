@@ -117,5 +117,5 @@
 
 /sbin/cbd                    -- u:object_r:rootfs:s0
 /system/bin/gpsd             -- u:object_r:gpsd_exec:s0
-/syste/bin/lhd               -- u:object_r:system_file:s0
+/syste/bin/lhd               -- u:object_r:lhd_exec:s0
 /system/bin/bcmdhd-loader    -- u:object_r:bcmdhd-loader_exec:s0

@@ -1,0 +1,6 @@
+#### lhd
+#
+type lhd, domain, domain_deprecated;
+type lhd_exec, exec_type, file_type;
+
+init_daemon_domain(lhd)
