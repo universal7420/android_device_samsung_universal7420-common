@@ -800,6 +800,9 @@ on fs
     chown system radio /sys/class/sensors/irled_remote/irled_send
     chown system radio /sys/class/sensors/irled_remote/irled_send_result
 
+# Default MDNIE mode (cinema)
+    write /sys/class/mdnie/mdnie/mode 3
+
 # Copy DRM Key
     copy /system/app/wv.keys /factory/wv.keys
 
