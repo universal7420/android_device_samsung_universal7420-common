@@ -32,6 +32,7 @@ import java.util.Collections;
 
 import com.android.internal.telephony.uicc.IccCardApplicationStatus;
 import com.android.internal.telephony.uicc.IccCardStatus;
+import com.android.internal.telephony.uicc.IccUtils;
 
 /**
  * RIL customization for Galaxy S6.
@@ -197,7 +198,7 @@ public class zeroRIL extends RIL implements CommandsInterface {
 
     @Override
     protected void
-    processUnsolicited (Parcel p) {
+    processUnsolicited (Parcel p, int type) {
         Object ret;
         int dataPosition = p.dataPosition(); // save off position within the Parcel
         int response = p.readInt();
@@ -222,7 +223,7 @@ public class zeroRIL extends RIL implements CommandsInterface {
                 if(DBG) Rlog.d("SHRILGET", "UNKNOWN UNSL: " + response);
 
                 // Forward responses that we are not overriding to the super class
-                super.processUnsolicited(p);
+                super.processUnsolicited(p, type);
                 return;
         }
     }
