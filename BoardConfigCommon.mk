@@ -85,6 +85,10 @@ BOARD_HARDWARE_CLASS += device/samsung/zero-common/cmhw
 # HWCServices
 BOARD_USES_HWC_SERVICES := true
 
+# Renderscript
+BOARD_OVERRIDE_RS_CPU_VARIANT_32 := cortex-a53
+BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
+
 # HDMI
 BOARD_HDMI_INCAPABLE := true
 BOARD_USES_GSC_VIDEO := true
