@@ -4492,6 +4492,21 @@
     <path name="gain-incall_nb-headphone" />
   </path>
 
+  <path name="voice-earpiece-wb">
+    <path name="incall_wb-handset" />
+    <path name="gain-incall_wb-handset" />
+  </path>
+
+  <path name="voice-speaker-wb">
+    <path name="incall_wb-speaker" />
+    <path name="gain-incall_wb-speaker" />
+  </path>
+
+  <path name="voice-headphones-wb">
+    <path name="incall_wb-headphone" />
+    <path name="gain-incall_wb-headphone" />
+  </path>
+
   <path name="hdmi">
     <!-- TODO -->
   </path>
@@ -4524,6 +4539,16 @@
   </path>
   -->
 
+  <path name="voice-mic">
+    <path name="incall_nb-handset-mic" />
+    <path name="gain-incall_nb-handset-mic" />
+  </path>
+
+  <path name="voice-earpiece-mic">
+    <path name="incall_nb-handset-mic" />
+    <path name="gain-incall_nb-handset-mic" />
+  </path>
+
   <path name="voice-speaker-mic">
     <path name="incall_nb-speaker-mic" />
     <path name="gain-incall_nb-speaker-mic" />
@@ -4532,6 +4557,21 @@
   <path name="voice-headset-mic">
     <path name="incall_nb-headset-mic" />
     <path name="gain-incall_nb-headset-mic" />
+  </path>
+
+  <path name="voice-earpiece-mic-wb">
+    <path name="incall_wb-handset-mic" />
+    <path name="gain-incall_wb-handset-mic" />
+  </path>
+
+  <path name="voice-speaker-mic-wb">
+    <path name="incall_wb-speaker-mic" />
+    <path name="gain-incall_wb-speaker-mic" />
+  </path>
+
+  <path name="voice-headset-mic-wb">
+    <path name="incall_wb-headset-mic" />
+    <path name="gain-incall_wb-headset-mic" />
   </path>
 
   <path name="hdmi-mic">
