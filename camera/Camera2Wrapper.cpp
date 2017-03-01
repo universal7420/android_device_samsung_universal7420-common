@@ -70,6 +70,18 @@ static char * camera2_fixup_getparams(int id __unused, const char * settings)
     params.dump();
 #endif
 
+    const char *recordHint = params.get(android::CameraParameters::KEY_RECORDING_HINT);
+    videoMode = recordHint ? !strcmp(recordHint, "true") : false;
+
+    params.set("phase-af", "on");
+    params.set("ois-supported", "true");
+
+    if (videoMode) {
+        params.set("ois-mode-values", "1");
+    } else {
+        params.set("ois-mode-values", "0");
+    }
+
 #ifdef LOG_PARAMETERS
     ALOGV("%s: Fixed parameters:", __FUNCTION__);
     params.dump();
