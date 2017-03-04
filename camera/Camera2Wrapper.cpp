@@ -71,7 +71,6 @@ static char * camera2_fixup_getparams(int id __unused, const char * settings)
 #endif
 
     params.set("scene-mode-values", "auto");
-    params.set("3dnr", "true");
     params.set("rt-hdr", "auto");
     params.set("drc", "true");
     params.set("dynamic-range-control", "on");
