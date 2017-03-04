@@ -77,6 +77,10 @@ static const camera_metadata_t * camera3_fixup_construct_default_request_setting
     }
     metadata.update(OIS_OPERATION_MODE, oisOpMode, 1);
 
+    /* enable realtime hdr by default */
+    int32_t liveHdrLevel[1] = {1};
+    metadata.update(LIVE_HDR_LEVEL, liveHdrLevel, 1);
+
     return metadata.release();
 }
 
