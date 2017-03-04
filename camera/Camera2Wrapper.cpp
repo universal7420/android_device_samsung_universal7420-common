@@ -75,7 +75,6 @@ static char * camera2_fixup_getparams(int id __unused, const char * settings)
     params.set("drc", "true");
     params.set("dynamic-range-control", "on");
     params.set("phase-af", "on");
-    params.set("zsl", "on");
 
 #ifdef LOG_PARAMETERS
     ALOGV("%s: Fixed parameters:", __FUNCTION__);
