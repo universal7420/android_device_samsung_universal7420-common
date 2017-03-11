@@ -38,6 +38,14 @@
 
 /dev/rfkill                  u:object_r:rfkill_device:s0
 
+/dev/bbd_control             u:object_r:bbd_device:s0
+/dev/bbd_packet              u:object_r:bbd_device:s0
+/dev/bbd_patch               u:object_r:bbd_device:s0
+/dev/bbd_reliable            u:object_r:bbd_device:s0
+/dev/bbd_sensor              u:object_r:bbd_device:s0
+/dev/bbd_sio                 u:object_r:bbd_device:s0
+/dev/ttyBCM[0-9]*            u:object_r:bbd_device:s0
+
 ####################################
 # efs files
 /efs/FactoryApp(/.*)?        u:object_r:app_efs_file:s0
@@ -90,6 +98,7 @@
 /sys/class/power_supply/battery/music -- u:object_r:sysfs_writable:s0
 /sys/class/devfreq/exynos5-busfreq-mif(/.*)? -- u:object_r:sysfs_writable:s0
 /sys/class/lcd(/.*)?         -- u:object_r:sysfs_writable:s0
+/sys/class/sec(/.*)?         -- u:object_r:sysfs_sec:s0
 
 # bluetooth
 /sys/devices/bluetooth.[0-9]*/rfkill/rfkill0/state  u:object_r:sysfs_bluetooth_writable:s0

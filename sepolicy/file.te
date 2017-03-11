@@ -17,6 +17,7 @@ type wifi_efs_file, file_type;
 type sysfs_mdnie_writable, fs_type, sysfs_type, mlstrustedobject;
 type sysfs_mipi_writable, fs_type, sysfs_type, mlstrustedobject;
 type sysfs_multipdp_writable, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_sec, fs_type, fs_type, fs_type, mlstrustedobject;
 
 allow sysfs_type tmpfs:filesystem associate;
 

@@ -1,6 +1,37 @@
-#### lhd
+#### lhd (sensorhubs)
 #
-type lhd, domain, domain_deprecated;
+
+type lhd, domain;
 type lhd_exec, exec_type, file_type;
 
 init_daemon_domain(lhd)
+
+net_domain(lhd)
+
+########## self and domain_type
+allow lhd self:capability2 block_suspend;
+
+########## fs_type
+allow lhd sysfs:file rw_file_perms;
+allow lhd sysfs_sec:dir rw_dir_perms;
+allow lhd sysfs_sec:{ file lnk_file } rw_file_perms;
+allow lhd sysfs_wake_lock:file rw_file_perms;
+
+########## dev_type
+allow lhd bbd_device:chr_file rw_file_perms;
+
+########## file_type
+allow lhd efs_file:dir r_dir_perms;
+allow lhd efs_file:file r_file_perms;
+allow lhd system_data_file:dir create_dir_perms;
+
+allow lhd system_data_file:file r_file_perms;
+allow lhd system_data_file:fifo_file create_file_perms;
+
+allow lhd gps_data_file:dir create_dir_perms;
+allow lhd gps_data_file:file create_file_perms;
+allow lhd gps_data_file:fifo_file create_file_perms;
+
+########## etc_type
+allow lhd port:tcp_socket name_bind;
+allow lhd node:tcp_socket node_bind;
