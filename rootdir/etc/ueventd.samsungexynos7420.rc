@@ -19,10 +19,10 @@
 /dev/video27              0660   media      graphics
 
 # scalers
-/dev/video50              0660   media      graphics
-/dev/video51              0660   media      graphics
-/dev/m2m1shot_scaler0     0660   cameraserver     m2mscaler
-/dev/m2m1shot_scaler1     0660   cameraserver       m2mscaler
+/dev/video50              0666   media      graphics
+/dev/video51              0666   media      graphics
+/dev/m2m1shot_scaler0     0660   cameraserver     graphics
+/dev/m2m1shot_scaler1     0660   cameraserver       graphics
 
 /dev/v4l-subdev*          0660   system     camera
 /dev/media0               0660   system     camera
