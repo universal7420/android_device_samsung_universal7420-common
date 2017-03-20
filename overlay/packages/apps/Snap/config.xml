@@ -18,6 +18,10 @@
 <!-- Camera app resources that may need to be customized
      for different hardware or product builds. -->
 <resources>
+    <!-- Force use a specific preview-size
+         Example: 1920x1080 -->
+    <string name="preview_size_for_photo">3840x2160</string>
+
     <!-- Enable support for camera api v2 -->
     <bool name="support_camera_api_v2">true</bool>
 
@@ -27,7 +31,13 @@
     <!-- Opens front camera using openLegacy() and forces api v1 -->
     <bool name="front_camera_open_legacy">false</bool>
 
-    <!-- Force use a specific preview-size
-         Example: 1920x1080 -->
-    <string name="preview_size_for_photo">3840x2160</string>
+    <!-- Restart preview for back camera onPictureTaken -->
+    <bool name="back_camera_restart_preview_onPictureTaken">true</bool>
+
+    <!-- Restart preview for front camera onPictureTaken -->
+    <bool name="front_camera_restart_preview_onPictureTaken">true</bool>
+
+    <!-- Set's manufacturer specific parameters on startup.
+         Example: lge-camera=1;cam-mode=0 -->
+    <string name="manufacturer_key_values">phase-af=on;rt-hdr=auto;drc=true</string>
 </resources>
