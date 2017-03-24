@@ -21,7 +21,7 @@ PRODUCT_PACKAGES += \
 # Camera
 PRODUCT_PACKAGES += \
 	camera.exynos5 \
-    Camera2
+    Snap
 
 # DTB
 PRODUCT_PACKAGES += \
