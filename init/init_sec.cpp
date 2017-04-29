@@ -104,6 +104,55 @@ void vendor_load_properties()
             property_set("ro.product.model", "SM-G920F");
             property_set("ro.product.device", "zerofltexx");
             break;
+        case G925F:
+            /* zeroltexx */
+            property_set("ro.build.fingerprint", "samsung/zeroltexx/zerolte:6.0.1/MMB29K/G925FXXU5DPL4:user/release-keys");
+            property_set("ro.build.description", "zeroltexx-user 6.0.1 MMB29K G925FXXU5DPL4 release-keys");
+            property_set("ro.product.model", "SM-G925F");
+            property_set("ro.product.device", "zerolte");
+            break;
+        case G925S:
+            /* zerolteskt */
+            property_set("ro.build.fingerprint", "samsung/zerolteskt/zerolteskt:5.1.1/LMY47X/G925SXXS3COK5:user/release-keys");
+            property_set("ro.build.description", "zerolteskt-user 5.1.1 LMY47X G925SXXS3COK5 release-keys");
+            property_set("ro.product.model", "SM-G925S");
+            property_set("ro.product.device", "zerolteskt");
+            break;
+        case G925K:
+            /* zeroltektt */
+            property_set("ro.build.fingerprint", "samsung/zeroltelgt/zeroltelgt:5.1.1/LMY47X/G925KXXS3COK5:user/release-keys");
+            property_set("ro.build.description", "zeroltektt-user 5.1.1 LMY47X G925KXXS3COK5 release-keys");
+            property_set("ro.product.model", "SM-G925K");
+            property_set("ro.product.device", "zeroltektt");
+            break;
+        case G925L:
+            /* zeroltelgt */
+            property_set("ro.build.fingerprint", "samsung/zeroltelgt/zeroltelgt:5.1.1/LMY47X/G925LXXS3COK5:user/release-keys");
+            property_set("ro.build.description", "zeroltelgt-user 5.1.1 LMY47X G925LXXS3COK5 release-keys");
+            property_set("ro.product.model", "SM-G925L");
+            property_set("ro.product.device", "zeroltelgt");
+            break;
+        case G925I:
+            /* zeroltexx */
+            property_set("ro.build.fingerprint", "samsung/zeroltexx/zeroltexx:5.1.1/LMY47X/G925IXXS3COK5:user/release-keys");
+            property_set("ro.build.description", "zeroltexx-user 5.1.1 LMY47X G925IXXS3COK5 release-keys");
+            property_set("ro.product.model", "SM-G925I");
+            property_set("ro.product.device", "zeroltexx");
+            break;
+        case G925W8:
+           /* zeroltebmc */
+           property_set("ro.build.fingerprint", "samsung/zeroltebmc/zeroltebmc:6.0.1/MMB29K/G925W8VLU5CPK4:user/release-keys");
+           property_set("ro.build.description", "zeroltebmc-user 6.0.1 MMB29K G925W8VLU5CPK4 release-keys");
+           property_set("ro.product.model", "SM-G925W8");
+           property_set("ro.product.device", "zeroltebmc");
+           break;
+        case G920W8:
+           /* zerofltebmc */
+           property_set("ro.build.fingerprint", "samsung/zerofltebmc/zerofltebmc:6.0.1/MM29K/G920W8VLU5CPK4:user/release-keys");
+           property_set("ro.build.description", "zerofltebmc-user 6.0.1 MMB29K G920W8VLU5CPK4 release-keys");
+           property_set("ro.product.model", "SM-G920W8");
+           property_set("ro.product.device", "zerofltebmc");
+           break;
         default:
             ERROR("Unknown bootloader id %s detected. bailing...\n", bootloader.c_str());
             return;
@@ -111,4 +160,3 @@ void vendor_load_properties()
     device = property_get("ro.product.device");
     INFO("Found bootloader id %s setting build properties for %s device\n", bootloader.c_str(), device.c_str());
 }
-
