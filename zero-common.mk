@@ -195,10 +195,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libshim_gpsd
 
-# Widevine
-PRODUCT_PACKAGES += \
-    libshim_wvm
-
 # Wifi
 PRODUCT_PACKAGES += \
     hostapd \
