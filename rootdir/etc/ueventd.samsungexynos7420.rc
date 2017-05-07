@@ -41,7 +41,7 @@
 /dev/CEC                  0660   system     system
 
 # JPEG
-/dev/m2m1shot_jpeg	  0660   media      media
+/dev/m2m1shot_jpeg	  0660   cameraserver      media
 /dev/video13              0660   media      media
 /dev/video14              0660   media      media
 
@@ -76,11 +76,15 @@
 /dev/media2               0660   media      media
 
 # MobiCore
-#/dev/mobicore             0600   drmrpc     drmrpc
-#/dev/mobicore-user        0660   drm        drmrpc
+/dev/mobicore             0700   system     system
+/dev/mobicore-user        0666   radio        system
+
+# Fingerprint
+/dev/vfsspi               0660   system     system
+/dev/esfp0                0660   system     system
 
 # Secure MEM driver
-#/dev/s5p-smem             0660   drm        drmrpc
+/dev/s5p-smem             0660   drm        drmrpc
 
 # interactive governor parameters
 /sys/devices/system/cpu/cpu*   cpufreq/interactive/timer_rate                  0660    system  system

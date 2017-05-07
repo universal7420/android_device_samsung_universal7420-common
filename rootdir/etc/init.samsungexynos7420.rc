@@ -32,20 +32,20 @@ on post-fs-data
     chown system radio /sys/class/audio/earjack/key_state
     chown system radio /sys/class/audio/earjack/state
     chown system radio /sys/class/audio/earjack/mic_adc
-    chown system radio /sys/class/dsm/max98505/dsm_log
-    chown system radio /sys/class/dsm/maxdsm_cal/max
-    chown system radio /sys/class/dsm/maxdsm_cal/min
-    chown system radio /sys/class/dsm/maxdsm_cal/status
-    chown system radio /sys/class/dsm/maxdsm_cal/duration
-    chown system radio /sys/class/dsm/maxdsm_cal/temp
-    chown system radio /sys/class/dsm/maxdsm_cal/rdc
-    mkdir /data/firmware 0770 media system
-    mkdir /efs/maxim 0770 radio system
-    chown system radio /efs/maxim/temp_cal
-    chown system radio /efs/maxim/rdc_cal
+    chown system audio /sys/class/dsm/max98505/dsm_log
+    chown system audio /sys/class/dsm/maxdsm_cal/max
+    chown system audio /sys/class/dsm/maxdsm_cal/min
+    chown system audio /sys/class/dsm/maxdsm_cal/status
+    chown system audio /sys/class/dsm/maxdsm_cal/duration
+    chown system audio /sys/class/dsm/maxdsm_cal/temp
+    chown system audio /sys/class/dsm/maxdsm_cal/rdc
+    mkdir /data/firmware 0770 audioserver system
+    mkdir /efs/maxim 0770 system audio
+    chown system audio /efs/maxim/temp_cal
+    chown system audio /efs/maxim/rdc_cal
     chmod 0660 /efs/maxim/temp_cal
     chmod 0660 /efs/maxim/rdc_cal
-    chown media system /data/firmware
+    chown audioserver system /data/firmware
 
     # Permissions Camera
     mkdir /data/camera 0770 media system
@@ -62,7 +62,9 @@ on post-fs-data
     chown system radio /sys/class/camera/rear/fw_update
     chown system radio /sys/class/camera/rear/from_write
     chown system radio /sys/class/camera/flash/rear_flash
-    chown media system /sys/class/camera/flash/torch_flash
+    chown cameraserver system /sys/class/camera/flash/rear_torch_flash
+    chmod 0664 /sys/class/camera/flash/rear_flash
+    chmod 0664 /sys/class/camera/flash/rear_torch_flash
     chown system radio /sys/class/camera/front/front_camfw
     chown system radio /sys/class/camera/front/front_camfw_full
     chown system radio /sys/class/camera/front/front_checkfw_factory
@@ -191,71 +193,106 @@ on post-fs-data
     chown radio system /efs/bluetooth
     chmod 0775 /efs/bluetooth
 
+on init
+
+    write /proc/sys/kernel/sched_compat_yield 1
+    write /dev/cpuctl/cpu.shares 1024
+
+    mkdir /dev/cpuctl/bg_cached
+    chown system system /dev/cpuctl/bg_cached/tasks
+    chown system system /dev/cpuctl/bg_cached/cpu.cfs_period_us
+    chown system system /dev/cpuctl/bg_cached/cpu.cfs_quota_us
+    chmod 0666 /dev/cpuctl/bg_cached/tasks
+    chmod 0664 /dev/cpuctl/bg_cached/cpu.cfs_period_us
+    chmod 0664 /dev/cpuctl/bg_cached/cpu.cfs_quota_us
+
+    write /dev/cpuctl/bg_cached/cpu.shares 52
+    write /dev/cpuctl/bg_cached/cpu.rt_runtime_us 700000
+    write /dev/cpuctl/bg_cached/cpu.rt_period_us 1000000
+    write /dev/cpuctl/bg_cached/cpu.cfs_period_us 20000
+    write /dev/cpuctl/bg_cached/cpu.cfs_quota_us 10000
+
+    mkdir /dev/cpuctl/bg_abnormal
+    chown system system /dev/cpuctl/bg_abnormal/tasks
+    chown system system /dev/cpuctl/bg_abnormal/cpu.cfs_period_us
+    chown system system /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us
+    chmod 0666 /dev/cpuctl/bg_abnormal/tasks
+    chmod 0664 /dev/cpuctl/bg_abnormal/cpu.cfs_period_us
+    chmod 0664 /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us
+    # 5.0 %
+    write /dev/cpuctl/bg_abnormal/cpu.shares 52
+    write /dev/cpuctl/bg_abnormal/cpu.rt_runtime_us 700000
+    write /dev/cpuctl/bg_abnormal/cpu.rt_period_us 1000000
+    write /dev/cpuctl/bg_abnormal/cpu.cfs_period_us 20000
+    write /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us 10000
+
+    mkdir /dev/cpuset/top-app
+    write /dev/cpuset/top-app/cpus 0-7
+    mkdir /dev/cpuset/foreground
+    write /dev/cpuset/foreground/cpus 0-2,4-7
+    mkdir /dev/cpuset/background
+    write /dev/cpuset/background/cpus 0-1
+    mkdir /dev/cpuset/system-background
+    write /dev/cpuset/system-background/cpus 0-2
+    mkdir /dev/cpuset/camera-daemon
+    write /dev/cpuset/camera-daemon/cpus 0-3
+    mkdir /dev/cpuset/cached
+    write /dev/cpuset/cached/cpus 1
+    mkdir /dev/cpuset/abnormal
+    write /dev/cpuset/abnormal/cpus 1
+    mkdir /dev/cpuset/dex2oat
+    write /dev/cpuset/dex2oat/cpus 0-2,4-7
+
+    chown system system /dev/cpuset/top-app
+    chown system system /dev/cpuset/foreground
+    chown system system /dev/cpuset/background
+    chown system system /dev/cpuset/system-background
+    chown system system /dev/cpuset/camera-daemon
+    chown system system /dev/cpuset/cached
+    chown system system /dev/cpuset/abnormal
+    chown system system /dev/cpuset/dex2oat
+    chown system system /dev/cpuset/cached/tasks
+    chown system system /dev/cpuset/abnormal/tasks
+    chown system system /dev/cpuset/dex2oat/tasks
+    chown system system /dev/cpuset/cpus
+    chown system system /dev/cpuset/top-app/cpus
+    chown system system /dev/cpuset/foreground/cpus
+    chown system system /dev/cpuset/background/cpus
+    chown system system /dev/cpuset/system-background/cpus
+    chown system system /dev/cpuset/cached/cpus
+    chown system system /dev/cpuset/abnormal/cpus
+    chown system system /dev/cpuset/dex2oat/cpus
+
+    chmod 0664 /dev/cpuset/cached/tasks
+    chmod 0664 /dev/cpuset/abnormal/tasks
+    chmod 0664 /dev/cpuset/dex2oat/tasks
+    chmod 0664 /dev/cpuset/top-app/cpus
+    chmod 0664 /dev/cpuset/foreground/cpus
+    chmod 0664 /dev/cpuset/background/cpus
+    chmod 0664 /dev/cpuset/system-background/cpus
+    chmod 0664 /dev/cpuset/cached/cpus
+    chmod 0664 /dev/cpuset/abnormal/cpus
+    chmod 0664 /dev/cpuset/dex2oat/cpus
+    chmod 0664 /dev/cpuset/cpus
+
+    # change own for camera preview lagging
+    chown system system /sys/kernel/hmp/down_threshold
+
+    # set permission to 0660 for camera preview lagging
+    chmod 0660 /sys/kernel/hmp/down_threshold
+
 on boot
-    # Turn on CPU cores
-    write /sys/power/enable_dm_hotplug 0
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-    write /sys/devices/system/cpu/cpu4/online 1
-    write /sys/devices/system/cpu/cpu5/online 1
-    write /sys/devices/system/cpu/cpu6/online 1
-    write /sys/devices/system/cpu/cpu7/online 1
 
-    # Configure foreground and background cpuset
-    write /dev/cpuset/foreground/cpus 0-7
-    write /dev/cpuset/foreground/boost/cpus 4-7
-    write /dev/cpuset/background/cpus 0
-    write /dev/cpuset/system-background/cpus 0-3
+    # Change permission for dvfshelper
+    chown radio system /sys/power/cpufreq_table
+    chmod 0664 /sys/power/cpufreq_table
+    chown radio system /sys/power/cpufreq_min_limit
+    chmod 0664 /sys/power/cpufreq_min_limit
+    chown radio system /sys/power/cpufreq_max_limit
+    chmod 0664 /sys/power/cpufreq_max_limit
 
-    # Set vibrator intensity 75%
-    write /sys/devices/virtual/timed_output/vibrator/intensity 7500
-
-    # update foreground cpuset now that processors are up
-    write /dev/cpuset/foreground/cpus 0-7
-    write /dev/cpuset/foreground/boost/cpus 4-7
-    write /dev/cpuset/background/cpus 0
-    write /dev/cpuset/system-background/cpus 0-3
-
-    # Memory managements
-    write /proc/sys/vm/min_free_kbytes 32768
-    write /proc/sys/vm/min_free_order_shift 1
-    write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 40960
-
-    # CPU governor settings
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 900000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads 75
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 19000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1200000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 89
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 1500000:75"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "59000 1300000:39000 1700000:19000"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 40000
-    # io_is_busy
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 1
-    write /sys/devices/virtual/sec/sec_slow/io_is_busy 1
-
-    #setprop ro.radio.noril yes
-
-    # IPSec for VOLTE
-    chown root system /dev/socket
-    chmod 0775 /dev/socket
-
-    # Allow to access debugfs
-    chmod 755 /sys/kernel/debug
-
-    # Set up kernel tracing, but disable it by default
-    chmod 0222 /sys/kernel/debug/tracing/trace_marker
-    write /sys/kernel/debug/tracing/tracing_on 0
+    chown radio system /sys/devices/system/cpu/kernel_max
+    chmod 0664 /sys/devices/system/cpu/kernel_max
 
     # PMS DVFS
     chown radio system /sys/power/enable_dm_hotplug
@@ -461,6 +498,80 @@ on boot
 
     # CPU Idle
     chown system system /sys/module/cpuidle_exynos64/parameters/enable_mask
+
+    # param_index = 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_enter_load 800
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_enter_load 200
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/param_index 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 900000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads 75
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 19000
+
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_enter_load 360
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_enter_time 79000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_exit_load 240
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_exit_time 299000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_enter_load 95
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_enter_time 199000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_exit_load 60
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_exit_time 99000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_cluster0_min_freq 800000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_cluster0_min_freq 1200000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1200000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 89
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 1500000:75"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "59000 1300000:39000 1700000:19000"
+
+    # param_index = 1
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 1
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 59000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1200000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 95
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 1400000:68 1700000:73"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
+
+    # param_index = 2
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 2
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 79000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1400000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 90
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "60 1300000:63 1500000:65 1700000:70"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
+
+    # param_index = 3
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 3
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 99000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1600000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 85
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "60 1300000:63 1500000:65 1900000:70"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
+
+    # Set vibrator intensity 75%
+    write /sys/devices/virtual/timed_output/vibrator/intensity 7500
+
+    #setprop ro.radio.noril yes
+
+    # IPSec for VOLTE
+    chown root system /dev/socket
+    chmod 0775 /dev/socket
+
+    # Allow to access debugfs
+    chmod 755 /sys/kernel/debug
+
+    # Set up kernel tracing, but disable it by default
+    chmod 0222 /sys/kernel/debug/tracing/trace_marker
+    write /sys/kernel/debug/tracing/tracing_on 0
 
     # ASV
     chown system system /d/asv_summary
@@ -860,16 +971,35 @@ on fs
     chown radio system /sys/class/secgpio_check/secgpio_check_all/gpiosleep_check
     chown radio system /sys/class/secgpio_check/secgpio_check_all/checked_sleepGPIO
 
- # permission for CHARGING
+  # permission for CHARGING
    mkdir /efs/Battery 0775 radio system
    chown radio system /efs/Battery
    chmod 0775 /efs/Battery
+   copy /system/vendor/firmware/battery_data.dat /efs/Battery/battery_data.dat
+   chmod 0400 /efs/Battery/battery_data.dat
+   write /sys/class/power_supply/battery/batt_update_data "/efs/Battery/battery_data.dat"
+   chown system radio /sys/class/power_supply/battery/batt_ext_dev_chg
+   chown system radio /efs/Battery/fg_full_voltage
+   chown system radio /sys/class/power_supply/battery/fg_full_voltage
+   chown system radio /sys/class/power_supply/battery/batt_self_discharging_control
+   chown system radio /sys/class/power_supply/battery/batt_inbat_wireless_cs100
+   chmod 0664 /efs/Battery/fg_full_voltage
+   chmod 0664 /sys/class/power_supply/battery/fg_full_voltage
    chown system radio /sys/class/power_supply/battery/batt_reset_soc
    chown system radio /sys/class/power_supply/battery/batt_slate_mode
    chown system radio /sys/class/power_supply/battery/factory_mode
    chown system radio /sys/class/power_supply/battery/siop_level
+   chown system radio /sys/class/power_supply/battery/siop_event
+   chown system radio /sys/class/power_supply/battery/batt_temp
    chown system radio /sys/class/power_supply/battery/wc_enable
+   chown system nfc /sys/class/power_supply/battery/wc_control
+   chown system nfc /sys/class/power_supply/battery/wc_control_cnt
    chown system radio /sys/class/power_supply/battery/update
+   chown system radio /sys/class/power_supply/battery/batt_wdt_control
+   chown system radio /sys/class/power_supply/battery/factory_mode_relieve
+   chown system radio /sys/class/power_supply/battery/factory_mode_bypass
+   chown system radio /sys/class/power_supply/battery/normal_mode_bypass
+   chown media sdcard_rw /sys/class/power_supply/battery/store_mode
    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/call
    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/video
    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/music
@@ -885,6 +1015,8 @@ on fs
    chown system radio /sys/class/power_supply/battery/lte
    chown system radio /sys/class/power_supply/battery/lcd
    chown system radio /sys/class/power_supply/ps/status
+   chmod 0664 /sys/class/power_supply/battery/wc_control
+   chmod 0664 /sys/class/power_supply/battery/wc_control_cnt
    chmod 0664 /sys/class/power_supply/ps/status
    chmod 0664 /sys/class/power_supply/battery/batt_temp_table
    chown system radio /sys/class/power_supply/battery/batt_temp_table
@@ -897,13 +1029,22 @@ on fs
    chown system radio /sys/class/power_supply/otg/online
    chmod 0664 /sys/class/power_supply/otg/online
    chown system radio /sys/class/power_supply/max77833-charger/charge_otg_control
+   chown system radio /sys/class/power_supply/max77843-charger/charge_otg_control
+   chown system radio /sys/class/power_supply/battery/charge_otg_control
+   chown system radio /sys/class/power_supply/battery/charge_uno_control
    chown system radio /sys/class/power_supply/battery/batt_wireless_firmware_update
    chown system radio /sys/class/power_supply/battery/otp_firmware_result
    chown system radio /sys/class/power_supply/battery/wc_ic_grade
    chown system radio /sys/class/power_supply/battery/otp_firmware_ver_bin
    chown system radio /sys/class/power_supply/battery/otp_firmware_ver
    chown system radio /sys/class/power_supply/battery/tx_firmware_result
+   chown system radio /sys/class/power_supply/battery/batt_tx_firmware
+   chown system radio /sys/class/power_supply/battery/batt_hv_wireless_status
+   chown system radio /sys/class/power_supply/battery/batt_hv_wireless_pad_ctrl
    chmod 0664 /sys/class/power_supply/max77833-charger/charge_otg_control
+   chmod 0664 /sys/class/power_supply/max77843-charger/charge_otg_control
+   chmod 0664 /sys/class/power_supply/battery/charge_otg_control
+   chmod 0664 /sys/class/power_supply/battery/charge_uno_control
    chmod 0664 /sys/class/power_supply/battery/batt_wireless_firmware_update
    chmod 0664 /sys/class/power_supply/battery/otp_firmware_result
    chmod 0664 /sys/class/power_supply/battery/wc_ic_grade
@@ -911,6 +1052,72 @@ on fs
    chmod 0664 /sys/class/power_supply/battery/otp_firmware_ver
    chmod 0664 /sys/class/power_supply/battery/tx_firmware_result
    chmod 0664 /sys/class/power_supply/battery/tx_firmware_ver
+   chmod 0664 /sys/class/power_supply/battery/batt_tx_firmware
+   chmod 0664 /sys/class/power_supply/battery/batt_hv_wireless_status
+   chmod 0664 /sys/class/power_supply/battery/batt_hv_wireless_pad_ctrl
+   chown system radio /sys/class/power_supply/battery/tx_firmware_result
+   chown system radio /sys/class/power_supply/battery/batt_tune_chg_limit_cur
+   chown system radio /sys/class/power_supply/battery/batt_tune_chg_temp_high
+   chown system radio /sys/class/power_supply/battery/batt_tune_chg_temp_rec
+   chown system radio /sys/class/power_supply/battery/batt_tune_coil_limit_cur
+   chown system radio /sys/class/power_supply/battery/batt_tune_coil_temp_high
+   chown system radio /sys/class/power_supply/battery/batt_tune_coil_temp_rec
+   chown system radio /sys/class/power_supply/battery/batt_tune_fast_charge_current
+   chown system radio /sys/class/power_supply/battery/batt_tune_float_voltage
+   chown system radio /sys/class/power_supply/battery/batt_tune_intput_charge_current
+   chown system radio /sys/class/power_supply/battery/batt_tune_temp_high_event
+   chown system radio /sys/class/power_supply/battery/batt_tune_temp_high_normal
+   chown system radio /sys/class/power_supply/battery/batt_tune_temp_high_rec_event
+   chown system radio /sys/class/power_supply/battery/batt_tune_temp_high_rec_normal
+   chown system radio /sys/class/power_supply/battery/batt_tune_temp_low_event
+   chown system radio /sys/class/power_supply/battery/batt_tune_temp_low_normal
+   chown system radio /sys/class/power_supply/battery/batt_tune_temp_low_rec_event
+   chown system radio /sys/class/power_supply/battery/batt_tune_temp_low_rec_normal
+   chown system radio /sys/class/power_supply/battery/batt_tune_ui_term_cur_1st
+   chown system radio /sys/class/power_supply/battery/batt_tune_ui_term_cur_2nd
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_chg_limit_cur
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_chg_temp_high
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_chg_temp_rec
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_coil_limit_cur
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_coil_temp_high
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_coil_temp_rec
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_fast_charge_current
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_float_voltage
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_intput_charge_current
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_high_event
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_high_normal
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_high_rec_event
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_high_rec_normal
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_low_event
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_low_normal
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_low_rec_event
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_low_rec_normal
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_ui_term_cur_1st
+   chmod 0664 /sys/class/power_supply/battery/batt_tune_ui_term_cur_2nd
+   chown system radio /sys/class/power_supply/battery/batt_filter_cfg
+   chown system radio /sys/class/power_supply/battery/batt_current_ua_avg
+   chown system radio /sys/class/power_supply/battery/batt_current_ua_now
+   chown system radio /sys/class/power_supply/battery/voltage_avg
+   chown system radio /sys/class/power_supply/battery/voltage_now
+   chown system radio /sys/class/power_supply/battery/mode
+   chown system radio /sys/class/power_supply/battery/safety_timer_set
+   chmod 0664 /sys/class/power_supply/battery/mode
+   chown system radio /sys/class/power_supply/battery/wc_op_freq
+   chmod 0664 /sys/class/power_supply/battery/wc_op_freq
+   chown system radio /sys/class/power_supply/battery/wc_cmd_info
+   chmod 0664 /sys/class/power_supply/battery/wc_cmd_info
+   chown system radio /sys/class/power_supply/battery/cisd_fullcaprep_max
+   chmod 0660 /sys/class/power_supply/battery/cisd_fullcaprep_max
+   chown system radio /sys/class/power_supply/battery/cisd_wire_count
+   chmod 0660 /sys/class/power_supply/battery/cisd_wire_count
+   chown system radio /sys/class/power_supply/battery/batt_type
+   chmod 0660 /sys/class/power_supply/battery/batt_type
+   chown system radio /sys/class/power_supply/battery/cisd_data
+   chmod 0660 /sys/class/power_supply/battery/cisd_data
+   chown system radio /sys/class/power_supply/battery/cisd_data_json
+   chmod 0660 /sys/class/power_supply/battery/cisd_data_json
+   chown system system /efs/FactoryApp/cisd_data
+   chmod 0640 /efs/FactoryApp/cisd_data
 
 # Sensors permissions
 # Accelerometer_sensor
@@ -997,22 +1204,37 @@ on property:ro.debuggable=1
 on property:sys.boot_completed=1
     write /proc/sys/vm/dirty_bytes 62914560
     write /proc/sys/vm/dirty_background_bytes 20971520
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-    write /sys/devices/system/cpu/cpu4/online 1
-    write /sys/devices/system/cpu/cpu5/online 1
-    write /sys/devices/system/cpu/cpu6/online 1
-    write /sys/devices/system/cpu/cpu7/online 1
-    write /sys/power/enable_dm_hotplug 1
 
 on charger
-# Set cpu governor to interactive while in charging mode
+
+    chmod 0664 /sys/class/power_supply/battery/batt_temp_table
+    chown system radio /sys/class/power_supply/battery/batt_temp_table
+    chmod 0664 /sys/class/power_supply/battery/batt_capacity_max
+    chown system radio /sys/class/power_supply/battery/batt_capacity_max
+    chmod 0664 /sys/class/power_supply/battery/battery_cycle
+    chown system radio /sys/class/power_supply/battery/battery_cycle
+    chown system radio /sys/class/power_supply/battery/cisd_fullcaprep_max
+    chmod 0660 /sys/class/power_supply/battery/cisd_fullcaprep_max
+    chown system radio /sys/class/power_supply/battery/cisd_data
+    chmod 0660 /sys/class/power_supply/battery/cisd_data
+    chown system system /efs/FactoryApp/cisd_data
+    chmod 0640 /efs/FactoryApp/cisd_data
+    chown radio system /efs
+    chmod 0771 /efs
+    mkdir /efs/Battery 0775 radio system
+    chown radio system /efs/Battery
+    chmod 0775 /efs/Battery
+    copy /system/vendor/firmware/battery_data.dat /efs/Battery/battery_data.dat
+    chmod 0400 /efs/Battery/battery_data.dat
+    write /sys/class/power_supply/battery/batt_update_data "/efs/Battery/battery_data.dat"
+    class_start charger
+
+on property:ro.bootmode=charger
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor powersave
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor powersave
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor powersave
-
+    
 # Do not set any USB mode while charging
     setprop sys.usb.config charging
 
