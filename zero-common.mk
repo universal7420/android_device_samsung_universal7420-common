@@ -93,7 +93,7 @@ PRODUCT_PACKAGES += \
 
 # Browser
 PRODUCT_PACKAGES += \
-    Gello
+    Jelly
 
 # Camera
 PRODUCT_PACKAGES += \
