@@ -1,0 +1,3 @@
+allow mediacodec system_file:dir { read open };
+allow mediacodec sysfs:file { read open getattr };
+allow mediacodec seiren_device:chr_file { ioctl rw_file_perms };

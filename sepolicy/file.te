@@ -1,28 +1,36 @@
 ### efs types
 type app_efs_file, file_type;
-type baro_delta_factoryapp_efs_file, file_type;
+type battery_efs_file, file_type;
 type bin_nv_data_efs_file, file_type;
 type nv_log_efs_file, file_type;
 # widewine, drm
 type cpk_efs_file, file_type;
 type drm_efs_file, file_type;
-type factorymode_factoryapp_efs_file, file_type;
 type imei_efs_file, file_type;
 type prov_efs_file, file_type;
-type radio_factoryapp_efs_file, file_type;
 type sensor_efs_file, file_type;
+type sec_efs_file, file_type;
 type wifi_efs_file, file_type;
 
 ### sysfs types
 type sysfs_mdnie_writable, fs_type, sysfs_type, mlstrustedobject;
 type sysfs_mipi_writable, fs_type, sysfs_type, mlstrustedobject;
 type sysfs_multipdp_writable, fs_type, sysfs_type, mlstrustedobject;
-type sysfs_sec, fs_type, fs_type, fs_type, mlstrustedobject;
+type sysfs_audience_control, fs_type, sysfs_type, mlstrustedobject;
 
 allow sysfs_type tmpfs:filesystem associate;
 
-type vfs_device, dev_type;
+type biometrics_data_file, file_type;
 
-type batch_io_device, dev_type;
+type mobicore_data_file, file_type;
 
-type fingerprint_data_file, file_type;
+### debugging
+type sysfs_debug, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_debug_untrusted, fs_type, sysfs_type, mlstrustedobject;
+
+####################################
+# Nexus7420 Power HAL
+#
+type power_hal_devfs, dev_type;
+type power_hal_sysfs, fs_type, sysfs_type, mlstrustedobject;
+type power_hal_data_files, file_type;

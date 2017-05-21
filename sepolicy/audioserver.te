@@ -1,0 +1,7 @@
+allow audioserver rild:unix_stream_socket connectto;
+allow audioserver sec_efs_file:dir search;
+allow audioserver sec_efs_file:file { read open };
+allow audioserver sysfs_audience_control:file rw_file_perms;
+
+# Allow rild to connect to gpsd
+unix_socket_connect(audioserver, property, rild)

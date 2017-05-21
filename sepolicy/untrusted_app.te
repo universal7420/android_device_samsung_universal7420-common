@@ -1,3 +1,11 @@
 allow untrusted_app battery_service:service_manager find;
 allow untrusted_app device:dir read;
 allow untrusted_app untrusted_app:udp_socket ioctl;
+allow untrusted_app power_hal_data_files:file rw_file_perms;
+
+# allow access to some minor system-files
+allow untrusted_app sysfs_debug_untrusted:file r_file_perms;
+
+# su-daemon
+allow untrusted_app superuser_device:sock_file write;
+allow untrusted_app sudaemon:unix_stream_socket connectto;

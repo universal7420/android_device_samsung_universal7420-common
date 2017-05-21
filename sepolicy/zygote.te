@@ -1,0 +1,4 @@
+allow zygote self:capability sys_nice;
+allow zygote debugfs_trace_marker:file r_file_perms;
+allow zygote sysfs_debug:file r_file_perms;
+allow zygote sysfs_debug_untrusted:file r_file_perms;

@@ -6,6 +6,20 @@ allow rild imei_efs_file:file r_file_perms;
 allow rild app_efs_file:dir r_dir_perms;
 allow rild app_efs_file:file r_file_perms;
 
+allow cpboot-daemon self:capability { dac_read_search };
+
+# /dev/knox_kap
+allow rild knox_kap_device:chr_file rw_file_perms;
+
+# /dev/block/sda8
+allow rild radio_block_device:blk_file r_file_perms;
+
+# /dev
+allow rild audioserver:dir r_dir_perms;
+
+# /proc/<pid>/cmdline
+allow rild audioserver:file r_file_perms;
+
 # /dev/mbin0
 allow rild block_device:dir r_dir_perms;
 allow rild emmcblk_device:blk_file r_file_perms;
@@ -29,7 +43,6 @@ allow rild mediaserver:file { open read getattr };
 # /data/misc/radio/*
 allow rild radio_data_file:dir rw_dir_perms;
 allow rild radio_data_file:file create_file_perms;
-# /data/data/com.android.providers.telephony/databases/telephony.db
 allow rild radio_data_file:lnk_file r_file_perms;
 
 # sdcard/SDET_PLMN/input/MNCMCC.txt
@@ -37,3 +50,10 @@ allow rild storage_file:dir { r_dir_perms };
 allow rild storage_file:lnk_file { r_file_perms };
 allow rild mnt_user_file:dir { r_dir_perms };
 allow rild mnt_user_file:lnk_file { r_file_perms };
+
+allow rild radio_block_device:blk_file { read open };
+allow rild ctl_rildaemon_prop:property_service set;
+allow rild self:capability chown;
+
+allow rild audioserver:dir search;
+allow rild audioserver:file { read open getattr };

@@ -1,37 +1,20 @@
-#### lhd (sensorhubs)
+#### lhd
 #
-
-type lhd, domain;
+type lhd, domain, domain_deprecated;
 type lhd_exec, exec_type, file_type;
 
-init_daemon_domain(lhd)
+allow lhd bbd_device:chr_file { read write getattr open ioctl };
 
-net_domain(lhd)
+allow lhd efs_file:dir search;
+allow lhd gps_data_file:dir { search write add_name };
 
-########## self and domain_type
-allow lhd self:capability2 block_suspend;
-
-########## fs_type
-allow lhd sysfs:file rw_file_perms;
-allow lhd sysfs_sec:dir rw_dir_perms;
-allow lhd sysfs_sec:{ file lnk_file } rw_file_perms;
-allow lhd sysfs_wake_lock:file rw_file_perms;
-
-########## dev_type
-allow lhd bbd_device:chr_file rw_file_perms;
-
-########## file_type
-allow lhd efs_file:dir r_dir_perms;
-allow lhd efs_file:file r_file_perms;
-allow lhd system_data_file:dir create_dir_perms;
-
-allow lhd system_data_file:file r_file_perms;
-allow lhd system_data_file:fifo_file create_file_perms;
-
-allow lhd gps_data_file:dir create_dir_perms;
-allow lhd gps_data_file:file create_file_perms;
-allow lhd gps_data_file:fifo_file create_file_perms;
-
-########## etc_type
-allow lhd port:tcp_socket name_bind;
+allow lhd fwmarkd_socket:sock_file write;
+allow lhd gps_data_file:fifo_file { read write open };
+allow lhd gps_data_file:file { write lock open create };
 allow lhd node:tcp_socket node_bind;
+allow lhd port:tcp_socket name_bind;
+allow lhd sec_efs_file:dir search;
+allow lhd self:tcp_socket { bind connect create };
+allow lhd sysfs:file { read write open };
+
+init_daemon_domain(lhd);
