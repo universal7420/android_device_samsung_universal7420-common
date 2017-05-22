@@ -229,55 +229,6 @@ on init
     write /dev/cpuctl/bg_abnormal/cpu.cfs_period_us 20000
     write /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us 10000
 
-    mkdir /dev/cpuset/top-app
-    write /dev/cpuset/top-app/cpus 0-7
-    mkdir /dev/cpuset/foreground
-    write /dev/cpuset/foreground/cpus 0-2,4-7
-    mkdir /dev/cpuset/background
-    write /dev/cpuset/background/cpus 0-1
-    mkdir /dev/cpuset/system-background
-    write /dev/cpuset/system-background/cpus 0-2
-    mkdir /dev/cpuset/camera-daemon
-    write /dev/cpuset/camera-daemon/cpus 0-3
-    mkdir /dev/cpuset/cached
-    write /dev/cpuset/cached/cpus 1
-    mkdir /dev/cpuset/abnormal
-    write /dev/cpuset/abnormal/cpus 1
-    mkdir /dev/cpuset/dex2oat
-    write /dev/cpuset/dex2oat/cpus 0-2,4-7
-
-    chown system system /dev/cpuset/top-app
-    chown system system /dev/cpuset/foreground
-    chown system system /dev/cpuset/background
-    chown system system /dev/cpuset/system-background
-    chown system system /dev/cpuset/camera-daemon
-    chown system system /dev/cpuset/cached
-    chown system system /dev/cpuset/abnormal
-    chown system system /dev/cpuset/dex2oat
-    chown system system /dev/cpuset/cached/tasks
-    chown system system /dev/cpuset/abnormal/tasks
-    chown system system /dev/cpuset/dex2oat/tasks
-    chown system system /dev/cpuset/cpus
-    chown system system /dev/cpuset/top-app/cpus
-    chown system system /dev/cpuset/foreground/cpus
-    chown system system /dev/cpuset/background/cpus
-    chown system system /dev/cpuset/system-background/cpus
-    chown system system /dev/cpuset/cached/cpus
-    chown system system /dev/cpuset/abnormal/cpus
-    chown system system /dev/cpuset/dex2oat/cpus
-
-    chmod 0664 /dev/cpuset/cached/tasks
-    chmod 0664 /dev/cpuset/abnormal/tasks
-    chmod 0664 /dev/cpuset/dex2oat/tasks
-    chmod 0664 /dev/cpuset/top-app/cpus
-    chmod 0664 /dev/cpuset/foreground/cpus
-    chmod 0664 /dev/cpuset/background/cpus
-    chmod 0664 /dev/cpuset/system-background/cpus
-    chmod 0664 /dev/cpuset/cached/cpus
-    chmod 0664 /dev/cpuset/abnormal/cpus
-    chmod 0664 /dev/cpuset/dex2oat/cpus
-    chmod 0664 /dev/cpuset/cpus
-
     # change own for camera preview lagging
     chown system system /sys/kernel/hmp/down_threshold
 
