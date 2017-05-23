@@ -266,6 +266,9 @@ on boot
     chown radio system /sys/power/ipa/hotplug_out_threshold
     chmod 0664 /sys/power/ipa/hotplug_out_threshold
 
+# Use higher control-temperature for IPA (default: 45)
+    write "65" > /sys/power/ipa/control_temp
+
     chown radio system /sys/devices/platform/exynos7-devfreq-mif/devfreq/exynos7-devfreq-mif/available_frequencies
     chmod 0664 /sys/devices/platform/exynos7-devfreq-mif/devfreq/exynos7-devfreq-mif/available_frequencies
     chown radio system /sys/devices/platform/exynos7-devfreq-mif/devfreq/exynos7-devfreq-mif/min_freq
@@ -1088,7 +1091,6 @@ on property:sys.boot_completed=1
     restorecon /data/data/com.android.providers.telephony/shared_prefs
 
 on charger
-
     chmod 0664 /sys/class/power_supply/battery/batt_temp_table
     chown system radio /sys/class/power_supply/battery/batt_temp_table
     chmod 0664 /sys/class/power_supply/battery/batt_capacity_max
