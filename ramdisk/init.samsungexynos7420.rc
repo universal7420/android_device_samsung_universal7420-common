@@ -24,8 +24,20 @@ on init
     symlink /dev/block/platform/15570000.ufs/by-name/PERSISTENT /dev/block/persistent
 
 on post-fs
-# Increase max readahead size to 256 KB
-    write /sys/block/sda/queue/read_ahead_kb 256
+# sda block device
+    write /sys/block/sda/queue/scheduler "bfq"
+    write /sys/block/sda/queue/read_ahead_kb 1024
+    write /sys/block/sda/queue/rq_affinity 2
+
+# sdb block device
+    write /sys/block/sdb/queue/scheduler "bfq"
+    write /sys/block/sdb/queue/read_ahead_kb 1024
+    write /sys/block/sdb/queue/rq_affinity 2
+
+# sdc block device
+    write /sys/block/sdc/queue/scheduler "bfq"
+    write /sys/block/sdc/queue/read_ahead_kb 1024
+    write /sys/block/sdc/queue/rq_affinity 2
 
 on post-fs-data
     setprop vold.post_fs_data_done 1
