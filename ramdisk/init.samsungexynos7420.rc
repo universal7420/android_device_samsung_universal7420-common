@@ -9,12 +9,12 @@ on early-init
 on init
     export LD_SHIM_LIBS "/system/lib64/hw/fingerprint.default.so|/system/lib64/libbauthtzcommon_shim.so"
 
-    # RIL <-> audioserver comm
+# RIL <-> audioserver comm
     chmod 0644 /proc/cmdline
 
     mkdir /preload 0771 system system
 
-    # Support legacy paths
+# Support legacy paths
     symlink /sdcard /storage/sdcard0
     symlink /storage/usbdisk /mnt/usbdisk
 
@@ -24,7 +24,7 @@ on init
     symlink /dev/block/platform/15570000.ufs/by-name/PERSISTENT /dev/block/persistent
 
 on post-fs
-    # Increase max readahead size to 256 KB
+# Increase max readahead size to 256 KB
     write /sys/block/sda/queue/read_ahead_kb 256
 
 on post-fs-data
@@ -50,7 +50,7 @@ on post-fs-data
     chmod 0660 /efs/maxim/rdc_cal
     chown audioserver system /data/firmware
 
-    # Permissions Camera
+# Permissions Camera
     mkdir /data/camera 0770 media system
     chown system radio /sys/class/camera/rear/rear_camfw
     chown system radio /sys/class/camera/rear/rear_camfw_full
@@ -101,7 +101,7 @@ on post-fs-data
     chown system system /sys/class/sec/led/led_br_lev
     chown system system /sys/class/sec/led/led_lowpower
 
-    # Audience
+# Audience
     chown system audio /sys/class/earsmart/control/power_control_set
     chown system audio /sys/class/earsmart/control/route_value
     chown system audio /sys/class/earsmart/control/veq_control_set
@@ -127,27 +127,27 @@ on post-fs-data
     mkdir /data/bcmnfc/param 0700 nfc nfc
     mkdir /efs/sec_efs/nfc 0500 nfc nfc
 
-    # sec_efs_file
+# sec_efs_file
     mkdir /efs/sec_efs 0775 radio system
 
-    # Latin SSMS feature
+# Latin SSMS feature
     mkdir /efs/SMS 0775 radio system
 
-    # PMK permission
+# PMK permission
     mkdir /efs/mc 0770 radio system
     chown radio system /efs/mc
     chmod 0770 /efs/mc
     chown radio system /efs/mc/mc.dat
     chmod 0640 /efs/mc/mc.dat
 
-    # Professioanl Audio
+# Professioanl Audio
     mkdir /data/misc/jack 0770 jack system
     mkdir /dev/socket/jack 0771 jack system
 
-    # Samsung Pay
+# Samsung Pay
     mkdir /efs/pfw_data 0760 spay spay
 
-    # h2k
+# h2k
     mkdir /efs/cpk 0771 radio system
     chmod 0644 /efs/redata.bin
     chmod 0644 /efs/cpk/redata.bin
@@ -157,7 +157,7 @@ on post-fs-data
     chmod 0644 /efs/cpk/h2k.dat
     chown system system /efs/drm/h2k
 
-    # icd
+# icd
     check_icd
     chown system system /dev/icd
     chmod 0644 /dev/icd
@@ -167,32 +167,32 @@ on post-fs-data
     restorecon /dev/icd
     restorecon /dev/icdr
 
-    #SideSync
+# SideSync
     chown system system /dev/android_ssusbcon
     chmod 0660 /dev/android_ssusbcon
 
-    # mobicore
+# mobicore
     mkdir /data/app/mcRegistry 0775 system system
     mkdir /data/app/mcRegistry/TbStorage 0700 system system
     mkdir /efs/TEE  0770 radio system
 
-    # MTP permission
+# MTP permission
     chmod 0660 /dev/usb_mtp_gadget
     chown system mtp /dev/usb_mtp_gadget
     mkdir /dev/socket/mtp 0770 system mtp
 
-    #create uibc dir
+# create uibc dir
     mkdir /dev/socket/uibc 0777 media system
     chown media system /dev/socket/uibc
     chmod 0775 /dev/socket/uibc
 
-    # Vibetonz 
-    chmod 0660 /dev/tspdrv 
+# Vibetonz
+    chmod 0660 /dev/tspdrv
     chown vibe vibe /dev/tspdrv
 
-    # for BT MAC address
+# for BT MAC address
     mkdir /efs/bluetooth 0775 radio system
-    # if already exist
+# if already exist
     chown radio system /efs/bluetooth
     chmod 0775 /efs/bluetooth
 
@@ -229,14 +229,14 @@ on init
     write /dev/cpuctl/bg_abnormal/cpu.cfs_period_us 20000
     write /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us 10000
 
-    # change own for camera preview lagging
+# change own for camera preview lagging
     chown system system /sys/kernel/hmp/down_threshold
 
-    # set permission to 0660 for camera preview lagging
+# set permission to 0660 for camera preview lagging
     chmod 0660 /sys/kernel/hmp/down_threshold
-	
+
 on early-boot
-  
+
 # Remove symlinks to avoid issues with migrate after nandroid restores
 # Will be recreated at end of boot
     rm /data/data/com.android.providers.telephony/databases/telephony.db
@@ -244,7 +244,7 @@ on early-boot
 
 on boot
 
-    # Change permission for dvfshelper
+# Change permission for dvfshelper
     chown radio system /sys/power/cpufreq_table
     chmod 0664 /sys/power/cpufreq_table
     chown radio system /sys/power/cpufreq_min_limit
@@ -255,7 +255,7 @@ on boot
     chown radio system /sys/devices/system/cpu/kernel_max
     chmod 0664 /sys/devices/system/cpu/kernel_max
 
-    # PMS DVFS
+# PMS DVFS
     chown radio system /sys/power/enable_dm_hotplug
     chmod 0664 /sys/power/enable_dm_hotplug
     chown bluetooth system /sys/power/cluster0_core_hotplug_in
@@ -298,7 +298,7 @@ on boot
     chown radio system /sys/module/cpuidle/parameters/off
     chmod 0664 /sys/module/cpuidle/parameters/off
 
-    # HMP Status
+# HMP Status
     chown system system /sys/kernel/hmp/load_avg_period_ms
     chmod 0660 /sys/kernel/hmp/load_avg_period_ms
     chown system system /sys/kernel/hmp/up_threshold
@@ -306,8 +306,8 @@ on boot
     chown system system /sys/kernel/hmp/down_threshold
     chmod 0660 /sys/kernel/hmp/down_threshold
 
-    # Change permission for interactive governor
-    # Cluster0 (Apollo)
+# Change permission for interactive governor
+# Cluster0 (Apollo)
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
@@ -325,42 +325,13 @@ on boot
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/input_boost
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/input_boost
+    chmod 0330 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/cpu_util
-    chmod 0440 /sys/devices/system/cpu/cpu0/cpufreq/interactive/cpu_util
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/enforced_mode
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/enforced_mode
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/mode
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/mode
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_enter_load
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_enter_load
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_enter_time
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_enter_time
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_exit_load
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_exit_load
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_exit_time
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_exit_time
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/param_index
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/param_index
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_enter_load
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_enter_load
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_enter_time
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_enter_time
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_exit_load
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_exit_load
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_exit_time
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_exit_time
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_cluster0_min_freq
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_cluster0_min_freq
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_cluster0_min_freq
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_cluster0_min_freq
 
-    # Assume HMP uses shared cpufreq policy for all LITTLE CPUs
+# Assume HMP uses shared cpufreq policy for all LITTLE CPUs
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 
@@ -369,7 +340,7 @@ on boot
     chown system system sys/devices/system/cpu/cpufreq/mp-cpufreq/boot_low_freq
     chmod 0660 sys/devices/system/cpu/cpufreq/mp-cpufreq/boot_low_freq
 
-    # Cluster1 (Atlas)
+# Cluster1 (Atlas)
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
@@ -387,46 +358,19 @@ on boot
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse
+    chmod 0330 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/input_boost
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/input_boost
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/cpu_util
-    chmod 0440 /sys/devices/system/cpu/cpu4/cpufreq/interactive/cpu_util
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/enforced_mode
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/enforced_mode
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/mode
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/mode
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_enter_load
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_enter_load
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_enter_time
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_enter_time
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_exit_load
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_exit_load
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_exit_time
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_exit_time
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_enter_load
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_enter_load
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_enter_time
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_enter_time
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_exit_load
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_exit_load
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_exit_time
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_exit_time
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_cluster0_min_freq
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_cluster0_min_freq
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_cluster0_min_freq
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_cluster0_min_freq
 
-    # Assume HMP uses shared cpufreq policy for big CPUs
+# Assume HMP uses shared cpufreq policy for big CPUs
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
 
-    # LITTLE cluster high load
+# LITTLE cluster high load
     chown system system /sys/class/sec/sec_slow/timer_rate
     chmod 0660 /sys/class/sec/sec_slow/timer_rate
     chown system system /sys/class/sec/sec_slow/io_is_busy
@@ -448,22 +392,27 @@ on boot
     chown system system /sys/class/sec/sec_slow/full_exit_time
     chmod 0660 /sys/class/sec/sec_slow/full_exit_time
 
-    # MSP Core Status
+# MSP Core Status
+    chown system system /sys/devices/system/cpu/cpu0/online
+    chmod 0660 /sys/devices/system/cpu/cpu0/online
     chown system system /sys/devices/system/cpu/cpu1/online
+    chmod 0660 /sys/devices/system/cpu/cpu1/online
     chown system system /sys/devices/system/cpu/cpu2/online
+    chmod 0660 /sys/devices/system/cpu/cpu2/online
     chown system system /sys/devices/system/cpu/cpu3/online
+    chmod 0660 /sys/devices/system/cpu/cpu3/online
     chown system system /sys/devices/system/cpu/cpu4/online
+    chmod 0660 /sys/devices/system/cpu/cpu4/online
     chown system system /sys/devices/system/cpu/cpu5/online
+    chmod 0660 /sys/devices/system/cpu/cpu5/online
     chown system system /sys/devices/system/cpu/cpu6/online
+    chmod 0660 /sys/devices/system/cpu/cpu6/online
     chown system system /sys/devices/system/cpu/cpu7/online
+    chmod 0660 /sys/devices/system/cpu/cpu7/online
 
-    # CPU Idle
+# CPU Idle
     chown system system /sys/module/cpuidle_exynos64/parameters/enable_mask
 
-    # param_index = 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/multi_enter_load 800
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/single_enter_load 200
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/param_index 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
@@ -472,17 +421,6 @@ on boot
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads 75
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 19000
 
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_enter_load 360
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_enter_time 79000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_exit_load 240
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_exit_time 299000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_enter_load 95
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_enter_time 199000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_exit_load 60
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_exit_time 99000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/single_cluster0_min_freq 800000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/multi_cluster0_min_freq 1200000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 0
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
@@ -491,50 +429,23 @@ on boot
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 1500000:75"
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "59000 1300000:39000 1700000:19000"
 
-    # param_index = 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 59000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1200000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 95
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 1400000:68 1700000:73"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
-
-    # param_index = 2
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 2
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 79000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1400000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 90
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "60 1300000:63 1500000:65 1700000:70"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
-
-    # param_index = 3
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 3
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 99000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1600000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 85
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "60 1300000:63 1500000:65 1900000:70"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
-
-    # Set vibrator intensity 75%
+# Set vibrator intensity 75%
     write /sys/devices/virtual/timed_output/vibrator/intensity 7500
 
     #setprop ro.radio.noril yes
 
-    # IPSec for VOLTE
+# IPSec for VOLTE
     chown root system /dev/socket
     chmod 0775 /dev/socket
 
-    # Allow to access debugfs
+# Allow to access debugfs
     chmod 755 /sys/kernel/debug
 
-    # Set up kernel tracing, but disable it by default
+# Set up kernel tracing, but disable it by default
     chmod 0222 /sys/kernel/debug/tracing/trace_marker
     write /sys/kernel/debug/tracing/tracing_on 0
 
-    # ASV
+# ASV
     chown system system /d/asv_summary
 
     chown bluetooth net_bt_stack /dev/ttySAC4
@@ -581,7 +492,7 @@ on boot
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
 
-#for datarouter
+# for datarouter
     chown system system /dev/dun
     chown system system /dev/ttyGS0
     chown system system /dev/ttyGS1
@@ -594,14 +505,14 @@ on boot
 # SSWAP
     write /proc/sys/vm/swappiness 130
 
-    # FM Radio
+# FM Radio
     chmod 0640 /dev/fmradio
     chown system system /dev/fmradio
 
 on fs
     mount_all /fstab.samsungexynos7420
 
-    #For Absolute Persistence Partition
+# For Absolute Persistence Partition
     mkdir /persdata 0755 system system
     mkdir /persdata/absolute 0750 system system
 
@@ -614,7 +525,7 @@ on fs
     chown system system /persdata/absolute
     chmod 0750 /persdata/absolute
 
-    #For SBFS partition
+# For SBFS partition
     mkdir /sbfs 0755 system system
     wait /dev/block/platform/15570000.ufs/by-name/SBFS
     check_fs /dev/block/platform/15570000.ufs/by-name/SBFS ext4
@@ -630,10 +541,8 @@ on fs
 # Permissions for ZEROFLTE PowerHAL
     chown system system /sys/class/input/input0/enabled
     chown system system /sys/class/input/input1/enabled
-    chown system system /sys/class/input/input16/enabled
     chmod 0660 /sys/class/input/input0/enabled
     chmod 0660 /sys/class/input/input1/enabled
-    chmod 0660 /sys/class/input/input16/enabled
 
 # Permissions for Touchkey
     chown system radio /sys/class/sec/sec_touchkey/brightness
@@ -722,6 +631,7 @@ on fs
     chown system radio /sys/class/fingerprint/fingerprint/type_check
     chown system radio /sys/class/fingerprint/fingerprint/name
     chown system radio /sys/class/fingerprint/fingerprint/vendor
+    chown system radio /sys/class/fingerprint/fingerprint/enabled
 
 # Accelerometer_sensor
     chown system radio /sys/class/sensors/accelerometer_sensor/raw_data
@@ -882,31 +792,31 @@ on fs
 # Permission for DRM Key
     chmod 0644 /factory/wv.keys
 
-#ARGOSD network_throughput
+# ARGOSD network_throughput
     chown system system /dev/network_throughput
 
 # TSP & Pressure Sensor
     chown system system /dev/i2c-7
     chmod 0660 /dev/i2c-7
 
-    # NFC_NXP
+# NFC_NXP
     setprop ro.nfc.port "I2C"
     chmod 0660 /dev/pn547
     chown nfc nfc /dev/pn547
 
-    # NFC_BROADCOM
+# NFC_BROADCOM
     chmod 0600 /dev/bcm2079x
     chown nfc nfc /dev/bcm2079x
 
-    # NFC_SLSI
+# NFC_SLSI
     chmod 0660 /dev/sec-nfc
     chown nfc nfc /dev/sec-nfc
 
-    # MST/NFC Switch
+# MST/NFC Switch
     chown spay system /dev/mst_ctrl
     chmod 0660 /dev/mst_ctrl
 
-#permission for TSP, Touchkey and Wacom
+# permission for TSP, Touchkey and Wacom
     chown system radio /sys/class/sec/tsp/cmd
     chmod 0660 /sys/class/sec/tsp/input/enabled
     chown system system /sys/class/sec/tsp/input/enabled
@@ -918,7 +828,7 @@ on fs
     chmod 0660 /sys/class/sec/sec_epen/input/enabled
     chown system system /sys/class/sec/sec_epen/input/enabled
 
-    # Switch Device
+# Switch Device
     chown system radio /sys/class/sec/switch/usb_sel
     chown system radio /sys/class/sec/switch/uart_sel
     chown system radio /sys/class/sec/switch/uart_en
@@ -927,12 +837,12 @@ on fs
     chown system radio /sys/class/sec/switch/afc_disable
     chown system radio /sys/class/sec/switch/wireless
 
-    # GPIO DVS
+# GPIO DVS
     chown radio system /sys/class/secgpio_check/secgpio_check_all/gpioinit_check
     chown radio system /sys/class/secgpio_check/secgpio_check_all/gpiosleep_check
     chown radio system /sys/class/secgpio_check/secgpio_check_all/checked_sleepGPIO
 
-  # permission for CHARGING
+# permission for CHARGING
    mkdir /efs/Battery 0775 radio system
    chown radio system /efs/Battery
    chmod 0775 /efs/Battery
@@ -1165,7 +1075,7 @@ on property:ro.debuggable=1
 on property:sys.boot_completed=1
     write /proc/sys/vm/dirty_bytes 62914560
     write /proc/sys/vm/dirty_background_bytes 20971520
-	
+
 # Symlink telephony.db and preferred-apn.xml
     mkdir /data/data/com.android.providers.telephony/databases 0700 radio radio
     mkdir /data/data/com.android.providers.telephony/shared_prefs 0700 radio radio
@@ -1206,7 +1116,7 @@ on property:ro.bootmode=charger
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor powersave
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor powersave
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor powersave
-    
+
 # Do not set any USB mode while charging
     setprop sys.usb.config charging
 
