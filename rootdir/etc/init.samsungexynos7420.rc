@@ -517,6 +517,9 @@ on boot
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 85
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "60 1300000:63 1500000:65 1900000:70"
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
+    
+    # Use higher control-temperature for IPA (default: 45)
+    write /sys/power/ipa/control_temp 65
 
     # Set vibrator intensity 75%
     write /sys/devices/virtual/timed_output/vibrator/intensity 7500
