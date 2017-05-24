@@ -97,7 +97,7 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    Snap
+    Camera2
 
 # DTB    
 PRODUCT_PACKAGES += \
