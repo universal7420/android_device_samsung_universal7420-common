@@ -40,8 +40,8 @@ PRODUCT_PACKAGES += \
     libstlport
 
 # MDNIE
-PRODUCT_PACKAGES += \
-    AdvancedDisplay
+#PRODUCT_PACKAGES += \
+#    AdvancedDisplay
 
 # Samsung
 PRODUCT_PACKAGES += \
