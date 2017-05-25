@@ -55,6 +55,9 @@ on boot
     chown bluetooth system /sys/power/cluster0_core_hotplug_in
     chmod 0664 /sys/power/cluster0_core_hotplug_in
 
+# Disable dynamic hotplugging as it makes problems
+    write /sys/power/enable_dm_hotplug "0"
+
     chown radio system /sys/power/ipa/control_temp
     chmod 0664 /sys/power/ipa/control_temp
     chown radio system /sys/power/ipa/hotplug_out_threshold
