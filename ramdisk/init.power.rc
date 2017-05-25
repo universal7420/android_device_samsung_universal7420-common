@@ -82,6 +82,8 @@ on boot
     chown radio system /sys/devices/platform/exynos7-devfreq-isp/devfreq/exynos7-devfreq-isp/max_freq
     chmod 664 /sys/devices/platform/exynos7-devfreq-isp/devfreq/exynos7-devfreq-isp/max_freq
 
+    chown radio system /sys/devices/14ac0000.mali/dvfs
+    chmod 664 /sys/devices/14ac0000.mali/dvfs
     chown radio system /sys/devices/14ac0000.mali/dvfs_table
     chmod 664 /sys/devices/14ac0000.mali/dvfs_table
     chown radio system /sys/devices/14ac0000.mali/dvfs_min_lock
