@@ -147,6 +147,17 @@
 /dev/bbd_sio              0660   system     system
 /dev/bbd_patch            0660   system     system
 /dev/ttyBCM*              0660   system     system
+/sys/devices/platform/bbd.0/BBD          0220   system   system
+/sys/devices/platform/bbd.0/DEV          0220   system   system
+/sys/devices/platform/bbd.0/ESW          0220   system   system
+/sys/devices/platform/bbd.0/baud         0660   system   system
+/sys/devices/platform/bbd.0/debug        0660   system   system
+/sys/devices/platform/bbd.0/buf          0440   system   system
+/sys/devices/platform/bbd.0/pl           0440   system   system
+/sys/devices/platform/bbd.0/passthru     0440   system   system
+/sys/devices/platform/bbd.0/ssi_xfer     0440   system   system
+/sys/devices/platform/bbd.0/ssi_count    0440   system   system
+/sys/devices/platform/bbd.0/ssi_trace    0440   system   system
 
 # Reactivation lock
 /dev/block/platform/15570000.ufs/by-name/STEADY    0660    system    system
