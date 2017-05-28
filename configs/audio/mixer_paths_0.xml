@@ -40,6 +40,7 @@
 
 	<!-- default routes -->
 	<ctl name="Sample Rate 2" value="16kHz" />
+	<ctl name="ASYNC Sample Rate 2" value="48kHz" />
 	<ctl name="DSP2 Rate" value="SYNCCLK rate 3" />
 	<ctl name="DSP3 Rate" value="SYNCCLK rate 3" />
 	<ctl name="DSP4 Rate" value="SYNCCLK rate 2" />
@@ -170,7 +171,7 @@
 	</path>
 
 	<path name="media-speaker">
-		<ctl name="Sample Rate 3" value="48kHz" />
+    	<ctl name="ASYNC Sample Rate 2" value="48kHz" />    
 		<ctl name="ISRC4 FSL" value="SYNCCLK rate 3" />
 		<ctl name="ISRC4 FSH" value="SYNCCLK rate 1" />
 		<ctl name="DSP5 Rate" value="SYNCCLK rate 1" />
