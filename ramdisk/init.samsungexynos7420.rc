@@ -28,19 +28,25 @@ on init
 
 on post-fs
 # sda block device
-    write /sys/block/sda/queue/scheduler "bfq"
-    write /sys/block/sda/queue/read_ahead_kb 1024
+    write /sys/block/sda/queue/scheduler "cfq"
+    write /sys/block/sda/queue/read_ahead_kb 3072
     write /sys/block/sda/queue/rq_affinity 2
+    write /sys/block/sda/queue/add_random 0
+    write /sys/block/sda/queue/rotational 0
 
 # sdb block device
-    write /sys/block/sdb/queue/scheduler "bfq"
-    write /sys/block/sdb/queue/read_ahead_kb 1024
+    write /sys/block/sdb/queue/scheduler "cfq"
+    write /sys/block/sdb/queue/read_ahead_kb 3072
     write /sys/block/sdb/queue/rq_affinity 2
+    write /sys/block/sdb/queue/add_random 0
+    write /sys/block/sdb/queue/rotational 0
 
 # sdc block device
-    write /sys/block/sdc/queue/scheduler "bfq"
-    write /sys/block/sdc/queue/read_ahead_kb 1024
+    write /sys/block/sdc/queue/scheduler "cfq"
+    write /sys/block/sdc/queue/read_ahead_kb 3072
     write /sys/block/sdc/queue/rq_affinity 2
+    write /sys/block/sdc/queue/add_random 0
+    write /sys/block/sdc/queue/rotational 0
 
 on post-fs-data
     setprop vold.post_fs_data_done 1
@@ -761,7 +767,7 @@ service ipsec-daemon /system/bin/IPSecService
     user system
     group system net_raw inet net_admin
 
-# Automatically restart ADB	
+# Automatically restart ADB
 on property:service.adb.tcp.port=5555
     stop adbd
     start adbd
