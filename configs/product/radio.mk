@@ -19,7 +19,8 @@ PRODUCT_PACKAGES += \
 	libxml2 \
 	libprotobuf-cpp-full \
 	libsecril-client \
-	libsecril-client-sap
+	libsecril-client-sap \
+	modemloader
 
 # Radio Properties
 PRODUCT_PROPERTY_OVERRIDES += \
