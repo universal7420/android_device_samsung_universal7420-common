@@ -1,2 +1,10 @@
 # modemloader
-hw.revision         u:object_r:modemloader_prop:s0
+hw.revision            u:object_r:modemloader_prop:s0
+ro.cbd.dt_revision     u:object_r:modemloader_prop:s0
+ril.cbd.dt_revision    u:object_r:modemloader_prop:s0
+ro.modemloader.done    u:object_r:modemloader_prop:s0
+
+# rild
+persist.ril.modem.board        u:object_r:rild_prop:s0
+persist.ril.ims.eutranParam    u:object_r:rild_prop:s0
+persist.ril.ims.utranParam     u:object_r:rild_prop:s0

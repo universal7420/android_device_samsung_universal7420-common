@@ -57,3 +57,5 @@ allow rild self:capability chown;
 
 allow rild audioserver:dir search;
 allow rild audioserver:file { read open getattr };
+
+set_prop(rild, rild_prop)
