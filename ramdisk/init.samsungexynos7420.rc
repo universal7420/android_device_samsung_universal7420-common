@@ -218,13 +218,6 @@ on post-fs-data
     chown radio system /efs/bluetooth
     chmod 0775 /efs/bluetooth
 
-on early-boot
-
-# Remove symlinks to avoid issues with migrate after nandroid restores
-# Will be recreated at end of boot
-    rm /data/data/com.android.providers.telephony/databases/telephony.db
-    rm /data/data/com.android.providers.telephony/shared_prefs/preferred-apn.xml
-
 on boot
 
 # Set vibrator intensity 75%
@@ -725,17 +718,6 @@ on property:ro.debuggable=1
 on property:sys.boot_completed=1
     write /proc/sys/vm/dirty_bytes 62914560
     write /proc/sys/vm/dirty_background_bytes 20971520
-
-# Symlink telephony.db and preferred-apn.xml
-    mkdir /data/data/com.android.providers.telephony/databases 0700 radio radio
-    mkdir /data/data/com.android.providers.telephony/shared_prefs 0700 radio radio
-    symlink /data/user_de/0/com.android.providers.telephony/databases/telephony.db /data/data/com.android.providers.telephony/databases/telephony.db
-    symlink /data/user_de/0/com.android.providers.telephony/shared_prefs/preferred-apn.xml /data/data/com.android.providers.telephony/shared_prefs/preferred-apn.xml
-
-# Fix file contexts for the directories; needed for upgrade from earlier
-# 7.x versions, NOOP for clean flashes
-    restorecon /data/data/com.android.providers.telephony/databases
-    restorecon /data/data/com.android.providers.telephony/shared_prefs
 
 # Do not set any USB mode while charging
     setprop sys.usb.config charging
