@@ -15,7 +15,7 @@
 #
 
 # Enable permanent ADB if build is userdebug-variant
-ADDITIONAL_DEFAULT_PROPERTIES += \
+PRODUCT_PROPERTY_OVERRIDES += \
     persist.service.adb.enable=1 \
     ro.adb.secure=0 \
     ro.secure=0 \
