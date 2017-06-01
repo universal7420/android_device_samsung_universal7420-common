@@ -36,4 +36,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # NexusOS additions
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.nexusos.otaname=zero
+	ro.nexus.otaname=zero
