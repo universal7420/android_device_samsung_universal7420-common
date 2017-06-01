@@ -33,3 +33,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # sdcard emulation
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.sys.sdcardfs=1
+
+# NexusOS additions
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.nexusos.otaname=zero
