@@ -29,3 +29,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp
+
+# sdcard emulation
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.sys.sdcardfs=1
