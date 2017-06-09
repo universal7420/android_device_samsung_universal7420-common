@@ -22,3 +22,6 @@ BOARD_VENDOR := samsung
 
 # inherit from the proprietary version
 -include vendor/samsung/zero-common/BoardConfigVendor.mk
+
+# inherit from the NexusOS vendor-repo
+-include vendor/neuxs/board.mk
