@@ -108,30 +108,28 @@ on boot
     chown system system /sys/kernel/hmp/down_threshold
     chmod 0660 /sys/kernel/hmp/down_threshold
 
-# Change permission for interactive governor
+# Change permission for nexus governor
 # Cluster0 (Apollo)
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse
-    chmod 0330 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/boost
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/boost
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/boostpulse
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/boostpulse
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/down_load
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/down_load
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/down_step
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/down_step
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/freq_max
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/freq_max
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/freq_min
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/freq_min
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/io_is_busy
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/sampling_rate
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/sampling_rate
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/up_load
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/up_load
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/nexus/up_step
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/nexus/up_step
 
 # Assume HMP uses shared cpufreq policy for all LITTLE CPUs
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
@@ -143,30 +141,26 @@ on boot
     chmod 0660 sys/devices/system/cpu/cpufreq/mp-cpufreq/boot_low_freq
 
 # Cluster1 (Atlas)
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse
-    chmod 0330 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/input_boost
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/input_boost
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/boost
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/boost
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/boostpulse
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/boostpulse
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/down_load
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/down_load
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/down_step
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/down_step
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/freq_max
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/freq_max
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/freq_min
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/freq_min
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/io_is_busy
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/sampling_rate
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/sampling_rate
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/up_load
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/up_load
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/nexus/up_step
+    chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/nexus/up_step
 
 # Assume HMP uses shared cpufreq policy for big CPUs
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
@@ -225,18 +219,22 @@ on boot
 # CPU Idle
     chown system system /sys/module/cpuidle_exynos64/parameters/enable_mask
 
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 900000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads 75
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 19000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "nexus"
+    write /sys/devices/system/cpu/cpu0/cpufreq/nexus/down_load 40
+    write /sys/devices/system/cpu/cpu0/cpufreq/nexus/down_step 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/nexus/freq_max 1500000
+    write /sys/devices/system/cpu/cpu0/cpufreq/nexus/freq_min 300000
+    write /sys/devices/system/cpu/cpu0/cpufreq/nexus/io_is_busy 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/nexus/sampling_rate 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/nexus/up_load 60
+    write /sys/devices/system/cpu/cpu0/cpufreq/nexus/up_step 1
 
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1200000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 89
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 1500000:75"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "59000 1300000:39000 1700000:19000"
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "nexus"
+    write /sys/devices/system/cpu/cpu4/cpufreq/nexus/down_load 40
+    write /sys/devices/system/cpu/cpu4/cpufreq/nexus/down_step 2
+    write /sys/devices/system/cpu/cpu4/cpufreq/nexus/freq_max 2100000
+    write /sys/devices/system/cpu/cpu4/cpufreq/nexus/freq_min 600000
+    write /sys/devices/system/cpu/cpu4/cpufreq/nexus/io_is_busy 1
+    write /sys/devices/system/cpu/cpu4/cpufreq/nexus/sampling_rate 15000
+    write /sys/devices/system/cpu/cpu4/cpufreq/nexus/up_load 60
+    write /sys/devices/system/cpu/cpu4/cpufreq/nexus/up_step 1
