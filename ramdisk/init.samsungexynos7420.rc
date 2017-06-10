@@ -720,9 +720,6 @@ on property:sys.boot_completed=1
     write /proc/sys/vm/dirty_bytes 62914560
     write /proc/sys/vm/dirty_background_bytes 20971520
 
-# Do not set any USB mode while charging
-    setprop sys.usb.config charging
-
 # EHCI runtime enable for LPA
     write /sys/devices/platform/s5p-ehci/power/control auto
 
