@@ -170,10 +170,6 @@ on charger
     write /sys/class/power_supply/battery/batt_update_data "/efs/Battery/battery_data.dat"
     class_start charger
 
-    # Restart ADB
-    stop adbd
-    start adbd
-
 on property:ro.bootmode=charger
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor powersave
