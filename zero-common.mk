@@ -27,6 +27,3 @@ $(call inherit-product, hardware/samsung_slsi-cm/exynos7420/exynos7420.mk)
 
 # Get non-open-source specific aspects
 $(call inherit-product-if-exists, vendor/samsung/zero-common/zero-common-vendor.mk)
-
-# Get blobs by TeamNexus
-$(call inherit-product-if-exists, vendor/nexus/product.mk)
