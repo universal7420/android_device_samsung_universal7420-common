@@ -55,7 +55,7 @@ on boot
     chown bluetooth system /sys/power/cluster0_core_hotplug_in
     chmod 0664 /sys/power/cluster0_core_hotplug_in
 
-# Disable dynamic hotplugging as it makes problems
+# Disable dynamic hotplugging as it just causes problems
     write /sys/power/enable_dm_hotplug "0"
 
     chown radio system /sys/power/ipa/control_temp
@@ -92,13 +92,19 @@ on boot
     chmod 664 /sys/devices/platform/exynos7-devfreq-isp/devfreq/exynos7-devfreq-isp/max_freq
 
     chown radio system /sys/devices/14ac0000.mali/dvfs
-    chmod 664 /sys/devices/14ac0000.mali/dvfs
+    chmod 0664 /sys/devices/14ac0000.mali/dvfs
     chown radio system /sys/devices/14ac0000.mali/dvfs_table
-    chmod 664 /sys/devices/14ac0000.mali/dvfs_table
+    chmod 0664 /sys/devices/14ac0000.mali/dvfs_table
+    chown radio system /sys/devices/14ac0000.mali/dvfs_governor
+    chmod 0664 /sys/devices/14ac0000.mali/dvfs_governor
     chown radio system /sys/devices/14ac0000.mali/dvfs_min_lock
-    chmod 664 /sys/devices/14ac0000.mali/dvfs_min_lock
+    chmod 0664 /sys/devices/14ac0000.mali/dvfs_min_lock
     chown radio system /sys/devices/14ac0000.mali/dvfs_max_lock
-    chmod 664 /sys/devices/14ac0000.mali/dvfs_max_lock
+    chmod 0664 /sys/devices/14ac0000.mali/dvfs_max_lock
+    chown radio system /sys/devices/14ac0000.mali/highspeed_clock
+    chmod 0664 /sys/devices/14ac0000.mali/highspeed_clock
+    chown radio system /sys/devices/14ac0000.mali/highspeed_load
+    chmod 0664 /sys/devices/14ac0000.mali/highspeed_load
 
     chown radio system /sys/devices/system/sec_os_ctrl/migrate_os
     chmod 664 /sys/devices/system/sec_os_ctrl/migrate_os
@@ -230,19 +236,3 @@ on boot
 
 # CPU Idle
     chown system system /sys/module/cpuidle_exynos64/parameters/enable_mask
-
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 900000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads 75
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 19000
-
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1200000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 89
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 1500000:75"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "59000 1300000:39000 1700000:19000"
