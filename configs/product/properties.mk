@@ -24,7 +24,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.nfc.sec_hal=true \
     wifi.interface=wlan0 \
     debug.hwc.force_gpu=1 \
-    ro.bq.gpu_to_cpu_unsupported=1
+    ro.bq.gpu_to_cpu_unsupported=1 \
+    persist.sys.ui.hw=1 \
+    debug.composition.type=gpu \
+    dev.pm.gpu_samplingrate=1 \
+    debug.sf.hw=1 \
+    debug.egl.hw=1
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
