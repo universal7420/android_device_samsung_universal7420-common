@@ -729,14 +729,14 @@
     <!-- Input stage volume -->
 	<!-- media input volume -->
 	<path name="gain-media-mic">
-		<ctl name="IN1L Digital Volume" value="128" />
-		<ctl name="LHPF1 Input 1 Volume" value="32" />
+		<ctl name="IN1L Digital Volume" value="158" />
+		<ctl name="LHPF1 Input 1 Volume" value="40" />
 	</path>
 
     <path name="gain-media-headset-mic">
 		<ctl name="IN2L Volume" value="30" />
-		<ctl name="IN2L Digital Volume" value="128" />
-		<ctl name="LHPF1 Input 1 Volume" value="32" />
+		<ctl name="IN2L Digital Volume" value="148" />
+		<ctl name="LHPF1 Input 1 Volume" value="36" />
 	</path>
 
     <!-- NB volume -->
