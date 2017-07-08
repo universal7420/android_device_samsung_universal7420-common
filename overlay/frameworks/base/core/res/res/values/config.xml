@@ -105,6 +105,13 @@
          Software implementation will be used if config_hardware_auto_brightness_available is not set -->
     <bool name="config_automatic_brightness_available">true</bool>
 
+    <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
+    <bool name="config_unplugTurnsOnScreen">true</bool>
+
+    <!-- If true, the screen can be rotated via the accelerometer in all 4
+         rotations as the default behavior. -->
+    <bool name="config_allowAllRotations">true</bool>
+
     <!-- Indicate whether the lid state impacts the accessibility of
          the physical keyboard.  0 means it doesn't, 1 means it is accessible
          when the lid is open, 2 means it is accessible when the lid is
@@ -122,8 +129,23 @@
          The default is false. -->
     <bool name="config_lidControlsSleep">true</bool>
 
+    <!-- Control the behavior when the user short presses the power button.
+            0 - Nothing
+            1 - Go to sleep (doze)
+            2 - Really go to sleep (don't doze)
+            3 - Really go to sleep and go home (don't doze)
+    -->
+    <integer name="config_shortPressOnPowerBehavior">2</integer>
+
     <!-- Indicate whether the SD card is accessible without removing the battery. -->
     <bool name="config_batterySdCardAccessibility">true</bool>
+
+    <!-- Display low battery warning when battery level dips to this value.
+         Also, the battery stats are flushed to disk when we hit this level.  -->
+    <integer name="config_criticalBatteryWarningLevel">10</integer>
+
+    <!-- Display low battery warning when battery level dips to this value -->
+    <integer name="config_lowBatteryWarningLevel">20</integer>
 
     <!-- Shutdown if the battery temperature exceeds (this value * 0.1) Celsius. -->
     <integer name="config_shutdownBatteryTemperature">600</integer>
@@ -134,10 +156,6 @@
 
     <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
     <bool name="config_intrusiveNotificationLed">true</bool>
-
-    <!-- Does the notification LED support multiple colors?
-         Used to decide if the user can change the colors
-    <bool name="config_multiColorNotificationLed">true</bool> -->
 
     <!-- Is the battery LED intrusive? Used to decide if there should be a disable option
     <bool name="config_intrusiveBatteryLed">true</bool> -->
@@ -156,8 +174,8 @@
             32 - Camera
             64 - Volume rocker
          For example, a device with Home, Back and Menu keys would set this
-         config to 7.
-    <integer name="config_deviceHardwareKeys">83</integer> -->
+         config to 7. -->
+    <integer name="config_deviceHardwareKeys">83</integer>
 
     <!-- Hardware keys present on the device with the ability to wake, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
@@ -170,8 +188,8 @@
             32 - Camera
             64 - Volume rocker
          For example, a device with Home, Back and Menu keys would set this
-         config to 7.
-    <integer name="config_deviceHardwareWakeKeys">65</integer> -->
+         config to 7. -->
+    <integer name="config_deviceHardwareWakeKeys">1</integer>
 
     <!-- Minimum screen brightness setting allowed by the power manager.
          The user is forbidden from setting the brightness below this level. -->
@@ -243,16 +261,16 @@
          The brightness values must be between 0 and 255 and be non-decreasing.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-        <item>8</item>    <!-- 0 -->
-        <item>18</item>   <!-- 1-10 -->
+        <item>10</item>    <!-- 0 -->
+        <item>15</item>   <!-- 1-10 -->
         <item>30</item>   <!-- 11-30 -->
-        <item>59</item>   <!-- 31-100 -->
-        <item>74</item>   <!-- 101-325 -->
-        <item>92</item>   <!-- 326-1250 -->
-        <item>118</item>  <!-- 1251-3500 -->
-        <item>155</item>  <!-- 3501-6500 -->
-        <item>185</item>  <!-- 6501-10000 -->
-        <item>222</item>  <!-- 10001-20000 -->
+        <item>45</item>   <!-- 31-100 -->
+        <item>95</item>   <!-- 101-325 -->
+        <item>135</item>   <!-- 326-1250 -->
+        <item>175</item>  <!-- 1251-3500 -->
+        <item>195</item>  <!-- 3501-6500 -->
+        <item>215</item>  <!-- 6501-10000 -->
+        <item>235</item>  <!-- 10001-20000 -->
         <item>255</item>  <!-- 20001+ -->
     </integer-array>
 
@@ -299,6 +317,14 @@
 
     <!-- The default iface on which to monitor data use -->
     <string name="config_datause_iface" translatable="false">rmnet0</string>
+
+    <!-- Default web browser.  This is the package name of the application that will
+         be the default browser when the device first boots.  Afterwards the user
+         can select whatever browser app they wish to use as the default.
+
+         If this string is empty or the specified package does not exist, then
+         the behavior will be as though no app was named as an explicit default. -->
+    <string name="default_browser" translatable="false">org.mozilla.firefox</string>
 
     <!-- Boolean indicating if restoring network selection should be skipped -->
     <!-- The restoring is handled by modem if it is true -->
@@ -366,13 +392,26 @@
     <!-- If this is true, the screen will fade off. -->
     <bool name="config_animateScreenLights">true</bool>
 
+    <!-- Flag specifying whether VoLTE is available on device -->
+    <bool name="config_device_volte_available">true</bool>
+
+    <!-- Flag specifying whether VoLTE should be available for carrier: independent of
+         carrier provisioning. If false: hard disabled. If true: then depends on carrier
+         provisioning, availability etc -->
+    <bool name="config_carrier_volte_available">true</bool>
+
+    <!-- Flag specifying whether VoLTE availability is based on provisioning -->
+    <bool name="config_carrier_volte_provisioned">true</bool>
+
     <!-- Flag indicating whether strict threshold is used, or lenient threshold is used,
             when evaluating RSRP for LTE antenna bar display
            0. Strict threshold
            1. Lenient threshold
-           2. Custom threshold
     -->
-    <integer name="config_LTE_RSRP_threshold_type">2</integer>
+    <integer name="config_LTE_RSRP_threshold_type">1</integer>
+
+    <!-- Whether device supports double tap to wake -->
+    <bool name="config_supportDoubleTapWake">true</bool>
 
     <!-- For performance and storage reasons, limit the number of fingerprints per user -->
     <integer name="config_fingerprintMaxTemplatesPerUser">4</integer>
