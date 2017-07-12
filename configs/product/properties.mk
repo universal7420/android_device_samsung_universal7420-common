@@ -31,7 +31,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.chipname=exynos7420 \
     ro.nfc.sec_hal=true \
-    ro.opengles.version=196610 \
     ro.sf.lcd_density=640 \
 	ro.sys.sdcardfs=1 \
     af.fast_track_multiplier=1 \
@@ -58,13 +57,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ###############################
 # GPU
 PRODUCT_PROPERTY_OVERRIDES += \
-	debug.composition.type=gpu \
-	debug.egl.hw=1 \
-    debug.hwc.force_gpu=1 \
-	debug.sf.hw=1 \
-	persist.sys.ui.hw=true \
+    debug.composition.type=gpu \
+    debug.hwc.max_hw_overlays=1 \
+    ro.opengles.version=196610 \
+    debug.egl.hw=1 \
+    debug.sf.hw=1 \
+    presist.sys.ui.hw=1 \
     ro.bq.gpu_to_cpu_unsupported=1 \
-	video.accelerate.hw=1
+    video.accelerate.hw=1
 
 ###############################
 # hwui
