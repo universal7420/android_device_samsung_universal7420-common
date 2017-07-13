@@ -57,14 +57,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ###############################
 # GPU
 PRODUCT_PROPERTY_OVERRIDES += \
-    debug.composition.type=gpu \
-    debug.hwc.max_hw_overlays=1 \
-    ro.opengles.version=196610 \
-    debug.egl.hw=1 \
-    debug.sf.hw=1 \
-    presist.sys.ui.hw=1 \
-    ro.bq.gpu_to_cpu_unsupported=1 \
-    video.accelerate.hw=1
+	debug.composition.type=dyn \
+	debug.hwc.max_hw_overlays=8 \
+	ro.opengles.version=196610 \
+	debug.sf.hw=0 \
+	persist.sys.ui.hw=0 \
+	video.accelerate.hw=1 \
+	debug.egl.profiler=1 \
+	debug.egl.hw=1
 
 ###############################
 # hwui
@@ -99,7 +99,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ###############################
 # Performance += \
 PRODUCT_PROPERTY_OVERRIDES += \
-	debug.performance.tuning=1 \
+	debug.performance.tuning=1
 
 ###############################
 # Power-Management
