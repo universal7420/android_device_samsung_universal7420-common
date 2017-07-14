@@ -14,9 +14,16 @@
 # limitations under the License.
 #
 
+# FIMG2D
+BOARD_USES_SKIA_FIMGAPI := true
+
 # Graphics
 USE_OPENGL_RENDERER := true
 BOARD_USES_VIRTUAL_DISPLAY := true
+
+# (G)SCALER
+BOARD_USES_SCALER := true
+BOARD_USES_DT := true
 
 # HDMI
 BOARD_HDMI_INCAPABLE := true

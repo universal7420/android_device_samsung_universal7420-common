@@ -20,9 +20,6 @@ TARGET_AUDIOHAL_VARIANT := samsung
 # Camera
 BOARD_USE_SAMSUNG_CAMERAFORMAT_NV21 := true
 
-# FIMG2D
-BOARD_USES_SKIA_FIMGAPI := true
-
 # Include an expanded selection of fonts
 EXTENDED_FONT_FOOTPRINT := true
 
@@ -32,10 +29,6 @@ TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_sec
 TARGET_UNIFIED_DEVICE := true
-
-# (G)SCALER
-BOARD_USES_SCALER := true
-BOARD_USES_DT := true
 
 # Renderscript
 BOARD_OVERRIDE_RS_CPU_VARIANT_32 := cortex-a53.a57
