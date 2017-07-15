@@ -67,7 +67,7 @@ ifneq ($(NEXUS_VERSION),)
 ###############################
 # NexusOS
 PRODUCT_PROPERTY_OVERRIDES += \
-	debug.hwc.max_hw_overlays=8 \
+	debug.hwc.max_hw_overlays=1 \
 	debug.sf.hw=0 \
 	persist.sys.ui.hw=0 \
 	debug.egl.hw=0
