@@ -58,13 +58,31 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # GPU
 PRODUCT_PROPERTY_OVERRIDES += \
 	debug.composition.type=dyn \
-	debug.hwc.max_hw_overlays=8 \
 	ro.opengles.version=196610 \
+	video.accelerate.hw=1 \
+	debug.egl.profiler=1
+	
+ifneq ($(NEXUS_VERSION),)
+
+###############################
+# NexusOS
+PRODUCT_PROPERTY_OVERRIDES += \
+	debug.hwc.max_hw_overlays=8 \
 	debug.sf.hw=0 \
 	persist.sys.ui.hw=0 \
-	video.accelerate.hw=1 \
-	debug.egl.profiler=1 \
+	debug.egl.hw=0
+
+else
+
+###############################
+# ResurrectionRemix/AOKP
+PRODUCT_PROPERTY_OVERRIDES += \
+	debug.hwc.max_hw_overlays=0 \
+	debug.sf.hw=1 \
+	persist.sys.ui.hw=1 \
 	debug.egl.hw=1
+
+endif
 
 ###############################
 # hwui
