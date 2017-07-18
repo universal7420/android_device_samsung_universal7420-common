@@ -30,6 +30,7 @@ import org.cyanogenmod.internal.util.FileUtils;
 public class KeyDisabler {
 
     private static String CONTROL_PATH = "/sys/class/sec/sec_touchkey/input/enabled";
+    private static String POWERHAL_PATH = "/data/power/keydisabler";
 
     public static boolean isSupported() {
         return FileUtils.isFileWritable(CONTROL_PATH);
@@ -44,7 +45,8 @@ public class KeyDisabler {
 
     public static boolean setActive(boolean state) {
         if (KeyDisabler.isSupported()) {
-            return FileUtils.writeLine(CONTROL_PATH, (state ? "0" : "1"));
+            return FileUtils.writeLine(CONTROL_PATH, (state ? "0" : "1")) &&
+				FileUtils.writeLine(POWERHAL_PATH, (state ? "1" : "0"));
         }
         return false;
     }
