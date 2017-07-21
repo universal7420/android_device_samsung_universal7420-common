@@ -48,7 +48,7 @@ public class KeyDisabler {
     public static boolean setActive(boolean state) {
         if (KeyDisabler.isSupported()) {
             return FileUtils.writeLine(CONTROL_PATH, (state ? "0" : "1")) &&
-				FileUtils.writeLine(POWERHAL_PATH, (state ? "1" : "0"));
+				FileUtils.writeLine(POWER_CONFIG_KEYDISABLER_ACTIVE, (state ? "1" : "0"));
         }
         return false;
     }
