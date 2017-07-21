@@ -693,6 +693,10 @@ on fs
     chown system usb /sys/class/usb_notify/usb_control/disable
     chmod 0664 /sys/class/usb_notify/usb_control/disable
 
+# sdc block device
+    chown system system /sys/android_touch/doubletap2wake
+    chmod 0664 /sys/android_touch/doubletap2wake
+
 # ARGOSD
 service argos-daemon /system/bin/argosd
     class main
