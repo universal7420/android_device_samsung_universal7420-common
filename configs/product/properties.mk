@@ -142,7 +142,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ###############################
 # Surface
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.scrollingcache=1 \
+	persist.sys.scrollingcache=4 \
 	persist.sys.purgeable_assets=1 \
 	ro.compcache.default=18 \
 	ro.max.fling_velocity=12000 \
