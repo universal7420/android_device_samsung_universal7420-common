@@ -25,8 +25,8 @@
          informations of the behaviour and power usage of those frequencies
          but want to list the values for completion. --> 
     <array name="cpu.active.cluster0">
-        <!-- <value>0</value>
-        <value>0</value> -->
+        <value>46</value>
+        <value>47</value>
         <value>48</value>
         <value>49</value>
         <value>50</value>
@@ -36,16 +36,18 @@
         <value>74</value>
         <value>78</value>
         <value>88</value>
-        <value>88</value>
         <value>96</value>
         <value>98</value>
         <value>102</value>
-        <!-- <value>0</value>
-        <value>0</value> -->
+        <value>108</value>
+        <value>114</value>
+        <value>120</value>
+        <value>126</value>
+        <value>132</value>
     </array>
     <array name="cpu.speeds.cluster0">
-        <!-- <value>200000</value>
-        <value>300000</value> -->
+        <value>200000</value>
+        <value>300000</value>
         <value>400000</value>
         <value>500000</value>
         <value>600000</value>
@@ -58,16 +60,20 @@
         <value>1296000</value>
         <value>1400000</value>
         <value>1500000</value>
-        <!-- <value>1600000</value>
-        <value>1704000</value> -->
+        <value>1600000</value>
+        <value>1704000</value>
+        <value>1800000</value>
+        <value>1900000</value>
+        <value>2000000</value>
     </array>
     <array name="cpu.active.cluster1">
-        <!-- <value>0</value>
-        <value>0</value>
-        <value>0</value>
-        <value>0</value>
-        <value>0</value>
-        <value>0</value> -->
+        <value>56</value>
+        <value>56</value>
+        <value>57</value>
+        <value>59</value>
+        <value>61</value>
+        <value>66</value>
+        <value>73</value>
         <value>82</value>
         <value>91</value>
         <value>114</value>
@@ -81,16 +87,16 @@
         <value>362</value>
         <value>418</value>
         <value>484</value>
-        <!-- <value>0</value>
-        <value>0</value> -->
+        <value>530</value>
+        <value>586</value>
     </array>
     <array name="cpu.speeds.cluster1">
-        <!-- <value>200000</value>
+        <value>200000</value>
         <value>300000</value>
         <value>400000</value>
         <value>500000</value>
         <value>600000</value>
-        <value>700000</value> -->
+        <value>700000</value>
         <value>800000</value>
         <value>900000</value>
         <value>1000000</value>
@@ -105,8 +111,8 @@
         <value>1896000</value>
         <value>2000000</value>
         <value>2100000</value>
-        <!-- <value>2200000</value>
-        <value>2304000</value> -->
+        <value>2200000</value>
+        <value>2304000</value>
     </array>
     <item name="cpu.idle">4.3</item>
     <item name="cpu.awake">40.1</item>
