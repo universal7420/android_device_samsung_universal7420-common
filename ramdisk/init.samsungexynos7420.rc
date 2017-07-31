@@ -27,6 +27,11 @@ on init
 
     symlink /dev/block/platform/15570000.ufs/by-name/STEADY /dev/block/steady
     symlink /dev/block/platform/15570000.ufs/by-name/PERSISTENT /dev/block/persistent
+	
+# Setup schedtune sysfs
+	mount tmpfs cgroups /sys/fs/cgroup
+	mkdir /sys/fs/cgroup/stune
+	mount -t cgroup -o schedtune stune /sys/fs/cgroup/stune
 
 on post-fs
 # sda block device
