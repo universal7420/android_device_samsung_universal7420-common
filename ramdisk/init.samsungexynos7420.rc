@@ -31,7 +31,7 @@ on init
 # Setup schedtune sysfs
 	mount tmpfs cgroups /sys/fs/cgroup
 	mkdir /sys/fs/cgroup/stune
-	mount -t cgroup -o schedtune stune /sys/fs/cgroup/stune
+	mount cgroup stune /sys/fs/cgroup/stune schedtune
 
 on post-fs
 # sda block device
