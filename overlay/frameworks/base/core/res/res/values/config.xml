@@ -175,7 +175,8 @@
             64 - Volume rocker
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
-    <integer name="config_deviceHardwareKeys">83</integer>
+	<!-- TODO: Uncomment this if Lineage has re-added support -->
+    <!-- <integer name="config_deviceHardwareKeys">83</integer> -->
 
     <!-- Hardware keys present on the device with the ability to wake, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
@@ -189,7 +190,8 @@
             64 - Volume rocker
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
-    <integer name="config_deviceHardwareWakeKeys">1</integer>
+	<!-- TODO: Uncomment this if Lineage has re-added support -->
+    <!-- <integer name="config_deviceHardwareWakeKeys">1</integer> -->
 
     <!-- Minimum screen brightness setting allowed by the power manager.
          The user is forbidden from setting the brightness below this level. -->
@@ -377,14 +379,16 @@
     <bool name="config_carrier_volte_available">true</bool>
 
     <!-- Flag specifying whether VoLTE availability is based on provisioning -->
-    <bool name="config_carrier_volte_provisioned">true</bool>
+	<!-- TODO: Uncomment this if Lineage has re-added support -->
+    <!-- <bool name="config_carrier_volte_provisioned">true</bool> -->
 
     <!-- Flag indicating whether strict threshold is used, or lenient threshold is used,
             when evaluating RSRP for LTE antenna bar display
            0. Strict threshold
            1. Lenient threshold
     -->
-    <integer name="config_LTE_RSRP_threshold_type">1</integer>
+	<!-- TODO: Uncomment this if Lineage has re-added support -->
+    <!-- <integer name="config_LTE_RSRP_threshold_type">1</integer> -->
 
     <!-- Whether device supports double tap to wake -->
     <bool name="config_supportDoubleTapWake">true</bool>
@@ -392,18 +396,8 @@
     <!-- For performance and storage reasons, limit the number of fingerprints per user -->
     <integer name="config_fingerprintMaxTemplatesPerUser">4</integer>
 
-    <!-- Indicate whether the lid state impacts the accessibility of
-         the navigation buttons.  0 means it doesn't, 1 means it is accessible
-         when the lid is open, 2 means it is accessible when the lid is
-         closed.  The default is 0. -->
-    <integer name="config_lidNavigationAccessibility">1</integer>
-
-    <!-- Indicate whether closing the lid causes the device to go to sleep and opening
-         it causes the device to wake up.
-         The default is false. -->
-    <bool name="config_lidControlsSleep">true</bool>
-
     <!-- If enabled, capacitive keys will only light up when pressed.
          Otherwise, the buttons will light up whenever the user interacts with the device -->
-    <bool name="config_buttonLightOnKeypressOnly">true</bool>
+	<!-- TODO: Uncomment this if Lineage has re-added support -->
+    <!-- <bool name="config_buttonLightOnKeypressOnly">true</bool> -->
 </resources>

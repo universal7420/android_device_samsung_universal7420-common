@@ -78,18 +78,11 @@
 # biometrics
 /data/biometrics(/.*)?	     u:object_r:biometrics_data_file:s0
 
-####################################
-# gps
-/data/system/gps(/.*)?       u:object_r:gps_data_file:s0
-
 # tee
 /data/misc/mcRegistry(/.*)?  u:object_r:mobicore_data_file:s0
 
 ####################################
 # sysfs files
-/sys/class/power_supply/battery/music			-- u:object_r:sysfs_writable:s0
-/sys/class/devfreq/exynos5-busfreq-mif(/.*)?	-- u:object_r:sysfs_writable:s0
-/sys/class/lcd(/.*)?							-- u:object_r:sysfs_writable:s0
 /sys/devices/virtual/earsmart/control(/.*)?    	-- u:object_r:sysfs_audience_control:s0   
 
 ####################################
@@ -126,7 +119,6 @@
 /system/bin/modemloader      u:object_r:modemloader_exec:s0
 /system/bin/sensorhubservice u:object_r:sensorhubservice_exec:s0
 /system/bin/wifiloader       u:object_r:wifiloader_exec:s0
-/system/bin/gpsd             u:object_r:gpsd_exec:s0
 /system/bin/lhd              u:object_r:lhd_exec:s0
 
 ####################################

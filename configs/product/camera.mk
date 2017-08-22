@@ -14,7 +14,9 @@
 # limitations under the License.
 #
 
-# Power
+# Camera
 PRODUCT_PACKAGES += \
-    power.exynos5 \
-    android.hardware.power@1.0-impl
+	camera.exynos5 \
+    Snap \
+	camera.device@3.2-impl \
+    android.hardware.camera.provider@2.4-impl

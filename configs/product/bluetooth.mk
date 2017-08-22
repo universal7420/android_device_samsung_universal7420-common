@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 
-# Power
+# Bluetooth
 PRODUCT_PACKAGES += \
-    power.exynos5 \
-    android.hardware.power@1.0-impl
+    android.hardware.bluetooth@1.0-impl

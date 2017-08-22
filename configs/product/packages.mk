@@ -18,11 +18,6 @@
 PRODUCT_PACKAGES += \
     Jelly
 
-# Camera
-PRODUCT_PACKAGES += \
-	camera.exynos5 \
-    Snap
-
 # DTB
 PRODUCT_PACKAGES += \
     dtbhtoolExynos
@@ -31,14 +26,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     make_ext4fs \
     setup_fs
-
-# Lights
-PRODUCT_PACKAGES += \
-    lights.universal7420
-
-# Libstlport
-PRODUCT_PACKAGES += \
-    libstlport
 
 # MDNIE
 #PRODUCT_PACKAGES += \

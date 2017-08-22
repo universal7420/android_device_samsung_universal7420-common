@@ -81,10 +81,17 @@ extern "C" {
 
 #define MAX_RILDS 3
 #define MAX_SOCKET_NAME_LENGTH 6
+#define MAX_SERVICE_NAME_LENGTH 6
 #define MAX_CLIENT_ID_LENGTH 2
 #define MAX_DEBUG_SOCKET_NAME_LENGTH 12
 #define MAX_QEMU_PIPE_NAME_LENGTH  11
 #define MAX_UUID_LENGTH 64
+
+#define RIL_SERVICE_NAME_BASE "slot"
+#define RIL1_SERVICE_NAME "slot1"
+#define RIL2_SERVICE_NAME "slot2"
+#define RIL3_SERVICE_NAME "slot3"
+#define RIL4_SERVICE_NAME "slot4"
 
 typedef void * RIL_Token;
 
@@ -6180,5 +6187,7 @@ void RIL_requestTimedCallback (RIL_TimedCallback callback,
 #ifdef __cplusplus
 }
 #endif
+
+void rilc_thread_pool();
 
 #endif /*ANDROID_RIL_H*/

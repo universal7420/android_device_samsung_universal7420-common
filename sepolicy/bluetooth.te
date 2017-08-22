@@ -5,5 +5,3 @@ allow bluetooth bluetooth_device:chr_file { rw_file_perms ioctl };
 allow bluetooth wifi_data_file:file r_file_perms;
 
 allow bluetooth sysfs:file write;
-
-allow bluetooth gps_device:chr_file { open ioctl };

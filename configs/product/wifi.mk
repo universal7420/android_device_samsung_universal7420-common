@@ -26,4 +26,5 @@ PRODUCT_PACKAGES += \
     macloader \
     wifiloader \
     wpa_supplicant \
-    wpa_supplicant.conf
+    wpa_supplicant.conf \
+	android.hardware.wifi@1.0-service

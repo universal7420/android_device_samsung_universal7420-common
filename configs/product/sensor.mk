@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 
-# Power
+# Sensorhub
 PRODUCT_PACKAGES += \
-    power.exynos5 \
-    android.hardware.power@1.0-impl
+    android.hardware.sensors@1.0-impl

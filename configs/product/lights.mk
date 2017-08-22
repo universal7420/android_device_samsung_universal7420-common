@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 
-# Power
+# Lights
 PRODUCT_PACKAGES += \
-    power.exynos5 \
-    android.hardware.power@1.0-impl
+    lights.universal7420

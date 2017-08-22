@@ -29,6 +29,10 @@ LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE_TAGS          := optional
 LOCAL_CFLAGS               := -Wall -Werror -Wno-unused-parameter
 
+ifneq ($(DEVICE_TREE_IS_AOSP),true)
+  LOCAL_CFLAGS += -DLINEAGE_POWER_HAL
+endif
+
 LOCAL_SHARED_LIBRARIES := \
 	libhardware \
 	liblog \

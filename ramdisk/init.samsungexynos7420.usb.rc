@@ -20,12 +20,16 @@ on init
     write /sys/class/android_usb/android0/f_rndis/manufacturer Samsung
     write /sys/class/android_usb/android0/f_rndis/vendorID 04e8
     write /sys/class/android_usb/android0/f_rndis/wceis 1
+	stop adbd
+    start adbd
 
 on boot
     write /sys/class/android_usb/android0/iManufacturer $ro.product.manufacturer
     write /sys/class/android_usb/android0/iProduct $ro.product.model
     write /sys/class/android_usb/android0/iSerial $ro.serialno
     write /sys/class/android_usb/f_mass_storage/inquiry_string "Samsung"
+	stop adbd
+    start adbd
 
 on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/enable 0
@@ -33,6 +37,7 @@ on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/idProduct 6860
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -61,6 +66,7 @@ on property:sys.usb.config=mtp,adb
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/bDeviceClass 0
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -80,7 +86,9 @@ on property:sys.usb.config=rndis,adb
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/bDeviceClass 224
     write /sys/class/android_usb/android0/enable 1
-    start adbd
+	stop adbd
+    
+	stop adbd adbd
     setprop sys.usb.state ${sys.usb.config}
 
 on property:sys.usb.config=ncm
@@ -99,6 +107,7 @@ on property:sys.usb.config=ncm,adb
     write /sys/class/android_usb/android0/functions ncm,adb
     write /sys/class/android_usb/android0/bDeviceClass 2
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -118,6 +127,7 @@ on property:sys.usb.config=ptp,adb
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/bDeviceClass 0
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -143,6 +153,7 @@ on property:sys.usb.config=rndis,acm,dm
     write /sys/class/android_usb/android0/idProduct 6864
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -152,6 +163,7 @@ on property:sys.usb.config=rndis,acm,dm
     write /sys/class/android_usb/android0/idProduct 685d
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -171,6 +183,7 @@ on property:sys.usb.config=rndis,acm,dm
     write /sys/class/android_usb/android0/f_diag/clients diag_mdm
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -190,6 +203,7 @@ on property:sys.usb.config=rndis,acm,dm
     write /sys/class/android_usb/android0/f_diag/clients diag_mdm
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -207,6 +221,7 @@ on property:sys.usb.config=mass_storage,adb
     write /sys/class/android_usb/android0/idProduct 685e
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -248,6 +263,7 @@ on property:sys.usb.config=diag,acm,adb
     write /sys/class/android_usb/android0/f_diag/clients diag_mdm
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -277,6 +293,7 @@ on property:sys.usb.config=rndis,acm,diag
     write /sys/class/android_usb/android0/f_diag/clients diag_mdm
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
@@ -296,6 +313,7 @@ on property:sys.usb.config=mtp,conn_gadget,adb
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/bDeviceClass 0
     write /sys/class/android_usb/android0/enable 1
+	stop adbd
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Comments, Legal notices, etc. here -->
+<manifest version="1.0" type="device">
+	
+	<!--
+		Fingerprint
+	  -->
+    <hal format="hidl">
+		<name>android.hardware.biometrics.fingerprint</name>
+		<transport>hwbinder</transport>
+		<impl level="generic"></impl>
+		<version>2.1</version>
+		<interface>
+			<name>IBiometricsFingerprint</name>
+			<instance>default</instance>
+		</interface>
+    </hal>
+	
+	<!--
+		Keymaster
+	  -->
+	<hal>
+		<name>android.hardware.keymaster</name>
+		<transport>hwbinder</transport>
+		<impl level="generic"></impl>
+		<version>3.1</version>
+		<interface>
+			<name>IKeymasterDevice</name>
+			<instance>default</instance>
+		</interface>
+	</hal>
+	
+	<!--
+		RIL/Radio
+	  -->
+	<hal>
+		<name>android.hardware.radio</name>
+		<transport>hwbinder</transport>
+		<impl level="generic"></impl>
+		<version>1.0</version>
+		<interface>
+			<name>IRadio</name>
+			<instance>slot1</instance>
+		</interface>
+	</hal>
+	<hal>
+		<name>android.hardware.radio.deprecated</name>
+		<transport>hwbinder</transport>
+		<impl level="generic"></impl>
+		<version>1.0</version>
+		<interface>
+			<name>IOemHook</name>
+			<instance>slot1</instance>
+		</interface>
+	</hal>
+	
+	<!--
+		WiFi
+	  -->
+	<hal>
+		<name>android.hardware.wifi</name>
+		<transport>hwbinder</transport>
+		<impl level="generic"></impl>
+		<version>1.0</version>
+		<interface>
+			<name>IWifi</name>
+			<instance>default</instance>
+		</interface>
+	</hal>
+
+</manifest>

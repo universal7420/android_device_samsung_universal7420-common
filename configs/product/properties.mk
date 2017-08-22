@@ -21,12 +21,6 @@
 # - copied from https://killertricks.com/build-prop-tweaks-for-android-devices/
 
 ###############################
-# ADB
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.debuggable=1 \
-	persist.service.adb.enable=1
-
-###############################
 # Common
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.chipname=exynos7420 \
@@ -35,24 +29,17 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.sys.sdcardfs=1 \
     af.fast_track_multiplier=1 \
     audio_hal.force_voice_config=wide \
-	persist.sys.usb.config=mtp \
     wifi.interface=wlan0
 
 ###############################
 # Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
-	dalvik.vm.checkjni=false \
-	dalvik.vm.dexopt-data-only=1 \
-	dalvik.vm.heapstartsize=24m \
-	dalvik.vm.heapgrowthlimit=384m \
-	dalvik.vm.heapsize=1024m \
-	dalvik.vm.heaptargetutilization=0.9 \
-	dalvik.vm.heapminfree=1m \
-	dalvik.vm.heapmaxfree=32m \
-	dalvik.vm.verify-bytecode=false \
-	dalvik.vm.execution-mode=int:jit \
-	dalvik.vm.dexopt-flags=m=v,o=y \
-	dalvik.vm.jmiopts=forcecopy
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapgrowthlimit=288m \
+    dalvik.vm.heapsize=768m \
+    dalvik.vm.heaptargetutilization=0.75 \
+    dalvik.vm.heapminfree=2m \
+    dalvik.vm.heapmaxfree=8m
 
 ###############################
 # GPU
