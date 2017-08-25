@@ -23,7 +23,7 @@
 		<name>android.hardware.keymaster</name>
 		<transport>hwbinder</transport>
 		<impl level="generic"></impl>
-		<version>3.1</version>
+		<version>3.0</version>
 		<interface>
 			<name>IKeymasterDevice</name>
 			<instance>default</instance>
