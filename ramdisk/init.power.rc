@@ -29,7 +29,13 @@ on init
     write /dev/cpuctl/bg_abnormal/cpu.rt_period_us 1000000
     write /dev/cpuctl/bg_abnormal/cpu.cfs_period_us 20000
     write /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us 10000
-	
+
+# Set increased minfreqs
+	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq "400000"
+	write /sys/devices/system/cpu/cpu0/cpufreq/nexus/freq_min "400000"
+	write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq "400000"
+	write /sys/devices/system/cpu/cpu4/cpufreq/nexus/freq_min "400000"
+
 # battery-enhancements
 	write /proc/sys/vm/oom_kill_allocating_task 0
 	write /proc/sys/vm/panic_on_oom 0
