@@ -336,19 +336,19 @@ public class SlteRIL extends RIL {
         // lte
         response[7] &= 0xff;
 
-        return new SignalStrength(response[0],
-                                  response[1],
-                                  response[2],
-                                  response[3],
-                                  response[4],
-                                  response[5],
-                                  response[6],
-                                  response[7],
-                                  response[8],
-                                  response[9],
-                                  response[10],
-                                  response[11],
-                                  true);
+        return new SignalStrength(response[0],	/* gsmSignalStrength */
+                                  response[1],	/* gsmBitErrorRate */
+                                  response[2],	/* cdmaDbm */
+                                  response[3],	/* cdmaEcio */
+                                  response[4],	/* evdoDbm */
+                                  response[5],	/* evdoEcio */
+                                  response[6],	/* evdoSnr */
+                                  response[7],	/* lteSignalStrength */
+                                  response[8],	/* lteRsrp */
+                                  response[9],	/* lteRsrq */
+                                  response[10],	/* lteRssnr */
+                                  response[11],	/* lteCqi */
+                                  true);		/* gsmFlag */
     }
 
     private void constructGsmSendSmsRilRequest(RILRequest rr, String smscPDU, String pdu) {
