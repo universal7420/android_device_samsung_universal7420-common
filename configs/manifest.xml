@@ -47,7 +47,7 @@
     <!--
         RIL/Radio
       -->
-    <hal>
+    <hal format="hidl">
         <name>android.hardware.radio</name>
         <transport>hwbinder</transport>
         <impl level="generic"></impl>
@@ -57,7 +57,7 @@
             <instance>slot1</instance>
         </interface>
     </hal>
-    <hal>
+    <hal format="hidl">
         <name>android.hardware.radio.deprecated</name>
         <transport>hwbinder</transport>
         <impl level="generic"></impl>
@@ -71,7 +71,7 @@
     <!--
         WiFi
       -->
-    <hal>
+    <hal format="hidl">
         <name>android.hardware.wifi</name>
         <transport>hwbinder</transport>
         <impl level="generic"></impl>
