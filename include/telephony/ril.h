@@ -552,6 +552,8 @@ typedef struct {
                                    sent an invalid value */
 } RIL_Data_Call_Response_v11;
 
+#define RIL_Data_Call_Response_Type RIL_Data_Call_Response_v9
+
 typedef enum {
     RADIO_TECH_3GPP = 1, /* 3GPP Technologies - GSM, WCDMA */
     RADIO_TECH_3GPP2 = 2 /* 3GPP2 Technologies - CDMA */
