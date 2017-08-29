@@ -17,6 +17,11 @@
 LOCAL_PATH := device/samsung/zero-common
 BOARD_VENDOR := samsung
 
+# Core board-properties
+TARGET_BOOTLOADER_BOARD_NAME := universal7420
+TARGET_BOARD_PLATFORM := exynos5
+TARGET_SOC := exynos7420
+
 # inherit the splitted configs
 -include $(LOCAL_PATH)/configs/board/*.mk
 
