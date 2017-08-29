@@ -418,7 +418,7 @@ static bool pfwritegov(int cluster, string file, string str) {
 		return false;
 	}
 
-	path << "/sys/devices/system/cpu/cpu" << policy_core;
+	path << "/sys/devices/system/cpu/cpu" << policy_core << "/cpufreq";
 	cpugov_path << path.str() << "/scaling_governor";
 
 	pfread(cpugov_path.str(), cpugov);
