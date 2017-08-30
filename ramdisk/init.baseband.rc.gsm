@@ -21,21 +21,12 @@ on fs
     chmod 0660 /sys/devices/virtual/misc/umts_dm0/dm_state
     chown radio system /sys/devices/virtual/misc/umts_dm0/dm_state
 
-# Parse hardware revision (needs to happen before cbd starts)
-service modemloader /system/bin/modemloader
-    class core
-    oneshot
-
 # CP Boot Daemon (CBD)
 service cpboot-daemon /sbin/cbd -d -t ss333 -b s -m l -P platform/15570000.ufs/by-name/RADIO
     class main
     user root
     group radio cache inet misc audio sdcard_r sdcard_rw log shell
     seclabel u:r:cpboot-daemon:s0
-    disabled
-
-on property:ro.modemloader.done=1
-    start cpboot-daemon
 
 on property:persist.sys.cpboot=disable
     stop cpboot-daemon
