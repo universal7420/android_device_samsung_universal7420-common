@@ -1,5 +1,4 @@
 #
-#
 # Copyright (C) 2016 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +15,8 @@
 #
 
 LOCAL_PATH := $(call my-dir)
+SAM_ROOT := hardware/samsung
 
-ifeq ($(BOARD_VENDOR),samsung)
 ifneq ($(filter zerofltexx zeroflte zeroltexx zerolte zerofltecan zeroltecan zerofltetmo zeroltetmo zerofltespr zeroltespr,$(TARGET_DEVICE)),)
-
-include $(call all-subdir-makefiles,$(LOCAL_PATH))
-
-endif
+  include $(call all-subdir-makefiles,$(LOCAL_PATH))
 endif

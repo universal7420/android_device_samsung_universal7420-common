@@ -15,7 +15,9 @@
 #
 
 LOCAL_PATH := device/samsung/zero-common
-BOARD_VENDOR := samsung
+
+# Do not set vendor to not automatically include hardware/samsung
+BOARD_VENDOR :=
 
 # Core board-properties
 TARGET_BOOTLOADER_BOARD_NAME := universal7420
