@@ -1,7 +1,4 @@
 on post-fs-data
-    #Create directory for hostapd
-    mkdir /data/hostapd 0770 system wifi
-
     # give system access to wpa_supplicant.conf for backup and restore
     mkdir /data/misc/wifi 0770 wifi system
     chmod 0660 /data/misc/wifi/wpa_supplicant.conf
@@ -99,10 +96,3 @@ service olsrd /system/bin/olsrd -f /etc/wifi/olsrd.conf
     class main
     disabled
     oneshot
-
-service hostapd /vendor/bin/hostapd -dddd /data/hostapd/hostapd.conf
-    class late_start
-    user root
-    group root
-    oneshot
-    disabled
