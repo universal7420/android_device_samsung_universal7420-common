@@ -357,11 +357,11 @@ static void power_set_feature(struct power_module *module, feature_t feature, in
 		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
 			ALOGD("%s: set POWER_FEATURE_DOUBLE_TAP_TO_WAKE to \"%d\"", __func__, state);
 			if (state) {
-				pfwrite(POWER_CONFIG_DT2W, false);
+				pfwrite(POWER_CONFIG_DT2W, true);
 				pfwrite_legacy(POWER_DT2W_ENABLED, true);
 			} else {
 				pfwrite(POWER_CONFIG_DT2W, false);
-				pfwrite_legacy(POWER_DT2W_ENABLED, true);
+				pfwrite_legacy(POWER_DT2W_ENABLED, false);
 			}
 			break;
 
