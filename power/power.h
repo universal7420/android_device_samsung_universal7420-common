@@ -78,9 +78,7 @@ static void power_set_interactive(struct power_module __unused * module, int on)
 /***********************************
  * Features
  */
-#ifdef LINEAGE_POWER_HAL
 static int power_get_feature(struct power_module *module __unused, feature_t feature);
-#endif
 static void power_set_feature(struct power_module *module, feature_t feature, int state);
 
 /***********************************
