@@ -1,5 +1,7 @@
 #
+# Copyright (C) 2012 The Android Open Source Project
 # Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2017 TeamNexus
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +16,17 @@
 # limitations under the License.
 #
 
-# Radio
-BOARD_PROVIDES_LIBRIL := true
+service ril-daemon1 /vendor/bin/hw/rild -c 2 -l /system/lib64/libsec-ril-dsds.so
+    class main
+    socket rild2 stream 660 system radio
+    socket rild-debug2 stream 660 system radio
+    user radio
+    group radio cache inet misc audio sdcard_r sdcard_rw log vpn system readproc wakelock
+    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+    onrestart restart cpboot-daemon
 
-# Dual-SIM Support
-ifeq ($(BOARD_HAS_DUAL_SIM),true)
+on property:persist.sys.cpboot=disable
+    stop ril-daemon1
 
-  # libril
-  SIM_COUNT := 2
-
-endif
+on property:ro.radio.noril=1
+    stop ril-daemon1

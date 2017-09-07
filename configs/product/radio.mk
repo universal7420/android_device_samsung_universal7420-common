@@ -44,3 +44,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.get_imsi_from_sim=true \
     ro.ril.force_eri_from_xml=true \
     net.tethering.noprovisioning=true
+
+# RIL-service
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/init/rild.rc:system/vendor/etc/init/rild.rc
+
+# Dual-SIM Support
+ifeq ($(BOARD_HAS_DUAL_SIM),true)
+
+  # RIL-service
+  PRODUCT_COPY_FILES += \
+      $(LOCAL_PATH)/configs/init/rild-dsds.rc:system/vendor/etc/init/rild-dsds.rc
+
+endif

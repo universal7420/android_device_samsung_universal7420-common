@@ -16,6 +16,9 @@
 # limitations under the License.
 #
 
+# Dual-SIM Support
+import /vendor/etc/init/rild-dsds.rc
+
 service ril-daemon /vendor/bin/hw/rild -c 1 -l /system/lib64/libsec-ril.so
     class main
     socket rild stream 660 system radio
