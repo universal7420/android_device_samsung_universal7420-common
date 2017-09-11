@@ -112,7 +112,7 @@
 /sys/devices/[0-9]*.decon_fb/lcd/panel/mdnie/scenario   u:object_r:sysfs_mdnie_writable:s0
 
 ####################################
-# deamons
+# daemons
 /system/bin/mcDriverDaemon   u:object_r:tee_exec:s0
 /system/bin/macloader        u:object_r:macloader_exec:s0
 /sbin/cbd                    u:object_r:cpboot-daemon_exec:s0
@@ -120,6 +120,9 @@
 /system/bin/sensorhubservice u:object_r:sensorhubservice_exec:s0
 /system/bin/wifiloader       u:object_r:wifiloader_exec:s0
 /system/bin/lhd              u:object_r:lhd_exec:s0
+/system/bin/atrace           u:object_r:sec_atrace_exec:s0
+/system/bin/drmserver        u:object_r:sec_drmserver_exec:s0
+/system/bin/idmap            u:object_r:sec_idmap_exec:s0
 
 ####################################
 # debugging

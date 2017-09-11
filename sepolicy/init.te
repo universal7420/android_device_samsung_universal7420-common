@@ -32,3 +32,9 @@ allow init camera_device:lnk_file { relabelto };
 allow init camera_device:dir { relabelto };
 allow init debugfs:file write;
 allow init efs_file:dir mounton;
+
+# superuser
+allow init su:process { transition rlimitinh siginh noatsecure };
+
+# RIL
+allow init socket_device:sock_file { create open read write getattr setattr };
