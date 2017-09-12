@@ -7,13 +7,3 @@ allow priv_app device:dir r_dir_perms;
 # /proc
 allow priv_app proc_interrupts:file r_file_perms;
 allow priv_app proc_modules:file r_file_perms;
-
-# executable-types
-type sec_atrace_exec, exec_type, file_type;
-type sec_drmserver_exec, exec_type, file_type;
-type sec_idmap_exec, exec_type, file_type;
-
-# executables
-allow priv_app sec_atrace_exec:file rx_file_perms;
-allow priv_app sec_drmserver_exec:file rx_file_perms;
-allow priv_app sec_idmap_exec:file rx_file_perms;
