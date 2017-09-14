@@ -400,4 +400,7 @@
          Otherwise, the buttons will light up whenever the user interacts with the device -->
 	<!-- TODO: Uncomment this if Lineage has re-added support -->
     <!-- <bool name="config_buttonLightOnKeypressOnly">true</bool> -->
+
+    <!-- If true, the display will be shifted around in ambient mode. -->
+    <bool name="config_enableBurnInProtection">true</bool>
 </resources>
