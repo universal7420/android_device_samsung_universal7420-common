@@ -153,7 +153,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 * Boosting
 		 */
 		case POWER_HINT_INTERACTION:
-			ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
+			// ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
 
 			power_boostpulse(value ? value : 50000);
 			power_boostpulse(value ? value : 50000);
@@ -161,7 +161,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			break;
 
         case POWER_HINT_CPU_BOOST:
-			ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
+			// ALOGI("%s: hint(POWER_HINT_CPU_BOOST, %d, %llu)", __func__, value, (unsigned long long)data);
 
 			power_boostpulse(value);
 			power_boostpulse(value);
@@ -248,7 +248,7 @@ static void power_boostpulse(int duration) {
 		return;
 	}
 
-	ALOGD("%s: duration     = %d", __func__, duration);
+	// ALOGD("%s: duration     = %d", __func__, duration);
 
 	if (duration > 0) {
 		pfwritegov(0, "boostpulse_duration", duration);
