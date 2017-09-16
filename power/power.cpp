@@ -403,21 +403,12 @@ static bool pfwrite(string path, unsigned int value) {
 	return pfwrite(path, to_string(value));
 }
 
-static bool pfwritegov(int cluster, string file, string str) {
+static bool pfwritegov(int core, string file, string str) {
 	string cpugov;
 	ostringstream path;
 	ostringstream cpugov_path;
-	int policy_core;
 
-	if (cluster == 0) {
-		policy_core = 0;
-	} else if (cluster == 1) {
-		policy_core = 4;
-	} else {
-		return false;
-	}
-
-	path << "/sys/devices/system/cpu/cpu" << policy_core << "/cpufreq";
+	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq";
 	cpugov_path << path.str() << "/scaling_governor";
 
 	pfread(cpugov_path.str(), cpugov);
@@ -431,16 +422,16 @@ static bool pfwritegov(int cluster, string file, string str) {
 	return pfwrite(path.str(), str);
 }
 
-static bool pfwritegov(int cluster, string file, bool flag) {
-	return pfwritegov(cluster, file, flag ? 1 : 0);
+static bool pfwritegov(int core, string file, bool flag) {
+	return pfwritegov(core, file, flag ? 1 : 0);
 }
 
-static bool pfwritegov(int cluster, string file, int value) {
-	return pfwritegov(cluster, file, to_string(value));
+static bool pfwritegov(int core, string file, int value) {
+	return pfwritegov(core, file, to_string(value));
 }
 
-static bool pfwritegov(int cluster, string file, unsigned int value) {
-	return pfwritegov(cluster, file, to_string(value));
+static bool pfwritegov(int core, string file, unsigned int value) {
+	return pfwritegov(core, file, to_string(value));
 }
 
 static bool pfread(string path, int *v) {
@@ -463,7 +454,7 @@ static bool pfread(string path, int *v) {
 	return true;
 }
 
-static bool pfread(string path, string str) {
+static bool pfread(string path, string &str) {
 	ifstream file(path);
 
 	if (!file.is_open()) {

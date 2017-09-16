@@ -90,12 +90,12 @@ static bool pfwrite(string path, string str);
 static bool pfwrite(string path, bool flag);
 static bool pfwrite(string path, int value);
 static bool pfwrite(string path, unsigned int value);
-static bool pfwritegov(int cluster, string file, string str);
-static bool pfwritegov(int cluster, string file, bool flag);
-static bool pfwritegov(int cluster, string file, int value);
-static bool pfwritegov(int cluster, string file, unsigned int value);
+static bool pfwritegov(int core, string file, string str);
+static bool pfwritegov(int core, string file, bool flag);
+static bool pfwritegov(int core, string file, int value);
+static bool pfwritegov(int core, string file, unsigned int value);
 static bool pfread(string path, int *v);
-static bool pfread(string path, string str);
+static bool pfread(string path, string &str);
 
 // legacy I/O
 static bool pfwrite_legacy(string path, string str);
