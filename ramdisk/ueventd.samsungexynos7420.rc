@@ -86,6 +86,11 @@
 # Secure MEM driver
 /dev/s5p-smem             0660   drm        drmrpc
 
+# cpufreq parameters
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_governor         0664    system  system
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_max_freq         0664    system  system
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq         0664    system  system
+
 # interactive governor parameters
 /sys/devices/system/cpu/cpu*   cpufreq/interactive/above_hispeed_delay         0664    system  system
 /sys/devices/system/cpu/cpu*   cpufreq/interactive/boost                       0664    system  system
