@@ -148,6 +148,13 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 			power_set_profile(value ? PROFILE_HIGH_PERFORMANCE : requested_power_profile);
 			break;
+
+#ifdef POWER_HAS_NEXUSOS_HINTS
+		case POWER_HINT_DREAMING_OR_DOZING:
+			ALOGI("%s: hint(POWER_HINT_DREAMING_OR_DOZING, %d, %llu)", __func__, value, (unsigned long long)data);
+			power_set_profile(value ? PROFILE_DREAMING_OR_DOZING : requested_power_profile);
+			break;
+#endif
 			
 		/***********************************
 		 * Boosting
@@ -200,7 +207,7 @@ static void power_set_profile(int profile) {
 	current_power_profile = profile;
 
 	// apply settings
-	struct power_profile data = power_profiles[current_power_profile + 1];
+	struct power_profile data = power_profiles[current_power_profile + 2];
 
 	/*********************
 	 * CPU Cluster0

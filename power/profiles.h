@@ -53,7 +53,7 @@ struct power_profile {
 	int ipa_control_temp;
 	bool power_efficient_workqueue;
 
-} power_profiles[PROFILE_MAX_USABLE + 1] = {
+} power_profiles[PROFILE_MAX_USABLE + 2] = {
 
 	/***********
 	 * PROFILE_SCREEN_OFF
@@ -78,6 +78,32 @@ struct power_profile {
 			.booster_table = "0 0 0 0 0 0"
 		},
 		.ipa_control_temp = 35,
+		.power_efficient_workqueue = true,
+	},
+
+	/***********
+	 * PROFILE_DREAMING_OR_DOZING
+	 */
+	{
+		.cpu = {
+			.cl0 = {
+				.freq_max = 400000,
+				.freq_min = 200000,
+			},
+			.cl1 = {
+				.freq_max = 200000,
+				.freq_min = 200000,
+			},
+		},
+		.gpu = {
+			.min_lock = 100,
+			.max_lock = 266,
+		},
+		.input = {
+			.booster = false,
+			.booster_table = "0 0 0 0 0 0"
+		},
+		.ipa_control_temp = 40,
 		.power_efficient_workqueue = true,
 	},
 

@@ -26,13 +26,14 @@ using namespace std;
 /*
  * Macros
  */
-#define PROFILE_SCREEN_OFF          -1
-#define PROFILE_POWER_SAVE          0
-#define PROFILE_BALANCED            1
-#define PROFILE_HIGH_PERFORMANCE    2
-#define PROFILE_BIAS_POWER_SAVE     3
-#define PROFILE_BIAS_PERFORMANCE    4
-#define PROFILE_MAX_USABLE          5
+#define PROFILE_SCREEN_OFF            -2
+#define PROFILE_DREAMING_OR_DOZING    -1
+#define PROFILE_POWER_SAVE            0
+#define PROFILE_BALANCED              1
+#define PROFILE_HIGH_PERFORMANCE      2
+#define PROFILE_BIAS_POWER_SAVE       3
+#define PROFILE_BIAS_PERFORMANCE      4
+#define PROFILE_MAX_USABLE            5
 
 #define INPUT_STATE_DISABLE    0
 #define INPUT_STATE_ENABLE     1
