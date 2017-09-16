@@ -276,10 +276,12 @@ static void power_input_device_state(int state) {
 	pfread(POWER_DT2W_ENABLED, &dt2w_sysfs);
 	pfread(POWER_CONFIG_ALWAYS_ON_FP, &always_on_fp);
 
+#if LOG_NDEBUG
 	ALOGD("%s: state         = %d", __func__, state);
 	ALOGD("%s: dt2w          = %d", __func__, dt2w);
 	ALOGD("%s: dt2w_sysfs    = %d", __func__, dt2w_sysfs);
 	ALOGD("%s: always_on_fp  = %d", __func__, always_on_fp);
+#endif
 
 	switch (state) {
 		case INPUT_STATE_DISABLE:
@@ -324,7 +326,10 @@ static void power_input_device_state(int state) {
 
 static void power_set_interactive(struct power_module __unused * module, int on) {
 	int screen_is_on = (on != 0);
+
+#if LOG_NDEBUG
 	ALOGD("%s: on = %d", __func__, on);
+#endif
 
 	if (!screen_is_on) {
 		power_set_profile(PROFILE_SCREEN_OFF);
@@ -384,7 +389,10 @@ static bool pfwrite(string path, string str) {
 		return false;
 	}
 
+#if LOG_NDEBUG
 	ALOGI("%s: store \"%s\" to %s", __func__, str.c_str(), path.c_str());
+#endif
+
 	file << str;
 	file.close();
 
