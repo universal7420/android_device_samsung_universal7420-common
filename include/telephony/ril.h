@@ -100,7 +100,6 @@ extern "C" {
 #define MAX_QEMU_PIPE_NAME_LENGTH  11
 #define MAX_UUID_LENGTH 64
 
-
 typedef void * RIL_Token;
 
 typedef enum {
@@ -5566,6 +5565,8 @@ typedef struct {
   */
 #define RIL_REQUEST_SET_SIM_CARD_POWER 140
 /***********************************************************************/
+
+#define RIL_OEM_REQUEST_BASE 10000
 
 /*
  * You normally find these constants if you decompile RILConstants.class in
