@@ -57,6 +57,15 @@ on post-fs
 on post-fs-data
     setprop vold.post_fs_data_done 1
 
+# Reset notification-LED
+	write /sys/class/leds/led_b/brightness 0
+	write /sys/class/leds/led_g/brightness 0
+	write /sys/class/leds/led_r/brightness 0
+	write /sys/class/leds/led_w/brightness 0
+
+# Reset touchkeys
+	write /sys/class/sec/sec_touchkey/brightness 0
+
 # Permissions for audio
     chown system radio /sys/class/audio/earjack/select_jack
     chown system radio /sys/class/audio/earjack/key_state
