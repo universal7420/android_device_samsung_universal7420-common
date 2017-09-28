@@ -20,6 +20,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.chipname=exynos7420 \
     ro.nfc.sec_hal=true \
     ro.sf.lcd_density=640 \
+    persist.sys.adb.shell=/system/xbin/bash \
     ro.sys.sdcardfs=1 \
     af.fast_track_multiplier=1 \
     audio_hal.force_voice_config=wide \
