@@ -40,10 +40,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # GPU
 PRODUCT_PROPERTY_OVERRIDES += \
-	debug.composition.type=dyn \
+	debug.composition.type=gpu \
 	ro.opengles.version=196610 \
-	video.accelerate.hw=1 \
-	debug.egl.profiler=1
+	video.accelerate.hw=1
 
 # HWUI
 PRODUCT_PROPERTY_OVERRIDES += \
