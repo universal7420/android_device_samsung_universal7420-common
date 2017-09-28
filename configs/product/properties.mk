@@ -33,7 +33,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heaptargetutilization=0.75 \
     dalvik.vm.heapminfree=2m \
     dalvik.vm.heapmaxfree=8m
-	
+
+# GMS
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.product.first_api_level=22
+
 # GPU
 PRODUCT_PROPERTY_OVERRIDES += \
 	debug.composition.type=dyn \
