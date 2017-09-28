@@ -62,7 +62,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # H/W Composer
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.hwc.force_gpu=0 \
-    debug.hwc.max_hw_overlays=1 \
+    debug.hwc.max_hw_overlays=5 \
     debug.egl.hw=1 \
     debug.sf.hw=1 \
     persist.sys.ui.hw=true
