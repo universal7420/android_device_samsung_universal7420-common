@@ -18,4 +18,4 @@
 # Override build-properties to avoid too long fingerprints
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BUILD_FINGERPRINT="Samsung/$(PRODUCT_NAME)/$(PRODUCT_NAME):8.0.0/OPR6.170623.012/$(BUILD_NUMBER):userdebug/test-keys" \
-    PRIVATE_BUILD_DESC="$(PRODUCT_NAME)-user 8.0.0 OPR6.170623.012 $(BUILD_NUMBER) test-keys"
+    PRIVATE_BUILD_DESC="$(PRODUCT_NAME)-userdebug 8.0.0 OPR6.170623.012 $(BUILD_NUMBER) test-keys"
