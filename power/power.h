@@ -73,7 +73,7 @@ static void power_boostpulse(int duration);
 /***********************************
  * Inputs
  */
-static void power_input_device_state(int state);
+static void power_input_device_state(int state, bool is_ambient_display);
 static void power_set_interactive(struct power_module __unused * module, int on);
 
 /***********************************
