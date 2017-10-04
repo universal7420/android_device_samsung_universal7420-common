@@ -15,9 +15,14 @@
 # limitations under the License.
 #
 
+zero_build_fingerprint := "Samsung/$(PRODUCT_NAME)/$(PRODUCT_NAME):$(PLATFORM_VERSION)/$(BUILD_ID)/$(BUILD_NUMBER):$(TARGET_BUILD_VARIANT)/test-keys"
+zero_build_flavor      := ="$(PRODUCT_NAME)-$(TARGET_BUILD_VARIANT)"
+zero_build_descr       := "$(zero_build_flavor) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER) test-keys"
+
 # Override build-properties to avoid too long fingerprints
 PRODUCT_BUILD_PROP_OVERRIDES += \
-	BUILD_DISPLAY_ID="$(PRODUCT_NAME)-$(TARGET_BUILD_VARIANT) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER) test-keys" \
-    BUILD_FINGERPRINT="Samsung/$(PRODUCT_NAME)/$(PRODUCT_NAME):$(PLATFORM_VERSION)/$(BUILD_ID)/$(BUILD_NUMBER):$(TARGET_BUILD_VARIANT)/test-keys" \
-    PRIVATE_BUILD_DESC="$(PRODUCT_NAME)-$(TARGET_BUILD_VARIANT) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER) test-keys" \
-	TARGET_BUILD_FLAVOR="$(PRODUCT_NAME)-$(TARGET_BUILD_VARIANT)"
+	BUILD_DISPLAY_ID=$(zero_build_descr) \
+    PRIVATE_BUILD_DESC=$(zero_build_descr) \
+    BUILD_FINGERPRINT=$(zero_build_fingerprint) \
+    BUILD_FINGERPRINT_FROM_FILE=$(zero_build_fingerprint) \
+	TARGET_BUILD_FLAVOR="$(zero_build_flavor)"
