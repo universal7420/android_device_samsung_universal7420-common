@@ -16,7 +16,7 @@
 #
 
 zero_build_fingerprint := "Samsung/$(PRODUCT_NAME)/$(PRODUCT_NAME):$(PLATFORM_VERSION)/$(BUILD_ID)/$(BUILD_NUMBER):$(TARGET_BUILD_VARIANT)/test-keys"
-zero_build_flavor      := ="$(PRODUCT_NAME)-$(TARGET_BUILD_VARIANT)"
+zero_build_flavor      := "$(PRODUCT_NAME)-$(TARGET_BUILD_VARIANT)"
 zero_build_descr       := "$(zero_build_flavor) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER) test-keys"
 
 # Override build-properties to avoid too long fingerprints
