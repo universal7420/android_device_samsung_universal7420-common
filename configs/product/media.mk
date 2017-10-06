@@ -26,3 +26,7 @@ PRODUCT_COPY_FILES += \
 # media build properties
 PRODUCT_PROPERTY_OVERRIDES += \
 	persist.media.treble_omx=false
+
+# OpenMAX shim
+PRODUCT_PACKAGES += \
+	libOMX.Exynos_shim
