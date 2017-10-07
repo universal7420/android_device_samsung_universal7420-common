@@ -153,7 +153,7 @@ struct power_profile {
 		},
 		.input = {
 			.booster = true,
-			.booster_table = "300 0 800000 0 0 0"
+			.booster_table = "300 0 1000000 0 0 0"
 		},
 		.ipa_control_temp = 65,
 		.power_efficient_workqueue = true,
