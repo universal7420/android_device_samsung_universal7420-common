@@ -107,7 +107,7 @@ static void power_init(struct power_module __unused * module) {
 	power_set_profile(PROFILE_BALANCED);
 
 	// initialize all input-devices
-	power_input_device_state(INPUT_STATE_ENABLE, false);
+	power_input_device_state(1);
 
 	// set the default settings
 	if (!is_dir("/data/power"))
@@ -152,7 +152,6 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 #ifdef POWER_HAS_NEXUSOS_HINTS
 		case POWER_HINT_DREAMING_OR_DOZING:
 			ALOGI("%s: hint(POWER_HINT_DREAMING_OR_DOZING, %d, %llu)", __func__, value, (unsigned long long)data);
-			power_input_device_state(value ? INPUT_STATE_DISABLE : INPUT_STATE_ENABLE, true /* is_ambient_display */);
 			power_set_profile(value ? PROFILE_DREAMING_OR_DOZING : requested_power_profile);
 			break;
 #endif
@@ -181,7 +180,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 */
 		case POWER_HINT_DISABLE_TOUCH:
 			ALOGI("%s: hint(POWER_HINT_DISABLE_TOUCH, %d, %llu)", __func__, value, (unsigned long long)data);
-			power_input_device_state(value ? INPUT_STATE_DISABLE : INPUT_STATE_ENABLE, false /* is_ambient_display */);
+			power_input_device_state(value ? 0 : 1);
 			break;
 
 		default: break;
@@ -270,7 +269,7 @@ static void power_boostpulse(int duration) {
 /***********************************
  * Inputs
  */
-static void power_input_device_state(int state, bool is_ambient_display) {
+static void power_input_device_state(int state) {
 	int dt2w = 0, dt2w_sysfs = 0, always_on_fp = 0;
 
 	pfread(POWER_CONFIG_DT2W, &dt2w);
@@ -290,9 +289,7 @@ static void power_input_device_state(int state, bool is_ambient_display) {
 			// save to current state to prevent enabling
 			pfread(POWER_TOUCHKEYS_ENABLED, &input_state_touchkeys);
 
-			if (!is_ambient_display)
-				pfwrite(POWER_TOUCHSCREEN_ENABLED, false);
-
+			pfwrite(POWER_TOUCHSCREEN_ENABLED, false);
 			pfwrite(POWER_TOUCHKEYS_ENABLED, false);
 			pfwrite(POWER_TOUCHKEYS_BRIGTHNESS, 0);
 
@@ -317,7 +314,7 @@ static void power_input_device_state(int state, bool is_ambient_display) {
 			break;
 	}
 
-	if (dt2w && !is_ambient_display) {
+	if (dt2w) {
 		pfwrite_legacy(POWER_DT2W_ENABLED, true);
 	} else {
 		pfwrite_legacy(POWER_DT2W_ENABLED, false);
@@ -340,7 +337,7 @@ static void power_set_interactive(struct power_module __unused * module, int on)
 		power_set_profile(requested_power_profile);
 	}
 
-	power_input_device_state(screen_is_on ? INPUT_STATE_ENABLE : INPUT_STATE_DISABLE, false);
+	power_input_device_state(screen_is_on);
 }
 
 /***********************************
