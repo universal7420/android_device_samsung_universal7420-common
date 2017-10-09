@@ -20,9 +20,6 @@ TARGET_AUDIOHAL_VARIANT := samsung
 # Build
 PRODUCT_SKIP_FINGERPRINT_FROM_FILE := true
 
-# Camera
-BOARD_USE_SAMSUNG_CAMERAFORMAT_NV21 := true
-
 # Include an expanded selection of fonts
 EXTENDED_FONT_FOOTPRINT := true
 
