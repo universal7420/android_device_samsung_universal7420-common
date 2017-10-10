@@ -675,10 +675,6 @@ on fs
     chmod 0664 /sys/bus/iio/devices/invensense/buffer/length
     chmod 0664 /sys/bus/iio/devices/invensense/control
 
-# usb detect
-    mkdir /dev/bus 0755 root root
-    mkdir /dev/bus/usb 0755 root root
-
 # OTG Test
     chown system radio /sys/class/host_notify/usb_otg/booster
     chmod 0664 /sys/class/host_notify/usb_otg/booster
