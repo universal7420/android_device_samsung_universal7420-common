@@ -28,6 +28,12 @@
 	 */
 
 
+### Further Credits
+ * [@minealex2244](https://github.com/minealex2244),
+ * [@Noxxxious](https://github.com/Noxxxious) and 
+ * [@Wyzp](https://github.com/Wyzp) for their help on the kernel
+
+
 ### License
 Apache License 2.0 (Apache-2.0) (Located at LICENSE, read more at [tldrlegal.com/license/apache-license-2.0](https://tldrlegal.com/license/apache-license-2.0-%28apache-2.0%29))
 
