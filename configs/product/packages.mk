@@ -33,4 +33,5 @@ PRODUCT_PACKAGES += \
 
 # Samsung
 PRODUCT_PACKAGES += \
+    HealthService \
     SamsungServiceMode
