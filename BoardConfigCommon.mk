@@ -29,6 +29,3 @@ TARGET_SOC := exynos7420
 
 # inherit from the proprietary version
 -include vendor/samsung/zero-common/BoardConfigVendor.mk
-
-# inherit from the NexusOS vendor-repo
--include vendor/nexus/board.mk
