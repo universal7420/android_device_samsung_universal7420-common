@@ -14,9 +14,12 @@
 # limitations under the License.
 #
 
-# Hardware
+# LineageOS HW
 BOARD_HARDWARE_CLASS += hardware/samsung/lineagehw
 BOARD_HARDWARE_CLASS += device/samsung/zero-common/lineagehw
+
+# NexusOS HW
+BOARD_NEXUS_HARDWARE_CLASS += device/samsung/zero-common/nexus/hardware
 
 # HWCServices
 BOARD_USES_HWC_SERVICES := true
