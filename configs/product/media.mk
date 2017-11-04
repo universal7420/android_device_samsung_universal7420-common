@@ -25,5 +25,9 @@ PRODUCT_COPY_FILES += \
 
 # media build properties
 PRODUCT_PROPERTY_OVERRIDES += \
-	media.sf.omx-plugin=libffmpeg_omx.so \
-    persist.media.treble_omx=false
+    media.sf.omx-plugin=libffmpeg_omx.so \
+    persist.media.treble_omx=true
+
+# OMX workarounds
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/init/android.hardware.media.omx@1.0-service.rc:system/vendor/etc/init/android.hardware.media.omx@1.0-service.rc
