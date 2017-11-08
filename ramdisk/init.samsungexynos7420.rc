@@ -34,21 +34,21 @@ on init
 
 on post-fs
 # sda block device
-    write /sys/block/sda/queue/scheduler "cfq"
+    write /sys/block/sda/queue/scheduler "row"
     write /sys/block/sda/queue/read_ahead_kb 256
     write /sys/block/sda/queue/rq_affinity 2
     write /sys/block/sda/queue/add_random 0
     write /sys/block/sda/queue/rotational 0
 
 # sdb block device
-    write /sys/block/sdb/queue/scheduler "cfq"
+    write /sys/block/sdb/queue/scheduler "row"
     write /sys/block/sdb/queue/read_ahead_kb 256
     write /sys/block/sdb/queue/rq_affinity 2
     write /sys/block/sdb/queue/add_random 0
     write /sys/block/sdb/queue/rotational 0
 
 # sdc block device
-    write /sys/block/sdc/queue/scheduler "cfq"
+    write /sys/block/sdc/queue/scheduler "row"
     write /sys/block/sdc/queue/read_ahead_kb 256
     write /sys/block/sdc/queue/rq_affinity 2
     write /sys/block/sdc/queue/add_random 0
