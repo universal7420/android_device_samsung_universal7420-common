@@ -6,4 +6,3 @@ getgid32: 1
 getegid32: 1
 getpid: 1
 uname: 1
-openat: 1
