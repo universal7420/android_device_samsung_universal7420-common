@@ -48,13 +48,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # RIL-service
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init/rild.rc:system/vendor/etc/init/rild.rc
+    $(LOCAL_PATH)/configs/init/rild.rc:system/vendor/etc/init/rild.rc \
+    $(LOCAL_PATH)/configs/init/rild-dsds.sh:system/vendor/bin/hw/rild-dsds.sh
 
 # Dual-SIM Support
 ifeq ($(BOARD_HAS_DUAL_SIM),true)
-
-  # RIL-service
-  PRODUCT_COPY_FILES += \
-      $(LOCAL_PATH)/configs/init/rild-dsds.rc:system/vendor/etc/init/rild-dsds.rc
 
 endif
