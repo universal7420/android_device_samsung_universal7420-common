@@ -15,8 +15,9 @@
 #
 
 LOCAL_PATH := $(call my-dir)
-SAM_ROOT := hardware/samsung
 
+ifeq ($(BOARD_VENDOR),samsung)
 ifneq ($(filter zerofltexx zeroltexx zerofltecan zeroltecan zerofltespr zeroltespr zeroflteskt zerolteskt,$(TARGET_DEVICE)),)
   include $(call all-subdir-makefiles,$(LOCAL_PATH))
+endif
 endif
