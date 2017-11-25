@@ -4,7 +4,6 @@ import init.baseband.rc
 import init.carrier.rc
 import init.power.rc
 import init.battery.rc
-import init.gps.rc
 import init.nexus.rc
 
 on early-init

@@ -19,7 +19,6 @@ PRODUCT_PACKAGES += \
     fstab.samsungexynos7420 \
     init.baseband.rc \
     init.battery.rc \
-    init.gps.rc \
     init.power.rc \
     init.rilchip.rc \
     init.samsungexynos7420.rc \
