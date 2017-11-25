@@ -13,7 +13,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-# Workaround for non-working incall/callspeaker-mic
-RIL_SET_CALL_CLOCK_SYNC_WORKAROUND := true
-RIL_SET_TWO_MIC_CONTROL_WORKAROUND := true
