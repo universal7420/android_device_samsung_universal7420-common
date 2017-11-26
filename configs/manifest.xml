@@ -17,7 +17,7 @@
     </hal>
 
     <!--
-        Fingerprint
+        Graphics
       -->
     <hal format="hidl">
         <name>android.hardware.graphics.allocator</name>
@@ -40,6 +40,23 @@
         <version>3.0</version>
         <interface>
             <name>IKeystoreService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
+        OMX
+      -->
+    <hal format="hidl">
+        <name>android.hardware.media.omx</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IOmx</name>
+            <instance>default</instance>
+        </interface>
+        <interface>
+            <name>IOmxStore</name>
             <instance>default</instance>
         </interface>
     </hal>
