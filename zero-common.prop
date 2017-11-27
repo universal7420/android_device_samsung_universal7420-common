@@ -58,7 +58,7 @@ ro.hwui.text_large_cache_height=4096
 # H/W Composer
 #
 debug.hwc.force_gpu=0
-debug.hwc.max_hw_overlays=5
+debug.hwc.max_hw_overlays=1
 debug.egl.hw=1
 debug.sf.enable_hwc_vds=1
 debug.sf.hw=1
