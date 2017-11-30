@@ -175,7 +175,7 @@ struct power_profile {
 		},
 		.gpu = {
 			.min_lock = 420,
-			.max_lock = 852,
+			.max_lock = 772,
 		},
 		.input = {
 			.booster = true,
