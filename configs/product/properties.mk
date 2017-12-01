@@ -16,4 +16,5 @@
 #
 
 # Properties
-TARGET_SYSTEM_PROP += device/samsung/zero-common/zero-common.prop
+PRODUCT_COPY_FILES += \
+    device/samsung/zero-common/zero-common.prop:system/vendor/build.prop
