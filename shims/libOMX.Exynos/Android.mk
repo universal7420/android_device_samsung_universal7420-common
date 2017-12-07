@@ -36,7 +36,8 @@ LOCAL_C_INCLUDES := \
 	hardware/samsung_slsi-cm/openmax/component/common/ \
 	hardware/samsung_slsi-cm/openmax/include/ \
 	hardware/samsung_slsi-cm/openmax/include/exynos/ \
-	hardware/samsung_slsi-cm/openmax/osal/
+	hardware/samsung_slsi-cm/openmax/osal/ \
+	$(TOP)/frameworks/native/libs/nativewindow/include
 
 LOCAL_ADDITIONAL_DEPENDENCIES += \
 	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
