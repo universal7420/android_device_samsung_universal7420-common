@@ -162,8 +162,8 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		case POWER_HINT_INTERACTION:
 			// ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
 
-			power_boostpulse(value ? value : 50000);
-			power_boostpulse(value ? value : 50000);
+			/* power_boostpulse(value ? value : 50000);
+			power_boostpulse(value ? value : 50000); */
 
 			break;
 
