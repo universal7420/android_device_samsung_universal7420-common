@@ -22,4 +22,4 @@ service mediacodec /vendor/bin/hw/android.hardware.media.omx@1.0-service
     group camera drmrpc mediadrm audio
     ioprio rt 4
     writepid /dev/cpuset/foreground/tasks
-    setenv LD_PRELOAD "/vendor/lib/libOMX.Exynos_shim.so"
+    # setenv LD_PRELOAD "/vendor/lib/libOMX.Exynos_shim.so"
