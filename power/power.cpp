@@ -224,6 +224,18 @@ static void power_set_profile(int profile) {
 	pfwritegov(4, "hispeed_freq", data.cpu.cl1.freq_max);
 
 	/*********************
+	 * HMP
+	 */
+	pfwrite("/sys/kernel/hmp/boost",                   data.hmp.boost);
+	pfwrite("/sys/kernel/hmp/semiboost",               data.hmp.semiboost);
+	pfwrite("/sys/kernel/hmp/active_down_migration",   data.hmp.active_down_migration);
+	pfwrite("/sys/kernel/hmp/aggressive_up_migration", data.hmp.aggressive_up_migration);
+	pfwrite("/sys/kernel/hmp/down_threshold",          data.hmp.thresholds.down);
+	pfwrite("/sys/kernel/hmp/up_threshold",            data.hmp.thresholds.up);
+	pfwrite("/sys/kernel/hmp/sb_down_threshold",       data.hmp.sb_thresholds.down);
+	pfwrite("/sys/kernel/hmp/sb_up_threshold",         data.hmp.sb_thresholds.up);
+
+	/*********************
 	 * GPU
 	 */
 	pfwrite("/sys/devices/14ac0000.mali/dvfs_min_lock", data.gpu.min_lock);

@@ -26,6 +26,13 @@ struct power_profile_cpucluster {
 
 };
 
+struct power_profile_hmp_thresholds {
+
+	unsigned int down;
+	unsigned int up;
+
+};
+
 struct power_profile {
 
 	struct {
@@ -35,6 +42,19 @@ struct power_profile {
 		struct power_profile_cpucluster cl1;
 
 	} cpu;
+
+	struct {
+
+		bool boost;
+		bool semiboost;
+
+		bool active_down_migration;
+		bool aggressive_up_migration;
+
+		struct power_profile_hmp_thresholds thresholds;
+		struct power_profile_hmp_thresholds sb_thresholds;
+
+	} hmp;
 
 	struct {
 
@@ -69,6 +89,20 @@ struct power_profile {
 				.freq_min = 200000,
 			},
 		},
+		.hmp = {
+			.boost = 0,
+			.semiboost = 0,
+			.active_down_migration = 1,
+			.aggressive_up_migration = 0,
+			.thresholds = {
+				.down = 327,
+				.up = 852,
+			},
+			.sb_thresholds = {
+				.down = 527,
+				.up = 652,
+			},
+		},
 		.gpu = {
 			.min_lock = 100,
 			.max_lock = 100,
@@ -93,6 +127,20 @@ struct power_profile {
 			.cl1 = {
 				.freq_max = 200000,
 				.freq_min = 200000,
+			},
+		},
+		.hmp = {
+			.boost = 0,
+			.semiboost = 0,
+			.active_down_migration = 1,
+			.aggressive_up_migration = 0,
+			.thresholds = {
+				.down = 327,
+				.up = 852,
+			},
+			.sb_thresholds = {
+				.down = 527,
+				.up = 652,
 			},
 		},
 		.gpu = {
@@ -121,6 +169,20 @@ struct power_profile {
 				.freq_min = 200000,
 			},
 		},
+		.hmp = {
+			.boost = 0,
+			.semiboost = 0,
+			.active_down_migration = 1,
+			.aggressive_up_migration = 0,
+			.thresholds = {
+				.down = 327,
+				.up = 852,
+			},
+			.sb_thresholds = {
+				.down = 527,
+				.up = 652,
+			},
+		},
 		.gpu = {
 			.min_lock = 100,
 			.max_lock = 544,
@@ -145,6 +207,20 @@ struct power_profile {
 			.cl1 = {
 				.freq_max = 2100000,
 				.freq_min = 400000,
+			},
+		},
+		.hmp = {
+			.boost = 0,
+			.semiboost = 1,
+			.active_down_migration = 1,
+			.aggressive_up_migration = 0,
+			.thresholds = {
+				.down = 200,
+				.up = 300,
+			},
+			.sb_thresholds = {
+				.down = 240,
+				.up = 260,
 			},
 		},
 		.gpu = {
@@ -173,6 +249,20 @@ struct power_profile {
 				.freq_min = 800000,
 			},
 		},
+		.hmp = {
+			.boost = 1,
+			.semiboost = 0,
+			.active_down_migration = 0,
+			.aggressive_up_migration = 1,
+			.thresholds = {
+				.down = 100,
+				.up = 200,
+			},
+			.sb_thresholds = {
+				.down = 145,
+				.up = 155,
+			},
+		},
 		.gpu = {
 			.min_lock = 420,
 			.max_lock = 772,
@@ -199,6 +289,20 @@ struct power_profile {
 				.freq_min = 200000,
 			},
 		},
+		.hmp = {
+			.boost = 0,
+			.semiboost = 0,
+			.active_down_migration = 1,
+			.aggressive_up_migration = 0,
+			.thresholds = {
+				.down = 200,
+				.up = 300,
+			},
+			.sb_thresholds = {
+				.down = 240,
+				.up = 260,
+			},
+		},
 		.gpu = {
 			.min_lock = 100,
 			.max_lock = 600,
@@ -223,6 +327,20 @@ struct power_profile {
 			.cl1 = {
 				.freq_max = 2200000,
 				.freq_min = 600000,
+			},
+		},
+		.hmp = {
+			.boost = 0,
+			.semiboost = 1,
+			.active_down_migration = 0,
+			.aggressive_up_migration = 1,
+			.thresholds = {
+				.down = 100,
+				.up = 200,
+			},
+			.sb_thresholds = {
+				.down = 145,
+				.up = 155,
 			},
 		},
 		.gpu = {
