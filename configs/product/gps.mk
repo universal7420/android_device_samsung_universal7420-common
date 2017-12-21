@@ -19,6 +19,10 @@ PRODUCT_PACKAGES += \
 	android.hardware.gnss@1.0-impl \
 	android.hardware.gnss@1.0-service
 
+# OSS packages
+PRODUCT_PACKAGES += \
+    gps.default
+
 # Shims
 PRODUCT_PACKAGES += \
     gpsd_shim
@@ -26,4 +30,5 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps/gps.conf:system/etc/gps.conf \
     $(LOCAL_PATH)/configs/gps/gps.xml:system/etc/gps.xml \
+    $(LOCAL_PATH)/configs/gps/gnss.conf:system/etc/gnss.conf \
     $(LOCAL_PATH)/configs/gps/lhd.conf:system/etc/lhd.conf
