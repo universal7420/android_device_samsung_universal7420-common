@@ -354,14 +354,29 @@ agps_ril_set_set_id (AGpsSetIDType type, const char* setid) {
   }
 }
 
+void
+agps_ril_ni_message (uint8_t *msg, size_t len) {
+  D("msg = %d, len = %d", msg, len);
+}
+
+void
+agps_ril_update_network_state (int connected, int type, int roaming, const char* extra_info) {
+  D("connected = %d, type = %d, roaming = %d, extra_info = %s", connected, type, roaming, extra_info);
+}
+
+void
+agps_ril_update_network_availability (int avaiable, const char* apn) {
+  D("avaiable = %d, apn = %s", avaiable, apn);
+}
+
 static const AGpsRilInterface zkwAGpsRilInterface = {
   .size = sizeof(AGpsRilInterface),
   .init = agps_ril_init,
   .set_ref_location = agps_ril_set_ref_location,
   .set_set_id = agps_ril_set_set_id,
-  .ni_message = NULL,
-  .update_network_state = NULL,
-  .update_network_availability = NULL
+  .ni_message = agps_ril_ni_message,
+  .update_network_state = agps_ril_update_network_state,
+  .update_network_availability = agps_ril_update_network_availability
 };
 
 #endif
