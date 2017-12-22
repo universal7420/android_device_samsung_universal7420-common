@@ -43,10 +43,11 @@
 
 #include <ExynosVideoApi.h>
 #include <Exynos_OMX_Baseport.h>
-#include <Exynos_OSAL_Android.h>
+// #include <Exynos_OSAL_Android.h>
 #include <Exynos_OSAL_ETC.h>
 #include <Exynos_OSAL_Log.h>
 #include <Exynos_OSAL_Memory.h>
+#include <Exynos_OSAL_SharedMemory.h>
 
 using namespace android;
 
@@ -56,6 +57,18 @@ extern "C" {
 
 static int lockCnt = 0;
 static int mem_cnt = 0;
+
+/*************************************************************
+ * Exynos_OSAL_Android.h
+ */
+
+/* hardware/samsung_slsi-cm/openmax/osal/Exynos_OSAL_Android.c:57 */
+typedef enum {
+    kMetadataBufferTypeEncodeOutput = 4,
+
+    // Add more here...
+
+} VendorMetadataBufferType;
 
 
 /*************************************************************
@@ -516,6 +529,140 @@ OMX_ERRORTYPE Exynos_OSAL_UnlockANBHandle(OMX_IN OMX_U32 handle)
     Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "%s: lockCnt:%d", __func__, lockCnt);
 
     Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "%s: buffer unlocked: 0x%x", __func__, handle);
+
+EXIT:
+    FunctionOut();
+
+    return ret;
+}
+
+/* hardware/samsung_slsi-cm/openmax/osal/Exynos_OSAL_Android.cpp:901 */
+OMX_ERRORTYPE Exynos_OSAL_GetInfoFromMetaData(OMX_IN OMX_BYTE pBuffer,
+                                           OMX_OUT OMX_PTR *ppBuf)
+{
+    OMX_ERRORTYPE      ret = OMX_ErrorNone;
+    MetadataBufferType type;
+
+    FunctionIn();
+
+/*
+ * meta data contains the following data format.
+ * payload depends on the MetadataBufferType
+ * ---------------------------------------------------------------
+ * | MetadataBufferType               |         payload          |
+ * ---------------------------------------------------------------
+ *
+ * If MetadataBufferType is kMetadataBufferTypeCameraSource, then
+ * ---------------------------------------------------------------
+ * | kMetadataBufferTypeCameraSource  | addr. of Y | addr. of UV |
+ * ---------------------------------------------------------------
+ *
+ * If MetadataBufferType is kMetadataBufferTypeGrallocSource, then
+ * ---------------------------------------------------------------
+ * | kMetadataBufferTypeGrallocSource |     buffer_handle_t      |
+ * ---------------------------------------------------------------
+ *
+ * If MetadataBufferType is kMetadataBufferTypeEncodeOutput, then
+ * ---------------------------------------------------------------
+ * | kMetadataBufferTypeEncodeOutput  |     buffer_handle_t      |
+ * ---------------------------------------------------------------
+ */
+
+    /* MetadataBufferType */
+    Exynos_OSAL_Memcpy(&type, (MetadataBufferType *)pBuffer, sizeof(MetadataBufferType));
+
+    switch ((int)type) {
+    case kMetadataBufferTypeCameraSource:
+    {
+        void *pAddress = NULL;
+
+        /* Address. of Y */
+        Exynos_OSAL_Memcpy(&pAddress, pBuffer + sizeof(MetadataBufferType), sizeof(void *));
+        ppBuf[0] = (void *)pAddress;
+
+        /* Address. of CbCr */
+        Exynos_OSAL_Memcpy(&pAddress, pBuffer + sizeof(MetadataBufferType) + sizeof(void *), sizeof(void *));
+        ppBuf[1] = (void *)pAddress;
+
+        if ((ppBuf[0] == NULL) || (ppBuf[1] == NULL))
+            ret = OMX_ErrorBadParameter;
+    }
+        break;
+    case kMetadataBufferTypeGrallocSource:
+    {
+        buffer_handle_t    pBufHandle;
+
+        /* buffer_handle_t */
+        Exynos_OSAL_Memcpy(&pBufHandle, pBuffer + sizeof(MetadataBufferType), sizeof(buffer_handle_t));
+        ppBuf[0] = (OMX_PTR)pBufHandle;
+
+        if (ppBuf[0] == NULL)
+            ret = OMX_ErrorBadParameter;
+    }
+        break;
+    case kMetadataBufferTypeEncodeOutput:
+    {
+        OMX_U32          nIonFD         = -1;
+        buffer_handle_t  bufferHandle   = NULL;
+        native_handle_t *pNativeHandle  = NULL;
+
+        bufferHandle = *(buffer_handle_t *)((char *)pBuffer + sizeof(MetadataBufferType));
+        pNativeHandle = (native_handle_t *)bufferHandle;
+
+        /* ION FD. */
+        nIonFD = (OMX_U32)pNativeHandle->data[0];
+        ppBuf[0] = (OMX_PTR *)(uintptr_t)nIonFD;
+    }
+        break;
+    default:
+    {
+        ret = OMX_ErrorBadParameter;
+    }
+        break;
+    }
+
+EXIT:
+    FunctionOut();
+
+    return ret;
+}
+
+/* hardware/samsung_slsi-cm/openmax/osal/Exynos_OSAL_Android.cpp:200 */
+OMX_ERRORTYPE Exynos_OSAL_LockMetaData(
+    OMX_IN OMX_PTR pBuffer,
+    OMX_IN OMX_U32 width,
+    OMX_IN OMX_U32 height,
+    OMX_IN OMX_COLOR_FORMATTYPE format,
+    OMX_OUT OMX_U32 *pStride,
+    OMX_OUT OMX_PTR planes)
+{
+    FunctionIn();
+
+    OMX_ERRORTYPE   ret     = OMX_ErrorNone;
+    OMX_PTR         pBuf    = NULL;
+
+    ret = Exynos_OSAL_GetInfoFromMetaData((OMX_BYTE)pBuffer, &pBuf);
+    if (ret == OMX_ErrorNone)
+        ret = Exynos_OSAL_LockANBHandle(reinterpret_cast<uintptr_t>(pBuf), width, height, format, pStride, planes);
+
+EXIT:
+    FunctionOut();
+
+    return ret;
+}
+
+/* hardware/samsung_slsi-cm/openmax/osal/Exynos_OSAL_Android.cpp:223 */
+OMX_ERRORTYPE Exynos_OSAL_UnlockMetaData(
+    OMX_IN OMX_PTR pBuffer)
+{
+    FunctionIn();
+
+    OMX_ERRORTYPE   ret     = OMX_ErrorNone;
+    OMX_PTR         pBuf    = NULL;
+
+    ret = Exynos_OSAL_GetInfoFromMetaData((OMX_BYTE)pBuffer, &pBuf);
+    if (ret == OMX_ErrorNone)
+        ret = Exynos_OSAL_UnlockANBHandle(reinterpret_cast<uintptr_t>(pBuf));
 
 EXIT:
     FunctionOut();
