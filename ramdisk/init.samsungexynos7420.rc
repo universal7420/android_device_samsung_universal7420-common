@@ -9,6 +9,10 @@ import init.nexus.rc
 on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug mode=755
 
+# Boost device for faster startup
+    write /sys/kernel/hmp/boost "1"
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq "1200000"
+
 on init
     export LD_SHIM_LIBS "/system/lib64/hw/fingerprint.vendor.exynos5.so|/vendor/lib64/libbauthtzcommon_shim.so:/system/lib/libexynoscamera.so|/vendor/lib/libexynoscamera_shim.so:/system/lib64/libexynoscamera.so|/vendor/lib64/libexynoscamera_shim.so:/system/bin/gpsd|/vendor/lib64/gpsd_shim.so"
 
@@ -708,6 +712,11 @@ on fs
 # sdc block device
     chown system system /sys/android_touch/doubletap2wake
     chmod 0664 /sys/android_touch/doubletap2wake
+
+on property:init.svc.bootanim=stopped
+# Reset startup boost
+    write /sys/kernel/hmp/boost "0"
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq "200000"
 
 # ARGOSD
 service argos-daemon /system/bin/argosd
