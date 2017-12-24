@@ -41,6 +41,8 @@ using namespace std;
 #define POWER_CONFIG_DT2W            "/data/power/dt2w"
 #define POWER_CONFIG_PROFILES        "/data/power/profiles"
 #define POWER_CONFIG_BOOST           "/data/power/boost"
+#define POWER_CONFIG_FP_ALWAYS_ON    "/data/power/fp_always_on"
+#define POWER_CONFIG_FP_WAKELOCKS    "/data/power/fp_wakelocks"
 
 #define POWER_DT2W_ENABLED            "/sys/android_touch/doubletap2wake"
 #define POWER_TOUCHKEYS_ENABLED       "/sys/class/input/input0/enabled"
