@@ -43,10 +43,13 @@ using namespace std;
 #define POWER_CONFIG_BOOST           "/data/power/boost"
 
 #define POWER_DT2W_ENABLED            "/sys/android_touch/doubletap2wake"
-#define POWER_FINGERPRINT_ENABLED     "/sys/class/fingerprint/fingerprint/wakelocks_enabled"
 #define POWER_TOUCHKEYS_ENABLED       "/sys/class/input/input0/enabled"
 #define POWER_TOUCHSCREEN_ENABLED     "/sys/class/input/input1/enabled"
 #define POWER_TOUCHKEYS_BRIGTHNESS    "/sys/class/sec/sec_touchkey/brightness"
+
+#define POWER_FINGERPRINT_POWER        "/sys/class/fingerprint/fingerprint/pm"
+#define POWER_FINGERPRINT_REGULATOR    "/sys/class/fingerprint/fingerprint/regulator"
+#define POWER_FINGERPRINT_WAKELOCKS    "/sys/class/fingerprint/fingerprint/wakelocks"
 
 /***********************************
  * Initializing
@@ -72,6 +75,7 @@ static void power_boostpulse(int duration);
 /***********************************
  * Inputs
  */
+static void power_fingerprint_state(bool state);
 static void power_input_device_state(int state);
 static void power_set_interactive(struct power_module __unused * module, int on);
 

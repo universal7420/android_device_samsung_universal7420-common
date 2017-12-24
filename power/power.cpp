@@ -278,6 +278,23 @@ static void power_boostpulse(int duration) {
 /***********************************
  * Inputs
  */
+static void power_fingerprint_state(bool state) {
+	/*
+	 * Ordered power toggling:
+	 *    Turn on:   +Wakelocks  ->  +PM  ->  +Regulator
+	 *    Turn off:  -Regulator  ->  -PM  ->  -Wakelocks
+	 */
+	if (state) {
+		pfwrite(POWER_FINGERPRINT_WAKELOCKS, true);
+		pfwrite(POWER_FINGERPRINT_POWER, true);
+		pfwrite(POWER_FINGERPRINT_REGULATOR, true);
+	} else {
+		pfwrite(POWER_FINGERPRINT_REGULATOR, false);
+		pfwrite(POWER_FINGERPRINT_POWER, false);
+		pfwrite(POWER_FINGERPRINT_WAKELOCKS, false);
+	}
+}
+ 
 static void power_input_device_state(int state) {
 	int dt2w = 0, dt2w_sysfs = 0;
 
@@ -299,19 +316,21 @@ static void power_input_device_state(int state) {
 			pfwrite(POWER_TOUCHSCREEN_ENABLED, false);
 			pfwrite(POWER_TOUCHKEYS_ENABLED, false);
 			pfwrite(POWER_TOUCHKEYS_BRIGTHNESS, 0);
-			pfwrite(POWER_FINGERPRINT_ENABLED, false);
+
+			power_fingerprint_state(false);
 
 			break;
 
 		case INPUT_STATE_ENABLE:
 
 			pfwrite(POWER_TOUCHSCREEN_ENABLED, true);
-			pfwrite(POWER_FINGERPRINT_ENABLED, true);
 
 			if (input_state_touchkeys) {
 				pfwrite(POWER_TOUCHKEYS_ENABLED, true);
 				pfwrite(POWER_TOUCHKEYS_BRIGTHNESS, 255);
 			}
+
+			power_fingerprint_state(true);
 
 			break;
 	}

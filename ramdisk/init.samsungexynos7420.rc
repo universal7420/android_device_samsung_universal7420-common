@@ -447,8 +447,9 @@ on fs
     chown system radio /sys/class/fingerprint/fingerprint/type_check
     chown system radio /sys/class/fingerprint/fingerprint/name
     chown system radio /sys/class/fingerprint/fingerprint/vendor
-    chown system radio /sys/class/fingerprint/fingerprint/enabled
-    chown system radio /sys/class/fingerprint/fingerprint/wakelocks_enabled
+    chown system radio /sys/class/fingerprint/fingerprint/power
+    chown system radio /sys/class/fingerprint/fingerprint/regulator
+    chown system radio /sys/class/fingerprint/fingerprint/wakelocks
 
 # Accelerometer_sensor
     chown system radio /sys/class/sensors/accelerometer_sensor/raw_data
