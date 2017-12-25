@@ -296,19 +296,17 @@ static void power_fingerprint_state(bool state) {
 
 	/*
 	 * Ordered power toggling:
-	 *    Turn on:   +Wakelocks  ->  +PM  ->  +Regulator
-	 *    Turn off:  -Regulator  ->  -PM  ->  -Wakelocks
+	 *    Turn on:   +Wakelocks  ->  +Regulator
+	 *    Turn off:  -Regulator  ->  -Wakelocks
 	 */
 	if (state) {
 		pfwrite(POWER_FINGERPRINT_WAKELOCKS, true);
-		pfwrite(POWER_FINGERPRINT_POWER, true);
 		pfwrite(POWER_FINGERPRINT_REGULATOR, true);
 	} else {
-		if (!fp_wakelocks)
-			pfwrite(POWER_FINGERPRINT_REGULATOR, false);
+		pfwrite(POWER_FINGERPRINT_REGULATOR, false);
 
-		pfwrite(POWER_FINGERPRINT_POWER, false);
-		pfwrite(POWER_FINGERPRINT_WAKELOCKS, false);
+		if (!fp_wakelocks)
+			pfwrite(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
 }
  
