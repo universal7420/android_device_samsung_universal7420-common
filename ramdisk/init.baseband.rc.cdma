@@ -88,14 +88,6 @@ service diag_mdlog_stop /system/bin/diag_mdlog -k
     disabled
     oneshot
 
-service ril-daemon1 /system/bin/rild -c 2
-    class main
-    socket rild2 stream 660 root radio
-    socket rild-debug2 stream 660 radio system
-    user root
-    group radio cache inet misc audio log qcom_diag system drmrpc sdcard_r sdcard_rw diag
-    disabled
-
 service atfwd /system/bin/ATFWD-daemon
     class late_start
     user system

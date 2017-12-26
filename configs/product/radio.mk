@@ -47,8 +47,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
     net.tethering.noprovisioning=true
 
 # RIL-service
+ifneq ($(filter zerofltespr zeroltespr,$(TARGET_DEVICE)),)
+    PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/init/rild.rc.cdma:system/vendor/etc/init/rild.rc
+else
+    PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/init/rild.rc.gsm:system/vendor/etc/init/rild.rc
+endif
+
+# RIL-service helper
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init/rild.rc:system/vendor/etc/init/rild.rc \
     $(LOCAL_PATH)/configs/init/rild-dsds.sh:system/vendor/bin/hw/rild-dsds.sh
 
 # Dual-SIM Support
