@@ -755,10 +755,9 @@ on property:sys.boot_completed=1
 # Change MDNIE mode for vibrant colors
     write /sys/class/mdnie/mdnie/mode 4
 
-service battery_charger /sbin/healthd -c
+service charger /charger
     class charger
-    critical
-    seclabel u:r:healthd:s0
+    seclabel u:r:charger:s0
 
 # DRK/CS service
 service cs_service /system/bin/cs
