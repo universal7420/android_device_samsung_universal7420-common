@@ -26,13 +26,6 @@ struct power_profile_cpucluster {
 
 };
 
-struct power_profile_hmp_thresholds {
-
-	unsigned int down;
-	unsigned int up;
-
-};
-
 struct power_profile {
 
 	struct {
@@ -50,9 +43,6 @@ struct power_profile {
 
 		bool active_down_migration;
 		bool aggressive_up_migration;
-
-		struct power_profile_hmp_thresholds thresholds;
-		struct power_profile_hmp_thresholds sb_thresholds;
 
 	} hmp;
 
@@ -90,18 +80,10 @@ struct power_profile {
 			},
 		},
 		.hmp = {
-			.boost = 0,
-			.semiboost = 0,
-			.active_down_migration = 1,
-			.aggressive_up_migration = 0,
-			.thresholds = {
-				.down = 327,
-				.up = 852,
-			},
-			.sb_thresholds = {
-				.down = 527,
-				.up = 652,
-			},
+			.boost = false,
+			.semiboost = false,
+			.active_down_migration = true,
+			.aggressive_up_migration = false,
 		},
 		.gpu = {
 			.min_lock = 100,
@@ -130,18 +112,10 @@ struct power_profile {
 			},
 		},
 		.hmp = {
-			.boost = 0,
-			.semiboost = 0,
-			.active_down_migration = 1,
-			.aggressive_up_migration = 0,
-			.thresholds = {
-				.down = 327,
-				.up = 852,
-			},
-			.sb_thresholds = {
-				.down = 527,
-				.up = 652,
-			},
+			.boost = false,
+			.semiboost = false,
+			.active_down_migration = true,
+			.aggressive_up_migration = false,
 		},
 		.gpu = {
 			.min_lock = 100,
@@ -170,18 +144,10 @@ struct power_profile {
 			},
 		},
 		.hmp = {
-			.boost = 0,
-			.semiboost = 0,
-			.active_down_migration = 1,
-			.aggressive_up_migration = 0,
-			.thresholds = {
-				.down = 327,
-				.up = 852,
-			},
-			.sb_thresholds = {
-				.down = 527,
-				.up = 652,
-			},
+			.boost = false,
+			.semiboost = false,
+			.active_down_migration = true,
+			.aggressive_up_migration = false,
 		},
 		.gpu = {
 			.min_lock = 100,
@@ -210,18 +176,10 @@ struct power_profile {
 			},
 		},
 		.hmp = {
-			.boost = 0,
-			.semiboost = 1,
-			.active_down_migration = 1,
-			.aggressive_up_migration = 0,
-			.thresholds = {
-				.down = 200,
-				.up = 300,
-			},
-			.sb_thresholds = {
-				.down = 240,
-				.up = 260,
-			},
+			.boost = false,
+			.semiboost = false,
+			.active_down_migration = true,
+			.aggressive_up_migration = false,
 		},
 		.gpu = {
 			.min_lock = 266,
@@ -250,18 +208,10 @@ struct power_profile {
 			},
 		},
 		.hmp = {
-			.boost = 1,
-			.semiboost = 0,
-			.active_down_migration = 0,
-			.aggressive_up_migration = 1,
-			.thresholds = {
-				.down = 100,
-				.up = 200,
-			},
-			.sb_thresholds = {
-				.down = 145,
-				.up = 155,
-			},
+			.boost = true,
+			.semiboost = false,
+			.active_down_migration = false,
+			.aggressive_up_migration = true,
 		},
 		.gpu = {
 			.min_lock = 600,
@@ -290,18 +240,10 @@ struct power_profile {
 			},
 		},
 		.hmp = {
-			.boost = 0,
-			.semiboost = 0,
-			.active_down_migration = 1,
-			.aggressive_up_migration = 0,
-			.thresholds = {
-				.down = 200,
-				.up = 300,
-			},
-			.sb_thresholds = {
-				.down = 240,
-				.up = 260,
-			},
+			.boost = false,
+			.semiboost = false,
+			.active_down_migration = true,
+			.aggressive_up_migration = false,
 		},
 		.gpu = {
 			.min_lock = 160,
@@ -330,18 +272,10 @@ struct power_profile {
 			},
 		},
 		.hmp = {
-			.boost = 0,
-			.semiboost = 1,
-			.active_down_migration = 0,
-			.aggressive_up_migration = 1,
-			.thresholds = {
-				.down = 100,
-				.up = 200,
-			},
-			.sb_thresholds = {
-				.down = 145,
-				.up = 155,
-			},
+			.boost = false,
+			.semiboost = true,
+			.active_down_migration = false,
+			.aggressive_up_migration = true,
 		},
 		.gpu = {
 			.min_lock = 544,
