@@ -416,12 +416,12 @@
     <string-array translatable="false" name="config_globalActionsList">
         <item>power</item>
         <item>restart</item>
-        <item>advanced_restart</item>
+        <!-- <item>advanced_restart</item>
         <item>settings</item>
         <item>airplane</item>
         <item>bugreport</item>
         <item>silent</item>
-        <item>users</item>
+        <item>users</item> -->
     </string-array>
 
     <!-- If true, the display will be shifted around in ambient mode. -->
