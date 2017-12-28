@@ -74,13 +74,13 @@ service wlandutservice /system/bin/wlandutservice
     disabled
     oneshot
 
-service macloader /system/bin/macloader
+service macloader /vendor/bin/macloader
     class main
     oneshot
     seclabel u:r:macloader:s0
 
 # Run deferred initcalls of builtin kernel modules (bcmdhd)
-service wifiloader /system/bin/wifiloader
+service wifiloader /vendor/bin/wifiloader
     class main
     oneshot
     seclabel u:r:wifiloader:s0
