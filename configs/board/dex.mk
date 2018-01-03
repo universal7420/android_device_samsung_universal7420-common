@@ -15,7 +15,4 @@
 #
 
 # dex pre-optimizations
-#  - bigger system-image,
-#  - but faster startup after flashing
-#  - problems with Google Apps (leads to random reboots)
-WITH_DEXPREOPT := false
+WITH_DEXPREOPT := true
