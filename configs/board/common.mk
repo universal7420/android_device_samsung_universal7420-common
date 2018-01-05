@@ -24,7 +24,15 @@ PRODUCT_SKIP_FINGERPRINT_FROM_FILE := true
 EXTENDED_FONT_FOOTPRINT := true
 
 # Include path
-TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
+TARGET_SPECIFIC_HEADER_PATH := \
+	$(LOCAL_PATH)/include
+
+# Include path
+TARGET_SPECIFIC_HEADER_PATH += \
+	-I$(TOP)/frameworks/native/libs/arect/include \
+	-I$(TOP)/frameworks/native/libs/nativebase/include \
+	-I$(TOP)/frameworks/native/libs/nativewindow/include \
+	-I
 
 # Init
 TARGET_UNIFIED_DEVICE := true
