@@ -19,8 +19,7 @@ cc_library_static {
 	srcs: [
 		"CameraParameters.cpp",
 	],
-	export_include_dirs: [
-		"include",
-		"include/camera"
+	include_dirs: [
+		"device/samsung/zero-common/include"
 	],
 }
