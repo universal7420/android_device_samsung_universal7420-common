@@ -231,6 +231,8 @@ static void power_set_profile(int profile) {
 	 */
 	pfwrite("/sys/kernel/hmp/boost",                   data.hmp.boost);
 	pfwrite("/sys/kernel/hmp/semiboost",               data.hmp.semiboost);
+	pfwrite("/sys/kernel/hmp/sb_down_threshold",       data.hmp.sb_down_thres);
+	pfwrite("/sys/kernel/hmp/sb_up_threshold",         data.hmp.sb_up_thres);
 	pfwrite("/sys/kernel/hmp/active_down_migration",   data.hmp.active_down_migration);
 	pfwrite("/sys/kernel/hmp/aggressive_up_migration", data.hmp.aggressive_up_migration);
 

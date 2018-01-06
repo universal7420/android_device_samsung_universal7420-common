@@ -41,6 +41,9 @@ struct power_profile {
 		bool boost;
 		bool semiboost;
 
+		unsigned int sb_down_thres;
+		unsigned int sb_up_thres;
+
 		bool active_down_migration;
 		bool aggressive_up_migration;
 
@@ -82,6 +85,8 @@ struct power_profile {
 		.hmp = {
 			.boost = false,
 			.semiboost = false,
+			.sb_down_thres = 150,
+			.sb_up_thres = 400,
 			.active_down_migration = true,
 			.aggressive_up_migration = false,
 		},
@@ -114,6 +119,8 @@ struct power_profile {
 		.hmp = {
 			.boost = false,
 			.semiboost = false,
+			.sb_down_thres = 150,
+			.sb_up_thres = 400,
 			.active_down_migration = true,
 			.aggressive_up_migration = false,
 		},
@@ -146,6 +153,8 @@ struct power_profile {
 		.hmp = {
 			.boost = false,
 			.semiboost = false,
+			.sb_down_thres = 150,
+			.sb_up_thres = 400,
 			.active_down_migration = true,
 			.aggressive_up_migration = false,
 		},
@@ -177,7 +186,9 @@ struct power_profile {
 		},
 		.hmp = {
 			.boost = false,
-			.semiboost = false,
+			.semiboost = true,
+			.sb_down_thres = 125,
+			.sb_up_thres = 175,
 			.active_down_migration = true,
 			.aggressive_up_migration = false,
 		},
@@ -210,6 +221,8 @@ struct power_profile {
 		.hmp = {
 			.boost = true,
 			.semiboost = false,
+			.sb_down_thres = 75,
+			.sb_up_thres = 125,
 			.active_down_migration = false,
 			.aggressive_up_migration = true,
 		},
@@ -242,6 +255,8 @@ struct power_profile {
 		.hmp = {
 			.boost = false,
 			.semiboost = false,
+			.sb_down_thres = 150,
+			.sb_up_thres = 400,
 			.active_down_migration = true,
 			.aggressive_up_migration = false,
 		},
@@ -274,6 +289,8 @@ struct power_profile {
 		.hmp = {
 			.boost = false,
 			.semiboost = true,
+			.sb_down_thres = 75,
+			.sb_up_thres = 125,
 			.active_down_migration = false,
 			.aggressive_up_migration = true,
 		},
