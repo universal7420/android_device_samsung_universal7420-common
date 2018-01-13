@@ -91,33 +91,9 @@
 /sys/devices/system/cpu/cpu*   cpufreq/scaling_max_freq         0664    system  system
 /sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq         0664    system  system
 
-# interactive governor parameters
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/above_hispeed_delay         0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/boost                       0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/boostpulse                  0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/boostpulse_duration         0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/down_low_load_threshold     0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/go_hispeed_load             0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/hispeed_freq                0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/enforce_hispeed_freq_limit  0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/freq_max                    0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/freq_min                    0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/io_is_busy                  0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/min_sample_time             0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/powersave_bias              0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/target_loads                0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/timer_rate                  0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/timer_slack                 0664    system  system
-
-# nexus governor parameters
-/sys/devices/system/cpu/cpu*   cpufreq/nexus/down_load                 0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/nexus/down_step                 0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/nexus/freq_max                  0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/nexus/freq_min                  0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/nexus/io_is_busy                0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/nexus/sampling_rate             0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/nexus/up_load                   0664    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/nexus/up_step                   0664    system  system
+# cpugov parameters
+/sys/devices/system/cpu/cpu*   cpufreq/interactive*             0664    system  system
+/sys/devices/system/cpu/cpu*   cpufreq/nexus*                   0664    system  system
 
 # MIF
 /dev/block/platform/15570000.ufs/by-name/RADIO     0660   system     radio
