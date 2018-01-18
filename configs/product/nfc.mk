@@ -27,5 +27,4 @@ PRODUCT_PACKAGES += \
     NfcNci \
     Tag \
     com.android.nfc_extras \
-    android.hardware.nfc@1.0-service \
     android.hardware.nfc@1.0-impl
