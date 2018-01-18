@@ -3,6 +3,20 @@
 <manifest version="1.0" type="device">
 
     <!--
+        Configstore
+      -->
+    <hal format="hidl">
+        <name>android.hardware.configstore</name>
+        <transport>hwbinder</transport>
+        <impl level="generic"></impl>
+        <version>1.0</version>
+        <interface>
+            <name>ISurfaceFlingerConfigs</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
         Fingerprint
       -->
     <hal format="hidl">
@@ -29,6 +43,30 @@
             <instance>default</instance>
         </interface>
     </hal>
+    <hal format="hidl">
+        <name>android.hardware.graphics.mapper</name>
+        <transport arch="32+64">passthrough</transport>
+        <impl level="generic"></impl>
+        <version>2.0</version>
+        <interface>
+            <name>IMapper</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
+        IR
+      -->
+    <hal format="hidl">
+        <name>android.hardware.ir</name>
+        <transport>hwbinder</transport>
+        <impl level="generic"></impl>
+        <version>1.0</version>
+        <interface>
+            <name>IConsumerIr</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
 
     <!--
         Keymaster
@@ -40,6 +78,20 @@
         <version>3.0</version>
         <interface>
             <name>IKeystoreService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
+        Light
+      -->
+    <hal format="hidl">
+        <name>android.hardware.light</name>
+        <transport>hwbinder</transport>
+        <impl level="generic"></impl>
+        <version>2.0</version>
+        <interface>
+            <name>ILight</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -58,6 +110,20 @@
     </hal>
 
     <!--
+        NFC
+      -->
+    <hal format="hidl">
+        <name>android.hardware.nfc</name>
+        <transport>hwbinder</transport>
+        <impl level="generic"></impl>
+        <version>1.0</version>
+        <interface>
+            <name>INfc</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
         OMX
       -->
     <hal format="hidl">
@@ -70,6 +136,20 @@
         </interface>
         <interface>
             <name>IOmxStore</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
+        Power
+      -->
+    <hal format="hidl">
+        <name>android.hardware.power</name>
+        <transport>hwbinder</transport>
+        <impl level="generic"></impl>
+        <version>1.0</version>
+        <interface>
+            <name>IPower</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -95,6 +175,34 @@
         <interface>
             <name>IOemHook</name>
             <instance>slot1</instance>
+        </interface>
+    </hal>
+
+    <!--
+        USB
+      -->
+    <hal format="hidl">
+        <name>android.hardware.usb</name>
+        <transport>hwbinder</transport>
+        <impl level="generic"></impl>
+        <version>1.0</version>
+        <interface>
+            <name>IUsb</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
+        Vibrator
+      -->
+    <hal format="hidl">
+        <name>android.hardware.vibrator</name>
+        <transport>hwbinder</transport>
+        <impl level="generic"></impl>
+        <version>1.0</version>
+        <interface>
+            <name>IVibrator</name>
+            <instance>default</instance>
         </interface>
     </hal>
 
