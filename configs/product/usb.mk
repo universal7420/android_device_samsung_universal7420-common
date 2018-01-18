@@ -14,11 +14,7 @@
 # limitations under the License.
 #
 
-# Sensorhub
+# USB
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@1.0-impl \
-    android.hardware.sensors@1.0-service
-
-# Vibrator
-PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-impl
+    android.hardware.usb@1.0-impl \
+    android.hardware.usb@1.0-service
