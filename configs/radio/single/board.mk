@@ -15,4 +15,4 @@
 #
 
 # Manifest
-DEVICE_MANIFEST_FILE += device/samsung/zero-common/configs/radio/single/manifest.xml
+DEVICE_MANIFEST_FILE += $(COMMON_PATH)/configs/radio/single/manifest.xml

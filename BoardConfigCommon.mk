@@ -15,6 +15,7 @@
 #
 
 LOCAL_PATH := device/samsung/zero-common
+COMMON_PATH := $(LOCAL_PATH)
 
 BOARD_VENDOR := samsung
 

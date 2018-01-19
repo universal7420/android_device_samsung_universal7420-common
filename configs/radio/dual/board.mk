@@ -18,4 +18,4 @@
 SIM_COUNT := 2
   
 # Manifest
-DEVICE_MANIFEST_FILE += device/samsung/zero-common/configs/radio/dual/manifest.xml
+DEVICE_MANIFEST_FILE += $(COMMON_PATH)/configs/radio/dual/manifest.xml
