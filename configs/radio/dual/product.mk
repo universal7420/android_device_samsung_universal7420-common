@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
-# Manifest
+LOCAL_PATH := device/samsung/zero-common
+
+# Init
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/manifest.xml:system/vendor/manifest.xml
+	$(LOCAL_PATH)/configs/radio/single/rild.rc:system/vendor/etc/init/rild.rc \
+	$(LOCAL_PATH)/configs/radio/dual/rild.rc:system/vendor/etc/init/rild-dsds.rc

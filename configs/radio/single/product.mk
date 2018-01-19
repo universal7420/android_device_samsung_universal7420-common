@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2017 TeamNexus
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,8 @@
 # limitations under the License.
 #
 
-# Radio
-BOARD_PROVIDES_LIBRIL := true
+LOCAL_PATH := device/samsung/zero-common
 
-# Dual-SIM Support
-ifeq ($(BOARD_HAS_DUAL_SIM),true)
-    include $(LOCAL_PATH)/configs/radio/dual/board.mk
-else
-    include $(LOCAL_PATH)/configs/radio/single/board.mk
-endif
+# Init
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/radio/single/rild.rc:system/vendor/etc/init/rild.rc
