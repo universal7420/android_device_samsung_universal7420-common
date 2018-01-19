@@ -14,7 +14,9 @@
 # limitations under the License.
 #
 
+LOCAL_PATH := device/samsung/zero-common
+
 # Init
 PRODUCT_COPY_FILES += \
-	$(COMMON_PATH)/configs/radio/single/rild.rc:system/vendor/etc/init/rild.rc \
-	$(COMMON_PATH)/configs/radio/dual/rild.rc:system/vendor/etc/init/rild-dsds.rc
+	$(LOCAL_PATH)/configs/radio/single/rild.rc:system/vendor/etc/init/rild.rc \
+	$(LOCAL_PATH)/configs/radio/dual/rild.rc:system/vendor/etc/init/rild-dsds.rc
