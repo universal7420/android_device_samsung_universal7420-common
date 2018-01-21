@@ -71,6 +71,7 @@ static bool pfwrite(string path, string str);
 static bool pfwrite(string path, bool flag);
 static bool pfwrite(string path, int value);
 static bool pfwrite(string path, unsigned int value);
+static bool pfassertgov(int core, string asserted_cpugov);
 static bool pfwritegov(int core, string file, string str);
 static bool pfwritegov(int core, string file, bool flag);
 static bool pfwritegov(int core, string file, int value);

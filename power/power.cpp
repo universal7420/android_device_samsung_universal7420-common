@@ -17,7 +17,7 @@
  */
 
 #define LOG_TAG "power.exynos5"
-#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <atomic>
 #include <cutils/properties.h>
@@ -218,6 +218,16 @@ static void power_set_profile(int profile) {
 	pfwritegov(0, "freq_min",     data.cpu.cl0.freq_min); /* Core, File, Value */
 	pfwritegov(0, "freq_max",     data.cpu.cl0.freq_max);
 	pfwritegov(0, "hispeed_freq", data.cpu.cl0.freq_max);
+	if (pfassertgov(0, "nexus")) {
+		pfwritegov(0, "down_load",                   data.cpu.nexus.down_load);
+		pfwritegov(0, "down_step",                   data.cpu.nexus.down_step);
+		pfwritegov(0, "down_load_to_step_ratio",     data.cpu.nexus.down_lts_ratio);
+		pfwritegov(0, "down_load_to_step_elevation", data.cpu.nexus.down_lts_elev);
+		pfwritegov(0, "up_load",                     data.cpu.nexus.up_load);
+		pfwritegov(0, "up_step",                     data.cpu.nexus.up_step);
+		pfwritegov(0, "up_load_to_step_ratio",       data.cpu.nexus.up_lts_ratio);
+		pfwritegov(0, "up_load_to_step_elevation",   data.cpu.nexus.up_lts_elev);
+	}
 
 	/*********************
 	 * CPU Cluster1
@@ -225,6 +235,16 @@ static void power_set_profile(int profile) {
 	pfwritegov(4, "freq_min",     data.cpu.cl1.freq_min); /* Core, File, Value */
 	pfwritegov(4, "freq_max",     data.cpu.cl1.freq_max);
 	pfwritegov(4, "hispeed_freq", data.cpu.cl1.freq_max);
+	if (pfassertgov(4, "nexus")) {
+		pfwritegov(4, "down_load",                   data.cpu.nexus.down_load);
+		pfwritegov(4, "down_step",                   data.cpu.nexus.down_step);
+		pfwritegov(4, "down_load_to_step_ratio",     data.cpu.nexus.down_lts_ratio);
+		pfwritegov(4, "down_load_to_step_elevation", data.cpu.nexus.down_lts_elev);
+		pfwritegov(4, "up_load",                     data.cpu.nexus.up_load);
+		pfwritegov(4, "up_step",                     data.cpu.nexus.up_step);
+		pfwritegov(4, "up_load_to_step_ratio",       data.cpu.nexus.up_lts_ratio);
+		pfwritegov(4, "up_load_to_step_elevation",   data.cpu.nexus.up_lts_elev);
+	}
 
 	/*********************
 	 * HMP
@@ -443,6 +463,19 @@ static bool pfwrite(string path, int value) {
 
 static bool pfwrite(string path, unsigned int value) {
 	return pfwrite(path, to_string(value));
+}
+
+static bool pfassertgov(int core, string asserted_cpugov) {
+	string cpugov;
+	ostringstream path;
+	ostringstream cpugov_path;
+
+	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq";
+	cpugov_path << path.str() << "/scaling_governor";
+
+	pfread(cpugov_path.str(), cpugov);
+
+	return (cpugov == asserted_cpugov);
 }
 
 static bool pfwritegov(int core, string file, string str) {
