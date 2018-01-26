@@ -54,6 +54,7 @@ static int current_power_profile = PROFILE_BALANCED;
 static int requested_power_profile = PROFILE_BALANCED;
 
 static int input_state_touchkeys = 1;
+static string input_touchscreen_path = POWER_TOUCHSCREEN_ENABLED_FLAT;
 
 /***********************************
  * Initializing
@@ -105,6 +106,16 @@ static void power_init(struct power_module __unused * module) {
 
 	if (!is_file(POWER_CONFIG_PROFILES))
 		pfwrite(POWER_CONFIG_PROFILES, true);
+
+	// get correct touchkeys/enabled-file
+	// reads from input1/name:
+	//   - flat will return sec_touchscreen
+	//   - edge won't
+	string touchscreen_input_name;
+	pfread(POWER_TOUCHSCREEN_NAME, touchscreen_input_name);
+	if (touchscreen_input_name != POWER_TOUCHSCREEN_NAME_EXPECT) {
+		input_touchscreen_path = POWER_TOUCHSCREEN_ENABLED_EDGE;
+	}
 
 	// set to normal power profile
 	power_set_profile(PROFILE_BALANCED);
@@ -346,7 +357,7 @@ static void power_input_device_state(int state) {
 			// save to current state to prevent enabling
 			pfread(POWER_TOUCHKEYS_ENABLED, &input_state_touchkeys);
 
-			pfwrite(POWER_TOUCHSCREEN_ENABLED, false);
+			pfwrite(input_touchscreen_path, false);
 			pfwrite(POWER_TOUCHKEYS_ENABLED, false);
 			pfwrite(POWER_TOUCHKEYS_BRIGTHNESS, 0);
 
@@ -356,7 +367,7 @@ static void power_input_device_state(int state) {
 
 		case INPUT_STATE_ENABLE:
 
-			pfwrite(POWER_TOUCHSCREEN_ENABLED, true);
+			pfwrite(input_touchscreen_path, true);
 
 			if (input_state_touchkeys) {
 				pfwrite(POWER_TOUCHKEYS_ENABLED, true);
@@ -526,6 +537,10 @@ static bool pfread(string path, int *v) {
 	file.close();
 	*v = stoi(line);
 
+#if LOG_NDEBUG
+	ALOGI("%s: read from %s", __func__, path.c_str());
+#endif
+
 	return true;
 }
 
@@ -541,6 +556,10 @@ static bool pfread(string path, string &str) {
 		ALOGE("%s: failed to read from %s", __func__, path.c_str());
 		return false;
 	}
+
+#if LOG_NDEBUG
+	ALOGI("%s: read from %s", __func__, path.c_str());
+#endif
 
 	file.close();
 	return true;
