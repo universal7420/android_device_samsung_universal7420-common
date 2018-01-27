@@ -31,173 +31,231 @@
    Author : Sunghun Ra
  */
 
+#define LOG_TAG "libinit_sec"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <android-base/properties.h>
+#include <log/log.h>
 
-#include "log.h"
 #include "property_service.h"
-#include "util.h"
 #include "vendor_init.h"
 
-enum device_variant {
-    UNKNOWN = -1,
-    G920S,
-    G920K,
-    G920L,
-    G920P,
-    G920I,
-    G920F,
-    G925F,
-    G925S,
-    G925K,
-    G925L,
-    G925I,
-    G925W8,
-    G920W8
-};
+#include "init_sec.h"
+
+using namespace std;
+using namespace android;
 
 namespace android {
 namespace init {
 
 void vendor_load_properties()
-{	
-    std::string platform = android::base::GetProperty("ro.board.platform", "");
-    std::string bootloader = android::base::GetProperty("ro.bootloader", "");
-	device_variant variant = UNKNOWN;
+{    
+    string device_orig = base::GetProperty("ro.product.device", "");
+    string platform = base::GetProperty("ro.board.platform", "");
+    string bootloader = base::GetProperty("ro.bootloader", "");
 
     if (platform != ANDROID_TARGET) {
         return;
     }
 
-    if (bootloader.find("G920S") != std::string::npos) {
-        variant = G920S;
-    } else if (bootloader.find("G920K") != std::string::npos) {
-        variant = G920K;
-    } else if (bootloader.find("G920L") != std::string::npos) {
-        variant = G920L;
-    } else if (bootloader.find("G920P") != std::string::npos) {
-        variant = G920P;
-    } else if (bootloader.find("G920I") != std::string::npos) {
+    /*
+     * Flat
+     */
+    device_variant variant = UNKNOWN;
+    if (bootloader.find("G920F") != string::npos) {
+        if (device_orig != "zeroflteduo") {
+            variant = G920F;
+        }
+    } else if (bootloader.find("G920I") != string::npos) {
         variant = G920I;
-    } else if (bootloader.find("G920F") != std::string::npos) {
-        variant = G920F;
-    } else if (bootloader.find("G925F") != std::string::npos) {
-        variant = G925F;
-    } else if (bootloader.find("G925S") != std::string::npos) {
-        variant = G925S;
-    } else if (bootloader.find("G925K") != std::string::npos) {
-        variant = G925K;
-    } else if (bootloader.find("G925L") != std::string::npos) {
-        variant = G925L;
-    } else if (bootloader.find("G925I") != std::string::npos) {
-        variant = G925I;
-    } else if (bootloader.find("G925W8") != std::string::npos) {
-        variant = G925W8;
-    } else if (bootloader.find("G920W8") != std::string::npos) {
+    } else if (bootloader.find("G920K") != string::npos) {
+        variant = G920K;
+    } else if (bootloader.find("G920L") != string::npos) {
+        variant = G920L;
+    } else if (bootloader.find("G920P") != string::npos) {
+        variant = G920P;
+    } else if (bootloader.find("G920S") != string::npos) {
+        variant = G920S;
+    } else if (bootloader.find("G920T") != string::npos) {
+        variant = G920T;
+    } else if (bootloader.find("G920W8") != string::npos) {
         variant = G920W8;
-    } else {
-		return;
     }
 
+    /*
+     * Edge
+     */
+    else if (bootloader.find("G925F") != string::npos) {
+        if (device_orig != "zeroflteduo") {
+            variant = G925F;
+        }
+    } else if (bootloader.find("G925I") != string::npos) {
+        variant = G925I;
+    } else if (bootloader.find("G925K") != string::npos) {
+        variant = G925K;
+    } else if (bootloader.find("G925L") != string::npos) {
+        variant = G925L;
+    } else if (bootloader.find("G925P") != string::npos) {
+        variant = G925P;
+    } else if (bootloader.find("G925S") != string::npos) {
+        variant = G925S;
+    } else if (bootloader.find("G925T") != string::npos) {
+        variant = G925T;
+    } else if (bootloader.find("G925W8") != string::npos) {
+        variant = G925W8;
+    } else {
+        return;
+    }
+
+    string model, device, product;
     switch (variant) {
-        case G920S:
-            /* zeroflteskt */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zeroflteskt/zeroflteskt:5.1.1/LMY47X/G920SXXS3COK5:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zeroflteskt-user 5.1.1 LMY47X G920SXXS3COK5 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G920S");
-            android::base::SetProperty("ro.product.device", "zeroflteskt");
-            break;
-        case G920K:
-            /* zerofltektt */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zerofltektt/zerofltektt:5.1.1/LMY47X/G920KXXS3COK5:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zerofltektt-user 5.1.1 LMY47X G920KXXS3COK5 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G920K");
-            android::base::SetProperty("ro.product.device", "zerofltektt");
-            break;
-        case G920L:
-            /* zerofltelgt */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zerofltelgt/zerofltelgt:5.1.1/LMY47X/G920LXXS3COK5:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zerofltelgt-user 5.1.1 LMY47X G920LXXS3COK5 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G920L");
-            android::base::SetProperty("ro.product.device", "zerofltelgt");
-            break;
-        case G920P:
-            /* zerofltespr */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zerofltespr/zerofltespr:5.1.1/LMY47X/G920PVPU3BOL1:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zerofltespr-user 5.1.1 LMY47X G920PVPU3BOL1 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G920P");
-            android::base::SetProperty("ro.product.device", "zerofltespr");
-            break;
-        case G920I:
-            /* zerofltexx */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zerofltexx/zerofltexx:5.1.1/LMY47X/G920IXXS3COK5:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zerofltexx-user 5.1.1 LMY47X G920IXXS3COK5 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G920I");
-            android::base::SetProperty("ro.product.device", "zerofltexx");
-            break;
+
+        /*
+         * Flat
+         */
         case G920F:
             /* zerofltexx */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zerofltexx/zerofltexx:6.0.1/MMB29K/G920FXXU3DPBG:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zerofltexx-user 6.0.1 MMB29K G920FXXU3DPBG release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G920F");
-            android::base::SetProperty("ro.product.device", "zerofltexx");
+            model = "SM-G920F";
+            device = "zerofltexx";
+            product = "zeroflte";
             break;
+
+        case G920I:
+            /* zerofltexx */
+            model = "SM-G920I";
+            device = "zerofltexx";
+            product = "zeroflte";
+            break;
+
+        case G920K:
+            /* zerofltektt */
+            model = "SM-G920K";
+            device = "zerofltektt";
+            product = "zeroflte";
+            break;
+
+        case G920L:
+            /* zerofltelgt */
+            model = "SM-G920L";
+            device = "zerofltelgt";
+            product = "zeroflte";
+            break;
+
+        case G920P:
+            /* zerofltespr */
+            model = "SM-G920P";
+            device = "zerofltespr";
+            product = "zeroflte";
+            break;
+
+        case G920S:
+            /* zeroflteskt */
+            model = "SM-G920S";
+            device = "zeroflteskt";
+            product = "zeroflte";
+            break;
+
+        case G920T:
+            /* zerofltetmo */
+            model = "SM-G920T";
+            device = "zerofltetmo";
+            product = "zeroflte";
+            break;
+
+        case G920W8:
+            /* zerofltecan */
+            model = "SM-G920W8";
+            device = "zerofltecan";
+            product = "zeroflte";
+            break;
+
+        /*
+         * Edge
+         */
         case G925F:
             /* zeroltexx */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zeroltexx/zerolte:6.0.1/MMB29K/G925FXXU5DPL4:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zeroltexx-user 6.0.1 MMB29K G925FXXU5DPL4 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G925F");
-            android::base::SetProperty("ro.product.device", "zerolte");
+            model = "SM-G925F";
+            device = "zeroltexx";
+            product = "zerolte";
             break;
-        case G925S:
-            /* zerolteskt */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zerolteskt/zerolteskt:5.1.1/LMY47X/G925SXXS3COK5:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zerolteskt-user 5.1.1 LMY47X G925SXXS3COK5 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G925S");
-            android::base::SetProperty("ro.product.device", "zerolteskt");
-            break;
-        case G925K:
-            /* zeroltektt */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zeroltelgt/zeroltelgt:5.1.1/LMY47X/G925KXXS3COK5:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zeroltektt-user 5.1.1 LMY47X G925KXXS3COK5 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G925K");
-            android::base::SetProperty("ro.product.device", "zeroltektt");
-            break;
-        case G925L:
-            /* zeroltelgt */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zeroltelgt/zeroltelgt:5.1.1/LMY47X/G925LXXS3COK5:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zeroltelgt-user 5.1.1 LMY47X G925LXXS3COK5 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G925L");
-            android::base::SetProperty("ro.product.device", "zeroltelgt");
-            break;
+
         case G925I:
             /* zeroltexx */
-            android::base::SetProperty("ro.build.fingerprint", "samsung/zeroltexx/zeroltexx:5.1.1/LMY47X/G925IXXS3COK5:user/release-keys");
-            android::base::SetProperty("ro.build.description", "zeroltexx-user 5.1.1 LMY47X G925IXXS3COK5 release-keys");
-            android::base::SetProperty("ro.product.model", "SM-G925I");
-            android::base::SetProperty("ro.product.device", "zeroltexx");
+            model = "SM-G925I";
+            device = "zeroltexx";
+            product = "zerolte";
             break;
+
+        case G925K:
+            /* zeroltektt */
+            model = "SM-G925K";
+            device = "zeroltektt";
+            product = "zerolte";
+            break;
+
+        case G925L:
+            /* zeroltelgt */
+            model = "SM-G925L";
+            device = "zeroltelgt";
+            product = "zerolte";
+            break;
+
+        case G925P:
+            /* zeroltespr */
+            model = "SM-G925P";
+            device = "zeroltespr";
+            product = "zerolte";
+            break;
+
+        case G925S:
+            /* zerolteskt */
+            model = "SM-G925S";
+            device = "zerolteskt";
+            product = "zerolte";
+            break;
+
+        case G925T:
+            /* zeroltetmo */
+            model = "SM-G925T";
+            device = "zeroltetmo";
+            product = "zerolte";
+            break;
+
         case G925W8:
-           /* zeroltebmc */
-           android::base::SetProperty("ro.build.fingerprint", "samsung/zeroltebmc/zeroltebmc:6.0.1/MMB29K/G925W8VLU5CPK4:user/release-keys");
-           android::base::SetProperty("ro.build.description", "zeroltebmc-user 6.0.1 MMB29K G925W8VLU5CPK4 release-keys");
-           android::base::SetProperty("ro.product.model", "SM-G925W8");
-           android::base::SetProperty("ro.product.device", "zeroltebmc");
-           break;
-        case G920W8:
-           /* zerofltebmc */
-           android::base::SetProperty("ro.build.fingerprint", "samsung/zerofltebmc/zerofltebmc:6.0.1/MM29K/G920W8VLU5CPK4:user/release-keys");
-           android::base::SetProperty("ro.build.description", "zerofltebmc-user 6.0.1 MMB29K G920W8VLU5CPK4 release-keys");
-           android::base::SetProperty("ro.product.model", "SM-G920W8");
-           android::base::SetProperty("ro.product.device", "zerofltebmc");
-           break;
+            /* zeroltecan */
+            model = "SM-G925W8";
+            device = "zeroltecan";
+            product = "zerolte";
+            break;
+
         default:
             return;
     }
-    std::string device = android::base::GetProperty("ro.product.device", "");
+
+    // load original properties
+    string description_orig = base::GetProperty("ro.build.description", "");
+    string fingerprint_orig = base::GetProperty("ro.build.fingerprint", "");
+
+    // replace device-names with correct one
+    if (device_orig != "") {
+        if (description_orig != "")
+            replace(description_orig, device_orig, device);
+
+        if (fingerprint_orig != "")
+            replace(fingerprint_orig, device_orig, device);
+    }
+
+    // update properties
+    property_override("ro.product.model", model);
+    property_override("ro.product.device", device);
+    property_override("ro.build.product", product);
+    property_override("ro.lineage.device", device);
+    property_override("ro.vendor.product.device", device);
+    property_override("ro.build.description", description_orig);
+    property_override("ro.build.fingerprint", fingerprint_orig);
 }
 
 }
