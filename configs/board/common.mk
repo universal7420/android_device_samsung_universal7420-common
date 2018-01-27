@@ -35,6 +35,7 @@ TARGET_SPECIFIC_HEADER_PATH += \
 	-I
 
 # Init
+TARGET_INIT_VENDOR_LIB := libinit_sec
 TARGET_UNIFIED_DEVICE := true
 
 # Renderscript
