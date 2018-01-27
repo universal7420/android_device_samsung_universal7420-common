@@ -29,10 +29,12 @@ import org.lineageos.internal.util.FileUtils;
 
 public class KeyDisabler {
 
+    private static String NAME_PATH = "/sys/class/sec/sec_touchkey/input/name";
     private static String CONTROL_PATH = "/sys/class/sec/sec_touchkey/input/enabled";
 
     public static boolean isSupported() {
-        return FileUtils.isFileWritable(CONTROL_PATH);
+        return FileUtils.readOneLine(NAME_PATH).equals("sec_touchkey") &&
+            FileUtils.isFileWritable(CONTROL_PATH);
     }
 
     public static boolean isActive() {
