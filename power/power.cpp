@@ -17,7 +17,12 @@
  */
 
 #define LOG_TAG "power.exynos5"
-#define LOG_NDEBUG 1
+
+#ifdef TARGET_POWER_DEBUGGING
+  #define LOG_NDEBUG 1
+#else
+  #define LOG_NDEBUG 0
+#endif
 
 #include <atomic>
 #include <cutils/properties.h>
@@ -42,19 +47,16 @@
 
 using namespace std;
 
-struct sec_power_module {
-	struct power_module base;
-	pthread_mutex_t lock;
-};
-
 #define container_of(addr, struct_name, field_name) \
 	((struct_name *)((char *)(addr) - offsetof(struct_name, field_name)))
+	
+#if LOG_NDEBUG
+  #define ALOGDD  ALOGD
+#else
+  #define ALOGDD(...)  do { } while(0)
+#endif
 
-static int current_power_profile = PROFILE_BALANCED;
-static int requested_power_profile = PROFILE_BALANCED;
-
-static int input_state_touchkeys = 1;
-static string input_touchscreen_path = POWER_TOUCHSCREEN_ENABLED_FLAT;
+static power_module_t *shared_instance = nullptr;
 
 /***********************************
  * Initializing
@@ -62,50 +64,54 @@ static string input_touchscreen_path = POWER_TOUCHSCREEN_ENABLED_FLAT;
 static int power_open(const hw_module_t __unused * module, const char *name, hw_device_t **device) {
 	int retval = 0; // 0 is ok; -1 is error
 
-	ALOGD("%s: enter; name=%s", __func__, name);
+	ALOGDD("%s: enter; name=%s", __func__, name);
 
 	if (strcmp(name, POWER_HARDWARE_MODULE_ID) == 0) {
-		power_module_t *dev = (power_module_t *)calloc(1, sizeof(power_module_t));
-
-		if (dev) {
-			// Common hw_device_t fields
-			dev->common.tag = HARDWARE_DEVICE_TAG;
-			dev->common.module_api_version = POWER_MODULE_API_VERSION_0_5;
-			dev->common.hal_api_version = HARDWARE_HAL_API_VERSION;
-
-			dev->init = power_init;
-			dev->powerHint = power_hint;
-			dev->getFeature = power_get_feature;
-			dev->setFeature = power_set_feature;
-			dev->setInteractive = power_set_interactive;
-
-			*device = (hw_device_t *)dev;
+		if (shared_instance) {
+			ALOGDD("%s: using shared instance", __func__);
+			*device = (hw_device_t *)shared_instance;
 		} else {
-			retval = -ENOMEM;
+			power_module_t *dev = (power_module_t *)calloc(1, sizeof(power_module_t));
+
+			ALOGDD("%s: generating new instance", __func__);
+			if (dev) {
+				// Common hw_device_t fields
+				dev->common.tag = HARDWARE_DEVICE_TAG;
+				dev->common.module_api_version = POWER_MODULE_API_VERSION_0_5;
+				dev->common.hal_api_version = HARDWARE_HAL_API_VERSION;
+
+				dev->init = power_init;
+				dev->powerHint = power_hint;
+#ifdef POWER_HAS_LINEAGE_HINTS
+				dev->getFeature = power_get_feature;
+#endif
+				dev->setFeature = power_set_feature;
+				dev->setInteractive = power_set_interactive;
+
+				*device = (hw_device_t *)dev;
+				shared_instance = dev;
+			} else {
+				retval = -ENOMEM;
+			}
 		}
 	} else {
 		retval = -EINVAL;
 	}
 
-	ALOGD("%s: exit %d", __func__, retval);
+	ALOGDD("%s: exit; rc=%d", __func__, retval);
 	return retval;
 }
 
 static void power_init(struct power_module __unused * module) {
-	if (!is_file(POWER_CONFIG_FP_ALWAYS_ON))
-		pfwrite(POWER_CONFIG_FP_ALWAYS_ON, false);
+	struct sec_power_module *sec = container_of(module, struct sec_power_module, base);
 
-	if (!is_file(POWER_CONFIG_FP_WAKELOCKS))
-		pfwrite(POWER_CONFIG_FP_WAKELOCKS, false);
+	ALOGDD("%s: enter;", __func__);
+	pthread_mutex_lock(&sec->lock);
 
-	if (!is_file(POWER_CONFIG_DT2W))
-		pfwrite(POWER_CONFIG_DT2W, false);
-
-	if (!is_file(POWER_CONFIG_BOOST))
-		pfwrite(POWER_CONFIG_BOOST, true);
-
-	if (!is_file(POWER_CONFIG_PROFILES))
-		pfwrite(POWER_CONFIG_PROFILES, true);
+	if (sec->initialized) {
+		ALOGDD("%s: exit; (already initialized)", __func__);
+		return;
+	}
 
 	// get correct touchkeys/enabled-file
 	// reads from input1/name:
@@ -113,19 +119,30 @@ static void power_init(struct power_module __unused * module) {
 	//   - edge won't
 	string touchscreen_input_name;
 	pfread(POWER_TOUCHSCREEN_NAME, touchscreen_input_name);
-	if (touchscreen_input_name != POWER_TOUCHSCREEN_NAME_EXPECT) {
-		input_touchscreen_path = POWER_TOUCHSCREEN_ENABLED_EDGE;
+	ALOGDD("%s: '%s' == '%s'", __func__, touchscreen_input_name.c_str(), POWER_TOUCHSCREEN_NAME_EXPECT);
+	if (touchscreen_input_name == POWER_TOUCHSCREEN_NAME_EXPECT) {
+		sec->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_FLAT;
+	} else {
+		sec->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_EDGE;
 	}
 
 	// set to normal power profile
-	power_set_profile(PROFILE_BALANCED);
+	sec->profile.requested = PROFILE_BALANCED;
+	power_set_profile(sec, PROFILE_BALANCED);
 
 	// initialize all input-devices
-	power_input_device_state(1);
+	power_input_device_state(sec, INPUT_STATE_ENABLE);
+	
+	// disable dt2w by default
+	power_dt2w_state(sec, false);
+	
+	// enable fingerprint by default
+	power_fingerprint_state(true);
 
-	// set the default settings
-	if (!is_dir("/data/power"))
-		mkdir("/data/power", 0771);
+	sec->initialized = true;
+
+	pthread_mutex_unlock(&sec->lock);
+	ALOGDD("%s: exit;", __func__);
 }
 
 /***********************************
@@ -135,6 +152,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 	struct sec_power_module *sec = container_of(module, struct sec_power_module, base);
 	int value = (data ? *((intptr_t *)data) : 0);
 
+	ALOGDD("%s: enter; hint=%d", __func__, hint);
 	pthread_mutex_lock(&sec->lock);
 
 	switch (hint) {
@@ -142,16 +160,19 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		/***********************************
 		 * Profiles
 		 */
+#ifdef TARGET_POWER_PROFILES
 		case POWER_HINT_LOW_POWER:
 			ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
-			power_set_profile(value ? PROFILE_POWER_SAVE : requested_power_profile);
+			power_set_profile(sec, value ? PROFILE_POWER_SAVE : sec->profile.requested);
 			break;
 
+#ifdef POWER_HAS_LINEAGE_HINTS
 		case POWER_HINT_SET_PROFILE:
 			ALOGI("%s: hint(POWER_HINT_SET_PROFILE, %d, %llu)", __func__, value, (unsigned long long)data);
-			requested_power_profile = value;
-			power_set_profile(value);
+			sec->profile.requested = value;
+			power_set_profile(sec, value);
 			break;
+#endif
 
 		case POWER_HINT_SUSTAINED_PERFORMANCE:
 		case POWER_HINT_VR_MODE:
@@ -160,27 +181,32 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			else if (hint == POWER_HINT_VR_MODE)
 				ALOGI("%s: hint(POWER_HINT_VR_MODE, %d, %llu)", __func__, value, (unsigned long long)data);
 
-			power_set_profile(value ? PROFILE_HIGH_PERFORMANCE : requested_power_profile);
+			power_set_profile(sec, value ? PROFILE_HIGH_PERFORMANCE : sec->profile.requested);
 			break;
 
 #ifdef POWER_HAS_NEXUSOS_HINTS
 		case POWER_HINT_DREAMING_OR_DOZING:
 			ALOGI("%s: hint(POWER_HINT_DREAMING_OR_DOZING, %d, %llu)", __func__, value, (unsigned long long)data);
-			power_set_profile(value ? PROFILE_DREAMING_OR_DOZING : requested_power_profile);
+			power_set_profile(sec, value ? PROFILE_DREAMING_OR_DOZING : sec->profile.requested);
 			break;
-#endif
+#endif // POWER_HAS_NEXUSOS_HINTS
+#endif // TARGET_POWER_PROFILES
 			
 		/***********************************
 		 * Boosting
 		 */
+#ifdef TARGET_POWER_INTERACTION_BOOST
 		case POWER_HINT_INTERACTION:
 			// ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
 
-			/* power_boostpulse(value ? value : 50000);
-			power_boostpulse(value ? value : 50000); */
+			power_boostpulse(value ? value : 50000);
+			power_boostpulse(value ? value : 50000);
 
 			break;
+#endif // TARGET_POWER_INTERACTION_BOOST
 
+#ifdef TARGET_POWER_CPU_BOOST
+#ifdef POWER_HAS_LINEAGE_HINTS
         case POWER_HINT_CPU_BOOST:
 			// ALOGI("%s: hint(POWER_HINT_CPU_BOOST, %d, %llu)", __func__, value, (unsigned long long)data);
 
@@ -188,40 +214,35 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			power_boostpulse(value);
 
 			break;
+#endif // POWER_HAS_LINEAGE_HINTS
+#endif // TARGET_POWER_CPU_BOOST
 
 		/***********************************
 		 * Inputs
 		 */
 		case POWER_HINT_DISABLE_TOUCH:
 			ALOGI("%s: hint(POWER_HINT_DISABLE_TOUCH, %d, %llu)", __func__, value, (unsigned long long)data);
-			power_input_device_state(value ? 0 : 1);
+			power_input_device_state(sec, value ? INPUT_STATE_DISABLE : INPUT_STATE_ENABLE);
 			break;
 
 		default: break;
 	}
 
 	pthread_mutex_unlock(&sec->lock);
+	ALOGDD("%s: exit;", __func__);
 }
 
 /***********************************
  * Profiles
  */
-static void power_set_profile(int profile) {
-	int profiles = 1;
-
-	pfread(POWER_CONFIG_PROFILES, &profiles);
-	if (!profiles) {
-		ALOGD("%s: profiles disabled (tried to apply profile %d)", __func__, profile);
-		return;
-	}
-
- 	ALOGD("%s: apply profile %d", __func__, profile);
+static void power_set_profile(struct sec_power_module *sec, int profile) {
+ 	ALOGI("%s: apply profile %d", __func__, profile);
 
 	// store it
-	current_power_profile = profile;
+	sec->profile.current = profile;
 
 	// apply settings
-	struct power_profile data = power_profiles[current_power_profile + 2];
+	struct power_profile data = power_profiles[sec->profile.current + 2];
 
 	/*********************
 	 * CPU Cluster0
@@ -291,15 +312,9 @@ static void power_set_profile(int profile) {
 /***********************************
  * Boost
  */
+#ifdef POWER_HAS_LINEAGE_HINTS
 static void power_boostpulse(int duration) {
-	int boost = 0;
-
-	pfread(POWER_CONFIG_BOOST, &boost);
-	if (!boost) {
-		return;
-	}
-
-	// ALOGD("%s: duration     = %d", __func__, duration);
+	// ALOGDD("%s: duration     = %d", __func__, duration);
 
 	if (duration > 0) {
 		pfwritegov(0, "boostpulse_duration", duration);
@@ -309,20 +324,12 @@ static void power_boostpulse(int duration) {
 	pfwritegov(0, "boostpulse", true);
 	pfwritegov(1, "boostpulse", true);
 }
+#endif
 
 /***********************************
  * Inputs
  */
 static void power_fingerprint_state(bool state) {
-	int fp_always_on = 0, fp_wakelocks = 1;
-
-	pfread(POWER_CONFIG_FP_ALWAYS_ON, &fp_always_on);
-	if (fp_always_on) {
-		return;
-	}
-
-	pfread(POWER_CONFIG_FP_WAKELOCKS, &fp_wakelocks);
-
 	/*
 	 * Ordered power toggling:
 	 *    Turn on:   +Wakelocks  ->  +Regulator
@@ -333,112 +340,140 @@ static void power_fingerprint_state(bool state) {
 		pfwrite(POWER_FINGERPRINT_REGULATOR, true);
 	} else {
 		pfwrite(POWER_FINGERPRINT_REGULATOR, false);
+		pfwrite(POWER_FINGERPRINT_WAKELOCKS, false);
+	}
+}
 
-		if (!fp_wakelocks)
-			pfwrite(POWER_FINGERPRINT_WAKELOCKS, false);
+static void power_dt2w_state(struct sec_power_module *sec, bool state) {
+	sec->input.dt2w = !!state;
+	if (state) {
+		pfwrite_legacy(POWER_DT2W_ENABLED, true);
+	} else {
+		pfwrite_legacy(POWER_DT2W_ENABLED, false);
 	}
 }
  
-static void power_input_device_state(int state) {
-	int dt2w = 0, dt2w_sysfs = 0;
-
-	pfread(POWER_CONFIG_DT2W, &dt2w);
-	pfread(POWER_DT2W_ENABLED, &dt2w_sysfs);
-
-#if LOG_NDEBUG
-	ALOGD("%s: state         = %d", __func__, state);
-	ALOGD("%s: dt2w          = %d", __func__, dt2w);
-	ALOGD("%s: dt2w_sysfs    = %d", __func__, dt2w_sysfs);
-#endif
+static void power_input_device_state(struct sec_power_module *sec, int state) {
+	ALOGDD("%s: state = %d", __func__, state);
 
 	switch (state) {
 		case INPUT_STATE_DISABLE:
 
 			// save to current state to prevent enabling
-			pfread(POWER_TOUCHKEYS_ENABLED, &input_state_touchkeys);
+			pfread(POWER_TOUCHKEYS_ENABLED, &sec->input.touchkeys_enabled);
 
-			pfwrite(input_touchscreen_path, false);
+			pfwrite(sec->input.touchscreen_control_path, false);
 			pfwrite(POWER_TOUCHKEYS_ENABLED, false);
 			pfwrite(POWER_TOUCHKEYS_BRIGTHNESS, 0);
 
+#ifdef TARGET_POWER_SHUTDOWN_FINGERPRINT
 			power_fingerprint_state(false);
+#endif
+
+#ifdef TARGET_POWER_SUPPORT_DT2W
+			power_dt2w_state(sec, sec->input.dt2w);
+#endif
 
 			break;
 
 		case INPUT_STATE_ENABLE:
 
-			pfwrite(input_touchscreen_path, true);
+			pfwrite(sec->input.touchscreen_control_path, true);
 
-			if (input_state_touchkeys) {
+			if (sec->input.touchkeys_enabled) {
 				pfwrite(POWER_TOUCHKEYS_ENABLED, true);
 				pfwrite(POWER_TOUCHKEYS_BRIGTHNESS, 255);
 			}
 
 			power_fingerprint_state(true);
 
+#ifdef TARGET_POWER_SUPPORT_DT2W
+			power_dt2w_state(sec, sec->input.dt2w);
+#endif
+
 			break;
 	}
-
-	if (dt2w) {
-		pfwrite_legacy(POWER_DT2W_ENABLED, true);
-	} else {
-		pfwrite_legacy(POWER_DT2W_ENABLED, false);
-	}
-
-	// give hw some milliseconds to properly boot up
-	usleep(100 * 1000); // 100ms
 }
 
 static void power_set_interactive(struct power_module __unused * module, int on) {
+	struct sec_power_module *sec = container_of(module, struct sec_power_module, base);
 	int screen_is_on = (on != 0);
 
-#if LOG_NDEBUG
-	ALOGD("%s: on = %d", __func__, on);
-#endif
+	ALOGDD("%s: enter; on=%d", __func__, on);
+	pthread_mutex_lock(&sec->lock);
 
 	if (!screen_is_on) {
-		power_set_profile(PROFILE_SCREEN_OFF);
+		power_set_profile(sec, PROFILE_SCREEN_OFF);
 	} else {
-		power_set_profile(requested_power_profile);
+		power_set_profile(sec, sec->profile.requested);
 	}
 
-	power_input_device_state(screen_is_on);
+	power_input_device_state(sec, screen_is_on ? INPUT_STATE_ENABLE : INPUT_STATE_DISABLE);
+
+	pthread_mutex_unlock(&sec->lock);
+	ALOGDD("%s: exit;", __func__);
 }
 
 /***********************************
  * Features
  */
+#ifdef POWER_HAS_LINEAGE_HINTS
 static int power_get_feature(struct power_module *module __unused, feature_t feature) {
+	struct sec_power_module *sec = container_of(module, struct sec_power_module, base);
+	int retval = -EINVAL;
+	
+	ALOGDD("%s: enter; feature=%d", __func__, feature);
+	pthread_mutex_lock(&sec->lock);
+
 	switch (feature) {
 		case POWER_FEATURE_SUPPORTED_PROFILES:
-			ALOGD("%s: request for POWER_FEATURE_SUPPORTED_PROFILES = %d", __func__, PROFILE_MAX_USABLE);
-			return PROFILE_MAX_USABLE;
+			ALOGDD("%s: request for POWER_FEATURE_SUPPORTED_PROFILES = %d", __func__, PROFILE_MAX_USABLE);
+#ifdef TARGET_POWER_EXTENDED_PROFILES
+			retval = PROFILE_MAX_USABLE;
+#else
+			retval = PROFILE_MAX_USABLE_EXTENDED;
+#endif
+			break;
+
 		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
-			ALOGD("%s: request for POWER_FEATURE_DOUBLE_TAP_TO_WAKE = 1", __func__);
-			return 1;
-		default:
-			return -EINVAL;
+			ALOGDD("%s: request for POWER_FEATURE_DOUBLE_TAP_TO_WAKE = 1", __func__);
+#ifdef TARGET_POWER_SUPPORT_DT2W
+			retval = 1;
+#else
+			retval = 0;
+#endif
+			break;
 	}
+
+	pthread_mutex_unlock(&sec->lock);
+	ALOGDD("%s: exit; rc=%d", __func__, retval);
+
+	return retval;
 }
+#endif
 
 static void power_set_feature(struct power_module *module, feature_t feature, int state) {
+	struct sec_power_module *sec = container_of(module, struct sec_power_module, base);
+	
+	ALOGDD("%s: enter; feature=%d, state=%d", __func__, feature, state);
+	pthread_mutex_lock(&sec->lock);
+
 	switch (feature) {
+#ifdef TARGET_POWER_SUPPORT_DT2W
 		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
-			ALOGD("%s: set POWER_FEATURE_DOUBLE_TAP_TO_WAKE to \"%d\"", __func__, state);
-			if (state) {
-				pfwrite(POWER_CONFIG_DT2W, true);
-				pfwrite_legacy(POWER_DT2W_ENABLED, true);
-			} else {
-				pfwrite(POWER_CONFIG_DT2W, false);
-				pfwrite_legacy(POWER_DT2W_ENABLED, false);
-			}
+			ALOGDD("%s: set POWER_FEATURE_DOUBLE_TAP_TO_WAKE to \"%d\"", __func__, state);
+			power_dt2w_state(sec, state);
 			break;
+#endif
 
 		default:
 			ALOGW("Error setting the feature %d and state %d, it doesn't exist\n",
 				  feature, state);
 		break;
 	}
+
+	pthread_mutex_unlock(&sec->lock);
+	ALOGDD("%s: exit", __func__);
 }
 
 /***********************************
@@ -450,13 +485,11 @@ static bool pfwrite(string path, string str) {
 
 	file.open(path);
 	if (!file.is_open()) {
-		ALOGE("%s: failed to open %s", __func__, path.c_str());
+		ALOGE("%s: failed to open \"%s\"", __func__, path.c_str());
 		return false;
 	}
 
-#if LOG_NDEBUG
-	ALOGI("%s: store \"%s\" to %s", __func__, str.c_str(), path.c_str());
-#endif
+	ALOGDD("%s: store \"%s\" to \"%s\"", __func__, str.c_str(), path.c_str());
 
 	file << str;
 	file.close();
@@ -520,6 +553,35 @@ static bool pfwritegov(int core, string file, unsigned int value) {
 	return pfwritegov(core, file, to_string(value));
 }
 
+static bool pfread(string path, string &str) {
+	ifstream file(path);
+
+	if (!file.is_open()) {
+		ALOGE("%s: failed to open \"%s\"", __func__, path.c_str());
+		return false;
+	}
+
+	if (!getline(file, str)) {
+		ALOGE("%s: failed to read from \"%s\"", __func__, path.c_str());
+		return false;
+	}
+
+	ALOGDD("%s: read \"%s\" from \"%s\"", __func__, str.c_str(), path.c_str());
+
+	file.close();
+	return true;
+}
+
+static bool pfread(string path, bool *f) {
+	int out = 0;
+
+	if (!pfread(path, &out))
+		return false;
+
+	*f = (out ? true : false);
+	return true;
+}
+
 static bool pfread(string path, int *v) {
 	ifstream file(path);
 	string line;
@@ -537,31 +599,7 @@ static bool pfread(string path, int *v) {
 	file.close();
 	*v = stoi(line);
 
-#if LOG_NDEBUG
-	ALOGI("%s: read from %s", __func__, path.c_str());
-#endif
-
-	return true;
-}
-
-static bool pfread(string path, string &str) {
-	ifstream file(path);
-
-	if (!file.is_open()) {
-		ALOGE("%s: failed to open %s", __func__, path.c_str());
-		return false;
-	}
-
-	if (!getline(file, str)) {
-		ALOGE("%s: failed to read from %s", __func__, path.c_str());
-		return false;
-	}
-
-#if LOG_NDEBUG
-	ALOGI("%s: read from %s", __func__, path.c_str());
-#endif
-
-	file.close();
+	ALOGDD("%s: read \"%s\" from \"%s\"", __func__, line.c_str(), path.c_str());
 	return true;
 }
 
@@ -595,14 +633,6 @@ static bool pfwrite_legacy(string path, bool flag) {
 }
 
 // existence-helpers
-static bool is_dir(string path) {
-	struct stat fstat;
-	const char *cpath = path.c_str();
-
-	return !stat(cpath, &fstat) &&
-		(fstat.st_mode & S_IFDIR) == S_IFDIR;
-}
-
 static bool is_file(string path) {
 	struct stat fstat;
 	const char *cpath = path.c_str();
@@ -616,6 +646,7 @@ static struct hw_module_methods_t power_module_methods = {
 };
 
 struct sec_power_module HAL_MODULE_INFO_SYM = {
+
 	.base = {
 		.common = {
 			.tag = HARDWARE_MODULE_TAG,
@@ -629,10 +660,23 @@ struct sec_power_module HAL_MODULE_INFO_SYM = {
 
 		.init = power_init,
 		.powerHint = power_hint,
+#ifdef POWER_HAS_LINEAGE_HINTS
 		.getFeature = power_get_feature,
+#endif
 		.setFeature = power_set_feature,
 		.setInteractive = power_set_interactive,
 	},
 
-	.lock = PTHREAD_MUTEX_INITIALIZER
+	.lock = PTHREAD_MUTEX_INITIALIZER,
+
+	.profile = {
+		.current = PROFILE_BALANCED,
+		.requested = PROFILE_BALANCED,
+	},
+
+	.input = {
+		.touchkeys_enabled = true,
+		.touchscreen_control_path = "",
+	},
+
 };

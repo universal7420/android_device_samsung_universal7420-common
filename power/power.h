@@ -25,9 +25,25 @@ using namespace std;
 #ifndef EXYNOS5_POWER_HAL_H_INCLUDED
 #define EXYNOS5_POWER_HAL_H_INCLUDED
 
-/*
- * Macros
- */
+struct sec_power_module {
+
+	struct power_module base;
+	pthread_mutex_t lock;
+
+	bool initialized;
+
+	struct {
+		int current;
+		int requested;
+	} profile;
+
+	struct {
+		bool touchkeys_enabled;
+		bool dt2w;
+		string touchscreen_control_path;
+	} input;
+
+};
 
 /***********************************
  * Initializing
@@ -43,24 +59,29 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 /***********************************
  * Profiles
  */
-static void power_set_profile(int profile);
+static void power_set_profile(struct sec_power_module *sec, int profile);
 
 /***********************************
  * Boost
  */
+#ifdef POWER_HAS_LINEAGE_HINTS
 static void power_boostpulse(int duration);
+#endif
 
 /***********************************
  * Inputs
  */
 static void power_fingerprint_state(bool state);
-static void power_input_device_state(int state);
-static void power_set_interactive(struct power_module __unused * module, int on);
+static void power_dt2w_state(struct sec_power_module *sec, bool state);
+static void power_input_device_state(struct sec_power_module *sec, int state);
+static void power_set_interactive(struct power_module *module, int on);
 
 /***********************************
  * Features
  */
+#ifdef POWER_HAS_LINEAGE_HINTS
 static int power_get_feature(struct power_module *module __unused, feature_t feature);
+#endif
 static void power_set_feature(struct power_module *module, feature_t feature, int state);
 
 /***********************************
@@ -76,8 +97,9 @@ static bool pfwritegov(int core, string file, string str);
 static bool pfwritegov(int core, string file, bool flag);
 static bool pfwritegov(int core, string file, int value);
 static bool pfwritegov(int core, string file, unsigned int value);
-static bool pfread(string path, int *v);
 static bool pfread(string path, string &str);
+static bool pfread(string path, bool *f);
+static bool pfread(string path, int *v);
 
 // legacy I/O
 static bool pfwrite_legacy(string path, string str);
@@ -85,7 +107,6 @@ static bool pfwrite_legacy(string path, int value);
 static bool pfwrite_legacy(string path, bool flag);
 
 // I/O-helpers
-static bool is_dir(string path);
 static bool is_file(string path);
 
 #endif // EXYNOS5_POWER_HAL_H_INCLUDED
