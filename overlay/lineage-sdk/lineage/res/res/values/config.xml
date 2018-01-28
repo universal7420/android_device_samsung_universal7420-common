@@ -22,4 +22,7 @@
         <item>restart_recovery</item>
         <item>restart_download</item>
      </string-array>
+
+    <!-- BurnIn protection. This should be enabled on devices that have OLED displays -->
+    <bool name="config_enableBurnInProtection">true</bool>
 </resources>
