@@ -46,11 +46,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.force_eri_from_xml=true \
     net.tethering.noprovisioning=true
 
-# RIL-service
-ifneq ($(filter zerofltespr zeroltespr,$(TARGET_DEVICE)),)
-    PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/init/rild.rc.cdma:system/vendor/etc/init/rild.rc
-endif
-
 # Dual-SIM Support
 ifeq ($(BOARD_HAS_DUAL_SIM),true)
     include $(LOCAL_PATH)/configs/radio/dual/product.mk
