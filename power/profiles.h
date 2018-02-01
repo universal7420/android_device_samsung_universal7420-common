@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Lukas Berger <mail@lukasberger.at>
+ * Copyright (C) 2018 Lukas Berger <mail@lukasberger.at>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-using namespace std;
+#include <string>
 
 #ifndef EXYNOS5_POWER_HAL_PROFILES_INCLUDED
 #define EXYNOS5_POWER_HAL_PROFILES_INCLUDED
+
+using namespace std;
 
 struct power_profile_cpucluster {
 
@@ -78,10 +80,20 @@ struct power_profile {
 
 	} input;
 
-	int ipa_control_temp;
-	bool power_efficient_workqueue;
+	struct {
 
-} power_profiles[PROFILE_MAX_USABLE_EXTENDED + 2] = {
+		bool hotplugging;
+		int ipa_control_temp;
+
+	} thermal;
+
+	struct {
+
+		bool power_efficient_workqueue;
+
+	} kernel;
+
+} power_profiles[PROFILE_MAX_USABLE_EXTENDED + 1] = {
 
 	/***********
 	 * PROFILE_SCREEN_OFF
@@ -124,53 +136,13 @@ struct power_profile {
 			.booster = false,
 			.booster_table = "0 0 0 0 0 0"
 		},
-		.ipa_control_temp = 35,
-		.power_efficient_workqueue = true,
-	},
-
-	/***********
-	 * PROFILE_DREAMING_OR_DOZING
-	 */
-	{
-		.cpu = {
-			.cl0 = {
-				.freq_max = 400000,
-				.freq_min = 200000,
-			},
-			.cl1 = {
-				.freq_max = 200000,
-				.freq_min = 200000,
-			},
-			.nexus = {
-				.down_load = 50,
-				.down_step = 2,
-				.down_lts_ratio = 0,
-				.down_lts_elev = 0,
-
-				.up_load = 60,
-				.up_step = 1,
-				.up_lts_ratio = 0,
-				.up_lts_elev = 0,
-			},
+		.thermal = {
+			.hotplugging = false,
+			.ipa_control_temp = 35,
 		},
-		.hmp = {
-			.boost = false,
-			.semiboost = false,
-			.sb_down_thres = 150,
-			.sb_up_thres = 400,
-			.active_down_migration = true,
-			.aggressive_up_migration = false,
+		.kernel = {
+			.power_efficient_workqueue = true,
 		},
-		.gpu = {
-			.min_lock = 100,
-			.max_lock = 266,
-		},
-		.input = {
-			.booster = false,
-			.booster_table = "0 0 0 0 0 0"
-		},
-		.ipa_control_temp = 40,
-		.power_efficient_workqueue = true,
 	},
 
 	/***********
@@ -214,8 +186,13 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 400000 0 0 0"
 		},
-		.ipa_control_temp = 45,
-		.power_efficient_workqueue = true,
+		.thermal = {
+			.hotplugging = false,
+			.ipa_control_temp = 45,
+		},
+		.kernel = {
+			.power_efficient_workqueue = true,
+		},
 	},
 
 	/***********
@@ -259,8 +236,13 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 800000 0 0 0"
 		},
-		.ipa_control_temp = 65,
-		.power_efficient_workqueue = true,
+		.thermal = {
+			.hotplugging = false,
+			.ipa_control_temp = 65,
+		},
+		.kernel = {
+			.power_efficient_workqueue = true,
+		},
 	},
 
 	/***********
@@ -304,8 +286,13 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 1200000 0 0 0"
 		},
-		.ipa_control_temp = 75,
-		.power_efficient_workqueue = false,
+		.thermal = {
+			.hotplugging = false,
+			.ipa_control_temp = 75,
+		},
+		.kernel = {
+			.power_efficient_workqueue = false,
+		},
 	},
 
 	/***********
@@ -349,8 +336,13 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 600000 0 0 0"
 		},
-		.ipa_control_temp = 55,
-		.power_efficient_workqueue = true,
+		.thermal = {
+			.hotplugging = false,
+			.ipa_control_temp = 55,
+		},
+		.kernel = {
+			.power_efficient_workqueue = true,
+		},
 	},
 
 	/***********
@@ -394,8 +386,13 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 1000000 0 0 0"
 		},
-		.ipa_control_temp = 70,
-		.power_efficient_workqueue = false,
+		.thermal = {
+			.hotplugging = false,
+			.ipa_control_temp = 70,
+		},
+		.kernel = {
+			.power_efficient_workqueue = false,
+		},
 	},
 
 };

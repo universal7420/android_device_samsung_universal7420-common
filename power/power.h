@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 The Android Open Source Project
  * Copyright (C) 2017 Jesse Chan <cjx123@outlook.com>
- * Copyright (C) 2017 Lukas Berger <mail@lukasberger.at>
+ * Copyright (C) 2018 Lukas Berger <mail@lukasberger.at>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
-#include "power-defs.h"
-
 using namespace std;
 
-#ifndef EXYNOS5_POWER_HAL_H_INCLUDED
-#define EXYNOS5_POWER_HAL_H_INCLUDED
+#ifndef EXYNOS5_POWER_HAL_POWER_H_INCLUDED
+#define EXYNOS5_POWER_HAL_POWER_H_INCLUDED
+
+#define PROFILE_SCREEN_OFF           -1
+#define PROFILE_POWER_SAVE            0
+#define PROFILE_BALANCED              1
+#define PROFILE_HIGH_PERFORMANCE      2
+#define PROFILE_BIAS_POWER_SAVE       3
+#define PROFILE_BIAS_PERFORMANCE      4
+
+#define PROFILE_MAX_USABLE            3
+#define PROFILE_MAX_USABLE_EXTENDED   5
+
+#define POWER_DT2W_ENABLED                "/sys/android_touch/doubletap2wake"
+#define POWER_TOUCHKEYS_ENABLED           "/sys/class/sec/sec_touchkey/input/enabled"
+#define POWER_TOUCHSCREEN_NAME            "/sys/class/input/input1/name"
+#define POWER_TOUCHSCREEN_NAME_EXPECT     "sec_touchscreen"
+#define POWER_TOUCHSCREEN_ENABLED_FLAT    "/sys/class/input/input1/enabled"
+#define POWER_TOUCHSCREEN_ENABLED_EDGE    "/sys/class/input/input0/enabled"
+#define POWER_TOUCHKEYS_BRIGHTNESS        "/sys/class/sec/sec_touchkey/brightness"
+#define POWER_FINGERPRINT_REGULATOR       "/sys/class/fingerprint/fingerprint/regulator"
+#define POWER_FINGERPRINT_WAKELOCKS       "/sys/class/fingerprint/fingerprint/wakelocks"
 
 struct sec_power_module {
 
@@ -45,68 +64,27 @@ struct sec_power_module {
 
 };
 
-/***********************************
- * Initializing
- */
-static int power_open(const hw_module_t __unused * module, const char *name, hw_device_t **device);
-static void power_init(struct power_module __unused * module);
+/** Initializing */
+static int power_open(const hw_module_t *module, const char *name, hw_device_t **device);
+static void power_init(struct power_module *module);
 
-/***********************************
- * Hinting
- */
+/** Hinting */
 static void power_hint(struct power_module *module, power_hint_t hint, void *data);
 
-/***********************************
- * Profiles
- */
-static void power_set_profile(struct sec_power_module *sec, int profile);
+/** Profiles */
+static void power_set_profile(int profile);
 
-/***********************************
- * Boost
- */
-#ifdef POWER_HAS_LINEAGE_HINTS
+/** Boost */
 static void power_boostpulse(int duration);
-#endif
 
-/***********************************
- * Inputs
- */
+/** Inputs */
 static void power_fingerprint_state(bool state);
-static void power_dt2w_state(struct sec_power_module *sec, bool state);
-static void power_input_device_state(struct sec_power_module *sec, int state);
-static void power_set_interactive(struct power_module *module, int on);
+static void power_dt2w_state(bool state);
+static void power_input_device_state(bool state);
+static void power_set_interactive(struct power_module* module, int on);
 
-/***********************************
- * Features
- */
-#ifdef POWER_HAS_LINEAGE_HINTS
-static int power_get_feature(struct power_module *module __unused, feature_t feature);
-#endif
+/** Features */
+static int power_get_feature(struct power_module *module, feature_t feature);
 static void power_set_feature(struct power_module *module, feature_t feature, int state);
 
-/***********************************
- * Utilities
- */
-// C++ I/O
-static bool pfwrite(string path, string str);
-static bool pfwrite(string path, bool flag);
-static bool pfwrite(string path, int value);
-static bool pfwrite(string path, unsigned int value);
-static bool pfassertgov(int core, string asserted_cpugov);
-static bool pfwritegov(int core, string file, string str);
-static bool pfwritegov(int core, string file, bool flag);
-static bool pfwritegov(int core, string file, int value);
-static bool pfwritegov(int core, string file, unsigned int value);
-static bool pfread(string path, string &str);
-static bool pfread(string path, bool *f);
-static bool pfread(string path, int *v);
-
-// legacy I/O
-static bool pfwrite_legacy(string path, string str);
-static bool pfwrite_legacy(string path, int value);
-static bool pfwrite_legacy(string path, bool flag);
-
-// I/O-helpers
-static bool is_file(string path);
-
-#endif // EXYNOS5_POWER_HAL_H_INCLUDED
+#endif // EXYNOS5_POWER_HAL_POWER_H_INCLUDED
