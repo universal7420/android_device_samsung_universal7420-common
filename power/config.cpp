@@ -79,5 +79,5 @@ bool power_supports_dt2w() {
 
 bool power_is_subprofile_enabled(string subprofile) {
 	return power_is_init ||
-		base::GetProperty("sys.power.subprofile." + subprofile, TARGET_POWER_SHUTDOWN_FINGERPRINT_DEFAULT) == "true";
+		base::GetProperty("sys.power.subprofile." + subprofile, "true") == "true";
 }
