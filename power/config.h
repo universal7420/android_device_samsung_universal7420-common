@@ -21,11 +21,11 @@
 
 using namespace std;
 
-#define TARGET_POWER_PROFILES_DEFAULT                "1"
-#define TARGET_POWER_EXTENDED_PROFILES_DEFAULT       "1"
-#define TARGET_POWER_INTERACTION_BOOST_DEFAULT       "0"
-#define TARGET_POWER_CPU_BOOST_DEFAULT               "0"
-#define TARGET_POWER_SHUTDOWN_FINGERPRINT_DEFAULT    "1"
+#define TARGET_POWER_PROFILES_DEFAULT                "true"
+#define TARGET_POWER_EXTENDED_PROFILES_DEFAULT       "true"
+#define TARGET_POWER_INTERACTION_BOOST_DEFAULT       "false"
+#define TARGET_POWER_CPU_BOOST_DEFAULT               "false"
+#define TARGET_POWER_SHUTDOWN_FINGERPRINT_DEFAULT    "true"
 
 void power_config_set_init(bool is_init);
 
