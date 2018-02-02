@@ -42,6 +42,7 @@ enum device_variant {
 	/* Edge */
     G925F,
     G925I,
+    G925J,
     G925K,
     G925L,
     G925P,

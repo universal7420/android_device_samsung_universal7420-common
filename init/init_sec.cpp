@@ -110,6 +110,14 @@ void vendor_load_properties()
         return;
     }
 
+    /*
+     * Edge, but...
+     */
+    if (bootloader.find("SCV31") != string::npos) {
+        /* BIG, FAT TODO: ??? */
+        variant = G925J;
+    }
+
     string model, device, product;
     switch (variant) {
 
@@ -186,6 +194,13 @@ void vendor_load_properties()
             /* zeroltexx */
             model = "SM-G925I";
             device = "zeroltexx";
+            product = "zerolte";
+            break;
+
+        case G925J:
+            /* zeroltexx */
+            model = "SCV31";
+            device = "zeroltekdi";
             product = "zerolte";
             break;
 
