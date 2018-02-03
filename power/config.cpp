@@ -16,15 +16,12 @@
 
 #include "log.h"
 
-#include <android-base/properties.h>
 #include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
 
 #include "utils.h"
 #include "config.h"
-
-using namespace android;
 
 void power_config_initialize() {
 	if (!is_dir(BASE_DIRECTORY)) {
