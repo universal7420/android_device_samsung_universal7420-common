@@ -44,6 +44,11 @@ ifneq (,$(wildcard lineage-sdk/))
   LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
 endif
 
+# backport-support for 7.1 and older
+ifneq (,$(wildcard vendor/cmsdk/))
+  LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
+endif
+
 include $(BUILD_SHARED_LIBRARY)
 
 #
