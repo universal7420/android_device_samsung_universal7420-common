@@ -21,20 +21,46 @@
 
 using namespace std;
 
-#define TARGET_POWER_PROFILES_DEFAULT                "true"
-#define TARGET_POWER_EXTENDED_PROFILES_DEFAULT       "true"
-#define TARGET_POWER_INTERACTION_BOOST_DEFAULT       "false"
-#define TARGET_POWER_CPU_BOOST_DEFAULT               "false"
-#define TARGET_POWER_SHUTDOWN_FINGERPRINT_DEFAULT    "true"
+#define POWER_PROFILES_DEFAULT                 true
+#define POWER_PROFILES_AUTOMATED_DEFAULT       true
+#define POWER_BOOST_INTERACTION_DEFAULT        false
+#define POWER_BOOST_CPU_DEFAULT                false
+#define POWER_FINGERPRINT_ALWAYS_ON_DEFAULT    false
+#define POWER_SUBPROFILE_DEFAULT               true
 
-void power_config_set_init(bool is_init);
+#define BASE_DIRECTORY    "/data/misc/power/"
 
-bool power_has_profiles_enabled();
-bool power_has_extended_profiles_enabled();
-bool power_has_interaction_boost();
-bool power_has_cpu_boost();
-bool power_should_shutdown_fingerprint();
-bool power_supports_dt2w();
-bool power_is_subprofile_enabled(string subprofile);
+#define PATH_POWER_PROFILES                 BASE_DIRECTORY "sys.power.profiles"
+#define PATH_POWER_PROFILES_AUTOMATED       BASE_DIRECTORY "sys.power.profiles.automated"
+#define PATH_POWER_BOOST_INTERACTION        BASE_DIRECTORY "sys.power.boost.interaction"
+#define PATH_POWER_BOOST_CPU                BASE_DIRECTORY "sys.power.boost.cpu"
+#define PATH_POWER_FINGERPRINT_ALWAYS_ON    BASE_DIRECTORY "sys.power.fingerprint.always-on"
+#define PATH_POWER_SUBPROFILE_BASE          BASE_DIRECTORY "sys.power.subprofile."
+
+void power_config_initialize();
+
+/** profiles */
+bool power_profiles();
+void power_profiles_set(bool state);
+
+/** profiles_automated */
+bool power_profiles_automated();
+void power_profiles_automated_set(bool state);
+
+/** boost_interaction */
+bool power_boost_interaction();
+void power_boost_interaction_set(bool state);
+
+/** boost_cpu */
+bool power_boost_cpu();
+void power_boost_cpu_set(bool state);
+
+/** fingerprint_always_on */
+bool power_fingerprint_always_on();
+void power_fingerprint_always_on_set(bool state);
+
+/** subprofile */
+bool power_subprofile(string subprofile);
+void power_subprofile_set(string subprofile, bool state);
 
 #endif // EXYNOS5_POWER_HAL_CONFIG_H_INCLUDED

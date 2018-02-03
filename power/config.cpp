@@ -18,66 +18,124 @@
 
 #include <android-base/properties.h>
 #include <string>
+#include <sys/types.h>
+#include <sys/stat.h>
 
+#include "utils.h"
 #include "config.h"
 
 using namespace android;
 
-static bool power_is_init = false;
+void power_config_initialize() {
+	if (!is_dir(BASE_DIRECTORY)) {
+		// create directory
+		mkdir(BASE_DIRECTORY, S_IRWXU | S_IRWXG | S_IROTH);
+	}
 
-void power_config_set_init(bool is_init) {
-	power_is_init = is_init;
+	/**
+	 * defaults
+	 */
+	// version 1: 03-02-2018_1
+	if (!is_file(PATH_POWER_PROFILES))
+		power_profiles_set(POWER_PROFILES_DEFAULT);
+	if (!is_file(PATH_POWER_PROFILES_AUTOMATED))
+		power_profiles_automated_set(POWER_PROFILES_AUTOMATED_DEFAULT);
+	if (!is_file(PATH_POWER_BOOST_INTERACTION))
+		power_boost_interaction_set(POWER_BOOST_INTERACTION_DEFAULT);
+	if (!is_file(PATH_POWER_BOOST_CPU))
+		power_boost_cpu_set(POWER_BOOST_CPU_DEFAULT);
+	if (!is_file(PATH_POWER_FINGERPRINT_ALWAYS_ON))
+		power_fingerprint_always_on_set(POWER_FINGERPRINT_ALWAYS_ON_DEFAULT);
+	if (!is_file(PATH_POWER_SUBPROFILE_BASE "cluster0"))
+		power_subprofile_set("cluster0", POWER_SUBPROFILE_DEFAULT);
+	if (!is_file(PATH_POWER_SUBPROFILE_BASE "cluster1"))
+		power_subprofile_set("cluster1", POWER_SUBPROFILE_DEFAULT);
+	if (!is_file(PATH_POWER_SUBPROFILE_BASE "hmp"))
+		power_subprofile_set("hmp", POWER_SUBPROFILE_DEFAULT);
+	if (!is_file(PATH_POWER_SUBPROFILE_BASE "gpu"))
+		power_subprofile_set("gpu", POWER_SUBPROFILE_DEFAULT);
+	if (!is_file(PATH_POWER_SUBPROFILE_BASE "input"))
+		power_subprofile_set("input", POWER_SUBPROFILE_DEFAULT);
+	if (!is_file(PATH_POWER_SUBPROFILE_BASE "thermal"))
+		power_subprofile_set("thermal", POWER_SUBPROFILE_DEFAULT);
+	if (!is_file(PATH_POWER_SUBPROFILE_BASE "kernel"))
+		power_subprofile_set("kernel", POWER_SUBPROFILE_DEFAULT);
 }
 
-bool power_has_profiles_enabled() {
-#ifndef TARGET_POWER_PROFILES
-	return false;
-#else
-	return base::GetProperty("sys.power.profiles", TARGET_POWER_PROFILES_DEFAULT) == "true";
-#endif
+/**
+ * profiles
+ */
+bool power_profiles() {
+	bool flag = POWER_PROFILES_DEFAULT;
+	read(PATH_POWER_PROFILES, &flag);
+	return flag;
 }
 
-bool power_has_extended_profiles_enabled() {
-#ifndef TARGET_POWER_EXTENDED_PROFILES
-	return false;
-#else
-	return base::GetProperty("sys.power.profiles.extended", TARGET_POWER_EXTENDED_PROFILES_DEFAULT) == "true";
-#endif
+void power_profiles_set(bool state) {
+	write(PATH_POWER_PROFILES, state);
 }
 
-bool power_has_interaction_boost() {
-#ifndef TARGET_POWER_INTERACTION_BOOST
-	return false;
-#else
-	return base::GetProperty("sys.power.boost.interaction", TARGET_POWER_INTERACTION_BOOST_DEFAULT) == "true";
-#endif
+/**
+ * profiles_automated
+ */
+bool power_profiles_automated() {
+	bool flag = POWER_PROFILES_AUTOMATED_DEFAULT;
+	read(PATH_POWER_PROFILES_AUTOMATED, &flag);
+	return flag;
 }
 
-bool power_has_cpu_boost() {
-#ifndef TARGET_POWER_CPU_BOOST
-	return false;
-#else
-	return base::GetProperty("sys.power.boost.cpu", TARGET_POWER_CPU_BOOST_DEFAULT) == "true";
-#endif
+void power_profiles_automated_set(bool state) {
+	write(PATH_POWER_PROFILES_AUTOMATED, state);
 }
 
-bool power_should_shutdown_fingerprint() {
-#ifndef TARGET_POWER_SHUTDOWN_FINGERPRINT
-	return false;
-#else
-	return base::GetProperty("sys.power.fingerprint.shutdown", TARGET_POWER_SHUTDOWN_FINGERPRINT_DEFAULT) == "true";
-#endif
+/**
+ * boost_interaction
+ */
+bool power_boost_interaction() {
+	bool flag = POWER_BOOST_INTERACTION_DEFAULT;
+	read(PATH_POWER_BOOST_INTERACTION, &flag);
+	return flag;
 }
 
-bool power_supports_dt2w() {
-#ifndef TARGET_POWER_SUPPORT_DT2W
-	return false;
-#else
-	return true;
-#endif
+void power_boost_interaction_set(bool state) {
+	write(PATH_POWER_BOOST_INTERACTION, state);
 }
 
-bool power_is_subprofile_enabled(string subprofile) {
-	return power_is_init ||
-		base::GetProperty("sys.power.subprofile." + subprofile, "true") == "true";
+/**
+ * boost_cpu
+ */
+bool power_boost_cpu() {
+	bool flag = POWER_BOOST_CPU_DEFAULT;
+	read(PATH_POWER_BOOST_CPU, &flag);
+	return flag;
+}
+
+void power_boost_cpu_set(bool state) {
+	write(PATH_POWER_BOOST_CPU, state);
+}
+
+/**
+ * fingerprint_always_on
+ */
+bool power_fingerprint_always_on() {
+	bool flag = POWER_FINGERPRINT_ALWAYS_ON_DEFAULT;
+	read(PATH_POWER_FINGERPRINT_ALWAYS_ON, &flag);
+	return flag;
+}
+
+void power_fingerprint_always_on_set(bool state) {
+	write(PATH_POWER_FINGERPRINT_ALWAYS_ON, state);
+}
+
+/**
+ * subprofile
+ */
+bool power_subprofile(string subprofile) {
+	bool flag = POWER_SUBPROFILE_DEFAULT;
+	read(PATH_POWER_SUBPROFILE_BASE + subprofile, &flag);
+	return flag;
+}
+
+void power_subprofile_set(string subprofile, bool state) {
+	write(PATH_POWER_SUBPROFILE_BASE + subprofile, state);
 }

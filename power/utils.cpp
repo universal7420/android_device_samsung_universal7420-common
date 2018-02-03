@@ -62,12 +62,23 @@ bool assert_cpugov(const int core, const string asserted_cpugov) {
 	return (cpugov == asserted_cpugov);
 }
 
-bool is_file(const string path) {
+static int __stat_path(const string path) {
 	struct stat fstat;
 	const char *cpath = path.c_str();
 
-	return !stat(cpath, &fstat) &&
-		(fstat.st_mode & S_IFREG) == S_IFREG;
+	if (stat(cpath, &fstat) == -1) {
+		return 0;
+	}
+
+	return fstat.st_mode;
+}
+
+bool is_file(const string path) {
+	return (__stat_path(path) & S_IFREG) == S_IFREG;
+}
+
+bool is_dir(const string path) {
+	return (__stat_path(path) & S_IFDIR) == S_IFDIR;
 }
 
 

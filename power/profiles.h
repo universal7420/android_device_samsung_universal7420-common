@@ -93,7 +93,7 @@ struct power_profile {
 
 	} kernel;
 
-} power_profiles[PROFILE_MAX_USABLE_EXTENDED + 1] = {
+} power_profiles_data[PROFILE_MAX_USABLE + 1] = {
 
 	/***********
 	 * PROFILE_SCREEN_OFF

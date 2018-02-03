@@ -24,15 +24,14 @@ using namespace std;
 #ifndef EXYNOS5_POWER_HAL_POWER_H_INCLUDED
 #define EXYNOS5_POWER_HAL_POWER_H_INCLUDED
 
-#define PROFILE_SCREEN_OFF           -1
-#define PROFILE_POWER_SAVE            0
-#define PROFILE_BALANCED              1
-#define PROFILE_HIGH_PERFORMANCE      2
-#define PROFILE_BIAS_POWER_SAVE       3
-#define PROFILE_BIAS_PERFORMANCE      4
+#define PROFILE_SCREEN_OFF          -1
+#define PROFILE_POWER_SAVE           0
+#define PROFILE_BALANCED             1
+#define PROFILE_HIGH_PERFORMANCE     2
+#define PROFILE_BIAS_POWER_SAVE      3
+#define PROFILE_BIAS_PERFORMANCE     4
 
-#define PROFILE_MAX_USABLE            3
-#define PROFILE_MAX_USABLE_EXTENDED   5
+#define PROFILE_MAX_USABLE           5
 
 #define POWER_DT2W_ENABLED                "/sys/android_touch/doubletap2wake"
 #define POWER_TOUCHKEYS_ENABLED           "/sys/class/sec/sec_touchkey/input/enabled"

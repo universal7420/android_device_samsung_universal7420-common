@@ -448,6 +448,7 @@ on fs
     chown system radio /sys/class/fingerprint/fingerprint/name
     chown system radio /sys/class/fingerprint/fingerprint/vendor
     chown system radio /sys/class/fingerprint/fingerprint/regulator
+    chown system radio /sys/class/fingerprint/fingerprint/pm
     chown system radio /sys/class/fingerprint/fingerprint/wakelocks
 
 # Accelerometer_sensor

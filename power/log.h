@@ -19,11 +19,7 @@
 
 #define LOG_TAG "power.exynos5"
 
-#ifdef TARGET_POWER_DEBUGGING
-  #define LOG_NDEBUG 1
-#else
-  #define LOG_NDEBUG 0
-#endif
+#define LOG_NDEBUG 1
 
 #include <utils/Log.h>
 

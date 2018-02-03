@@ -52,12 +52,12 @@ static int power_open(const hw_module_t *module, const char *name, hw_device_t *
 
 	if (strcmp(name, POWER_HARDWARE_MODULE_ID) == 0) {
 		if (instance) {
-			ALOGDD("%s: using shared instance(0x%x:0x%x)", __func__, instance, power);
+			ALOGDD("%s: using shared instance", __func__);
 			*device = (hw_device_t *)power;
 		} else {
 			power_module_t *dev = (power_module_t *)calloc(1, sizeof(power_module_t));
 
-			ALOGDD("%s: creating new instance", __func__, dev, module);
+			ALOGDD("%s: creating new instance", __func__);
 			if (dev) {
 				// Common hw_device_t fields
 				dev->common.tag = HARDWARE_DEVICE_TAG;
@@ -97,8 +97,8 @@ static void power_init(struct power_module *module) {
 		return;
 	}
 
-	// enter init-mode
-	power_config_set_init(true);
+	// initialize power-config
+	power_config_initialize();
 
 	// get correct touchkeys/enabled-file
 	// reads from input1/name:
@@ -126,9 +126,6 @@ static void power_init(struct power_module *module) {
 	// enable fingerprint by default
 	power_fingerprint_state(true);
 
-	// exit init-mode
-	power_config_set_init(false);
-
 	power->initialized = true;
 	pthread_mutex_unlock(&power->lock);
 	ALOGDD("%s: exit;", __func__);
@@ -154,7 +151,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 * Profiles
 		 */
 		case POWER_HINT_LOW_POWER:
-			if (power_has_profiles_enabled()) {
+			if (power_profiles_automated()) {
 				ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
 				power_set_profile(value ? PROFILE_POWER_SAVE : power->profile.requested);
 			}
@@ -162,7 +159,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 #ifdef POWER_HAS_LINEAGE_HINTS
 		case POWER_HINT_SET_PROFILE:
-			if (power_has_profiles_enabled()) {
+			if (power_profiles_automated()) {
 				ALOGI("%s: hint(POWER_HINT_SET_PROFILE, %d, %llu)", __func__, value, (unsigned long long)data);
 				power->profile.requested = value;
 				power_set_profile(value);
@@ -172,7 +169,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 		case POWER_HINT_SUSTAINED_PERFORMANCE:
 		case POWER_HINT_VR_MODE:
-			if (power_has_profiles_enabled()) {
+			if (power_profiles_automated()) {
 				if (hint == POWER_HINT_SUSTAINED_PERFORMANCE)
 					ALOGI("%s: hint(POWER_HINT_SUSTAINED_PERFORMANCE, %d, %llu)", __func__, value, (unsigned long long)data);
 				else if (hint == POWER_HINT_VR_MODE)
@@ -186,7 +183,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 * Boosting
 		 */
 		case POWER_HINT_INTERACTION:
-			if (power_has_interaction_boost()) {
+			if (power_boost_interaction()) {
 				ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
 
 				power_boostpulse(value ? value : 50000);
@@ -197,7 +194,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 #ifdef POWER_HAS_LINEAGE_HINTS
         case POWER_HINT_CPU_BOOST:
-			if (power_has_cpu_boost()) {
+			if (power_boost_cpu()) {
 				ALOGI("%s: hint(POWER_HINT_CPU_BOOST, %d, %llu)", __func__, value, (unsigned long long)data);
 
 				power_boostpulse(value);
@@ -228,11 +225,16 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 static void power_set_profile(int profile) {
  	ALOGI("%s: apply profile %d", __func__, profile);
 
+	// check if profiles are enabled
+	if (!power_profiles()) {
+		return;
+	}
+
 	// store it
 	power->profile.current = profile;
 
 	// apply settings
-	power_profile data = power_profiles[power->profile.current + 1];
+	power_profile data = power_profiles_data[power->profile.current + 1];
 
 	// read current configuration
 	if (!update_current_cpugov_path(0) ||
@@ -244,12 +246,11 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * CPU Cluster0
 	 */
-	if (power_is_subprofile_enabled("cl0freq")) {
+	if (power_subprofile("cluster0")) {
 		write_cpugov(0, "freq_min",     data.cpu.cl0.freq_min);
 		write_cpugov(0, "freq_max",     data.cpu.cl0.freq_max);
 		write_cpugov(0, "hispeed_freq", data.cpu.cl0.freq_max);
-	}
-	if (power_is_subprofile_enabled("cl0gov")) {
+
 		if (assert_cpugov(0, "nexus")) {
 			write_cpugov(0, "down_load",                   data.cpu.nexus.down_load);
 			write_cpugov(0, "down_step",                   data.cpu.nexus.down_step);
@@ -265,12 +266,11 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * CPU Cluster1
 	 */
-	if (power_is_subprofile_enabled("cl1freq")) {
+	if (power_subprofile("cluster1")) {
 		write_cpugov(4, "freq_min",     data.cpu.cl1.freq_min);
 		write_cpugov(4, "freq_max",     data.cpu.cl1.freq_max);
 		write_cpugov(4, "hispeed_freq", data.cpu.cl1.freq_max);
-	}
-	if (power_is_subprofile_enabled("cl1gov")) {
+
 		if (assert_cpugov(4, "nexus")) {
 			write_cpugov(4, "down_load",                   data.cpu.nexus.down_load);
 			write_cpugov(4, "down_step",                   data.cpu.nexus.down_step);
@@ -286,7 +286,7 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * HMP
 	 */
-	if (power_is_subprofile_enabled("hmp")) {
+	if (power_subprofile("hmp")) {
 		write("/sys/kernel/hmp/boost",                   data.hmp.boost);
 		write("/sys/kernel/hmp/semiboost",               data.hmp.semiboost);
 		write("/sys/kernel/hmp/sb_down_threshold",       data.hmp.sb_down_thres);
@@ -298,7 +298,7 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * GPU
 	 */
-	if (power_is_subprofile_enabled("gpu")) {
+	if (power_subprofile("gpu")) {
 		write("/sys/devices/14ac0000.mali/dvfs_min_lock", data.gpu.min_lock);
 		write("/sys/devices/14ac0000.mali/dvfs_max_lock", data.gpu.max_lock);
 	}
@@ -306,7 +306,7 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * Input
 	 */
-	if (power_is_subprofile_enabled("input")) {
+	if (power_subprofile("input")) {
 		write("/sys/class/input_booster/level", (data.input.booster ? 2 : 0));
 		write("/sys/class/input_booster/head", data.input.booster_table);
 		write("/sys/class/input_booster/tail", data.input.booster_table);
@@ -315,7 +315,7 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * Thermal
 	 */
-	if (power_is_subprofile_enabled("thermal")) {
+	if (power_subprofile("thermal")) {
 		write("/sys/power/enable_dm_hotplug", data.thermal.hotplugging);
 		write("/sys/power/ipa/control_temp", data.thermal.ipa_control_temp);
 	}
@@ -323,7 +323,7 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * Kernel
 	 */
-	if (power_is_subprofile_enabled("kernel")) {
+	if (power_subprofile("kernel")) {
 		write("/sys/module/workqueue/parameters/power_efficient", data.kernel.power_efficient_workqueue);
 	}
 }
@@ -384,10 +384,7 @@ static void power_input_device_state(bool state) {
 		}
 
 		power_fingerprint_state(true);
-
-		if (power_supports_dt2w()) {
-			power_dt2w_state(power->input.dt2w);
-		}
+		power_dt2w_state(power->input.dt2w);
 	} else {
 		// save to current state to prevent enabling
 		read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
@@ -396,13 +393,11 @@ static void power_input_device_state(bool state) {
 		write(POWER_TOUCHKEYS_ENABLED, false);
 		write(POWER_TOUCHKEYS_BRIGHTNESS, 0);
 
-		if (power_should_shutdown_fingerprint()) {
+		if (!power_fingerprint_always_on()) {
 			power_fingerprint_state(false);
 		}
 
-		if (power_supports_dt2w()) {
-			power_dt2w_state(power->input.dt2w);
-		}
+		power_dt2w_state(power->input.dt2w);
 	}
 }
 
@@ -417,10 +412,12 @@ static void power_set_interactive(struct power_module* module, int on) {
 		return;
 	}
 
-	if (!screen_is_on) {
-		power_set_profile(PROFILE_SCREEN_OFF);
-	} else {
-		power_set_profile(power->profile.requested);
+	if (power_profiles_automated()) {
+		if (!screen_is_on) {
+			power_set_profile(PROFILE_SCREEN_OFF);
+		} else {
+			power_set_profile(power->profile.requested);
+		}
 	}
 
 	power_input_device_state(screen_is_on);
@@ -448,24 +445,12 @@ static int power_get_feature(struct power_module *module, feature_t feature) {
 	switch (feature) {
 		case POWER_FEATURE_SUPPORTED_PROFILES:
 			ALOGDD("%s: request for POWER_FEATURE_SUPPORTED_PROFILES = %d", __func__, PROFILE_MAX_USABLE);
-			if (power_has_profiles_enabled()) {
-				if (power_has_extended_profiles_enabled()) {
-					retval = PROFILE_MAX_USABLE_EXTENDED;
-				} else {
-					retval = PROFILE_MAX_USABLE;
-				}
-			} else {
-				retval = 0;
-			}
+			retval = PROFILE_MAX_USABLE;
 			break;
 
 		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
 			ALOGDD("%s: request for POWER_FEATURE_DOUBLE_TAP_TO_WAKE = 1", __func__);
-			if (power_supports_dt2w()) {
-				retval = 1;
-			} else {
-				retval = 0;
-			}
+			retval = 1;
 			break;
 	}
 
@@ -489,10 +474,7 @@ static void power_set_feature(struct power_module *module, feature_t feature, in
 	switch (feature) {
 		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
 			ALOGDD("%s: set POWER_FEATURE_DOUBLE_TAP_TO_WAKE to \"%d\"", __func__, state);
-			if (power_supports_dt2w()) {
-				power_dt2w_state(state);
-			}
-
+			power_dt2w_state(state);
 			break;
 
 		default:

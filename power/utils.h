@@ -31,6 +31,7 @@ using namespace std;
 bool update_current_cpugov_path(const int core);
 bool assert_cpugov(const int core, const string asserted_cpugov);
 bool is_file(const string path);
+bool is_dir(const string path);
 
 /** Writing */
 bool write(const string path, const string str);

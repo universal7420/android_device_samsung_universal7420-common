@@ -14,22 +14,25 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := $(call my-dir)
+# include user-sided power settings
+include device/samsung/zero-common/power/settings/Android.mk
 
+LOCAL_PATH := device/samsung/zero-common/power
+
+#
+# power-HAL
+#
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
-	config.cpp \
 	power.cpp \
 	utils.cpp
 
-LOCAL_C_INCLUDES += system/core/base/include/
-
 LOCAL_SHARED_LIBRARIES := \
-	libbase \
 	libcutils \
 	libhardware \
-	liblog
+	liblog \
+	libpower-config
 
 LOCAL_MODULE               := power.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_RELATIVE_PATH := hw
@@ -41,32 +44,27 @@ ifneq (,$(wildcard lineage-sdk/))
   LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
 endif
 
-ifeq ($(TARGET_POWER_DEBUGGING),true)
-  LOCAL_CFLAGS += -DTARGET_POWER_DEBUGGING
-endif
+include $(BUILD_SHARED_LIBRARY)
 
-ifeq ($(TARGET_POWER_PROFILES),true)
-  LOCAL_CFLAGS += -DTARGET_POWER_PROFILES
-endif
+#
+# power-configuration library
+#
+include $(CLEAR_VARS)
 
-ifeq ($(TARGET_POWER_EXTENDED_PROFILES),true)
-  LOCAL_CFLAGS += -DTARGET_POWER_EXTENDED_PROFILES
-endif
+LOCAL_SRC_FILES := \
+	config.cpp \
+	utils.cpp
 
-ifeq ($(TARGET_POWER_INTERACTION_BOOST),true)
-  LOCAL_CFLAGS += -DTARGET_POWER_INTERACTION_BOOST
-endif
+LOCAL_C_INCLUDES += system/core/base/include/
 
-ifeq ($(TARGET_POWER_CPU_BOOST),true)
-  LOCAL_CFLAGS += -DTARGET_POWER_CPU_BOOST
-endif
+LOCAL_SHARED_LIBRARIES := \
+	libbase \
+	libcutils \
+	liblog
 
-ifeq ($(TARGET_POWER_SHUTDOWN_FINGERPRINT),true)
-  LOCAL_CFLAGS += -DTARGET_POWER_SHUTDOWN_FINGERPRINT
-endif
-
-ifeq ($(TARGET_POWER_SUPPORT_DT2W),true)
-  LOCAL_CFLAGS += -DTARGET_POWER_SUPPORT_DT2W
-endif
+LOCAL_MODULE             := libpower-config
+LOCAL_MODULE_TAGS        := optional
+LOCAL_CFLAGS             := -Wall -Werror -Wno-unused-parameter -Wno-unused-function
+LOCAL_PROPRIETARY_MODULE := true
 
 include $(BUILD_SHARED_LIBRARY)
