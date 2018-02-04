@@ -43,12 +43,8 @@ LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 LOCAL_RESOURCE_DIR := \
 	$(LOCAL_PATH)/res
 
-ifneq (,$(wildcard lineage-sdk/ vendor/cmsdk/))
-  ifneq (,$(wildcard lineage-sdk/))
-    LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res-lineage
-  else
-    LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res-cm
-  endif
+ifneq (,$(wildcard lineage-sdk/))
+  LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res-lineage
 else
   LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res-non-lineage
 endif
