@@ -146,7 +146,7 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 		} else if (mBoostCpu == preference) {
 			nativePowerBoostCpuSet(boolval);
 		} else if (mAlwaysOnFingerprint == preference) {
-			nativePowerFingerprintAlwaysOnSet(!boolval);
+			nativePowerFingerprintAlwaysOnSet(boolval);
 		}
 		else if (mProfilesCluster0 == preference) {
 			nativePowerSubprofileSet("cluster0", boolval);
