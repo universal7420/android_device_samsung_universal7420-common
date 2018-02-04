@@ -40,12 +40,7 @@ LOCAL_MODULE_TAGS          := optional
 LOCAL_CFLAGS               := -Wall -Werror -Wno-unused-parameter -Wno-unused-function
 LOCAL_PROPRIETARY_MODULE   := true
 
-ifneq (,$(wildcard lineage-sdk/))
-  LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
-endif
-
-# backport-support for 7.1 and older
-ifneq (,$(wildcard vendor/cmsdk/))
+ifneq (,$(wildcard lineage-sdk/ vendor/cmsdk/))
   LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
 endif
 

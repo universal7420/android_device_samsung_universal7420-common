@@ -41,7 +41,19 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
 LOCAL_RESOURCE_DIR := \
-	$(LOCAL_PATH)/res \
+	$(LOCAL_PATH)/res
+
+ifneq (,$(wildcard lineage-sdk/ vendor/cmsdk/))
+  ifneq (,$(wildcard lineage-sdk/))
+    LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res-lineage
+  else
+    LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res-cm
+  endif
+else
+  LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res-non-lineage
+endif
+
+LOCAL_RESOURCE_DIR += \
 	frameworks/support/v14/preference/res \
 	frameworks/support/v7/appcompat/res \
 	frameworks/support/v7/preference/res \
