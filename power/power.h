@@ -40,7 +40,6 @@ using namespace std;
 #define POWER_TOUCHSCREEN_ENABLED_FLAT    "/sys/class/input/input1/enabled"
 #define POWER_TOUCHSCREEN_ENABLED_EDGE    "/sys/class/input/input0/enabled"
 #define POWER_TOUCHKEYS_BRIGHTNESS        "/sys/class/sec/sec_touchkey/brightness"
-#define POWER_FINGERPRINT_PM              "/sys/class/fingerprint/fingerprint/pm"
 #define POWER_FINGERPRINT_REGULATOR       "/sys/class/fingerprint/fingerprint/regulator"
 #define POWER_FINGERPRINT_WAKELOCKS       "/sys/class/fingerprint/fingerprint/wakelocks"
 

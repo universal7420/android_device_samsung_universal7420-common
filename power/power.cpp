@@ -354,11 +354,9 @@ static void power_fingerprint_state(bool state) {
 	 */
 	if (state) {
 		write(POWER_FINGERPRINT_WAKELOCKS, true);
-		write(POWER_FINGERPRINT_PM,        true);
 		write(POWER_FINGERPRINT_REGULATOR, true);
 	} else {
 		write(POWER_FINGERPRINT_REGULATOR, false);
-		write(POWER_FINGERPRINT_PM,        false);
 		write(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
 }
