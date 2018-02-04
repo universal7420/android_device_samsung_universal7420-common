@@ -2,7 +2,7 @@
 # BEGIN zero (SM-G92[0/5]x) device-properties
 #
 # Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2018 The LineageOS Project
+# Copyright (C) 2017 The LineageOS Project
 # Copyright (C)      TeamNexus
 #
 
@@ -28,7 +28,9 @@ audio_hal.force_voice_config=wide
 #
 # Compositing
 #
+debug.composition.type=gpu
 ro.opengles.version=196610
+video.accelerate.hw=1
 
 #
 # Dalvik
@@ -78,22 +80,6 @@ logd.logpersistd.buffer=all
 logd.logpersistd.enable=true
 logd.logpersistd.size=1024
 logd.logpersistd.size.rotate=64
-
-#
-# Media
-#
-media.sf.omx-plugin=libffmpeg_omx.so,libsomxcore.so
-persist.media.treble_omx=true
-
-#
-# RIL
-#
-telephony.lteOnCdmaDevice=0
-ro.telephony.default_network=9
-ro.use_data_netmgrd=false
-ro.ril.telephony.mqanelements=6
-net.tethering.noprovisioning=true
-ro.config.vc_call_vol_steps=15
 
 #
 # SoC
