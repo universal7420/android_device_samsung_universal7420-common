@@ -450,7 +450,7 @@ static int power_get_feature(struct power_module *module, feature_t feature) {
 
 		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
 			ALOGDD("%s: request for POWER_FEATURE_DOUBLE_TAP_TO_WAKE = 1", __func__);
-			retval = 1;
+			retval = is_file(POWER_DT2W_ENABLED);
 			break;
 	}
 
