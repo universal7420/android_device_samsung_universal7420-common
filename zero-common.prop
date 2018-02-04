@@ -130,5 +130,10 @@ ro.sys.sdcardfs=1
 wifi.interface=wlan0
 
 #
+# Zygote
+#
+ro.zygote.disable_gl_preload=1
+
+#
 # END zero device-properties
 ###
