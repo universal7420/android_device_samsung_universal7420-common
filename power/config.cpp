@@ -57,6 +57,10 @@ void power_config_initialize() {
 		power_subprofile_set("thermal", POWER_SUBPROFILE_DEFAULT);
 	if (!is_file(PATH_POWER_SUBPROFILE_BASE "kernel"))
 		power_subprofile_set("kernel", POWER_SUBPROFILE_DEFAULT);
+
+	// version 2: 04-02-2018_1
+	if (!is_file(PATH_POWER_FINGERPRINT_WAKELOCKS))
+		power_fingerprint_wakelocks_set(POWER_FINGERPRINT_WAKELOCKS_DEFAULT);
 }
 
 /**
@@ -122,6 +126,19 @@ bool power_fingerprint_always_on() {
 
 void power_fingerprint_always_on_set(bool state) {
 	write(PATH_POWER_FINGERPRINT_ALWAYS_ON, state);
+}
+
+/**
+ * fingerprint_wakelocks
+ */
+bool power_fingerprint_wakelocks() {
+	bool flag = POWER_FINGERPRINT_WAKELOCKS_DEFAULT;
+	read(PATH_POWER_FINGERPRINT_WAKELOCKS, &flag);
+	return flag;
+}
+
+void power_fingerprint_wakelocks_set(bool state) {
+	write(PATH_POWER_FINGERPRINT_WAKELOCKS, state);
 }
 
 /**

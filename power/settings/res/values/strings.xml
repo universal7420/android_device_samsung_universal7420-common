@@ -29,8 +29,10 @@
 	<string name="boost_interaction_summary">Allows the power-management to boost your device on user-interaction</string>
 	<string name="boost_cpu_title">Boost device on system-request</string>
 	<string name="boost_cpu_summary">Allows the power-management to dynamically boost your device when on request</string>
-	<string name="always_on_fingerprint_title">Enable always-on-fingerprint</string>
-	<string name="always_on_fingerprint_summary">Allows you to unlock the device using the fingerprint-sensor even when the screen if off</string>
+	<string name="fingerprint_always_on_title">Enable always-on-fingerprint</string>
+	<string name="fingerprint_always_on_summary">Allows you to unlock the device using the fingerprint-sensor even when the screen if off</string>
+	<string name="fingerprint_wakelocks_title">Use wakelocks for always-on-fingerprint</string>
+	<string name="fingerprint_wakelocks_summary">Enables wakelocks to keep always-on-fingerprint alive when device goes into sleep</string>
 
 	<string name="category_profiles">Tuning performance profiles</string>
 	<string name="profiles_cluster0_title">Allow to adjust Apollo CPU-cluster</string>

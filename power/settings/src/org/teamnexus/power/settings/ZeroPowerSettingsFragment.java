@@ -55,6 +55,10 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 	private native boolean nativePowerFingerprintAlwaysOn();
 	private native void nativePowerFingerprintAlwaysOnSet(boolean state);
 
+	/** fingerprint_wakelocks */
+	private native boolean nativePowerFingerprintWakelocks();
+	private native void nativePowerFingerprintWakelocksSet(boolean state);
+
 	/** subprofile */
 	private native boolean nativePowerSubprofile(String subprofile);
 	private native void nativePowerSubprofileSet(String subprofile, boolean state);
@@ -63,7 +67,8 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 	private final String KEY_PROFILES_AUTOMATED = "profiles_automated";
 	private final String KEY_BOOST_INTERACTION = "boost_interaction";
 	private final String KEY_BOOST_CPU = "boost_cpu";
-	private final String KEY_ALWAYS_ON_FINGERPRINT = "always_on_fingerprint";
+	private final String KEY_FINGERPRINT_ALWAYS_ON = "fingerprint_always_on";
+	private final String KEY_FINGERPRINT_WAKELOCKS = "fingerprint_wakelocks";
 	private final String KEY_PROFILES_CLUSTER0 = "profiles_cluster0";
 	private final String KEY_PROFILES_CLUSTER1 = "profiles_cluster1";
 	private final String KEY_PROFILES_HMP = "profiles_hmp";
@@ -78,7 +83,8 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 	private SwitchPreference mProfilesAutomated;
 	private SwitchPreference mBoostInteraction;
 	private SwitchPreference mBoostCpu;
-	private SwitchPreference mAlwaysOnFingerprint;
+	private SwitchPreference mFingerprintAlwaysOn;
+	private SwitchPreference mFingerprintWakelocks;
 	private SwitchPreference mProfilesCluster0;
 	private SwitchPreference mProfilesCluster1;
 	private SwitchPreference mProfilesHMP;
@@ -102,24 +108,33 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
         mProfiles = initializePreference(KEY_PROFILES, nativePowerProfiles());
-        mProfilesAutomated = initializePreference(KEY_PROFILES_AUTOMATED, nativePowerProfilesAutomated());
+        mProfilesAutomated = initializePreference(KEY_PROFILES_AUTOMATED, nativePowerProfilesAutomated(), mProfiles);
         mBoostInteraction = initializePreference(KEY_BOOST_INTERACTION, nativePowerBoostInteraction());
         mBoostCpu = initializePreference(KEY_BOOST_CPU, nativePowerBoostCpu());
-        mAlwaysOnFingerprint = initializePreference(KEY_ALWAYS_ON_FINGERPRINT, nativePowerFingerprintAlwaysOn());
+        mFingerprintAlwaysOn = initializePreference(KEY_FINGERPRINT_ALWAYS_ON, nativePowerFingerprintAlwaysOn());
+        mFingerprintWakelocks = initializePreference(KEY_FINGERPRINT_WAKELOCKS, nativePowerFingerprintWakelocks(), mFingerprintAlwaysOn);
 
-        mProfilesCluster0 = initializePreference(KEY_PROFILES_CLUSTER0, nativePowerSubprofile("cluster0"));
-        mProfilesCluster1 = initializePreference(KEY_PROFILES_CLUSTER1, nativePowerSubprofile("cluster1"));
-        mProfilesHMP = initializePreference(KEY_PROFILES_HMP, nativePowerSubprofile("hmp"));
-        mProfilesGPU = initializePreference(KEY_PROFILES_GPU, nativePowerSubprofile("gpu"));
-        mProfilesInput = initializePreference(KEY_PROFILES_INPUT, nativePowerSubprofile("input"));
-        mProfilesThermal = initializePreference(KEY_PROFILES_THERMAL, nativePowerSubprofile("thermal"));
-        mProfilesKernel = initializePreference(KEY_PROFILES_KERNEL, nativePowerSubprofile("kernel"));
+        mProfilesCluster0 = initializePreference(KEY_PROFILES_CLUSTER0, nativePowerSubprofile("cluster0"), mProfiles);
+        mProfilesCluster1 = initializePreference(KEY_PROFILES_CLUSTER1, nativePowerSubprofile("cluster1"), mProfiles);
+        mProfilesHMP = initializePreference(KEY_PROFILES_HMP, nativePowerSubprofile("hmp"), mProfiles);
+        mProfilesGPU = initializePreference(KEY_PROFILES_GPU, nativePowerSubprofile("gpu"), mProfiles);
+        mProfilesInput = initializePreference(KEY_PROFILES_INPUT, nativePowerSubprofile("input"), mProfiles);
+        mProfilesThermal = initializePreference(KEY_PROFILES_THERMAL, nativePowerSubprofile("thermal"), mProfiles);
+        mProfilesKernel = initializePreference(KEY_PROFILES_KERNEL, nativePowerSubprofile("kernel"), mProfiles);
 	}
 
 	private SwitchPreference initializePreference(String key, boolean defValue) {
+		return initializePreference(key, defValue, null);
+	}
+
+	private SwitchPreference initializePreference(String key, boolean defValue, SwitchPreference dependency) {
 		SwitchPreference pref = (SwitchPreference)findPreference(key);
 		pref.setChecked(defValue);
 		pref.setOnPreferenceChangeListener(this);
+
+		if (dependency != null)
+			pref.setEnabled(dependency.isChecked());
+
 		return pref;
 	}
 	
@@ -145,8 +160,12 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 			nativePowerBoostInteractionSet(boolval);
 		} else if (mBoostCpu == preference) {
 			nativePowerBoostCpuSet(boolval);
-		} else if (mAlwaysOnFingerprint == preference) {
+		} else if (mFingerprintAlwaysOn == preference) {
 			nativePowerFingerprintAlwaysOnSet(boolval);
+
+			mFingerprintWakelocks.setEnabled(boolval);
+		} else if (mFingerprintWakelocks == preference) {
+			nativePowerFingerprintWakelocksSet(boolval);
 		}
 		else if (mProfilesCluster0 == preference) {
 			nativePowerSubprofileSet("cluster0", boolval);

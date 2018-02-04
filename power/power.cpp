@@ -357,7 +357,11 @@ static void power_fingerprint_state(bool state) {
 		write(POWER_FINGERPRINT_REGULATOR, true);
 	} else {
 		write(POWER_FINGERPRINT_REGULATOR, false);
-		write(POWER_FINGERPRINT_WAKELOCKS, false);
+
+		if (power_fingerprint_wakelocks())
+			write(POWER_FINGERPRINT_WAKELOCKS, true);
+		else
+			write(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
 }
 

@@ -100,6 +100,19 @@ Java_org_teamnexus_power_settings_ZeroPowerSettingsFragment_nativePowerFingerpri
 }
 
 /**
+ * fingerprint_wakelocks
+ */
+JNIEXPORT jboolean JNICALL
+Java_org_teamnexus_power_settings_ZeroPowerSettingsFragment_nativePowerFingerprintWakelocks(JNIEnv* /* env */, jclass /* clazz */) {
+	return power_fingerprint_wakelocks();
+}
+
+JNIEXPORT void JNICALL
+Java_org_teamnexus_power_settings_ZeroPowerSettingsFragment_nativePowerFingerprintWakelocksSet(JNIEnv* /* env */, jclass /* clazz */, jboolean state) {
+	power_fingerprint_wakelocks_set(state);
+}
+
+/**
  * subprofile
  */
 JNIEXPORT jboolean JNICALL

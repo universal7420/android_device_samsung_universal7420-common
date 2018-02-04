@@ -25,9 +25,14 @@
 		    android:summary="@string/boost_cpu_summary" />
 
 		<SwitchPreference
-		    android:key="always_on_fingerprint"
-		    android:title="@string/always_on_fingerprint_title" 
-		    android:summary="@string/always_on_fingerprint_summary" />
+		    android:key="fingerprint_always_on"
+		    android:title="@string/fingerprint_always_on_title"
+		    android:summary="@string/fingerprint_always_on_summary" />
+
+		<SwitchPreference
+		    android:key="fingerprint_wakelocks"
+		    android:title="@string/fingerprint_wakelocks_title"
+		    android:summary="@string/fingerprint_wakelocks_summary" />
 
 	</PreferenceCategory>
 

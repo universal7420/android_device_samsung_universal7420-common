@@ -26,6 +26,7 @@ using namespace std;
 #define POWER_BOOST_INTERACTION_DEFAULT        false
 #define POWER_BOOST_CPU_DEFAULT                false
 #define POWER_FINGERPRINT_ALWAYS_ON_DEFAULT    false
+#define POWER_FINGERPRINT_WAKELOCKS_DEFAULT    true
 #define POWER_SUBPROFILE_DEFAULT               true
 
 #define BASE_DIRECTORY    "/data/misc/power/"
@@ -35,6 +36,7 @@ using namespace std;
 #define PATH_POWER_BOOST_INTERACTION        BASE_DIRECTORY "sys.power.boost.interaction"
 #define PATH_POWER_BOOST_CPU                BASE_DIRECTORY "sys.power.boost.cpu"
 #define PATH_POWER_FINGERPRINT_ALWAYS_ON    BASE_DIRECTORY "sys.power.fingerprint.always-on"
+#define PATH_POWER_FINGERPRINT_WAKELOCKS    BASE_DIRECTORY "sys.power.fingerprint.wakelocks"
 #define PATH_POWER_SUBPROFILE_BASE          BASE_DIRECTORY "sys.power.subprofile."
 
 void power_config_initialize();
@@ -58,6 +60,10 @@ void power_boost_cpu_set(bool state);
 /** fingerprint_always_on */
 bool power_fingerprint_always_on();
 void power_fingerprint_always_on_set(bool state);
+
+/** fingerprint_wakelocks */
+bool power_fingerprint_wakelocks();
+void power_fingerprint_wakelocks_set(bool state);
 
 /** subprofile */
 bool power_subprofile(string subprofile);
