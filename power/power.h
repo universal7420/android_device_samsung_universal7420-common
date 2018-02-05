@@ -53,12 +53,19 @@ using namespace std;
   #define POWER_UNLOCK()    do { } while(0)
 #endif /* POWER_MULTITHREAD_LOCK_PROTECTION */
 
+enum sec_device_variant {
+	FLAT,
+	EDGE
+};
+
 struct sec_power_module {
 
 	struct power_module base;
 	pthread_mutex_t lock;
 
 	bool initialized;
+
+	enum sec_device_variant variant;
 
 	struct {
 		int current;

@@ -107,8 +107,10 @@ static void power_init(struct power_module *module) {
 	read(POWER_TOUCHSCREEN_NAME, touchscreen_input_name);
 	ALOGDD("%s: '%s' == '%s'", __func__, touchscreen_input_name.c_str(), POWER_TOUCHSCREEN_NAME_EXPECT);
 	if (touchscreen_input_name == POWER_TOUCHSCREEN_NAME_EXPECT) {
+		power->variant = FLAT;
 		power->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_FLAT;
 	} else {
+		power->variant = EDGE;
 		power->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_EDGE;
 	}
 
@@ -383,15 +385,20 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 		}
 
 		if (power->input.touchkeys_enabled) {
-			write(POWER_TOUCHKEYS_ENABLED, true);
+			if (power->variant != EDGE) {
+				write(POWER_TOUCHKEYS_ENABLED, true);
+			}
+
 			write(POWER_TOUCHKEYS_BRIGHTNESS, 255);
 		}
 
 		power_fingerprint_state(true);
 		power_dt2w_state(power, power->input.dt2w);
 	} else {
-		// save to current state to prevent enabling
-		read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
+		if (power->variant != EDGE) {
+			// save to current state to prevent enabling
+			read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
+		}
 
 		if (power->input.touchscreen_control_path != "" && !power->input.dt2w) {
 			write(power->input.touchscreen_control_path, false);
