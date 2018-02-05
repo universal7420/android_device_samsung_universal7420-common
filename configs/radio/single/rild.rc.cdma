@@ -36,9 +36,3 @@ service ril-daemon1 /vendor/bin/hw/rild -c 2 -l /vendor/lib64/libsec-ril-dsds.so
 on property:ro.radio.noril=1
     stop ril-daemon
     stop ril-daemon1
-
-on early-boot
-# Assign TCP buffer thresholds to be ceiling value of technology maximums
-# Increased technology maximums should be reflected here.
-    write /proc/sys/net/core/rmem_max 2097152
-    write /proc/sys/net/core/wmem_max 2097152

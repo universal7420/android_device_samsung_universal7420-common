@@ -16,17 +16,8 @@
 # limitations under the License.
 #
 
-service ril-daemon1 /vendor/bin/hw/rild -c 2 -l /vendor/lib64/libsec-ril-dsds.so
-    class main
-    socket rild2 stream 660 system radio
-    socket rild-debug2 stream 660 system radio
-    user radio
-    group radio cache inet misc audio sdcard_r sdcard_rw log vpn system readproc wakelock
-    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
-    onrestart restart cpboot-daemon
-
-on property:persist.sys.cpboot=disable
-    stop ril-daemon1
-
-on property:ro.radio.noril=1
-    stop ril-daemon1
+on early-boot
+# Assign TCP buffer thresholds to be ceiling value of technology maximums
+# Increased technology maximums should be reflected here.
+    write /proc/sys/net/core/rmem_max 2097152
+    write /proc/sys/net/core/wmem_max 2097152
