@@ -393,7 +393,7 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 		// save to current state to prevent enabling
 		read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
 
-		if (power->input.touchscreen_control_path != "") {
+		if (power->input.touchscreen_control_path != "" && !power->input.dt2w) {
 			write(power->input.touchscreen_control_path, false);
 		}
 
