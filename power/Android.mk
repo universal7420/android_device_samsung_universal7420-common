@@ -44,6 +44,11 @@ ifneq (,$(wildcard lineage-sdk/ vendor/cmsdk/))
   LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
 endif
 
+# Enables the advanced mutex-protection for better protection
+# against problems with multithreading, may cause certain
+# deadlocks, but is still recommended
+LOCAL_CFLAGS += -DPOWER_MULTITHREAD_LOCK_PROTECTION
+
 include $(BUILD_SHARED_LIBRARY)
 
 #

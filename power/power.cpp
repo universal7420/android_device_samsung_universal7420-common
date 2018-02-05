@@ -76,6 +76,15 @@ static int power_open(const hw_module_t *module, const char *name, hw_device_t *
 
 				instance = dev;
 				power = container_of(dev, struct sec_power_module, base);
+
+				pthread_mutex_init(&power->lock, nullptr);
+				power->initialized = false;
+
+				power->profile.current = PROFILE_INVALID;
+				power->profile.requested = PROFILE_INVALID;
+
+				power->input.touchkeys_enabled = true;
+				power->input.touchscreen_control_path = "";
 			} else {
 				retval = -ENOMEM;
 			}
@@ -90,7 +99,7 @@ static int power_open(const hw_module_t *module, const char *name, hw_device_t *
 
 static void power_init(struct power_module *module) {
 	ALOGDD("%s: enter;", __func__);
-	pthread_mutex_lock(&power->lock);
+	POWER_LOCK(&power->lock);
 
 	if (power->initialized) {
 		ALOGDD("%s: exit; (already initialized)", __func__);
@@ -115,19 +124,19 @@ static void power_init(struct power_module *module) {
 
 	// set to normal power profile
 	power->profile.requested = PROFILE_BALANCED;
-	power_set_profile( PROFILE_BALANCED);
+	power_set_profile(PROFILE_BALANCED);
 
 	// initialize all input-devices
 	power_input_device_state(true);
 
 	// disable dt2w by default
-	power_dt2w_state( false);
+	power_dt2w_state(false);
 
 	// enable fingerprint by default
 	power_fingerprint_state(true);
 
 	power->initialized = true;
-	pthread_mutex_unlock(&power->lock);
+	POWER_UNLOCK(&power->lock);
 	ALOGDD("%s: exit;", __func__);
 }
 
@@ -151,7 +160,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 * Profiles
 		 */
 		case POWER_HINT_LOW_POWER:
-			if (power_profiles_automated()) {
+			if (power_profiles_automated() && PROFILE_INVALID < power->profile.requested) {
 				ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
 				power_set_profile(value ? PROFILE_POWER_SAVE : power->profile.requested);
 			}
@@ -167,7 +176,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 		case POWER_HINT_SUSTAINED_PERFORMANCE:
 		case POWER_HINT_VR_MODE:
-			if (power_profiles_automated()) {
+			if (power_profiles_automated() && PROFILE_INVALID < power->profile.requested) {
 				if (hint == POWER_HINT_SUSTAINED_PERFORMANCE)
 					ALOGI("%s: hint(POWER_HINT_SUSTAINED_PERFORMANCE, %d, %llu)", __func__, value, (unsigned long long)data);
 				else if (hint == POWER_HINT_VR_MODE)
@@ -376,7 +385,9 @@ static void power_input_device_state(bool state) {
 	ALOGDD("%s: state = %d", __func__, state);
 
 	if (state) {
-		write(power->input.touchscreen_control_path, true);
+		if (power->input.touchscreen_control_path != "") {
+			write(power->input.touchscreen_control_path, true);
+		}
 
 		if (power->input.touchkeys_enabled) {
 			write(POWER_TOUCHKEYS_ENABLED, true);
@@ -389,7 +400,10 @@ static void power_input_device_state(bool state) {
 		// save to current state to prevent enabling
 		read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
 
-		write(power->input.touchscreen_control_path, false);
+		if (power->input.touchscreen_control_path != "") {
+			write(power->input.touchscreen_control_path, false);
+		}
+
 		write(POWER_TOUCHKEYS_ENABLED, false);
 		write(POWER_TOUCHKEYS_BRIGHTNESS, 0);
 
@@ -405,7 +419,7 @@ static void power_set_interactive(struct power_module* module, int on) {
 	bool screen_is_on = (on != 0);
 
 	ALOGDD("%s: enter; on=%d", __func__, on);
-	pthread_mutex_lock(&power->lock);
+	POWER_LOCK(&power->lock);
 
 	if (!power->initialized) {
 		ALOGDD("%s: exit; (not yet initialized)", __func__);
@@ -415,14 +429,14 @@ static void power_set_interactive(struct power_module* module, int on) {
 	if (power_profiles_automated()) {
 		if (!screen_is_on) {
 			power_set_profile(PROFILE_SCREEN_OFF);
-		} else {
+		} else if (PROFILE_INVALID < power->profile.requested) {
 			power_set_profile(power->profile.requested);
 		}
 	}
 
 	power_input_device_state(screen_is_on);
 
-	pthread_mutex_unlock(&power->lock);
+	POWER_UNLOCK(&power->lock);
 	ALOGDD("%s: exit;", __func__);
 }
 
@@ -434,7 +448,7 @@ static int power_get_feature(struct power_module *module, feature_t feature) {
 	int retval = -EINVAL;
 
 	ALOGDD("%s: enter; feature=%d", __func__, feature);
-	pthread_mutex_lock(&power->lock);
+	POWER_LOCK(&power->lock);
 
 	if (!power->initialized) {
 		ALOGDD("%s: exit; (not yet initialized)", __func__);
@@ -455,7 +469,7 @@ static int power_get_feature(struct power_module *module, feature_t feature) {
 	}
 
 exit:
-	pthread_mutex_unlock(&power->lock);
+	POWER_UNLOCK(&power->lock);
 	ALOGDD("%s: exit; rc=%d", __func__, retval);
 
 	return retval;
@@ -464,7 +478,7 @@ exit:
 
 static void power_set_feature(struct power_module *module, feature_t feature, int state) {
 	ALOGDD("%s: enter; feature=%d, state=%d", __func__, feature, state);
-	pthread_mutex_lock(&power->lock);
+	POWER_LOCK(&power->lock);
 
 	if (!power->initialized) {
 		ALOGDD("%s: exit; (not yet initialized)", __func__);
@@ -483,7 +497,7 @@ static void power_set_feature(struct power_module *module, feature_t feature, in
 			break;
 	}
 
-	pthread_mutex_unlock(&power->lock);
+	POWER_UNLOCK(&power->lock);
 	ALOGDD("%s: exit", __func__);
 }
 
@@ -511,18 +525,6 @@ struct sec_power_module HAL_MODULE_INFO_SYM = {
 #endif
 		.setFeature = power_set_feature,
 		.setInteractive = power_set_interactive,
-	},
-
-	.lock = PTHREAD_MUTEX_INITIALIZER,
-
-	.profile = {
-		.current = PROFILE_BALANCED,
-		.requested = PROFILE_BALANCED,
-	},
-
-	.input = {
-		.touchkeys_enabled = true,
-		.touchscreen_control_path = "",
-	},
+	}
 
 };

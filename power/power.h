@@ -24,6 +24,8 @@ using namespace std;
 #ifndef EXYNOS5_POWER_HAL_POWER_H_INCLUDED
 #define EXYNOS5_POWER_HAL_POWER_H_INCLUDED
 
+#define PROFILE_INVALID             -2
+
 #define PROFILE_SCREEN_OFF          -1
 #define PROFILE_POWER_SAVE           0
 #define PROFILE_BALANCED             1
@@ -42,6 +44,14 @@ using namespace std;
 #define POWER_TOUCHKEYS_BRIGHTNESS        "/sys/class/sec/sec_touchkey/brightness"
 #define POWER_FINGERPRINT_REGULATOR       "/sys/class/fingerprint/fingerprint/regulator"
 #define POWER_FINGERPRINT_WAKELOCKS       "/sys/class/fingerprint/fingerprint/wakelocks"
+
+#ifdef POWER_MULTITHREAD_LOCK_PROTECTION
+  #define POWER_LOCK(mutex)      pthread_mutex_lock(mutex);
+  #define POWER_UNLOCK(mutex)    pthread_mutex_unlock(mutex);
+#else
+  #define POWER_LOCK(mutex)      do { } while(0);
+  #define POWER_UNLOCK(mutex)    do { } while(0);
+#endif /* POWER_MULTITHREAD_LOCK_PROTECTION */
 
 struct sec_power_module {
 
