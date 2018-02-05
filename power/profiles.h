@@ -71,6 +71,9 @@ struct power_profile {
 		unsigned int min_lock;
 		unsigned int max_lock;
 
+		unsigned int highspeed_clock;
+		unsigned int highspeed_load;
+
 	} gpu;
 
 	struct {
@@ -131,6 +134,9 @@ struct power_profile {
 		.gpu = {
 			.min_lock = 100,
 			.max_lock = 100,
+
+			.highspeed_clock = 100,
+			.highspeed_load = 100,
 		},
 		.input = {
 			.booster = false,
@@ -181,6 +187,9 @@ struct power_profile {
 		.gpu = {
 			.min_lock = 100,
 			.max_lock = 544,
+
+			.highspeed_clock = 266,
+			.highspeed_load = 99,
 		},
 		.input = {
 			.booster = true,
@@ -230,7 +239,10 @@ struct power_profile {
 		},
 		.gpu = {
 			.min_lock = 350,
-			.max_lock = 700,
+			.max_lock = 772,
+
+			.highspeed_clock = 700,
+			.highspeed_load = 80,
 		},
 		.input = {
 			.booster = true,
@@ -281,6 +293,9 @@ struct power_profile {
 		.gpu = {
 			.min_lock = 600,
 			.max_lock = 772,
+
+			.highspeed_clock = 772,
+			.highspeed_load = 60,
 		},
 		.input = {
 			.booster = true,
@@ -331,6 +346,9 @@ struct power_profile {
 		.gpu = {
 			.min_lock = 266,
 			.max_lock = 600,
+
+			.highspeed_clock = 420,
+			.highspeed_load = 90,
 		},
 		.input = {
 			.booster = true,
@@ -381,6 +399,9 @@ struct power_profile {
 		.gpu = {
 			.min_lock = 544,
 			.max_lock = 772,
+
+			.highspeed_clock = 772,
+			.highspeed_load = 70,
 		},
 		.input = {
 			.booster = true,

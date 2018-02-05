@@ -297,8 +297,10 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	 * GPU
 	 */
 	if (power_subprofile("gpu")) {
-		write("/sys/devices/14ac0000.mali/dvfs_min_lock", data.gpu.min_lock);
-		write("/sys/devices/14ac0000.mali/dvfs_max_lock", data.gpu.max_lock);
+		write("/sys/devices/14ac0000.mali/dvfs_min_lock",   data.gpu.min_lock);
+		write("/sys/devices/14ac0000.mali/dvfs_max_lock",   data.gpu.max_lock);
+		write("/sys/devices/14ac0000.mali/highspeed_clock", data.gpu.highspeed_clock);
+		write("/sys/devices/14ac0000.mali/highspeed_load",  data.gpu.highspeed_load);
 	}
 
 	/*********************
