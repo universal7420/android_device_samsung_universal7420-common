@@ -24,7 +24,6 @@ service ril-daemon /vendor/bin/hw/rild -c 1 -l /vendor/lib64/libsec-ril.so
     user root
     group radio cache inet misc audio sdcard_r sdcard_rw log qcom_diag vpn system readproc wakelock
     capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
-    onrestart restart cpboot-daemon
 
 service ril-daemon1 /vendor/bin/hw/rild -c 2 -l /vendor/lib64/libsec-ril-dsds.so
     class main
@@ -33,12 +32,6 @@ service ril-daemon1 /vendor/bin/hw/rild -c 2 -l /vendor/lib64/libsec-ril-dsds.so
     user root
     group radio cache inet misc audio sdcard_r sdcard_rw log qcom_diag vpn system readproc wakelock
     capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
-    onrestart restart cpboot-daemon
-
-on property:persist.sys.cpboot=disable
-    stop ril-daemon
-    stop ril-daemon1
-    stop cpboot-daemon
 
 on property:ro.radio.noril=1
     stop ril-daemon
