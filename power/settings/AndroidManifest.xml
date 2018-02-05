@@ -23,7 +23,7 @@
 				<action android:name="com.android.settings.action.SETTINGS" />
 			</intent-filter>
 			<meta-data android:name="com.android.settings.category"
-			    android:value="com.android.settings.category.ia.battery" />
+			    android:value="com.android.settings.category.ia.system" />
 			<meta-data android:name="com.android.settings.summary"
 			    android:value="@string/app_summary" />
             <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
