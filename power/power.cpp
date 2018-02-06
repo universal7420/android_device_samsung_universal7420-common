@@ -475,6 +475,14 @@ static void power_set_interactive(struct power_module* module, int on) {
 		return;
 	}
 
+	// Android seems to have the habit to go into interactive-state
+	// after it went dozing/dreaming. This overwrites the previously
+	// ran DOZING-hint. Thus, skip switching into interactive-state
+	// if we are dozing right now
+	if (power->dozing) {
+		return;
+	}
+
 	if (power_profiles_automated()) {
 		if (!screen_is_on) {
 			power_set_profile(power, PROFILE_SCREEN_OFF);
