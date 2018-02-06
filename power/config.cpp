@@ -64,7 +64,7 @@ void power_config_initialize() {
 
 	// version 3: 06-02-2018_1
 	if (!is_file(PATH_POWER_PROFILES_DOZING))
-		power_fingerprint_wakelocks_set(POWER_PROFILES_DOZING_DEFAULT);
+		power_profiles_dozing_set(POWER_PROFILES_DOZING_DEFAULT);
 }
 
 /**
