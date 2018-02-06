@@ -215,7 +215,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 					power->dozing = false;
 
 					// update input devices
-					power_input_device_state(power, false);
+					power_input_device_state(power, true);
 
 					if (PROFILE_INVALID < power->profile.requested) {
 						power_set_profile(power, power->profile.requested);
