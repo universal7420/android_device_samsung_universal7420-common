@@ -154,9 +154,19 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 * Profiles
 		 */
 		case POWER_HINT_LOW_POWER:
-			if (power_profiles_automated() && PROFILE_INVALID < power->profile.requested) {
+			if (power_profiles_automated()) {
 				ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
-				power_set_profile(power, value ? PROFILE_POWER_SAVE : power->profile.requested);
+
+				if (value) {
+					power_set_profile(power, PROFILE_POWER_SAVE);
+				} else {
+					if (PROFILE_INVALID < power->profile.requested) {
+						power_set_profile(power, power->profile.requested);
+					} else {
+						// fall back to BALANCED
+						power_set_profile(power, PROFILE_BALANCED);
+					}
+				}
 			}
 			break;
 
@@ -170,13 +180,22 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 		case POWER_HINT_SUSTAINED_PERFORMANCE:
 		case POWER_HINT_VR_MODE:
-			if (power_profiles_automated() && PROFILE_INVALID < power->profile.requested) {
+			if (power_profiles_automated()) {
 				if (hint == POWER_HINT_SUSTAINED_PERFORMANCE)
 					ALOGI("%s: hint(POWER_HINT_SUSTAINED_PERFORMANCE, %d, %llu)", __func__, value, (unsigned long long)data);
 				else if (hint == POWER_HINT_VR_MODE)
 					ALOGI("%s: hint(POWER_HINT_VR_MODE, %d, %llu)", __func__, value, (unsigned long long)data);
 
-				power_set_profile(power, value ? PROFILE_HIGH_PERFORMANCE : power->profile.requested);
+				if (value) {
+					power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
+				} else {
+					if (PROFILE_INVALID < power->profile.requested) {
+						power_set_profile(power, power->profile.requested);
+					} else {
+						// fall back to BALANCED
+						power_set_profile(power, PROFILE_BALANCED);
+					}
+				}
 			}
 			break;
 
@@ -459,8 +478,13 @@ static void power_set_interactive(struct power_module* module, int on) {
 	if (power_profiles_automated()) {
 		if (!screen_is_on) {
 			power_set_profile(power, PROFILE_SCREEN_OFF);
-		} else if (PROFILE_INVALID < power->profile.requested) {
-			power_set_profile(power, power->profile.requested);
+		} else {
+			if (PROFILE_INVALID < power->profile.requested) {
+				power_set_profile(power, power->profile.requested);
+			} else {
+				// fall back to BALANCED
+				power_set_profile(power, PROFILE_BALANCED);
+			}
 		}
 	}
 
