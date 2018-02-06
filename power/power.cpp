@@ -443,7 +443,7 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 		power_fingerprint_state(true);
 		power_dt2w_state(power, power->input.dt2w);
 	} else {
-		if (power->variant != EDGE) {
+		if (power->variant != EDGE && !power->dozing) {
 			// save to current state to prevent enabling
 			read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
 		}
