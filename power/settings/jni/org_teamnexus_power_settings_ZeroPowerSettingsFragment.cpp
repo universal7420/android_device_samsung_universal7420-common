@@ -61,6 +61,19 @@ Java_org_teamnexus_power_settings_ZeroPowerSettingsFragment_nativePowerProfilesA
 }
 
 /**
+ * profiles_dozing
+ */
+JNIEXPORT jboolean JNICALL
+Java_org_teamnexus_power_settings_ZeroPowerSettingsFragment_nativePowerProfilesDozing(JNIEnv* /* env */, jclass /* clazz */) {
+	return power_profiles_dozing();
+}
+
+JNIEXPORT void JNICALL
+Java_org_teamnexus_power_settings_ZeroPowerSettingsFragment_nativePowerProfilesDozingSet(JNIEnv* /* env */, jclass /* clazz */, jboolean state) {
+	power_profiles_dozing_set(state);
+}
+
+/**
  * boost_nteraction
  */
 JNIEXPORT jboolean JNICALL

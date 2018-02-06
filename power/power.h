@@ -64,6 +64,7 @@ struct sec_power_module {
 	pthread_mutex_t lock;
 
 	bool initialized;
+	bool dozing;
 
 	enum sec_device_variant variant;
 

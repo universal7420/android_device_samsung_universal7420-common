@@ -61,6 +61,10 @@ void power_config_initialize() {
 	// version 2: 04-02-2018_1
 	if (!is_file(PATH_POWER_FINGERPRINT_WAKELOCKS))
 		power_fingerprint_wakelocks_set(POWER_FINGERPRINT_WAKELOCKS_DEFAULT);
+
+	// version 3: 06-02-2018_1
+	if (!is_file(PATH_POWER_PROFILES_DOZING))
+		power_fingerprint_wakelocks_set(POWER_PROFILES_DOZING_DEFAULT);
 }
 
 /**
@@ -87,6 +91,19 @@ bool power_profiles_automated() {
 
 void power_profiles_automated_set(bool state) {
 	write(PATH_POWER_PROFILES_AUTOMATED, state);
+}
+
+/**
+ * profiles_dozing
+ */
+bool power_profiles_dozing() {
+	bool flag = POWER_PROFILES_DOZING_DEFAULT;
+	read(PATH_POWER_PROFILES_DOZING, &flag);
+	return flag;
+}
+
+void power_profiles_dozing_set(bool state) {
+	write(PATH_POWER_PROFILES_DOZING, state);
 }
 
 /**

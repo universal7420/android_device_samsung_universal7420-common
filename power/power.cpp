@@ -70,6 +70,7 @@ static int power_open(const hw_module_t *module, const char *name, hw_device_t *
 			pthread_mutex_init(&power->lock, nullptr);
 
 			power->initialized = false;
+			power->dozing = false;
 			power->profile.current = PROFILE_INVALID;
 			power->profile.requested = PROFILE_INVALID;
 			power->input.touchkeys_enabled = true;
@@ -176,6 +177,34 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 					ALOGI("%s: hint(POWER_HINT_VR_MODE, %d, %llu)", __func__, value, (unsigned long long)data);
 
 				power_set_profile(power, value ? PROFILE_HIGH_PERFORMANCE : power->profile.requested);
+			}
+			break;
+
+		case POWER_HINT_DOZING:
+			if (power_profiles_automated() && power_profiles_dozing()) {
+				ALOGI("%s: hint(POWER_HINT_DOZING, %d, %llu)", __func__, value, (unsigned long long)data);
+				if (value) {
+					power->dozing = true;
+
+					// update input devices
+					power_input_device_state(power, false);
+
+					// We don't want create another profile, and
+					// SCREEN_OFF is the best-matching one
+					power_set_profile(power, PROFILE_SCREEN_OFF);
+				} else {
+					power->dozing = false;
+
+					// update input devices
+					power_input_device_state(power, false);
+
+					if (PROFILE_INVALID < power->profile.requested) {
+						power_set_profile(power, power->profile.requested);
+					} else {
+						// fall back to BALANCED
+						power_set_profile(power, PROFILE_BALANCED);
+					}
+				}
 			}
 			break;
 
@@ -400,7 +429,7 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 			read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
 		}
 
-		if (power->input.touchscreen_control_path != "" && !power->input.dt2w) {
+		if (power->input.touchscreen_control_path != "" && !power->input.dt2w && !power->dozing) {
 			write(power->input.touchscreen_control_path, false);
 		}
 

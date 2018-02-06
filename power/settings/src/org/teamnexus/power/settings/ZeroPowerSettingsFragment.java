@@ -43,6 +43,10 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 	private native boolean nativePowerProfilesAutomated();
 	private native void nativePowerProfilesAutomatedSet(boolean state);
 
+	/** profiles_dozing */
+	private native boolean nativePowerProfilesDozing();
+	private native void nativePowerProfilesDozingSet(boolean state);
+
 	/** boost_interaction */
 	private native boolean nativePowerBoostInteraction();
 	private native void nativePowerBoostInteractionSet(boolean state);
@@ -65,6 +69,7 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 
 	private final String KEY_PROFILES = "profiles";
 	private final String KEY_PROFILES_AUTOMATED = "profiles_automated";
+	private final String KEY_PROFILES_DOZING = "profiles_dozing";
 	private final String KEY_BOOST_INTERACTION = "boost_interaction";
 	private final String KEY_BOOST_CPU = "boost_cpu";
 	private final String KEY_FINGERPRINT_ALWAYS_ON = "fingerprint_always_on";
@@ -81,6 +86,7 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 
 	private SwitchPreference mProfiles;
 	private SwitchPreference mProfilesAutomated;
+	private SwitchPreference mProfilesDozing;
 	private SwitchPreference mBoostInteraction;
 	private SwitchPreference mBoostCpu;
 	private SwitchPreference mFingerprintAlwaysOn;
@@ -109,6 +115,7 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 
         mProfiles = initializePreference(KEY_PROFILES, nativePowerProfiles());
         mProfilesAutomated = initializePreference(KEY_PROFILES_AUTOMATED, nativePowerProfilesAutomated(), mProfiles);
+        mProfilesDozing = initializePreference(KEY_PROFILES_DOZING, nativePowerProfilesDozing(), mProfiles);
         mBoostInteraction = initializePreference(KEY_BOOST_INTERACTION, nativePowerBoostInteraction());
         mBoostCpu = initializePreference(KEY_BOOST_CPU, nativePowerBoostCpu());
         mFingerprintAlwaysOn = initializePreference(KEY_FINGERPRINT_ALWAYS_ON, nativePowerFingerprintAlwaysOn());
@@ -146,6 +153,10 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 			nativePowerProfilesSet(boolval);
 
 			mProfilesAutomated.setEnabled(boolval);
+			if (boolval && mProfilesAutomated.isChecked())
+				mProfilesDozing.setEnabled(true);
+			else
+				mProfilesDozing.setEnabled(false);
 
 			mProfilesCluster0.setEnabled(boolval);
 			mProfilesCluster1.setEnabled(boolval);
@@ -156,6 +167,10 @@ public class ZeroPowerSettingsFragment extends PreferenceFragment
 			mProfilesKernel.setEnabled(boolval);
 		} else if (mProfilesAutomated == preference) {
 			nativePowerProfilesAutomatedSet(boolval);
+
+			mProfilesDozing.setEnabled(boolval);
+		} else if (mProfilesDozing == preference) {
+			nativePowerProfilesDozingSet(boolval);
 		} else if (mBoostInteraction == preference) {
 			nativePowerBoostInteractionSet(boolval);
 		} else if (mBoostCpu == preference) {

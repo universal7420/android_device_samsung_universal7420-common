@@ -25,6 +25,8 @@
 	<string name="profiles_summary">Adjusts the performance on either the users request or the device current power-state</string>
 	<string name="profiles_automated_title">Use automatic performance profiles</string>
 	<string name="profiles_automated_summary">Allows the system to modify the current performance profile depending on the current situation</string>
+	<string name="profiles_dozing_title">Use adjusted performance profiles in dozing-mode</string>
+	<string name="profiles_dozing_summary">Switches to an adjusted performance profile when switching to doze (ambient/always-on-display)</string>
 	<string name="boost_interaction_title">Boost device on user-interaction</string>
 	<string name="boost_interaction_summary">Allows the power-management to boost your device on user-interaction</string>
 	<string name="boost_cpu_title">Boost device on system-request</string>

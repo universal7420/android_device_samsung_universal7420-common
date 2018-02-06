@@ -15,6 +15,11 @@
 		    android:summary="@string/profiles_automated_summary" />
 
 		<SwitchPreference
+		    android:key="profiles_dozing"
+		    android:title="@string/profiles_dozing_title" 
+		    android:summary="@string/profiles_dozing_summary" />
+
+		<SwitchPreference
 		    android:key="boost_interaction"
 		    android:title="@string/boost_interaction_title" 
 		    android:summary="@string/boost_interaction_summary" />

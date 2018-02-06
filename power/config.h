@@ -23,6 +23,7 @@ using namespace std;
 
 #define POWER_PROFILES_DEFAULT                 true
 #define POWER_PROFILES_AUTOMATED_DEFAULT       true
+#define POWER_PROFILES_DOZING_DEFAULT          true
 #define POWER_BOOST_INTERACTION_DEFAULT        false
 #define POWER_BOOST_CPU_DEFAULT                false
 #define POWER_FINGERPRINT_ALWAYS_ON_DEFAULT    false
@@ -33,6 +34,7 @@ using namespace std;
 
 #define PATH_POWER_PROFILES                 BASE_DIRECTORY "sys.power.profiles"
 #define PATH_POWER_PROFILES_AUTOMATED       BASE_DIRECTORY "sys.power.profiles.automated"
+#define PATH_POWER_PROFILES_DOZING          BASE_DIRECTORY "sys.power.profiles.dozing"
 #define PATH_POWER_BOOST_INTERACTION        BASE_DIRECTORY "sys.power.boost.interaction"
 #define PATH_POWER_BOOST_CPU                BASE_DIRECTORY "sys.power.boost.cpu"
 #define PATH_POWER_FINGERPRINT_ALWAYS_ON    BASE_DIRECTORY "sys.power.fingerprint.always-on"
@@ -48,6 +50,10 @@ void power_profiles_set(bool state);
 /** profiles_automated */
 bool power_profiles_automated();
 void power_profiles_automated_set(bool state);
+
+/** profiles_dozing */
+bool power_profiles_dozing();
+void power_profiles_dozing_set(bool state);
 
 /** boost_interaction */
 bool power_boost_interaction();
