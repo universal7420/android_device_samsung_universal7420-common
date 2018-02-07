@@ -62,6 +62,13 @@ bool assert_cpugov(const int core, const string asserted_cpugov) {
 	return (cpugov == asserted_cpugov);
 }
 
+bool assert_cpugov_file(const int core, const string file) {
+	ostringstream path;
+
+	path << curr_cpugov_path[core] << "/" << file;
+	return is_file(path.str());
+}
+
 static int __stat_path(const string path) {
 	struct stat fstat;
 	const char *cpath = path.c_str();

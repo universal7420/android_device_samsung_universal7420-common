@@ -221,9 +221,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		case POWER_HINT_INTERACTION:
 			if (power_boost_interaction()) {
 				ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
-
-				power_boostpulse(value ? value : 50000);
-				power_boostpulse(value ? value : 50000);
+				power_boostpulse(power, value ? value : POWER_DEFAULT_BOOSTPULSE);
 			}
 
 			break;
@@ -232,9 +230,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
         case POWER_HINT_CPU_BOOST:
 			if (power_boost_cpu()) {
 				ALOGI("%s: hint(POWER_HINT_CPU_BOOST, %d, %llu)", __func__, value, (unsigned long long)data);
-
-				power_boostpulse(value);
-				power_boostpulse(value);
+				power_boostpulse(power, value ? value : POWER_DEFAULT_BOOSTPULSE);
 			}
 
 			break;
@@ -378,16 +374,46 @@ static void power_reset_profile(struct sec_power_module *power) {
 /***********************************
  * Boost
  */
-static void power_boostpulse(int duration) {
-	ALOGDD("%s: duration     = %d", __func__, duration);
+static void power_boostpulse(struct sec_power_module *power, int duration) {
+	power_boostpulse_cpu(power, 0, duration);
+	power_boostpulse_cpu(power, 4, duration);
+}
 
-	if (duration > 0) {
-		write_cpugov(0, "boostpulse_duration", duration);
-		write_cpugov(1, "boostpulse_duration", duration);
+static void power_boostpulse_cpu(struct sec_power_module *power, int core, int duration) {
+	ALOGDD("%s: duration = %d", __func__, duration);
+
+	// read current configuration
+	if (!update_current_cpugov_path(core)) {
+		ALOGW("Failed to load current cpugov-configuration");
+		goto fallback;
 	}
 
-	write_cpugov(0, "boostpulse", true);
-	write_cpugov(1, "boostpulse", true);
+	if (assert_cpugov_file(core, "boostpulse_duration") &&
+	    assert_cpugov_file(core, "boostpulse"))
+	{
+		// found boost-files, use them
+		power_boostpulse_cpu_cpugov(core, duration);
+	}
+
+fallback:
+	// didn't find at least one of the boost-files or wasn't
+	// able to determine the used governor, use manual fallback
+	power_boostpulse_cpu_fallback(power, core, duration);
+}
+
+static void power_boostpulse_cpu_cpugov(int core, int duration) {
+	if (duration > 0) {
+		write_cpugov(core, "boostpulse_duration", duration);
+	}
+	write_cpugov(core, "boostpulse", true);
+}
+
+static void power_boostpulse_cpu_fallback(struct sec_power_module *power, int core, int duration) {
+	power_profile data = power_profiles_data[power->profile.current + 1];
+
+	write_cpugov(core, "freq_min", data.cpu.cl1.freq_max);
+	usleep(duration);
+	write_cpugov(core, "freq_min", data.cpu.cl1.freq_min);
 }
 
 /***********************************
