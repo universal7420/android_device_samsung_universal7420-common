@@ -21,3 +21,17 @@ on early-boot
 # Increased technology maximums should be reflected here.
     write /proc/sys/net/core/rmem_max 2097152
     write /proc/sys/net/core/wmem_max 2097152
+
+# A stopping zygote may indicate a soft-reboot. for a proper recognition
+# of the SIM-card after such a soft-reboot, stop our radio-daemon here
+on property:init.svc.zygote=stopping
+	stop ril-daemon
+	stop ril-daemon1
+	stop cpboot-daemon
+
+# If zygote restarts after dying, it's a good time to start our
+# radio-daemon again, but make sure that the modem-loader starts first
+on property:init.svc.zygote=restarting
+	start cpboot-daemon
+	start ril-daemon
+	start ril-daemon1
