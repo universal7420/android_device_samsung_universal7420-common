@@ -160,12 +160,8 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 				if (value) {
 					power_set_profile(power, PROFILE_POWER_SAVE);
 				} else {
-					if (PROFILE_INVALID < power->profile.requested) {
-						power_set_profile(power, power->profile.requested);
-					} else {
-						// fall back to BALANCED
-						power_set_profile(power, PROFILE_BALANCED);
-					}
+					// reset to requested- or fallback-profile
+					power_reset_profile(power);
 				}
 			}
 			break;
@@ -189,12 +185,8 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 				if (value) {
 					power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
 				} else {
-					if (PROFILE_INVALID < power->profile.requested) {
-						power_set_profile(power, power->profile.requested);
-					} else {
-						// fall back to BALANCED
-						power_set_profile(power, PROFILE_BALANCED);
-					}
+					// reset to requested- or fallback-profile
+					power_reset_profile(power);
 				}
 			}
 			break;
@@ -217,12 +209,8 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 					// update input devices
 					power_input_device_state(power, true);
 
-					if (PROFILE_INVALID < power->profile.requested) {
-						power_set_profile(power, power->profile.requested);
-					} else {
-						// fall back to BALANCED
-						power_set_profile(power, PROFILE_BALANCED);
-					}
+					// reset to requested- or fallback-profile
+					power_reset_profile(power);
 				}
 			}
 			break;
@@ -378,6 +366,15 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	}
 }
 
+static void power_reset_profile(struct sec_power_module *power) {
+	if (PROFILE_INVALID < power->profile.requested) {
+		power_set_profile(power, power->profile.requested);
+	} else {
+		// fall back to BALANCED
+		power_set_profile(power, PROFILE_BALANCED);
+	}
+}
+
 /***********************************
  * Boost
  */
@@ -487,12 +484,8 @@ static void power_set_interactive(struct power_module* module, int on) {
 		if (!screen_is_on) {
 			power_set_profile(power, PROFILE_SCREEN_OFF);
 		} else {
-			if (PROFILE_INVALID < power->profile.requested) {
-				power_set_profile(power, power->profile.requested);
-			} else {
-				// fall back to BALANCED
-				power_set_profile(power, PROFILE_BALANCED);
-			}
+			// reset to requested- or fallback-profile
+			power_reset_profile(power);
 		}
 	}
 

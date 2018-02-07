@@ -90,6 +90,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 /** Profiles */
 static void power_set_profile(struct sec_power_module *power, int profile);
+static void power_reset_profile(struct sec_power_module *power);
 
 /** Boost */
 static void power_boostpulse(int duration);
