@@ -412,9 +412,13 @@ static void power_boostpulse_cpu_cpugov(int core, int duration) {
 static void power_boostpulse_cpu_fallback(struct sec_power_module *power, int core, int duration) {
 	power_profile data = power_profiles_data[power->profile.current + 1];
 
-	write_cpugov(core, "freq_min", data.cpu.cl1.freq_max);
-	usleep(duration);
-	write_cpugov(core, "freq_min", data.cpu.cl1.freq_min);
+	std::thread boostpulseThread([core, data, duration]() {
+		write_cpugov(core, "freq_min", data.cpu.cl1.freq_max);
+		usleep(duration);
+		write_cpugov(core, "freq_min", data.cpu.cl1.freq_min);
+	});
+
+	boostpulseThread.detach();
 }
 
 /***********************************
