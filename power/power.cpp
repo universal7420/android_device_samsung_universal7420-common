@@ -393,6 +393,7 @@ static void power_boostpulse_cpu(struct sec_power_module *power, int core, int d
 	{
 		// found boost-files, use them
 		power_boostpulse_cpu_cpugov(core, duration);
+		return;
 	}
 
 fallback:
