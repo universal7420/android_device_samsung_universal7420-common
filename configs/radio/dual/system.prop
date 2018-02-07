@@ -1,5 +1,6 @@
 #
-# Copyright (C) 2017 TeamNexus
+# Copyright (C) 2018 TeamNexus
+# Copyright (C) 2018 DarkLord1731 / https://github.com/Exynos7870/
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +15,9 @@
 # limitations under the License.
 #
 
-# Common
-SIM_COUNT := 2
-  
-# Manifest
-DEVICE_MANIFEST_FILE += device/samsung/zero-common/configs/radio/dual/manifest.xml
+# thanks to https://github.com/Exynos7870/android_device_samsung_exynos7870-common/
 
-# Properties
-TARGET_SYSTEM_PROP += device/samsung/zero-common/configs/radio/dual/system.prop
+ro.multisim.simslotcount=2
+
+# read DS/SS property
+import /efs/factory.prop
