@@ -40,8 +40,12 @@ LOCAL_MODULE_TAGS          := optional
 LOCAL_CFLAGS               := -Wall -Werror -Wno-unused-parameter -Wno-unused-function
 LOCAL_PROPRIETARY_MODULE   := true
 
-ifneq (,$(wildcard lineage-sdk/ vendor/cmsdk/))
+ifneq (,$(wildcard hardware/lineage/interfaces/power/1.0/ vendor/cmsdk/))
   LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
+endif
+
+ifneq (,$(wildcard hardware/nexus/interfaces/power/1.0/))
+  LOCAL_CFLAGS += -DPOWER_HAS_NEXUS_HINTS
 endif
 
 # Enables the advanced mutex-protection for better protection

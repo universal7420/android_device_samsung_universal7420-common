@@ -191,6 +191,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			}
 			break;
 
+#ifdef POWER_HAS_NEXUS_HINTS
 		case POWER_HINT_DOZING:
 			if (power_profiles_automated() && power_profiles_dozing()) {
 				ALOGI("%s: hint(POWER_HINT_DOZING, %d, %llu)", __func__, value, (unsigned long long)data);
@@ -214,6 +215,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 				}
 			}
 			break;
+#endif // POWER_HAS_NEXUS_HINTS
 
 		/***********************************
 		 * Boosting
