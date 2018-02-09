@@ -286,14 +286,14 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 		write_cpugov(0, "hispeed_freq", data.cpu.cl0.freq_max);
 
 		if (assert_cpugov(0, "nexus")) {
-			write_cpugov(0, "down_load",                   data.cpu.nexus.down_load);
-			write_cpugov(0, "down_step",                   data.cpu.nexus.down_step);
-			write_cpugov(0, "down_load_to_step_ratio",     data.cpu.nexus.down_lts_ratio);
-			write_cpugov(0, "down_load_to_step_elevation", data.cpu.nexus.down_lts_elev);
-			write_cpugov(0, "up_load",                     data.cpu.nexus.up_load);
-			write_cpugov(0, "up_step",                     data.cpu.nexus.up_step);
-			write_cpugov(0, "up_load_to_step_ratio",       data.cpu.nexus.up_lts_ratio);
-			write_cpugov(0, "up_load_to_step_elevation",   data.cpu.nexus.up_lts_elev);
+			write_cpugov(0, "down_load",          data.cpu.nexus.down_load);
+			write_cpugov(0, "down_step",          data.cpu.nexus.down_step);
+			write_cpugov(0, "lpr_down_ratio",     data.cpu.nexus.lpr_down_ratio);
+			write_cpugov(0, "lpr_down_elevation", data.cpu.nexus.lpr_down_elev);
+			write_cpugov(0, "up_load",            data.cpu.nexus.up_load);
+			write_cpugov(0, "up_step",            data.cpu.nexus.up_step);
+			write_cpugov(0, "lpr_up_ratio",       data.cpu.nexus.lpr_up_ratio);
+			write_cpugov(0, "lpr_up_elevation",   data.cpu.nexus.lpr_up_elev);
 		}
 	}
 
@@ -306,14 +306,14 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 		write_cpugov(4, "hispeed_freq", data.cpu.cl1.freq_max);
 
 		if (assert_cpugov(4, "nexus")) {
-			write_cpugov(4, "down_load",                   data.cpu.nexus.down_load);
-			write_cpugov(4, "down_step",                   data.cpu.nexus.down_step);
-			write_cpugov(4, "down_load_to_step_ratio",     data.cpu.nexus.down_lts_ratio);
-			write_cpugov(4, "down_load_to_step_elevation", data.cpu.nexus.down_lts_elev);
-			write_cpugov(4, "up_load",                     data.cpu.nexus.up_load);
-			write_cpugov(4, "up_step",                     data.cpu.nexus.up_step);
-			write_cpugov(4, "up_load_to_step_ratio",       data.cpu.nexus.up_lts_ratio);
-			write_cpugov(4, "up_load_to_step_elevation",   data.cpu.nexus.up_lts_elev);
+			write_cpugov(4, "down_load",          data.cpu.nexus.down_load);
+			write_cpugov(4, "down_step",          data.cpu.nexus.down_step);
+			write_cpugov(4, "lpr_down_ratio",     data.cpu.nexus.lpr_down_ratio);
+			write_cpugov(4, "lpr_down_elevation", data.cpu.nexus.lpr_down_elev);
+			write_cpugov(4, "up_load",            data.cpu.nexus.up_load);
+			write_cpugov(4, "up_step",            data.cpu.nexus.up_step);
+			write_cpugov(4, "lpr_up_ratio",       data.cpu.nexus.lpr_up_ratio);
+			write_cpugov(4, "lpr_up_elevation",   data.cpu.nexus.lpr_up_elev);
 		}
 	}
 

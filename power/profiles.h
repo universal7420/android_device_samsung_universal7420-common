@@ -41,13 +41,13 @@ struct power_profile {
 
 			int down_load;
 			int down_step;
-			int down_lts_ratio;
-			int down_lts_elev;
+			int lpr_down_ratio;
+			int lpr_down_elev;
 
 			int up_load;
 			int up_step;
-			int up_lts_ratio;
-			int up_lts_elev;
+			int lpr_up_ratio;
+			int lpr_up_elev;
 
 		} nexus;
 
@@ -114,13 +114,13 @@ struct power_profile {
 			.nexus = {
 				.down_load = 50,
 				.down_step = 2,
-				.down_lts_ratio = 0,
-				.down_lts_elev = 0,
+				.lpr_down_ratio = 0,
+				.lpr_down_elev = 0,
 
 				.up_load = 60,
 				.up_step = 1,
-				.up_lts_ratio = 0,
-				.up_lts_elev = 0,
+				.lpr_up_ratio = 0,
+				.lpr_up_elev = 0,
 			},
 		},
 		.hmp = {
@@ -167,13 +167,13 @@ struct power_profile {
 			.nexus = {
 				.down_load = 40,
 				.down_step = 2,
-				.down_lts_ratio = 150,
-				.down_lts_elev = 1,
+				.lpr_down_ratio = 150,
+				.lpr_down_elev = 1,
 
 				.up_load = 50,
 				.up_step = 1,
-				.up_lts_ratio = 150,
-				.up_lts_elev = 1,
+				.lpr_up_ratio = 150,
+				.lpr_up_elev = 1,
 			},
 		},
 		.hmp = {
@@ -220,13 +220,13 @@ struct power_profile {
 			.nexus = {
 				.down_load = 40,
 				.down_step = 1,
-				.down_lts_ratio = 125,
-				.down_lts_elev = 1,
+				.lpr_down_ratio = 125,
+				.lpr_down_elev = 1,
 
 				.up_load = 50,
 				.up_step = 1,
-				.up_lts_ratio = 125,
-				.up_lts_elev = 2,
+				.lpr_up_ratio = 125,
+				.lpr_up_elev = 2,
 			},
 		},
 		.hmp = {
@@ -273,13 +273,13 @@ struct power_profile {
 			.nexus = {
 				.down_load = 20,
 				.down_step = 1,
-				.down_lts_ratio = 100,
-				.down_lts_elev = 2,
+				.lpr_down_ratio = 100,
+				.lpr_down_elev = 2,
 
 				.up_load = 30,
 				.up_step = 3,
-				.up_lts_ratio = 100,
-				.up_lts_elev = 4,
+				.lpr_up_ratio = 100,
+				.lpr_up_elev = 4,
 			},
 		},
 		.hmp = {
@@ -326,13 +326,13 @@ struct power_profile {
 			.nexus = {
 				.down_load = 35,
 				.down_step = 1,
-				.down_lts_ratio = 135,
-				.down_lts_elev = 1,
+				.lpr_down_ratio = 135,
+				.lpr_down_elev = 1,
 
 				.up_load = 45,
 				.up_step = 1,
-				.up_lts_ratio = 135,
-				.up_lts_elev = 1,
+				.lpr_up_ratio = 135,
+				.lpr_up_elev = 1,
 			},
 		},
 		.hmp = {
@@ -379,13 +379,13 @@ struct power_profile {
 			.nexus = {
 				.down_load = 30,
 				.down_step = 1,
-				.down_lts_ratio = 115,
-				.down_lts_elev = 1,
+				.lpr_down_ratio = 115,
+				.lpr_down_elev = 1,
 
 				.up_load = 40,
 				.up_step = 2,
-				.up_lts_ratio = 115,
-				.up_lts_elev = 3,
+				.lpr_up_ratio = 115,
+				.lpr_up_elev = 3,
 			},
 		},
 		.hmp = {
