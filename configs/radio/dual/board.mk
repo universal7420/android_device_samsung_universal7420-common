@@ -19,6 +19,3 @@ SIM_COUNT := 2
   
 # Manifest
 DEVICE_MANIFEST_FILE += device/samsung/zero-common/configs/radio/dual/manifest.xml
-
-# Properties
-TARGET_SYSTEM_PROP += device/samsung/zero-common/configs/radio/dual/system.prop

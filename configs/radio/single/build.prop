@@ -15,9 +15,9 @@
 # limitations under the License.
 #
 
-# thanks to https://github.com/Exynos7870/android_device_samsung_exynos7870-common/
-
-ro.multisim.simslotcount=2
-
-# read DS/SS property
-import /efs/factory.prop
+#
+# Radio
+#
+persist.radio.multisim.config=none
+ro.multisim.simslotcount=1
+ro.telephony.ril.config=simactivation

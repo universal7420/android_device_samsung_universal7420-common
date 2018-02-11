@@ -1,5 +1,6 @@
 #
-# Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2018 TeamNexus
+# Copyright (C) 2018 DarkLord1731 / https://github.com/Exynos7870/
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,22 +15,13 @@
 # limitations under the License.
 #
 
-# Radio
-PRODUCT_PACKAGES += \
-	libxml2 \
-	libprotobuf-cpp-full \
-	rild \
-	libreference-ril \
-	libril \
-	libsecril-client \
-	libsecril-client-sap \
-	android.hardware.radio@1.0 \
-	android.hardware.radio.deprecated@1.0 \
-	modemloader
+# thanks to https://github.com/Exynos7870/android_device_samsung_exynos7870-common/
+# some properties taken from https://review.lineageos.org/200496
 
-# Dual-SIM Support
-ifeq ($(BOARD_HAS_DUAL_SIM),true)
-  include $(LOCAL_PATH)/configs/radio/dual/product.mk
-else
-  include $(LOCAL_PATH)/configs/radio/single/product.mk
-endif
+#
+# Radio
+#
+persist.radio.multisim.config=dsds
+ro.multisim.set_audio_params=true
+ro.multisim.simslotcount=2
+ro.telephony.ril.config=simactivation

@@ -17,11 +17,10 @@
 LOCAL_PATH := device/samsung/zero-common
 
 # Init
-ifeq ($(filter zerofltespr zeroltespr,$(TARGET_DEVICE)),)
-  PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/radio/single/rild.rc.gsm:system/vendor/etc/init/rild.rc
-else
-  PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/radio/single/rild.rc.cdma:system/vendor/etc/init/rild.rc
-endif
-
 PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/radio/single/rild.rc:system/vendor/etc/init/rild.rc \
 	$(LOCAL_PATH)/configs/radio/dual/rild.rc:system/vendor/etc/init/rild-dsds.rc
+
+# Properties
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/radio/dual/build.prop:system/vendor/etc/properties/radio.prop

@@ -14,5 +14,8 @@
 # limitations under the License.
 #
 
+# Common
+SIM_COUNT := 1
+
 # Manifest
 DEVICE_MANIFEST_FILE += device/samsung/zero-common/configs/radio/single/manifest.xml
