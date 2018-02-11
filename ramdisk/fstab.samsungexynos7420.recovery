@@ -11,6 +11,7 @@
 /dev/block/platform/15570000.ufs/by-name/RECOVERY             /recovery      emmc      defaults                                                                                           defaults
 
 # System partitions
+/dev/block/platform/15570000.ufs/by-name/SYSTEM               /system        ext4      ro,noatime,noauto_da_alloc,discard,data=ordered,errors=panic                                       wait
 /dev/block/platform/15570000.ufs/by-name/EFS                  /efs           ext4      noatime,nosuid,nodev,noauto_da_alloc,discard,data=ordered,errors=panic                             wait,check
 
 # User partitions
