@@ -27,13 +27,6 @@ EXTENDED_FONT_FOOTPRINT := true
 TARGET_SPECIFIC_HEADER_PATH := \
 	$(LOCAL_PATH)/include
 
-# Include path
-TARGET_SPECIFIC_HEADER_PATH += \
-	-I$(TOP)/frameworks/native/libs/arect/include \
-	-I$(TOP)/frameworks/native/libs/nativebase/include \
-	-I$(TOP)/frameworks/native/libs/nativewindow/include \
-	-I
-
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_sec
 TARGET_UNIFIED_DEVICE := true
