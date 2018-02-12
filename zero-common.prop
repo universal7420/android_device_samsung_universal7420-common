@@ -88,7 +88,7 @@ logd.logpersistd.size.rotate=64
 # Media
 #
 media.sf.omx-plugin=libffmpeg_omx.so,libsomxcore.so
-persist.media.treble_omx=true
+persist.media.treble_omx=false
 
 #
 # Networking
