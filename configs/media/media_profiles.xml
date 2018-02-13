@@ -22,7 +22,7 @@
                          AudioDecoderCap)>
 <!ELEMENT CamcorderProfiles (EncoderProfile+, ImageEncoding+, ImageDecoding, Camera)>
 <!ELEMENT EncoderProfile (Video, Audio)>
-<!ATTLIST EncoderProfile quality (low|high|qcif|480p|720p|1080p|1440p|qhd|2160p|timelapselow|timelapsehigh|timelapseqcif|timelapse480p|timelapse720p|timelapse1080p) #REQUIRED>
+<!ATTLIST EncoderProfile quality (low|high|qcif|480p|720p|1080p|1440p|2160p|timelapselow|timelapsehigh|timelapseqcif|timelapse480p|timelapse720p|timelapse1080p) #REQUIRED>
 <!ATTLIST EncoderProfile fileFormat (mp4|3gp) #REQUIRED>
 <!ATTLIST EncoderProfile duration (30|60) #REQUIRED>
 <!ATTLIST EncoderProfile cameraId (0|1) #REQUIRED>
@@ -162,19 +162,6 @@
              width="1920"
              height="1080"
              frameRate="60" />
-
-      <Audio codec="aac"
-             bitRate="256000"
-             sampleRate="48000"
-             channels="2" />
-    </EncoderProfile>
-
-    <EncoderProfile quality="qhd" fileFormat="mp4" duration="30">
-      <Video codec="h264"
-             bitRate="26000000"
-             width="2560"
-             height="1440"
-             frameRate="30" />
 
       <Audio codec="aac"
              bitRate="256000"
@@ -378,19 +365,6 @@
              width="1920"
              height="1080"
              frameRate="60" />
-
-      <Audio codec="aac"
-             bitRate="256000"
-             sampleRate="48000"
-             channels="2" />
-    </EncoderProfile>
-
-    <EncoderProfile quality="qhd" fileFormat="mp4" duration="30">
-      <Video codec="h264"
-             bitRate="26000000"
-             width="2560"
-             height="1440"
-             frameRate="30" />
 
       <Audio codec="aac"
              bitRate="256000"
