@@ -28,9 +28,3 @@ TARGET_SOC := exynos7420
 
 # inherit from the proprietary version
 -include vendor/samsung/zero-common/BoardConfigVendor.mk
-
-# include helpers
-include $(LOCAL_PATH)/BoardConfigHelper.mk
-
-# fixup shim-variable
-TARGET_LD_SHIM_LIBS := $(call join-with,:,$(TARGET_LD_SHIM_LIBS))
