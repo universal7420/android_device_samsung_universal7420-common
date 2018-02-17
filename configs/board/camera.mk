@@ -27,3 +27,8 @@ BOARD_BACK_CAMERA_ROTATION := 0
 # Front Sensor
 BOARD_FRONT_CAMERA_SENSOR := 21
 BOARD_FRONT_CAMERA_ROTATION := 0
+
+# Shim
+TARGET_LD_SHIM_LIBS += \
+    /system/lib/libexynoscamera.so|/vendor/lib/libexynoscamera_shim.so \
+    /system/lib64/libexynoscamera.so|/vendor/lib64/libexynoscamera_shim.so

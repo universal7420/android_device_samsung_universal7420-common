@@ -17,3 +17,8 @@
 
 # Video scaling issue workaround
 TARGET_OMX_LEGACY_RESCALING := true
+
+# Shim
+TARGET_LD_SHIM_LIBS += \
+    /system/lib64/libstagefright.so|/system/lib64/libstagefright_shim.so \
+    /system/lib/libstagefright.so|/system/lib/libstagefright_shim.so
