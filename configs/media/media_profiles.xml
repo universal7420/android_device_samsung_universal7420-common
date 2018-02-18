@@ -171,7 +171,7 @@
 
     <EncoderProfile quality="2160p" fileFormat="mp4" duration="30">
       <Video codec="h264"
-             bitRate="35000000"
+             bitRate="50000000"
              width="3840"
              height="2160"
              frameRate="30" />
