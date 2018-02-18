@@ -25,4 +25,5 @@ PRODUCT_COPY_FILES += \
 
 # Stagefright
 PRODUCT_PACKAGES += \
-    libstagefright_shim
+    libstagefright_shim \
+    libui_shim

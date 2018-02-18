@@ -18,7 +18,35 @@
 # Video scaling issue workaround
 TARGET_OMX_LEGACY_RESCALING := true
 
-# Shim
+zero_shims_omx :=  \
+    /system/lib/omx/libOMX.Exynos.AVC.Decoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.AVC.Decoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.AVC.Encoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.AVC.Encoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.HEVC.Decoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.HEVC.Decoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.HEVC.Encoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.HEVC.Encoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.MPEG4.Decoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.MPEG4.Decoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.MPEG4.Encoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.MPEG4.Encoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.VP8.Decoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.VP8.Decoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.VP8.Encoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.VP8.Encoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.VP9.Decoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.VP9.Decoder.so|/system/lib64/libui_shim.so \
+    /system/lib/omx/libOMX.Exynos.WMV.Decoder.so|/system/lib/libui_shim.so \
+    /system/lib64/omx/libOMX.Exynos.WMV.Decoder.so|/system/lib64/libui_shim.so
+
+# Shims: libstagefright
 TARGET_LD_SHIM_LIBS += \
-    /system/lib64/libstagefright.so|/system/lib64/libstagefright_shim.so \
-    /system/lib/libstagefright.so|/system/lib/libstagefright_shim.so
+    /system/lib/libexynoscamera.so|/system/lib/libstagefright_shim.so \
+    /system/lib64/libexynoscamera.so|/system/lib64/libstagefright_shim.so \
+    /system/lib/libexynoscamera3.so|/system/lib/libstagefright_shim.so \
+    /system/lib64/libexynoscamera3.so|/system/lib64/libstagefright_shim.so \
+    $(zero_shims_omx)
+
+# Shims: libui
+TARGET_LD_SHIM_LIBS += $(zero_shims_omx)
