@@ -653,8 +653,12 @@ zkw_supl_thread(void *arg) {
   D("Reset supl_ctx");
   supl_ctx_new(&supl_ctx);
   D("Request refloc and setid");
-  agpsRilCallbacks->request_refloc(AGPS_RIL_REQUEST_REFLOC_CELLID);
-  agpsRilCallbacks->request_setid(AGPS_RIL_REQUEST_SETID_MSISDN);
+  if (agpsRilCallbacks) {
+    agpsRilCallbacks->request_refloc(AGPS_RIL_REQUEST_REFLOC_CELLID);
+    agpsRilCallbacks->request_setid(AGPS_RIL_REQUEST_SETID_MSISDN);
+  } else {
+    D("agpsRilCallbacks is not set, cannot send RIL requests");
+  }
   // usleep(1000 * 1000);
 
   D("Check cell info");
