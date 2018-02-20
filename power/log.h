@@ -19,7 +19,7 @@
 
 #define LOG_TAG "power.exynos5"
 
-#define LOG_NDEBUG 1
+#define LOG_NDEBUG 0
 
 #include <utils/Log.h>
 
