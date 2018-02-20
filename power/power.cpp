@@ -29,7 +29,6 @@
 #include <stdlib.h>
 #include <string>
 
-#include "config.h"
 #include "power.h"
 #include "profiles.h"
 #include "utils.h"
@@ -70,7 +69,6 @@ static int power_open(const hw_module_t *module, const char *name, hw_device_t *
 			pthread_mutex_init(&power->lock, nullptr);
 
 			power->initialized = false;
-			power->dozing = false;
 			power->profile.current = PROFILE_INVALID;
 			power->profile.requested = PROFILE_INVALID;
 			power->input.touchkeys_enabled = true;
@@ -96,9 +94,6 @@ static void power_init(struct power_module *module) {
 		ALOGDD("%s: exit; (already initialized)", __func__);
 		return;
 	}
-
-	// initialize power-config
-	power_config_initialize();
 
 	// get correct touchkeys/enabled-file
 	// reads from input1/name:
@@ -154,16 +149,13 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 * Profiles
 		 */
 		case POWER_HINT_LOW_POWER:
-			if (power_profiles_automated()) {
-				ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
-
-				if (value) {
-					power_set_profile(power, PROFILE_POWER_SAVE);
-				} else {
-					// reset to requested- or fallback-profile
-					power_reset_profile(power);
-				}
-			}
+			ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
+			if (value) {
+				power_set_profile(power, PROFILE_POWER_SAVE);
+			} else {
+				// reset to requested- or fallback-profile
+				power_reset_profile(power);
+			}			
 			break;
 
 #ifdef POWER_HAS_LINEAGE_HINTS
@@ -175,68 +167,24 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 #endif
 
 		case POWER_HINT_SUSTAINED_PERFORMANCE:
+			ALOGI("%s: hint(POWER_HINT_SUSTAINED_PERFORMANCE, %d, %llu)", __func__, value, (unsigned long long)data);
+			if (value) {
+				power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
+			} else {
+				// reset to requested- or fallback-profile
+				power_reset_profile(power);
+			}			
+			break;
+
 		case POWER_HINT_VR_MODE:
-			if (power_profiles_automated()) {
-				if (hint == POWER_HINT_SUSTAINED_PERFORMANCE)
-					ALOGI("%s: hint(POWER_HINT_SUSTAINED_PERFORMANCE, %d, %llu)", __func__, value, (unsigned long long)data);
-				else if (hint == POWER_HINT_VR_MODE)
-					ALOGI("%s: hint(POWER_HINT_VR_MODE, %d, %llu)", __func__, value, (unsigned long long)data);
-
-				if (value) {
-					power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
-				} else {
-					// reset to requested- or fallback-profile
-					power_reset_profile(power);
-				}
-			}
+			ALOGI("%s: hint(POWER_HINT_VR_MODE, %d, %llu)", __func__, value, (unsigned long long)data);
+			if (value) {
+				power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
+			} else {
+				// reset to requested- or fallback-profile
+				power_reset_profile(power);
+			}			
 			break;
-
-#ifdef POWER_HAS_NEXUS_HINTS
-		case POWER_HINT_DOZING:
-			if (power_profiles_automated() && power_profiles_dozing()) {
-				ALOGI("%s: hint(POWER_HINT_DOZING, %d, %llu)", __func__, value, (unsigned long long)data);
-				if (value) {
-					power->dozing = true;
-
-					// update input devices
-					power_input_device_state(power, false);
-
-					// We don't want create another profile, and
-					// SCREEN_OFF is the best-matching one
-					power_set_profile(power, PROFILE_SCREEN_OFF);
-				} else {
-					power->dozing = false;
-
-					// update input devices
-					power_input_device_state(power, true);
-
-					// reset to requested- or fallback-profile
-					power_reset_profile(power);
-				}
-			}
-			break;
-#endif // POWER_HAS_NEXUS_HINTS
-
-		/***********************************
-		 * Boosting
-		 */
-		case POWER_HINT_INTERACTION:
-			if (power_boost_interaction()) {
-				ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
-				power_boostpulse(power, value ? value : POWER_DEFAULT_BOOSTPULSE);
-			}
-
-			break;
-
-#ifdef POWER_HAS_LINEAGE_HINTS
-        case POWER_HINT_CPU_BOOST:
-			if (power_boost_cpu()) {
-				ALOGI("%s: hint(POWER_HINT_CPU_BOOST, %d, %llu)", __func__, value, (unsigned long long)data);
-				power_boostpulse(power, value ? value : POWER_DEFAULT_BOOSTPULSE);
-			}
-
-			break;
-#endif // POWER_HAS_LINEAGE_HINTS
 
 		/***********************************
 		 * Inputs
@@ -253,16 +201,12 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 	ALOGDD("%s: exit;", __func__);
 }
 
+
 /***********************************
  * Profiles
  */
 static void power_set_profile(struct sec_power_module *power, int profile) {
  	ALOGI("%s: apply profile %d", __func__, profile);
-
-	// check if profiles are enabled
-	if (!power_profiles()) {
-		return;
-	}
 
 	// store it
 	power->profile.current = profile;
@@ -280,92 +224,78 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	/*********************
 	 * CPU Cluster0
 	 */
-	if (power_subprofile("cluster0")) {
-		write_cpugov(0, "freq_min",     data.cpu.cl0.freq_min);
-		write_cpugov(0, "freq_max",     data.cpu.cl0.freq_max);
-		write_cpugov(0, "hispeed_freq", data.cpu.cl0.freq_max);
+	write_cpugov(0, "freq_min",     data.cpu.cl0.freq_min);
+	write_cpugov(0, "freq_max",     data.cpu.cl0.freq_max);
+	write_cpugov(0, "hispeed_freq", data.cpu.cl0.freq_max);
 
-		if (assert_cpugov(0, "nexus")) {
-			write_cpugov(0, "down_load",          data.cpu.nexus.down_load);
-			write_cpugov(0, "down_step",          data.cpu.nexus.down_step);
-			write_cpugov(0, "lpr_down_ratio",     data.cpu.nexus.lpr_down_ratio);
-			write_cpugov(0, "lpr_down_elevation", data.cpu.nexus.lpr_down_elev);
-			write_cpugov(0, "up_load",            data.cpu.nexus.up_load);
-			write_cpugov(0, "up_step",            data.cpu.nexus.up_step);
-			write_cpugov(0, "lpr_up_ratio",       data.cpu.nexus.lpr_up_ratio);
-			write_cpugov(0, "lpr_up_elevation",   data.cpu.nexus.lpr_up_elev);
-		}
+	if (assert_cpugov(0, "nexus")) {
+		write_cpugov(0, "down_load",          data.cpu.nexus.down_load);
+		write_cpugov(0, "down_step",          data.cpu.nexus.down_step);
+		write_cpugov(0, "lpr_down_ratio",     data.cpu.nexus.lpr_down_ratio);
+		write_cpugov(0, "lpr_down_elevation", data.cpu.nexus.lpr_down_elev);
+		write_cpugov(0, "up_load",            data.cpu.nexus.up_load);
+		write_cpugov(0, "up_step",            data.cpu.nexus.up_step);
+		write_cpugov(0, "lpr_up_ratio",       data.cpu.nexus.lpr_up_ratio);
+		write_cpugov(0, "lpr_up_elevation",   data.cpu.nexus.lpr_up_elev);
 	}
 
 	/*********************
 	 * CPU Cluster1
 	 */
-	if (power_subprofile("cluster1")) {
-		write_cpugov(4, "freq_min",     data.cpu.cl1.freq_min);
-		write_cpugov(4, "freq_max",     data.cpu.cl1.freq_max);
-		write_cpugov(4, "hispeed_freq", data.cpu.cl1.freq_max);
+	write_cpugov(4, "freq_min",     data.cpu.cl1.freq_min);
+	write_cpugov(4, "freq_max",     data.cpu.cl1.freq_max);
+	write_cpugov(4, "hispeed_freq", data.cpu.cl1.freq_max);
 
-		if (assert_cpugov(4, "nexus")) {
-			write_cpugov(4, "down_load",          data.cpu.nexus.down_load);
-			write_cpugov(4, "down_step",          data.cpu.nexus.down_step);
-			write_cpugov(4, "lpr_down_ratio",     data.cpu.nexus.lpr_down_ratio);
-			write_cpugov(4, "lpr_down_elevation", data.cpu.nexus.lpr_down_elev);
-			write_cpugov(4, "up_load",            data.cpu.nexus.up_load);
-			write_cpugov(4, "up_step",            data.cpu.nexus.up_step);
-			write_cpugov(4, "lpr_up_ratio",       data.cpu.nexus.lpr_up_ratio);
-			write_cpugov(4, "lpr_up_elevation",   data.cpu.nexus.lpr_up_elev);
-		}
+	if (assert_cpugov(4, "nexus")) {
+		write_cpugov(4, "down_load",          data.cpu.nexus.down_load);
+		write_cpugov(4, "down_step",          data.cpu.nexus.down_step);
+		write_cpugov(4, "lpr_down_ratio",     data.cpu.nexus.lpr_down_ratio);
+		write_cpugov(4, "lpr_down_elevation", data.cpu.nexus.lpr_down_elev);
+		write_cpugov(4, "up_load",            data.cpu.nexus.up_load);
+		write_cpugov(4, "up_step",            data.cpu.nexus.up_step);
+		write_cpugov(4, "lpr_up_ratio",       data.cpu.nexus.lpr_up_ratio);
+		write_cpugov(4, "lpr_up_elevation",   data.cpu.nexus.lpr_up_elev);
 	}
 
 	/*********************
 	 * HMP
 	 */
-	if (power_subprofile("hmp")) {
-		write("/sys/kernel/hmp/boost",                   data.hmp.boost);
-		write("/sys/kernel/hmp/semiboost",               data.hmp.semiboost);
-		write("/sys/kernel/hmp/sb_down_threshold",       data.hmp.sb_down_thres);
-		write("/sys/kernel/hmp/sb_up_threshold",         data.hmp.sb_up_thres);
-		write("/sys/kernel/hmp/active_down_migration",   data.hmp.active_down_migration);
-		write("/sys/kernel/hmp/aggressive_up_migration", data.hmp.aggressive_up_migration);
-	}
+	write("/sys/kernel/hmp/boost",                   data.hmp.boost);
+	write("/sys/kernel/hmp/semiboost",               data.hmp.semiboost);
+	write("/sys/kernel/hmp/sb_down_threshold",       data.hmp.sb_down_thres);
+	write("/sys/kernel/hmp/sb_up_threshold",         data.hmp.sb_up_thres);
+	write("/sys/kernel/hmp/active_down_migration",   data.hmp.active_down_migration);
+	write("/sys/kernel/hmp/aggressive_up_migration", data.hmp.aggressive_up_migration);
 
 	/*********************
 	 * GPU
 	 */
-	if (power_subprofile("gpu")) {
-		write("/sys/devices/14ac0000.mali/dvfs_min_lock",   data.gpu.min_lock);
-		write("/sys/devices/14ac0000.mali/dvfs_max_lock",   data.gpu.max_lock);
-		write("/sys/devices/14ac0000.mali/highspeed_clock", data.gpu.highspeed_clock);
-		write("/sys/devices/14ac0000.mali/highspeed_load",  data.gpu.highspeed_load);
-	}
+	write("/sys/devices/14ac0000.mali/dvfs_min_lock",   data.gpu.min_lock);
+	write("/sys/devices/14ac0000.mali/dvfs_max_lock",   data.gpu.max_lock);
+	write("/sys/devices/14ac0000.mali/highspeed_clock", data.gpu.highspeed_clock);
+	write("/sys/devices/14ac0000.mali/highspeed_load",  data.gpu.highspeed_load);
 
 	/*********************
 	 * Input
 	 */
-	if (power_subprofile("input")) {
-		write("/sys/class/input_booster/level", (data.input.booster ? 2 : 0));
-		write("/sys/class/input_booster/head", data.input.booster_table);
-		write("/sys/class/input_booster/tail", data.input.booster_table);
-	}
+	write("/sys/class/input_booster/level", (data.input.booster ? 2 : 0));
+	write("/sys/class/input_booster/head", data.input.booster_table);
+	write("/sys/class/input_booster/tail", data.input.booster_table);
 
 	/*********************
 	 * Thermal
 	 */
-	if (power_subprofile("thermal")) {
-		write("/sys/power/enable_dm_hotplug", data.thermal.hotplugging);
-		write("/sys/power/ipa/control_temp", data.thermal.ipa_control_temp);
-	}
+	write("/sys/power/enable_dm_hotplug", data.thermal.hotplugging);
+	write("/sys/power/ipa/control_temp", data.thermal.ipa_control_temp);
 
 	/*********************
 	 * Kernel
 	 */
-	if (power_subprofile("kernel")) {
-		write("/sys/module/workqueue/parameters/power_efficient", data.kernel.power_efficient_workqueue);
-	}
+	write("/sys/module/workqueue/parameters/power_efficient", data.kernel.power_efficient_workqueue);
 }
 
 static void power_reset_profile(struct sec_power_module *power) {
-	if (PROFILE_INVALID < power->profile.requested) {
+	if (power->profile.requested != PROFILE_INVALID) {
 		power_set_profile(power, power->profile.requested);
 	} else {
 		// fall back to BALANCED
@@ -373,55 +303,6 @@ static void power_reset_profile(struct sec_power_module *power) {
 	}
 }
 
-/***********************************
- * Boost
- */
-static void power_boostpulse(struct sec_power_module *power, int duration) {
-	power_boostpulse_cpu(power, 0, duration);
-	power_boostpulse_cpu(power, 4, duration);
-}
-
-static void power_boostpulse_cpu(struct sec_power_module *power, int core, int duration) {
-	ALOGDD("%s: duration = %d", __func__, duration);
-
-	// read current configuration
-	if (!update_current_cpugov_path(core)) {
-		ALOGW("Failed to load current cpugov-configuration");
-		goto fallback;
-	}
-
-	if (assert_cpugov_file(core, "boostpulse_duration") &&
-	    assert_cpugov_file(core, "boostpulse"))
-	{
-		// found boost-files, use them
-		power_boostpulse_cpu_cpugov(core, duration);
-		return;
-	}
-
-fallback:
-	// didn't find at least one of the boost-files or wasn't
-	// able to determine the used governor, use manual fallback
-	power_boostpulse_cpu_fallback(power, core, duration);
-}
-
-static void power_boostpulse_cpu_cpugov(int core, int duration) {
-	if (duration > 0) {
-		write_cpugov(core, "boostpulse_duration", duration);
-	}
-	write_cpugov(core, "boostpulse", true);
-}
-
-static void power_boostpulse_cpu_fallback(struct sec_power_module *power, int core, int duration) {
-	power_profile data = power_profiles_data[power->profile.current + 1];
-
-	std::thread boostpulseThread([core, data, duration]() {
-		write_cpugov(core, "freq_min", data.cpu.cl1.freq_max);
-		usleep(duration);
-		write_cpugov(core, "freq_min", data.cpu.cl1.freq_min);
-	});
-
-	boostpulseThread.detach();
-}
 
 /***********************************
  * Inputs
@@ -437,11 +318,7 @@ static void power_fingerprint_state(bool state) {
 		write(POWER_FINGERPRINT_REGULATOR, true);
 	} else {
 		write(POWER_FINGERPRINT_REGULATOR, false);
-
-		if (power_fingerprint_wakelocks())
-			write(POWER_FINGERPRINT_WAKELOCKS, true);
-		else
-			write(POWER_FINGERPRINT_WAKELOCKS, false);
+		write(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
 }
 
@@ -462,33 +339,28 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 			write(power->input.touchscreen_control_path, true);
 		}
 
-		if (power->input.touchkeys_enabled) {
-			if (power->variant != EDGE) {
-				write(POWER_TOUCHKEYS_ENABLED, true);
-			}
-
+		if (power->input.touchkeys_enabled && power->variant != EDGE) {
+			write(POWER_TOUCHKEYS_ENABLED, true);
 			write(POWER_TOUCHKEYS_BRIGHTNESS, 255);
 		}
 
 		power_fingerprint_state(true);
 		power_dt2w_state(power, power->input.dt2w);
 	} else {
-		if (power->variant != EDGE && !power->dozing) {
+		if (power->variant != EDGE) {
 			// save to current state to prevent enabling
 			read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
+			
+			// disable them
+			write(POWER_TOUCHKEYS_ENABLED, false);
+			write(POWER_TOUCHKEYS_BRIGHTNESS, 0);
 		}
 
-		if (power->input.touchscreen_control_path != "" && !power->input.dt2w && !power->dozing) {
+		if (power->input.touchscreen_control_path != "" && !power->input.dt2w) {
 			write(power->input.touchscreen_control_path, false);
 		}
 
-		write(POWER_TOUCHKEYS_ENABLED, false);
-		write(POWER_TOUCHKEYS_BRIGHTNESS, 0);
-
-		if (!power_fingerprint_always_on()) {
-			power_fingerprint_state(false);
-		}
-
+		power_fingerprint_state(false);
 		power_dt2w_state(power, power->input.dt2w);
 	}
 }
@@ -505,21 +377,11 @@ static void power_set_interactive(struct power_module* module, int on) {
 		return;
 	}
 
-	// Android seems to have the habit to go into interactive-state
-	// after it went dozing/dreaming. This overwrites the previously
-	// ran DOZING-hint. Thus, skip switching into interactive-state
-	// if we are dozing right now
-	if (power->dozing) {
-		return;
-	}
-
-	if (power_profiles_automated()) {
-		if (!screen_is_on) {
-			power_set_profile(power, PROFILE_SCREEN_OFF);
-		} else {
-			// reset to requested- or fallback-profile
-			power_reset_profile(power);
-		}
+	if (!screen_is_on) {
+		power_set_profile(power, PROFILE_SCREEN_OFF);
+	} else {
+		// reset to requested- or fallback-profile
+		power_reset_profile(power);
 	}
 
 	power_input_device_state(power, screen_is_on);
