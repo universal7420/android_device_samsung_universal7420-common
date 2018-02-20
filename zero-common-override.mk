@@ -28,3 +28,16 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     BUILD_FINGERPRINT=$(zero_build_fingerprint) \
     BUILD_FINGERPRINT_FROM_FILE=$(zero_build_fingerprint) \
 	TARGET_BUILD_FLAVOR="$(zero_build_flavor)"
+
+# Set OTA-required properties in default.prop
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+	ro.product.name=$(PRODUCT_NAME) \
+	ro.product.device=$(PRODUCT_DEVICE) \
+	ro.product.brand=$(PRODUCT_BRAND) \
+	ro.product.manufacturer=$(PRODUCT_MANUFACTURER) \
+	ro.product.model=$(PRODUCT_MODEL) \
+	ro.vendor.product.name=$(PRODUCT_NAME) \
+	ro.vendor.product.device=$(PRODUCT_DEVICE) \
+	ro.vendor.product.brand=$(PRODUCT_BRAND) \
+	ro.vendor.product.manufacturer=$(PRODUCT_MANUFACTURER) \
+	ro.vendor.product.model=$(PRODUCT_MODEL)
