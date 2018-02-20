@@ -56,6 +56,9 @@ struct power_profile {
 	struct {
 
 		bool boost;
+
+		// remark: semiboost has proofen itself to contribute to a better
+		// power-efficiency, this should be remembered when setting it
 		bool semiboost;
 
 		unsigned int sb_down_thres;
@@ -85,7 +88,10 @@ struct power_profile {
 
 	struct {
 
+		// remark: if we go above default IPA-temp (65) it's a good idea to allow
+		// dynamic hotplugging to be able to cool down the device in hot situations
 		bool hotplugging;
+
 		int ipa_control_temp;
 
 	} thermal;
@@ -143,7 +149,7 @@ struct power_profile {
 			.booster_table = "0 0 0 0 0 0"
 		},
 		.thermal = {
-			.hotplugging = false,
+			.hotplugging = true,
 			.ipa_control_temp = 35,
 		},
 		.kernel = {
@@ -162,7 +168,7 @@ struct power_profile {
 			},
 			.cl1 = {
 				.freq_max = 1900000,
-				.freq_min = 200000,
+				.freq_min = 400000,
 			},
 			.nexus = {
 				.down_load = 40,
@@ -178,22 +184,22 @@ struct power_profile {
 		},
 		.hmp = {
 			.boost = false,
-			.semiboost = false,
+			.semiboost = true,
 			.sb_down_thres = 150,
 			.sb_up_thres = 400,
 			.active_down_migration = true,
 			.aggressive_up_migration = false,
 		},
 		.gpu = {
-			.min_lock = 100,
+			.min_lock = 160,
 			.max_lock = 544,
 
-			.highspeed_clock = 266,
+			.highspeed_clock = 544,
 			.highspeed_load = 99,
 		},
 		.input = {
 			.booster = true,
-			.booster_table = "300 0 400000 0 0 0"
+			.booster_table = "300 0 600000 0 0 0"
 		},
 		.thermal = {
 			.hotplugging = false,
@@ -242,7 +248,7 @@ struct power_profile {
 			.max_lock = 772,
 
 			.highspeed_clock = 700,
-			.highspeed_load = 80,
+			.highspeed_load = 70,
 		},
 		.input = {
 			.booster = true,
@@ -295,14 +301,14 @@ struct power_profile {
 			.max_lock = 772,
 
 			.highspeed_clock = 772,
-			.highspeed_load = 60,
+			.highspeed_load = 50,
 		},
 		.input = {
 			.booster = true,
 			.booster_table = "300 0 1200000 0 0 0"
 		},
 		.thermal = {
-			.hotplugging = false,
+			.hotplugging = true,
 			.ipa_control_temp = 75,
 		},
 		.kernel = {
@@ -321,7 +327,7 @@ struct power_profile {
 			},
 			.cl1 = {
 				.freq_max = 2000000,
-				.freq_min = 200000,
+				.freq_min = 400000,
 			},
 			.nexus = {
 				.down_load = 35,
@@ -337,7 +343,7 @@ struct power_profile {
 		},
 		.hmp = {
 			.boost = false,
-			.semiboost = false,
+			.semiboost = true,
 			.sb_down_thres = 150,
 			.sb_up_thres = 400,
 			.active_down_migration = true,
@@ -348,7 +354,7 @@ struct power_profile {
 			.max_lock = 600,
 
 			.highspeed_clock = 420,
-			.highspeed_load = 90,
+			.highspeed_load = 80,
 		},
 		.input = {
 			.booster = true,
@@ -389,8 +395,8 @@ struct power_profile {
 			},
 		},
 		.hmp = {
-			.boost = false,
-			.semiboost = true,
+			.boost = true,
+			.semiboost = false,
 			.sb_down_thres = 75,
 			.sb_up_thres = 125,
 			.active_down_migration = false,
@@ -401,14 +407,14 @@ struct power_profile {
 			.max_lock = 772,
 
 			.highspeed_clock = 772,
-			.highspeed_load = 70,
+			.highspeed_load = 60,
 		},
 		.input = {
 			.booster = true,
 			.booster_table = "300 0 1000000 0 0 0"
 		},
 		.thermal = {
-			.hotplugging = false,
+			.hotplugging = true,
 			.ipa_control_temp = 70,
 		},
 		.kernel = {
