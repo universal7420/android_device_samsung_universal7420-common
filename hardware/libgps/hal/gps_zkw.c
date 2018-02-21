@@ -1728,6 +1728,7 @@ zkw_gps_cleanup(void)
     gps_state_done(s);
 }
 
+#ifdef TARGET_SEC_GPS_GPIO_POWER_FILE
 static void gps_hardware_power( int state )
 {
   int fd = open( TARGET_SEC_GPS_GPIO_POWER_FILE, O_RDWR );
@@ -1742,6 +1743,9 @@ static void gps_hardware_power( int state )
   }
   close( fd );
 }
+#else
+static void gps_hardware_power( int __unused state ) { }
+#endif // TARGET_SEC_GPS_GPIO_POWER_FILE
 
 static int
 zkw_gps_start()
