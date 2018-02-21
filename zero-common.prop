@@ -50,6 +50,13 @@ dalvik.vm.heapmaxfree=8m
 ro.product.first_api_level=22
 
 #
+# Graphics
+#
+debug.sf.latch_unsignaled=1
+ro.bq.gpu_to_cpu_unsupported=1
+ro.sf.disable_triple_buffer=0
+
+#
 # HWUI
 #
 ro.hwui.texture_cache_size=88
@@ -68,11 +75,8 @@ ro.hwui.text_large_cache_height=2048
 #
 # H/W Composer
 #
-debug.hwc.force_gpu=0
-debug.hwc.max_hw_overlays=1
-debug.egl.hw=1
+debug.hwc.otf=1
 debug.sf.enable_hwc_vds=1
-debug.sf.hw=1
 persist.sys.ui.hw=true
 
 #

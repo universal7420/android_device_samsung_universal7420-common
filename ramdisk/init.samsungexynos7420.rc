@@ -10,10 +10,6 @@ import init.nexus.rc
 on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug mode=755
 
-# Boost device for faster startup
-    write /sys/kernel/hmp/boost "1"
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq "1200000"
-
 on init
 # RIL <-> audioserver comm
     chmod 0644 /proc/cmdline
@@ -28,33 +24,6 @@ on init
 
     symlink /dev/block/platform/15570000.ufs/by-name/STEADY /dev/block/steady
     symlink /dev/block/platform/15570000.ufs/by-name/PERSISTENT /dev/block/persistent
-	
-# Setup schedtune sysfs
-	mount tmpfs cgroups /sys/fs/cgroup
-	mkdir /sys/fs/cgroup/stune
-	mount cgroup stune /sys/fs/cgroup/stune schedtune
-
-on post-fs
-# sda block device
-    write /sys/block/sda/queue/scheduler "row"
-    write /sys/block/sda/queue/read_ahead_kb 256
-    write /sys/block/sda/queue/rq_affinity 2
-    write /sys/block/sda/queue/add_random 0
-    write /sys/block/sda/queue/rotational 0
-
-# sdb block device
-    write /sys/block/sdb/queue/scheduler "row"
-    write /sys/block/sdb/queue/read_ahead_kb 256
-    write /sys/block/sdb/queue/rq_affinity 2
-    write /sys/block/sdb/queue/add_random 0
-    write /sys/block/sdb/queue/rotational 0
-
-# sdc block device
-    write /sys/block/sdc/queue/scheduler "row"
-    write /sys/block/sdc/queue/read_ahead_kb 256
-    write /sys/block/sdc/queue/rq_affinity 2
-    write /sys/block/sdc/queue/add_random 0
-    write /sys/block/sdc/queue/rotational 0
 
 on post-fs-data
     setprop vold.post_fs_data_done 1

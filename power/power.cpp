@@ -148,16 +148,6 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		/***********************************
 		 * Profiles
 		 */
-		case POWER_HINT_LOW_POWER:
-			ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
-			if (value) {
-				power_set_profile(power, PROFILE_POWER_SAVE);
-			} else {
-				// reset to requested- or fallback-profile
-				power_reset_profile(power);
-			}			
-			break;
-
 #ifdef POWER_HAS_LINEAGE_HINTS
 		case POWER_HINT_SET_PROFILE:
 			ALOGI("%s: hint(POWER_HINT_SET_PROFILE, %d, %llu)", __func__, value, (unsigned long long)data);
@@ -166,6 +156,16 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			break;
 #endif
 
+		case POWER_HINT_LOW_POWER:
+			ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
+			if (value) {
+				power_set_profile(power, PROFILE_POWER_SAVE);
+			} else {
+				// reset to requested- or fallback-profile
+				power_reset_profile(power);
+			}
+			break;
+
 		case POWER_HINT_SUSTAINED_PERFORMANCE:
 			ALOGI("%s: hint(POWER_HINT_SUSTAINED_PERFORMANCE, %d, %llu)", __func__, value, (unsigned long long)data);
 			if (value) {
@@ -173,7 +173,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			} else {
 				// reset to requested- or fallback-profile
 				power_reset_profile(power);
-			}			
+			}
 			break;
 
 		case POWER_HINT_VR_MODE:
@@ -183,7 +183,22 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			} else {
 				// reset to requested- or fallback-profile
 				power_reset_profile(power);
-			}			
+			}
+			break;
+
+		/***********************************
+		 * Profiles
+		 */
+		case POWER_HINT_VSYNC:
+			ALOGDD("%s: hint(POWER_HINT_VSYNC, %d, %llu)", __func__, value, (unsigned long long)data);
+			break;
+
+		case POWER_HINT_INTERACTION:
+			ALOGDD("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
+			break;
+
+		case POWER_HINT_LAUNCH:
+			ALOGDD("%s: hint(POWER_HINT_LAUNCH, %d, %llu)", __func__, value, (unsigned long long)data);
 			break;
 
 		/***********************************
@@ -191,7 +206,11 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 */
 		case POWER_HINT_DISABLE_TOUCH:
 			ALOGI("%s: hint(POWER_HINT_DISABLE_TOUCH, %d, %llu)", __func__, value, (unsigned long long)data);
-			power_input_device_state(power, value ? false : true);
+			if (!power->screen_on) {
+				power_input_device_state(power, value ? false : true);
+			} else {
+				// don't do this...
+			}
 			break;
 
 		default: break;
@@ -224,74 +243,29 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	/*********************
 	 * CPU Cluster0
 	 */
-	write_cpugov(0, "freq_min",     data.cpu.cl0.freq_min);
-	write_cpugov(0, "freq_max",     data.cpu.cl0.freq_max);
-	write_cpugov(0, "hispeed_freq", data.cpu.cl0.freq_max);
-
-	if (assert_cpugov(0, "nexus")) {
-		write_cpugov(0, "down_load",          data.cpu.nexus.down_load);
-		write_cpugov(0, "down_step",          data.cpu.nexus.down_step);
-		write_cpugov(0, "lpr_down_ratio",     data.cpu.nexus.lpr_down_ratio);
-		write_cpugov(0, "lpr_down_elevation", data.cpu.nexus.lpr_down_elev);
-		write_cpugov(0, "up_load",            data.cpu.nexus.up_load);
-		write_cpugov(0, "up_step",            data.cpu.nexus.up_step);
-		write_cpugov(0, "lpr_up_ratio",       data.cpu.nexus.lpr_up_ratio);
-		write_cpugov(0, "lpr_up_elevation",   data.cpu.nexus.lpr_up_elev);
-	}
+	write_cpugov(0, "freq_min",     data.cpu.apollo.freq_min);
+	write_cpugov(0, "freq_max",     data.cpu.apollo.freq_max);
+	write_cpugov(0, "hispeed_freq", data.cpu.apollo.freq_max);
 
 	/*********************
 	 * CPU Cluster1
 	 */
-	write_cpugov(4, "freq_min",     data.cpu.cl1.freq_min);
-	write_cpugov(4, "freq_max",     data.cpu.cl1.freq_max);
-	write_cpugov(4, "hispeed_freq", data.cpu.cl1.freq_max);
-
-	if (assert_cpugov(4, "nexus")) {
-		write_cpugov(4, "down_load",          data.cpu.nexus.down_load);
-		write_cpugov(4, "down_step",          data.cpu.nexus.down_step);
-		write_cpugov(4, "lpr_down_ratio",     data.cpu.nexus.lpr_down_ratio);
-		write_cpugov(4, "lpr_down_elevation", data.cpu.nexus.lpr_down_elev);
-		write_cpugov(4, "up_load",            data.cpu.nexus.up_load);
-		write_cpugov(4, "up_step",            data.cpu.nexus.up_step);
-		write_cpugov(4, "lpr_up_ratio",       data.cpu.nexus.lpr_up_ratio);
-		write_cpugov(4, "lpr_up_elevation",   data.cpu.nexus.lpr_up_elev);
-	}
+	write_cpugov(4, "freq_min",     data.cpu.atlas.freq_min);
+	write_cpugov(4, "freq_max",     data.cpu.atlas.freq_max);
+	write_cpugov(4, "hispeed_freq", data.cpu.atlas.freq_max);
 
 	/*********************
-	 * HMP
+	 * GPU Defaults
 	 */
-	write("/sys/kernel/hmp/boost",                   data.hmp.boost);
-	write("/sys/kernel/hmp/semiboost",               data.hmp.semiboost);
-	write("/sys/kernel/hmp/sb_down_threshold",       data.hmp.sb_down_thres);
-	write("/sys/kernel/hmp/sb_up_threshold",         data.hmp.sb_up_thres);
-	write("/sys/kernel/hmp/active_down_migration",   data.hmp.active_down_migration);
-	write("/sys/kernel/hmp/aggressive_up_migration", data.hmp.aggressive_up_migration);
+	write("/sys/devices/14ac0000.mali/dvfs_min_lock",   data.gpu.dvfs.freq_min);
+	write("/sys/devices/14ac0000.mali/dvfs_max_lock",   data.gpu.dvfs.freq_max);
+	write("/sys/devices/14ac0000.mali/highspeed_clock", data.gpu.highspeed.freq);
+	write("/sys/devices/14ac0000.mali/highspeed_load",  data.gpu.highspeed.load);
 
 	/*********************
-	 * GPU
+	 * Kernel Defaults
 	 */
-	write("/sys/devices/14ac0000.mali/dvfs_min_lock",   data.gpu.min_lock);
-	write("/sys/devices/14ac0000.mali/dvfs_max_lock",   data.gpu.max_lock);
-	write("/sys/devices/14ac0000.mali/highspeed_clock", data.gpu.highspeed_clock);
-	write("/sys/devices/14ac0000.mali/highspeed_load",  data.gpu.highspeed_load);
-
-	/*********************
-	 * Input
-	 */
-	write("/sys/class/input_booster/level", (data.input.booster ? 2 : 0));
-	write("/sys/class/input_booster/head", data.input.booster_table);
-	write("/sys/class/input_booster/tail", data.input.booster_table);
-
-	/*********************
-	 * Thermal
-	 */
-	write("/sys/power/enable_dm_hotplug", data.thermal.hotplugging);
-	write("/sys/power/ipa/control_temp", data.thermal.ipa_control_temp);
-
-	/*********************
-	 * Kernel
-	 */
-	write("/sys/module/workqueue/parameters/power_efficient", data.kernel.power_efficient_workqueue);
+	write("/sys/module/workqueue/parameters/power_efficient", data.kernel.pewq);
 }
 
 static void power_reset_profile(struct sec_power_module *power) {
@@ -367,7 +341,7 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 
 static void power_set_interactive(struct power_module* module, int on) {
 	struct sec_power_module *power = container_of(module, struct sec_power_module, base);
-	bool screen_is_on = (on != 0);
+	bool screen_is_on = !!on;
 
 	ALOGDD("%s: enter; on=%d", __func__, on);
 	POWER_LOCK();
@@ -376,6 +350,8 @@ static void power_set_interactive(struct power_module* module, int on) {
 		ALOGDD("%s: exit; (not yet initialized)", __func__);
 		return;
 	}
+	
+	power->screen_on = screen_is_on;
 
 	if (!screen_is_on) {
 		power_set_profile(power, PROFILE_SCREEN_OFF);
