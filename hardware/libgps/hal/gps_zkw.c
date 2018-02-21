@@ -1724,7 +1724,7 @@ zkw_gps_cleanup(void)
 
 static void gps_hardware_power( int state )
 {
-  int fd = open( "/proc/gps", O_RDWR );
+  int fd = open( TARGET_SEC_GPS_GPIO_POWER_FILE, O_RDWR );
   if ( fd <= 0 ) {
     D( "/proc/gps open faild, errno %d\r\n", errno );
     return;
