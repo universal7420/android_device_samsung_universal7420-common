@@ -47,7 +47,7 @@
 /* the name of the qemud-controlled socket */
 
 #define GPS_DEBUG  1
-#define NMEA_DEBUG 0
+#define NMEA_DEBUG 1
 #define SUPL_TEST 0
 #define GPS_SV_INCLUDE 1
 
@@ -1580,7 +1580,9 @@ gps_state_thread( void*  arg )
                 reader->status.status = GPS_STATUS_SESSION_BEGIN;
                 reader->status_callback(&reader->status);
               }
-
+              D("gps thread starting end");
+            } else {
+              D("gps thread starting: already started");
             }
           }
           else if (cmd == CMD_STOP) {
@@ -1597,23 +1599,25 @@ gps_state_thread( void*  arg )
 #if GPS_SV_INCLUDE
               nmea_reader_set_sv_callback( reader, NULL );
 #endif
-
+              D("gps thread stopping end");
+            } else {
+              D("gps thread stopping: not started");
             }
           }
+          D("gps control fd event end");
         }
         else if (fd == gps_fd)
         {
           char  buff[128];
-          // D("gps fd event");
+          D("gps fd event");
           for (;;) {
             int  nn, ret;
 
             ret = read( fd, buff, sizeof( buff ) );
             if (ret < 0) {
+              D("error while reading from gps daemon socket: %s (Error %d)", strerror(errno), errno);
               if (errno == EINTR)
                 continue;
-              if (errno != EWOULDBLOCK)
-                D("error while reading from gps daemon socket: %s:", strerror(errno));
               break;
             }
 
@@ -1623,12 +1627,14 @@ gps_state_thread( void*  arg )
             for (nn = 0; nn < ret; nn++)
               nmea_reader_addc( reader, buff[nn] );
           }
-          // D("gps fd event end");
+          D("gps fd event end");
         }
         else
         {
           D("epoll_wait() returned unkown fd %d ?", fd);
         }
+      } else {
+          D("gps event #%d not EPOLLIN", ne);
       }
     }
   }
