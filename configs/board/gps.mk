@@ -18,4 +18,4 @@
 TARGET_LD_SHIM_LIBS += /system/bin/gpsd|/vendor/lib64/gpsd_shim.so
 
 # GNSS
-TARGET_SEC_GPS_GPIO_POWER_FILE := /sys/class/sec/gps/GPS_PWR_EN/value
+# TARGET_SEC_GPS_GPIO_POWER_FILE := /sys/class/sec/gps/GPS_PWR_EN/value
