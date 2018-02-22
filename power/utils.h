@@ -27,6 +27,55 @@ using namespace std;
 #ifndef EXYNOS5_POWER_HAL_UTILS_H_INCLUDED
 #define EXYNOS5_POWER_HAL_UTILS_H_INCLUDED
 
+#define OPEN_MAX_ATTEMPTS		5
+#define OPEN_ATTEMPT_DELAY		50
+
+#ifdef STRICT_BEHAVIOUR
+
+	#define FILE_TRY_OPEN(stream, path) \
+	{ \
+		stream.open(path); \
+		if (!stream.is_open()) { \
+			ALOGE("%s: failed to open \"%s\"", __func__, path.c_str()); \
+			return false; \
+		} \
+	}
+
+	#define ASSERT_CPU_CORE() \
+	{ \
+		if (core < 0 || core >= NR_CPUS) { \
+			ALOGE("%s: passed core (%d) not valid", __func__, core); \
+			return false; \
+		} \
+	}
+
+#else
+
+	#define FILE_TRY_OPEN(stream, path) \
+	{ \
+		int attempt = 0; \
+	\
+		do { \
+			stream.open(path); \
+			if (!stream.is_open()) { \
+				ALOGE("%s: failed to open \"%s\" (attempt %d out of %d)", __func__, path.c_str(), attempt + 1, OPEN_MAX_ATTEMPTS); \
+				attempt++; \
+				usleep(OPEN_ATTEMPT_DELAY * 1000); \
+			} \
+		} while (attempt < OPEN_MAX_ATTEMPTS && !stream.is_open()); \
+	\
+		if (!stream.is_open()) { \
+			ALOGE("%s: failed to open \"%s\" after %d attempts", __func__, path.c_str(), OPEN_MAX_ATTEMPTS); \
+			return false; \
+		} else if (attempt != 0) { \
+			ALOGI("%s: succeeded to open \"%s\" after %d attempts", __func__, path.c_str(), attempt); \
+		} \
+	}
+
+	#define ASSERT_CPU_CORE(...)
+
+#endif //STRICT_BEHAVIOUR
+
 /** Common */
 bool update_current_cpugov_path(const int core);
 bool assert_cpugov(const int core, const string asserted_cpugov);

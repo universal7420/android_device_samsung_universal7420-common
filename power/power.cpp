@@ -103,10 +103,10 @@ static void power_init(struct power_module *module) {
 	read(POWER_TOUCHSCREEN_NAME, touchscreen_input_name);
 	ALOGDD("%s: '%s' == '%s'", __func__, touchscreen_input_name.c_str(), POWER_TOUCHSCREEN_NAME_EXPECT);
 	if (touchscreen_input_name == POWER_TOUCHSCREEN_NAME_EXPECT) {
-		power->variant = FLAT;
+		power->variant = sec_power_module::FLAT;
 		power->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_FLAT;
 	} else {
-		power->variant = EDGE;
+		power->variant = sec_power_module::EDGE;
 		power->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_EDGE;
 	}
 
@@ -150,14 +150,14 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 */
 #ifdef POWER_HAS_LINEAGE_HINTS
 		case POWER_HINT_SET_PROFILE:
-			ALOGI("%s: hint(POWER_HINT_SET_PROFILE, %d, %llu)", __func__, value, (unsigned long long)data);
+			ALOGI_HINT("POWER_HINT_SET_PROFILE");
 			power->profile.requested = value;
 			power_set_profile(power, value);
 			break;
 #endif
 
 		case POWER_HINT_LOW_POWER:
-			ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
+			ALOGI_HINT("POWER_HINT_LOW_POWER");
 			if (value) {
 				power_set_profile(power, PROFILE_POWER_SAVE);
 			} else {
@@ -167,7 +167,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			break;
 
 		case POWER_HINT_SUSTAINED_PERFORMANCE:
-			ALOGI("%s: hint(POWER_HINT_SUSTAINED_PERFORMANCE, %d, %llu)", __func__, value, (unsigned long long)data);
+			ALOGI_HINT("POWER_HINT_SUSTAINED_PERFORMANCE");
 			if (value) {
 				power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
 			} else {
@@ -177,7 +177,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 			break;
 
 		case POWER_HINT_VR_MODE:
-			ALOGI("%s: hint(POWER_HINT_VR_MODE, %d, %llu)", __func__, value, (unsigned long long)data);
+			ALOGI_HINT("POWER_HINT_VR_MODE");
 			if (value) {
 				power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
 			} else {
@@ -190,22 +190,22 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		 * Profiles
 		 */
 		case POWER_HINT_VSYNC:
-			ALOGDD("%s: hint(POWER_HINT_VSYNC, %d, %llu)", __func__, value, (unsigned long long)data);
+			ALOGDD_HINT("POWER_HINT_VSYNC");
 			break;
 
 		case POWER_HINT_INTERACTION:
-			ALOGDD("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
+			ALOGDD_HINT("POWER_HINT_INTERACTION");
 			break;
 
 		case POWER_HINT_LAUNCH:
-			ALOGDD("%s: hint(POWER_HINT_LAUNCH, %d, %llu)", __func__, value, (unsigned long long)data);
+			ALOGDD_HINT("POWER_HINT_LAUNCH");
 			break;
 
 		/***********************************
 		 * Inputs
 		 */
 		case POWER_HINT_DISABLE_TOUCH:
-			ALOGI("%s: hint(POWER_HINT_DISABLE_TOUCH, %d, %llu)", __func__, value, (unsigned long long)data);
+			ALOGI_HINT("POWER_HINT_DISABLE_TOUCH");
 			if (!power->screen_on) {
 				power_input_device_state(power, value ? false : true);
 			} else {
@@ -233,26 +233,32 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	// apply settings
 	power_profile data = power_profiles_data[power->profile.current + 1];
 
+	// online policy-cores before querying cpufreq-data
+	CPU_ONLINE(0);
+	CPU_ONLINE(4);
+
 	// read current configuration
 	if (!update_current_cpugov_path(0) ||
 		!update_current_cpugov_path(4)) {
 		ALOGW("Failed to load current cpugov-configuration");
+#ifdef STRICT_BEHAVIOUR
 		return;
+#endif
 	}
 
 	/*********************
 	 * CPU Cluster0
 	 */
-	write_cpugov(0, "freq_min",     data.cpu.apollo.freq_min);
-	write_cpugov(0, "freq_max",     data.cpu.apollo.freq_max);
-	write_cpugov(0, "hispeed_freq", data.cpu.apollo.freq_max);
+	CPU_APOLLO_WRITE("freq_min",     freq_min);
+	CPU_APOLLO_WRITE("freq_max",     freq_max);
+	CPU_APOLLO_WRITE("hispeed_freq", freq_max);
 
 	/*********************
 	 * CPU Cluster1
 	 */
-	write_cpugov(4, "freq_min",     data.cpu.atlas.freq_min);
-	write_cpugov(4, "freq_max",     data.cpu.atlas.freq_max);
-	write_cpugov(4, "hispeed_freq", data.cpu.atlas.freq_max);
+	CPU_ATLAS_WRITE("freq_min",     freq_min);
+	CPU_ATLAS_WRITE("freq_max",     freq_max);
+	CPU_ATLAS_WRITE("hispeed_freq", freq_max);
 
 	/*********************
 	 * GPU Defaults
@@ -265,6 +271,15 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	/*********************
 	 * Kernel Defaults
 	 */
+
+	// Keep dynamic hotplugging disabled to 1.) ensure availability of all
+	// clusters when power-HAL gets a setInteractive()-event and 2.)
+	// to drastically lower the the screen-on-delay
+	write("/sys/power/enable_dm_hotplug", false);
+
+	// The power-efficient workqueue is useful for lower-power-situations, but
+	// contraproductive in high-performance situations. This should reflect in
+	// the static power-profiles
 	write("/sys/module/workqueue/parameters/power_efficient", data.kernel.pewq);
 }
 
@@ -284,14 +299,21 @@ static void power_reset_profile(struct sec_power_module *power) {
 static void power_fingerprint_state(bool state) {
 	/*
 	 * Ordered power toggling:
-	 *    Turn on:   +Wakelocks  ->  +Regulator
-	 *    Turn off:  -Regulator  ->  -Wakelocks
+	 *    Turn on:   +Wakelocks  ->  (+PM   ->  Delay)  ->  +Regulator
+	 *    Turn off:  -Regulator  ->  (      -PM      )  ->  -Wakelocks
 	 */
 	if (state) {
 		write(POWER_FINGERPRINT_WAKELOCKS, true);
+#ifdef FINGERPRINT_POWER_MANAGEMENT
+		write(POWER_FINGERPRINT_PM, true);
+		delay(FINGERPRINT_PM_DELAY * 1000);
+#endif
 		write(POWER_FINGERPRINT_REGULATOR, true);
 	} else {
 		write(POWER_FINGERPRINT_REGULATOR, false);
+#ifdef FINGERPRINT_POWER_MANAGEMENT
+		write(POWER_FINGERPRINT_PM, false);
+#endif
 		write(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
 }
@@ -313,7 +335,7 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 			write(power->input.touchscreen_control_path, true);
 		}
 
-		if (power->input.touchkeys_enabled && power->variant != EDGE) {
+		if (power->input.touchkeys_enabled && power->variant != sec_power_module::EDGE) {
 			write(POWER_TOUCHKEYS_ENABLED, true);
 			write(POWER_TOUCHKEYS_BRIGHTNESS, 255);
 		}
@@ -321,10 +343,10 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 		power_fingerprint_state(true);
 		power_dt2w_state(power, power->input.dt2w);
 	} else {
-		if (power->variant != EDGE) {
+		if (power->variant != sec_power_module::EDGE) {
 			// save to current state to prevent enabling
 			read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
-			
+
 			// disable them
 			write(POWER_TOUCHKEYS_ENABLED, false);
 			write(POWER_TOUCHKEYS_BRIGHTNESS, 0);
@@ -350,7 +372,7 @@ static void power_set_interactive(struct power_module* module, int on) {
 		ALOGDD("%s: exit; (not yet initialized)", __func__);
 		return;
 	}
-	
+
 	power->screen_on = screen_is_on;
 
 	if (!screen_is_on) {

@@ -43,22 +43,41 @@ using namespace std;
 #define POWER_TOUCHSCREEN_ENABLED_EDGE    "/sys/class/input/input0/enabled"
 #define POWER_TOUCHKEYS_BRIGHTNESS        "/sys/class/sec/sec_touchkey/brightness"
 #define POWER_FINGERPRINT_REGULATOR       "/sys/class/fingerprint/fingerprint/regulator"
+#define POWER_FINGERPRINT_PM              "/sys/class/fingerprint/fingerprint/pm"
 #define POWER_FINGERPRINT_WAKELOCKS       "/sys/class/fingerprint/fingerprint/wakelocks"
 
 #define POWER_DEFAULT_BOOSTPULSE    50000
 
-#ifdef POWER_MULTITHREAD_LOCK_PROTECTION
+#ifdef LOCK_PROTECTION
   #define POWER_LOCK()      pthread_mutex_lock(&power->lock)
   #define POWER_UNLOCK()    pthread_mutex_unlock(&power->lock)
 #else
-  #define POWER_LOCK()      do { } while(0)
-  #define POWER_UNLOCK()    do { } while(0)
-#endif /* POWER_MULTITHREAD_LOCK_PROTECTION */
+  #define POWER_LOCK(...)
+  #define POWER_UNLOCK(...)
+#endif // LOCK_PROTECTION
 
-enum sec_device_variant {
-	FLAT,
-	EDGE
-};
+#define __CPU_ONLINE(core, state) \
+{ \
+	ostringstream cos_path; \
+	cos_path << "/sys/devices/system/cpu/cpu" << core << "/online"; \
+	write(cos_path.str().c_str(), !!state); \
+}
+
+#define CPU_OFFLINE(core)  __CPU_ONLINE(core, 0)
+#define CPU_ONLINE(core)  __CPU_ONLINE(core, 1)
+
+#define __CPU_ONLINE_ALL(state) \
+{ \
+	for (int __coai = 0; __coai < NR_CPUS; __coai++) \
+		__CPU_ONLINE(__coai, state) \
+}
+
+#define CPU_OFFLINE_ALL()  __CPU_ONLINE_ALL(0)
+#define CPU_ONLINE_ALL()  __CPU_ONLINE_ALL(1)
+
+#define CPU_CLUSTER_WRITE(core, cluster, var, file)  write_cpugov(core, var, data.cpu.cluster.file);
+#define CPU_APOLLO_WRITE(var, file)  CPU_CLUSTER_WRITE(0, apollo, var, file)
+#define CPU_ATLAS_WRITE(var, file)  CPU_CLUSTER_WRITE(4, atlas, var, file)
 
 struct sec_power_module {
 
@@ -68,7 +87,10 @@ struct sec_power_module {
 	bool initialized;
 	bool screen_on;
 
-	enum sec_device_variant variant;
+	enum {
+		FLAT,
+		EDGE
+	} variant;
 
 	struct {
 		int current;

@@ -28,7 +28,7 @@
 
 #include "utils.h"
 
-static string curr_cpugov_path[8] = { "" };
+static string curr_cpugov_path[NR_CPUS] = { "" };
 
 /***********************************
  * Common
@@ -37,6 +37,8 @@ bool update_current_cpugov_path(const int core) {
 	string cpugov;
 	ostringstream path;
 	ostringstream cpugov_path;
+
+	ASSERT_CPU_CORE();
 
 	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq";
 	cpugov_path << path.str() << "/scaling_governor";
@@ -55,6 +57,8 @@ bool assert_cpugov(const int core, const string asserted_cpugov) {
 	ostringstream path;
 	ostringstream cpugov_path;
 
+	ASSERT_CPU_CORE();
+
 	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq";
 	cpugov_path << path.str() << "/scaling_governor";
 
@@ -64,6 +68,8 @@ bool assert_cpugov(const int core, const string asserted_cpugov) {
 
 bool assert_cpugov_file(const int core, const string file) {
 	ostringstream path;
+
+	ASSERT_CPU_CORE();
 
 	path << curr_cpugov_path[core] << "/" << file;
 	return is_file(path.str());
@@ -95,11 +101,7 @@ bool is_dir(const string path) {
 bool write(const string path, const string str) {
 	ofstream file;
 
-	file.open(path);
-	if (!file.is_open()) {
-		ALOGE("%s: failed to open \"%s\"", __func__, path.c_str());
-		return false;
-	}
+	FILE_TRY_OPEN(file, path);
 
 	ALOGDD("%s: store \"%s\" to \"%s\"", __func__, str.c_str(), path.c_str());
 
@@ -128,6 +130,8 @@ bool write(const string path, const unsigned int value) {
 bool write_cpugov(const int core, const string file, const string str) {
 	ostringstream path;
 
+	ASSERT_CPU_CORE();
+
 	path << curr_cpugov_path[core] << "/" << file;
 	if (!is_file(path.str())) {
 		return false;
@@ -153,12 +157,9 @@ bool write_cpugov(const int core, const string file, const unsigned int value) {
  * Reading
  */
 bool read(string path, string &str) {
-	ifstream file(path);
+	ifstream file;
 
-	if (!file.is_open()) {
-		ALOGE("%s: failed to open \"%s\"", __func__, path.c_str());
-		return false;
-	}
+	FILE_TRY_OPEN(file, path);
 
 	if (!getline(file, str)) {
 		ALOGE("%s: failed to read from \"%s\"", __func__, path.c_str());
