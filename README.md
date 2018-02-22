@@ -28,26 +28,28 @@
 	 */
 
 
-### Setup for non-LineageOS-sources
- 1. Make sure the device-tree (zerofltexx, zeroltexx, ...) itself has support for your wanted ROM
- 2. Before building the ROM, make sure you have applied all required commits (You'll find them at "Commands for non-LineageOS-sources") for a successful build & boot
-
-
-### Commands for non-LineageOS-sources
+### Changes required for non-LineageOS-sources
 ```
-git -C build/soong fetch https://github.com/TeamNexus/android_build_soong nx-8.1
-git -C frameworks/av cherry-pick e37f6db4c0b2d8380378fc132ca97900895ea591
+https://github.com/TeamNexus/android_bionic / {TOP}/bionic/
+1fb540533f7b269dd54631f805b4ac20c995a81f f1ef3b274683b656a5d2922e31a020cfe235d021 a6fb1155c030661d320d895ae39b78211f57a646
 
-git -C frameworks/native fetch https://github.com/TeamNexus/android_frameworks_av nx-8.1
-git -C frameworks/av cherry-pick 395604e4cfc894bf063d831e7f9af54b5f44e0b3 96cc6439d2cb51efa9803e562ae427a9a1d54e23
+https://github.com/TeamNexus/android_build_soong / {TOP}/build/soong/
+e37f6db4c0b2d8380378fc132ca97900895ea591
 
-git -C frameworks/native fetch https://github.com/TeamNexus/android_frameworks_native nx-8.1
-git -C frameworks/native cherry-pick e11e1f5e007817cef2974e33bd039a35e344a1cd
+https://github.com/TeamNexus/android_frameworks_av / {TOP}/frameworks/av
+cc5a4634f0cd99c50a2f506e6d232d4efeb72125
 
-# This commit needs special attentions, you'll need to adjust the path to the vendor-repo your ROM uses
-git -C vendor/[YOUR ROM'S VENDOR] fetch https://github.com/TeamNexus/android_vendor_lineage nx-8.1
-git -C vendor/[YOUR ROM'S VENDOR] cherry-pick f5c1d15d2e7823bc70240d2d5b430b6524bed710
+https://github.com/TeamNexus/android_frameworks_native / {TOP}/frameworks/native/
+0a311ebee77b7fe5d7483285131c489251371029
+
+#
+# This commit needs special attentions, you'll need to adjust the path to the
+# vendor-repo which is used by your ROM
+#
+https://github.com/TeamNexus/android_vendor_lineage  / {TOP}/vendor/[***]
+61f5e144d59cb1a1eab55efd5acff82534ec5767 10084bf8672eab8b6f747fcdd038313dfa2885b8 52602baa49f6dc63519aa039b60e522f1b496480 
 ```
+
 
 ### Further Credits
  * [@minealex2244](https://github.com/minealex2244),
