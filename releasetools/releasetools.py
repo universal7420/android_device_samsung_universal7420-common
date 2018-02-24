@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-def FullOTA_PostValidate(info):
+def FullOTA_InstallEnd(info):
 	info.script.AppendExtra('run_program("/tmp/install/bin/e2fsck_static", "-fy", "/dev/block/platform/15570000.ufs/by-name/SYSTEM");');
 	info.script.AppendExtra('run_program("/tmp/install/bin/resize2fs_static", "/dev/block/platform/15570000.ufs/by-name/SYSTEM");');
 	info.script.AppendExtra('run_program("/tmp/install/bin/e2fsck_static", "-fy", "/dev/block/platform/15570000.ufs/by-name/SYSTEM");');
