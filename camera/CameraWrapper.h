@@ -21,3 +21,4 @@
 #include <camera/CameraParameters.h>
 
 static android::Mutex gCameraWrapperLock;
+
