@@ -247,13 +247,14 @@
 	     the applications won't be able to use the codec or query the capabilities of
 		 the codec at all if it is disabled -->
 
-	<!-- FIXME : we only check Mpeg4 encorder cap and other codec doesn't check codec cap -->
-	<VideoEncoderCap name="hevc" enabled="true" minBitRate="64000" maxBitRate="50000000" minFrameWidth="176" maxFrameWidth="3840" minFrameHeight="144" maxFrameHeight="2160" minFrameRate="1" maxFrameRate="30" />
+	<!--  Hardware-accelerated Codecs -->
+	<VideoEncoderCap name="hevc" enabled="true" minBitRate="64000" maxBitRate="100000000" minFrameWidth="176" maxFrameWidth="3840" minFrameHeight="144" maxFrameHeight="2160" minFrameRate="1" maxFrameRate="30" />
 
-	<VideoEncoderCap name="h264" enabled="true" minBitRate="64000" maxBitRate="50000000" minFrameWidth="176" maxFrameWidth="3840" minFrameHeight="144" maxFrameHeight="2160" minFrameRate="1" maxFrameRate="30" />
+	<VideoEncoderCap name="h264" enabled="true" minBitRate="64000" maxBitRate="100000000" minFrameWidth="176" maxFrameWidth="3840" minFrameHeight="144" maxFrameHeight="2160" minFrameRate="1" maxFrameRate="30" />
 
-	<VideoEncoderCap name="h263" enabled="true" minBitRate="64000" maxBitRate="1000000" minFrameWidth="176" maxFrameWidth="2048" minFrameHeight="144" maxFrameHeight="2048" minFrameRate="1" maxFrameRate="30" />
+	<VideoEncoderCap name="h263" enabled="true" minBitRate="64000" maxBitRate="80000000" minFrameWidth="176" maxFrameWidth="2048" minFrameHeight="144" maxFrameHeight="2048" minFrameRate="1" maxFrameRate="30" />
 
+	<!-- Software-Codecs -->
 	<VideoEncoderCap name="m4v" enabled="true" minBitRate="64000" maxBitRate="20000000" minFrameWidth="176" maxFrameWidth="1920" minFrameHeight="144" maxFrameHeight="1080" minFrameRate="1" maxFrameRate="30" />
 
 	<AudioEncoderCap name="aac" enabled="true" minBitRate="8192" maxBitRate="256000" minSampleRate="8000" maxSampleRate="48000" minChannels="1" maxChannels="2" />
