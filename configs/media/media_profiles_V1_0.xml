@@ -252,7 +252,7 @@
 
 	<VideoEncoderCap name="h264" enabled="true" minBitRate="64000" maxBitRate="50000000" minFrameWidth="176" maxFrameWidth="3840" minFrameHeight="144" maxFrameHeight="2160" minFrameRate="1" maxFrameRate="30" />
 
-	<VideoEncoderCap name="h263" enabled="true" minBitRate="64000" maxBitRate="1000000" minFrameWidth="176" maxFrameWidth="800" minFrameHeight="144" maxFrameHeight="480" minFrameRate="1" maxFrameRate="30" />
+	<VideoEncoderCap name="h263" enabled="true" minBitRate="64000" maxBitRate="1000000" minFrameWidth="176" maxFrameWidth="2048" minFrameHeight="144" maxFrameHeight="2048" minFrameRate="1" maxFrameRate="30" />
 
 	<VideoEncoderCap name="m4v" enabled="true" minBitRate="64000" maxBitRate="20000000" minFrameWidth="176" maxFrameWidth="1920" minFrameHeight="144" maxFrameHeight="1080" minFrameRate="1" maxFrameRate="30" />
 
