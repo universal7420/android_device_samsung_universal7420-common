@@ -70,7 +70,7 @@ static int32_t getColorFormat(const char* colorFormat) {
         return OMX_QCOM_COLOR_FormatYVU420SemiPlanar;
     }
 
-    ALOGE("Uknown color format (%s), please add it to "
+    ALOGE("Unknown color format (%s), please add it to "
          "CameraSource::getColorFormat", colorFormat);
 
     //CHECK(!"Unknown color format");

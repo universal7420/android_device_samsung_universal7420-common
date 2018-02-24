@@ -19,33 +19,31 @@
 TARGET_OMX_LEGACY_RESCALING := true
 
 zero_shims_omx := \
-    /system/lib/omx/libOMX.Exynos.AVC.Decoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.AVC.Decoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.AVC.Encoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.AVC.Encoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.HEVC.Decoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.HEVC.Decoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.HEVC.Encoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.HEVC.Encoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.MPEG4.Decoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.MPEG4.Decoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.MPEG4.Encoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.MPEG4.Encoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.VP8.Decoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.VP8.Decoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.VP8.Encoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.VP8.Encoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.VP9.Decoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.VP9.Decoder.so|/system/lib64/SHIM_TARGET.so \
-    /system/lib/omx/libOMX.Exynos.WMV.Decoder.so|/system/lib/SHIM_TARGET.so \
-    /system/lib64/omx/libOMX.Exynos.WMV.Decoder.so|/system/lib64/SHIM_TARGET.so
+    /system/lib/omx/libOMX.Exynos.AVC.Decoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.AVC.Decoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.AVC.Encoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.AVC.Encoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.HEVC.Decoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.HEVC.Decoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.HEVC.Encoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.HEVC.Encoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.MPEG4.Decoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.MPEG4.Decoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.MPEG4.Encoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.MPEG4.Encoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.VP8.Decoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.VP8.Decoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.VP8.Encoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.VP8.Encoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.VP9.Decoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.VP9.Decoder.so|/vendor/lib64/SHIM_TARGET.so \
+    /system/lib/omx/libOMX.Exynos.WMV.Decoder.so|/vendor/lib/SHIM_TARGET.so \
+    /system/lib64/omx/libOMX.Exynos.WMV.Decoder.so|/vendor/lib64/SHIM_TARGET.so
 
 # Shims: libstagefright
 TARGET_LD_SHIM_LIBS += \
-    /system/lib/libexynoscamera.so|/system/lib/libstagefright_shim.so \
-    /system/lib64/libexynoscamera.so|/system/lib64/libstagefright_shim.so \
-    /system/lib/libexynoscamera3.so|/system/lib/libstagefright_shim.so \
-    /system/lib64/libexynoscamera3.so|/system/lib64/libstagefright_shim.so \
+    /system/lib/libstagefright.so|/vendor/lib/libstagefright_shim.so \
+    /system/lib64/libstagefright.so|/vendor/lib64/libstagefright_shim.so \
     $(subst SHIM_TARGET,libstagefright_shim,$(zero_shims_omx))
 
 # Shims: libui
