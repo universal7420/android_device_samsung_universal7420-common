@@ -42,9 +42,8 @@ zero_shims_omx := \
 
 # Shims: libstagefright
 TARGET_LD_SHIM_LIBS += \
-    /system/lib/libstagefright.so|/vendor/lib/libstagefright_shim.so \
-    /system/lib64/libstagefright.so|/vendor/lib64/libstagefright_shim.so \
     $(subst SHIM_TARGET,libstagefright_shim,$(zero_shims_omx))
 
 # Shims: libui
-TARGET_LD_SHIM_LIBS += $(subst SHIM_TARGET,libui_shim,$(zero_shims_omx))
+TARGET_LD_SHIM_LIBS += \
+	$(subst SHIM_TARGET,libui_shim,$(zero_shims_omx))
