@@ -19,6 +19,7 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 TARGET_KERNEL_SOURCE := kernel/samsung/exynos7420
+TARGET_LINUX_KERNEL_VERSION := 3.10
 
 # Bootimage
 BOARD_CUSTOM_BOOTIMG_MK := hardware/samsung/mkbootimg.mk

@@ -15,6 +15,12 @@
 # limitations under the License.
 #
 
+# Samsung LSI OpenMAX
+BOARD_USE_VP8ENC_SUPPORT := true
+BOARD_USE_HEVCDEC_SUPPORT := true
+BOARD_USE_HEVC_HWIP := false
+COMMON_GLOBAL_CFLAGS += -DUSE_NATIVE_SEC_NV12TILED
+
 # Video scaling issue workaround
 TARGET_OMX_LEGACY_RESCALING := true
 
