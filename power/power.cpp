@@ -28,6 +28,7 @@
 #include <pwd.h>
 #include <stdlib.h>
 #include <string>
+#include <sys/stat.h>
 
 #include "power.h"
 #include "profiles.h"
@@ -110,18 +111,26 @@ static void power_init(struct power_module *module) {
 		power->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_EDGE;
 	}
 
-	// set to normal power profile
-	power->profile.requested = PROFILE_BALANCED;
-	power_set_profile(power, PROFILE_BALANCED);
+	if (!is_file("/dev/.power-post-init-done")) {
+		// write notify-file
+		write("/dev/.power-post-init-done", true);
+		chmod("/dev/.power-post-init-done", 0444);
 
-	// initialize all input-devices
-	power_input_device_state(power, true);
+		// set to normal power profile
+		power->profile.requested = PROFILE_BALANCED;
+		power_set_profile(power, PROFILE_BALANCED);
 
-	// disable dt2w by default
-	power_dt2w_state(power, false);
+		// initialize all input-devices
+		power_input_device_state(power, true);
 
-	// enable fingerprint by default
-	power_fingerprint_state(true);
+		// disable dt2w by default
+		power_dt2w_state(power, false);
+
+		// enable fingerprint by default
+		power_fingerprint_state(true);
+	} else {
+		ALOGI("skipping power-post-init: already done by another instance");
+	}
 
 	power->initialized = true;
 	POWER_UNLOCK();
@@ -249,16 +258,54 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	/*********************
 	 * CPU Cluster0
 	 */
-	CPU_APOLLO_WRITE("freq_min",     freq_min);
-	CPU_APOLLO_WRITE("freq_max",     freq_max);
-	CPU_APOLLO_WRITE("hispeed_freq", freq_max);
+	write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", data.cpu.apollo.governor);
+	
+	cpu_apollo_write(freq_min);
+	cpu_apollo_write(freq_max);
+	cpu_apollo_write(freq_hispeed);
+
+	if_apollo_cpugov("nexus")
+	{
+		cpugov_apollo_write2(nexus, lpr_ratio, "lpr_down_ratio");
+		cpugov_apollo_write2(nexus, lpr_ratio, "lpr_up_ratio");
+		cpugov_apollo_write(nexus, lpr_down_elevation);
+		cpugov_apollo_write(nexus, lpr_up_elevation);
+	}
+	else if_apollo_cpugov("interactive")
+	{
+		cpugov_apollo_write(interactive, above_hispeed_delay);
+		cpugov_apollo_write(interactive, go_hispeed_load);
+		cpugov_apollo_write(interactive, min_sample_time);
+		cpugov_apollo_write(interactive, target_loads);
+		cpugov_apollo_write(interactive, timer_rate);
+		cpugov_apollo_write(interactive, timer_slack);
+	}
 
 	/*********************
 	 * CPU Cluster1
 	 */
-	CPU_ATLAS_WRITE("freq_min",     freq_min);
-	CPU_ATLAS_WRITE("freq_max",     freq_max);
-	CPU_ATLAS_WRITE("hispeed_freq", freq_max);
+	write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor", data.cpu.atlas.governor);
+
+	cpu_atlas_write(freq_min);
+	cpu_atlas_write(freq_max);
+	cpu_atlas_write(freq_max);
+
+	if_atlas_cpugov("nexus")
+	{
+		cpugov_atlas_write2(nexus, lpr_ratio, "lpr_down_ratio");
+		cpugov_atlas_write2(nexus, lpr_ratio, "lpr_up_ratio");
+		cpugov_atlas_write(nexus, lpr_down_elevation);
+		cpugov_atlas_write(nexus, lpr_up_elevation);
+	}
+	else if_atlas_cpugov("interactive")
+	{
+		cpugov_atlas_write(interactive, above_hispeed_delay);
+		cpugov_atlas_write(interactive, go_hispeed_load);
+		cpugov_atlas_write(interactive, min_sample_time);
+		cpugov_atlas_write(interactive, target_loads);
+		cpugov_atlas_write(interactive, timer_rate);
+		cpugov_atlas_write(interactive, timer_slack);
+	}
 
 	/*********************
 	 * GPU Defaults

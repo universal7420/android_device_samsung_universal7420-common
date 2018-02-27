@@ -19,11 +19,11 @@
 
 #define LOG_TAG "power.exynos5"
 
-#define LOG_NDEBUG 0
+// #define LOG_NDEBUG 0
 
 #include <utils/Log.h>
 
-#if LOG_NDEBUG
+#if defined(LOG_NDEBUG) && !LOG_NDEBUG
   #define ALOGDD  ALOGD
 #else
   #define ALOGDD(...)

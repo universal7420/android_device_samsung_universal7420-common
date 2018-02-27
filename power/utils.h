@@ -36,7 +36,7 @@ using namespace std;
 	{ \
 		stream.open(path); \
 		if (!stream.is_open()) { \
-			ALOGE("%s: failed to open \"%s\"", __func__, path.c_str()); \
+			ALOGE("%s: failed to open \"%s\": %s (%d)", __func__, path.c_str(), strerror(errno), errno); \
 			return false; \
 		} \
 	}
@@ -58,14 +58,14 @@ using namespace std;
 		do { \
 			stream.open(path); \
 			if (!stream.is_open()) { \
-				ALOGE("%s: failed to open \"%s\" (attempt %d out of %d)", __func__, path.c_str(), attempt + 1, OPEN_MAX_ATTEMPTS); \
+				ALOGE("%s: failed to open \"%s\": %s (%d) (attempt %d out of %d)", __func__, path.c_str(), strerror(errno), errno, attempt + 1, OPEN_MAX_ATTEMPTS); \
 				attempt++; \
 				usleep(OPEN_ATTEMPT_DELAY * 1000); \
 			} \
 		} while (attempt < OPEN_MAX_ATTEMPTS && !stream.is_open()); \
 	\
 		if (!stream.is_open()) { \
-			ALOGE("%s: failed to open \"%s\" after %d attempts", __func__, path.c_str(), OPEN_MAX_ATTEMPTS); \
+			ALOGE("%s: failed to open \"%s\": %s (%d) after %d attempts", __func__, path.c_str(), strerror(errno), errno, OPEN_MAX_ATTEMPTS); \
 			return false; \
 		} else if (attempt != 0) { \
 			ALOGI("%s: succeeded to open \"%s\" after %d attempts", __func__, path.c_str(), attempt); \

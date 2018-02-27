@@ -75,9 +75,38 @@ using namespace std;
 #define CPU_OFFLINE_ALL()  __CPU_ONLINE_ALL(0)
 #define CPU_ONLINE_ALL()  __CPU_ONLINE_ALL(1)
 
-#define CPU_CLUSTER_WRITE(core, cluster, var, file)  write_cpugov(core, var, data.cpu.cluster.file);
-#define CPU_APOLLO_WRITE(var, file)  CPU_CLUSTER_WRITE(0, apollo, var, file)
-#define CPU_ATLAS_WRITE(var, file)  CPU_CLUSTER_WRITE(4, atlas, var, file)
+/*
+ * Write cpugov-independent settings
+ */
+// single-argument macro, var == filename
+#define __cpu_cluster_write(core, cluster, var)  write_cpugov(core, #var, data.cpu.cluster.var)
+#define cpu_apollo_write(var)  __cpu_cluster_write(0, apollo, var)
+#define cpu_atlas_write(var)  __cpu_cluster_write(4, atlas, var)
+
+// double-argument macro, var != filename
+#define __cpu_cluster_write2(core, cluster, var, file)  write_cpugov(core, file, data.cpu.cluster.var)
+#define cpu_apollo_write2(var, file)  __cpu_cluster_write2(0, apollo, var, file)
+#define cpu_atlas_write2(var, file)  __cpu_cluster_write2(4, atlas, var, file)
+
+/*
+ * Write cpugov-specific settings
+ */
+// single-argument macro, var == filename
+#define __cpugov_cluster_write(cpugov, core, cluster, var)  write_cpugov(core, #var, data.cpu.cluster.cpugov.var)
+#define cpugov_apollo_write(cpugov, var)  __cpugov_cluster_write(cpugov, 0, apollo, var)
+#define cpugov_atlas_write(cpugov, var)  __cpugov_cluster_write(cpugov, 4, atlas, var)
+
+// double-argument macro, var != filename
+#define __cpugov_cluster_write2(cpugov, core, cluster, var, file)  write_cpugov(core, file, data.cpu.cluster.cpugov.var)
+#define cpugov_apollo_write2(cpugov, var, file)  __cpugov_cluster_write2(cpugov, 0, apollo, var, file)
+#define cpugov_atlas_write2(cpugov, var, file)  __cpugov_cluster_write2(cpugov, 4, atlas, var, file)
+
+/*
+ * Assert cpugovs
+ */
+#define __if_cluster_cpugov(core, gov)  if (assert_cpugov(core, gov))
+#define if_apollo_cpugov(gov)  __if_cluster_cpugov(0, gov)
+#define if_atlas_cpugov(gov)  __if_cluster_cpugov(4, gov)
 
 struct sec_power_module {
 

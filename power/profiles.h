@@ -23,8 +23,32 @@ using namespace std;
 
 struct power_profile_cpucluster {
 
+	string governor;
+
 	unsigned int freq_min;
 	unsigned int freq_max;
+	unsigned int freq_hispeed;
+
+	struct {
+
+		unsigned int lpr_ratio;
+
+		unsigned int lpr_down_elevation;
+		unsigned int lpr_up_elevation;
+
+	} nexus;
+	
+	struct {
+
+		string above_hispeed_delay;
+		string target_loads;
+
+		unsigned int go_hispeed_load;
+		unsigned int min_sample_time;
+		unsigned int timer_rate;
+		unsigned int timer_slack;
+		
+	} interactive;
 
 };
 
@@ -32,32 +56,9 @@ struct power_profile {
 
 	struct {
 
-		struct {
+		struct power_profile_cpucluster apollo;
 
-			unsigned int freq_min;
-			unsigned int freq_max;
-
-		} apollo;
-
-		struct {
-
-			unsigned int freq_min;
-			unsigned int freq_max;
-
-		} atlas;
-
-		struct {
-
-			struct {
-
-				unsigned int lpr_ratio;
-
-				unsigned int lpr_down_elev;
-				unsigned int lpr_up_elev;
-
-			} nexus;
-
-		} cpugov;
+		struct power_profile_cpucluster atlas;
 
 	} cpu;
 
@@ -100,18 +101,25 @@ struct power_profile {
 	{
 		.cpu = {
 			.apollo = {
+				.governor = "nexus",
 				.freq_min = 200000,
 				.freq_max = 400000,
-			},
-			.atlas = {
-				.freq_min = 200000,
-				.freq_max = 400000,
-			},
-			.cpugov = {
+				.freq_hispeed = 200000,
 				.nexus = {
 					.lpr_ratio = 150,
-					.lpr_down_elev = 1,
-					.lpr_up_elev = 1,
+					.lpr_down_elevation = 1,
+					.lpr_up_elevation = 1,
+				},
+			},
+			.atlas = {
+				.governor = "nexus",
+				.freq_min = 200000,
+				.freq_max = 400000,
+				.freq_hispeed = 200000,
+				.nexus = {
+					.lpr_ratio = 150,
+					.lpr_down_elevation = 1,
+					.lpr_up_elevation = 1,
 				},
 			},
 		},
@@ -140,18 +148,25 @@ struct power_profile {
 	{
 		.cpu = {
 			.apollo = {
+				.governor = "nexus",
 				.freq_min = 200000,
+				.freq_hispeed = 700000,
 				.freq_max = 1500000,
-			},
-			.atlas = {
-				.freq_min = 400000,
-				.freq_max = 2100000,
-			},
-			.cpugov = {
 				.nexus = {
 					.lpr_ratio = 150,
-					.lpr_down_elev = 1,
-					.lpr_up_elev = 1,
+					.lpr_down_elevation = 1,
+					.lpr_up_elevation = 1,
+				},
+			},
+			.atlas = {
+				.governor = "nexus",
+				.freq_min = 400000,
+				.freq_max = 2100000,
+				.freq_hispeed = 800000,
+				.nexus = {
+					.lpr_ratio = 150,
+					.lpr_down_elevation = 1,
+					.lpr_up_elevation = 1,
 				},
 			},
 		},
@@ -180,18 +195,28 @@ struct power_profile {
 	{
 		.cpu = {
 			.apollo = {
+				.governor = "interactive",
 				.freq_min = 400000,
 				.freq_max = 1500000,
+				.freq_hispeed = 900000,
+				.interactive = {
+					.above_hispeed_delay = "19000",
+					.go_hispeed_load = 85,
+					.min_sample_time = 40000,
+					.target_loads = "75",
+					.timer_rate = 20000,
+					.timer_slack = 20000,
+				},
 			},
 			.atlas = {
+				.governor = "nexus",
 				.freq_min = 800000,
 				.freq_max = 2100000,
-			},
-			.cpugov = {
+				.freq_hispeed = 1200000,
 				.nexus = {
 					.lpr_ratio = 125,
-					.lpr_down_elev = 1,
-					.lpr_up_elev = 2,
+					.lpr_down_elevation = 1,
+					.lpr_up_elevation = 2,
 				},
 			},
 		},
@@ -220,18 +245,31 @@ struct power_profile {
 	{
 		.cpu = {
 			.apollo = {
+				.governor = "interactive",
 				.freq_min = 800000,
 				.freq_max = 1500000,
+				.freq_hispeed = 1500000,
+				.interactive = {
+					.above_hispeed_delay = "19000",
+					.go_hispeed_load = 85,
+					.min_sample_time = 40000,
+					.target_loads = "75",
+					.timer_rate = 20000,
+					.timer_slack = 20000,
+				},
 			},
 			.atlas = {
+				.governor = "interactive",
 				.freq_min = 1000000,
 				.freq_max = 2100000,
-			},
-			.cpugov = {
-				.nexus = {
-					.lpr_ratio = 100,
-					.lpr_down_elev = 1,
-					.lpr_up_elev = 3,
+				.freq_hispeed = 2100000,
+				.interactive = {
+					.above_hispeed_delay = "59000 1300000:39000 1700000:19000",
+					.go_hispeed_load = 89,
+					.min_sample_time = 40000,
+					.target_loads = "65 1500000:75",
+					.timer_rate = 20000,
+					.timer_slack = 20000,
 				},
 			},
 		},
@@ -260,18 +298,25 @@ struct power_profile {
 	{
 		.cpu = {
 			.apollo = {
+				.governor = "nexus",
 				.freq_min = 300000,
 				.freq_max = 1500000,
-			},
-			.atlas = {
-				.freq_min = 600000,
-				.freq_max = 2100000,
-			},
-			.cpugov = {
+				.freq_hispeed = 800000,
 				.nexus = {
 					.lpr_ratio = 125,
-					.lpr_down_elev = 1,
-					.lpr_up_elev = 1,
+					.lpr_down_elevation = 1,
+					.lpr_up_elevation = 1,
+				},
+			},
+			.atlas = {
+				.governor = "nexus",
+				.freq_min = 600000,
+				.freq_max = 2100000,
+				.freq_hispeed = 1000000,
+				.nexus = {
+					.lpr_ratio = 125,
+					.lpr_down_elevation = 1,
+					.lpr_up_elevation = 1,
 				},
 			},
 		},
@@ -300,18 +345,28 @@ struct power_profile {
 	{
 		.cpu = {
 			.apollo = {
+				.governor = "interactive",
 				.freq_min = 600000,
 				.freq_max = 1500000,
+				.freq_hispeed = 1200000,
+				.interactive = {
+					.above_hispeed_delay = "19000",
+					.go_hispeed_load = 85,
+					.min_sample_time = 40000,
+					.target_loads = "75",
+					.timer_rate = 20000,
+					.timer_slack = 20000,
+				},
 			},
 			.atlas = {
+				.governor = "interactive",
 				.freq_min = 1000000,
 				.freq_max = 2100000,
-			},
-			.cpugov = {
+				.freq_hispeed = 1600000,
 				.nexus = {
 					.lpr_ratio = 100,
-					.lpr_down_elev = 1,
-					.lpr_up_elev = 2,
+					.lpr_down_elevation = 1,
+					.lpr_up_elevation = 2,
 				},
 			},
 		},
