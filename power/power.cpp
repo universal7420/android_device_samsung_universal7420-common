@@ -31,7 +31,6 @@
 #include <sys/stat.h>
 
 #include "power.h"
-#include "profiles.h"
 #include "utils.h"
 
 using namespace std;
@@ -39,62 +38,16 @@ using namespace std;
 #define container_of(addr, struct_name, field_name) \
 	((struct_name *)((char *)(addr) - offsetof(struct_name, field_name)))
 
-/***********************************
- * Initializing
- */
-static int power_open(const hw_module_t *module, const char *name, hw_device_t **device) {
-	int retval = 0; // 0 is ok; -1 is error
-
-	ALOGDD("%s: enter; name=%s", __func__, name);
-
-	if (strcmp(name, POWER_HARDWARE_MODULE_ID) == 0) {
-		power_module_t *dev = (power_module_t *)calloc(1, sizeof(power_module_t));
-
-		if (dev) {
-			// Common hw_device_t fields
-			dev->common.tag = HARDWARE_DEVICE_TAG;
-			dev->common.module_api_version = POWER_MODULE_API_VERSION_0_5;
-			dev->common.hal_api_version = HARDWARE_HAL_API_VERSION;
-
-			dev->init = power_init;
-			dev->powerHint = power_hint;
-#ifdef POWER_HAS_LINEAGE_HINTS
-			dev->getFeature = power_get_feature;
-#endif
-			dev->setFeature = power_set_feature;
-			dev->setInteractive = power_set_interactive;
-
-			*device = (hw_device_t *)dev;
-
-			struct sec_power_module *power = container_of(dev, struct sec_power_module, base);
-			pthread_mutex_init(&power->lock, nullptr);
-
-			power->initialized = false;
-			power->profile.current = PROFILE_INVALID;
-			power->profile.requested = PROFILE_INVALID;
-			power->input.touchkeys_enabled = true;
-			power->input.touchscreen_control_path = "";
-		} else {
-			retval = -ENOMEM;
-		}
-	} else {
-		retval = -EINVAL;
-	}
-
-	ALOGDD("%s: exit; rc=%d", __func__, retval);
-	return retval;
-}
-
-static void power_init(struct power_module *module) {
-	struct sec_power_module *power = container_of(module, struct sec_power_module, base);
-
+void power_init(SecPowerModule *power) {
 	ALOGDD("%s: enter;", __func__);
 	POWER_LOCK();
 
-	if (power->initialized) {
-		ALOGDD("%s: exit; (already initialized)", __func__);
-		return;
-	}
+	// set defaults
+	power->initialized = false;
+	power->profile.current = SecPowerProfiles::INVALID;
+	power->profile.requested = SecPowerProfiles::INVALID;
+	power->input.touchkeys_enabled = true;
+	power->input.touchscreen_control_path = "";
 
 	// get correct touchkeys/enabled-file
 	// reads from input1/name:
@@ -104,33 +57,25 @@ static void power_init(struct power_module *module) {
 	read(POWER_TOUCHSCREEN_NAME, touchscreen_input_name);
 	ALOGDD("%s: '%s' == '%s'", __func__, touchscreen_input_name.c_str(), POWER_TOUCHSCREEN_NAME_EXPECT);
 	if (touchscreen_input_name == POWER_TOUCHSCREEN_NAME_EXPECT) {
-		power->variant = sec_power_module::FLAT;
+		power->variant = SecDeviceVariant::FLAT;
 		power->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_FLAT;
 	} else {
-		power->variant = sec_power_module::EDGE;
+		power->variant = SecDeviceVariant::EDGE;
 		power->input.touchscreen_control_path = POWER_TOUCHSCREEN_ENABLED_EDGE;
 	}
 
-	if (!is_file("/dev/.power-post-init-done")) {
-		// write notify-file
-		write("/dev/.power-post-init-done", true);
-		chmod("/dev/.power-post-init-done", 0444);
+	// set to normal power profile
+	power->profile.requested = SecPowerProfiles::BALANCED;
+	power_set_profile(power, SecPowerProfiles::BALANCED);
 
-		// set to normal power profile
-		power->profile.requested = PROFILE_BALANCED;
-		power_set_profile(power, PROFILE_BALANCED);
+	// initialize all input-devices
+	power_input_device_state(power, true);
 
-		// initialize all input-devices
-		power_input_device_state(power, true);
+	// disable dt2w by default
+	power_dt2w_state(power, false);
 
-		// disable dt2w by default
-		power_dt2w_state(power, false);
-
-		// enable fingerprint by default
-		power_fingerprint_state(true);
-	} else {
-		ALOGI("skipping power-post-init: already done by another instance");
-	}
+	// enable fingerprint by default
+	power_fingerprint_state(power, true);
 
 	power->initialized = true;
 	POWER_UNLOCK();
@@ -140,9 +85,8 @@ static void power_init(struct power_module *module) {
 /***********************************
  * Hinting
  */
-static void power_hint(struct power_module *module, power_hint_t hint, void *data) {
-	struct sec_power_module *power = container_of(module, struct sec_power_module, base);
-	int value = (data ? *((intptr_t *)data) : 0);
+void power_hint(SecPowerModule *power, power_hint_t hint, int32_t data) {
+	SecPowerProfiles profile = SecPowerProfiles::INVALID;
 
 	ALOGDD("%s: enter; hint=%d", __func__, hint);
 	POWER_LOCK();
@@ -160,15 +104,17 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 #ifdef POWER_HAS_LINEAGE_HINTS
 		case POWER_HINT_SET_PROFILE:
 			ALOGI_HINT("POWER_HINT_SET_PROFILE");
-			power->profile.requested = value;
-			power_set_profile(power, value);
+			profile = static_cast<SecPowerProfiles>(data);
+
+			power->profile.requested = profile;
+			power_set_profile(power, profile);
 			break;
 #endif
 
 		case POWER_HINT_LOW_POWER:
 			ALOGI_HINT("POWER_HINT_LOW_POWER");
-			if (value) {
-				power_set_profile(power, PROFILE_POWER_SAVE);
+			if (data) {
+				power_set_profile(power, SecPowerProfiles::POWER_SAVE);
 			} else {
 				// reset to requested- or fallback-profile
 				power_reset_profile(power);
@@ -177,8 +123,8 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 		case POWER_HINT_SUSTAINED_PERFORMANCE:
 			ALOGI_HINT("POWER_HINT_SUSTAINED_PERFORMANCE");
-			if (value) {
-				power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
+			if (data) {
+				power_set_profile(power, SecPowerProfiles::HIGH_PERFORMANCE);
 			} else {
 				// reset to requested- or fallback-profile
 				power_reset_profile(power);
@@ -187,8 +133,8 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 
 		case POWER_HINT_VR_MODE:
 			ALOGI_HINT("POWER_HINT_VR_MODE");
-			if (value) {
-				power_set_profile(power, PROFILE_HIGH_PERFORMANCE);
+			if (data) {
+				power_set_profile(power, SecPowerProfiles::HIGH_PERFORMANCE);
 			} else {
 				// reset to requested- or fallback-profile
 				power_reset_profile(power);
@@ -216,7 +162,7 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 		case POWER_HINT_DISABLE_TOUCH:
 			ALOGI_HINT("POWER_HINT_DISABLE_TOUCH");
 			if (!power->screen_on) {
-				power_input_device_state(power, value ? false : true);
+				power_input_device_state(power, data ? false : true);
 			} else {
 				// don't do this...
 			}
@@ -233,14 +179,24 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 /***********************************
  * Profiles
  */
-static void power_set_profile(struct sec_power_module *power, int profile) {
+#include "profiles.h"
+static const map<SecPowerProfiles, SecPowerProfile*> kPowerProfiles = {
+	{ SecPowerProfiles::SCREEN_OFF,       &kPowerProfileScreenOff },
+	{ SecPowerProfiles::POWER_SAVE,       &kPowerProfilePowerSave },
+	{ SecPowerProfiles::BIAS_POWER_SAVE,  &kPowerProfileBiasPowerSave },
+	{ SecPowerProfiles::BALANCED,         &kPowerProfileBalanced },
+	{ SecPowerProfiles::BIAS_PERFORMANCE, &kPowerProfileBiasPerformance },
+	{ SecPowerProfiles::HIGH_PERFORMANCE, &kPowerProfileHighPerformance },
+};
+
+static void power_set_profile(SecPowerModule *power, SecPowerProfiles profile) {
  	ALOGI("%s: apply profile %d", __func__, profile);
 
 	// store it
 	power->profile.current = profile;
 
 	// apply settings
-	power_profile data = power_profiles_data[power->profile.current + 1];
+	const SecPowerProfile* data = kPowerProfiles.find(power->profile.current)->second;
 
 	// online policy-cores before querying cpufreq-data
 	CPU_ONLINE(0);
@@ -258,7 +214,7 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	/*********************
 	 * CPU Cluster0
 	 */
-	write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", data.cpu.apollo.governor);
+	write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", data->cpu.apollo.governor);
 	
 	cpu_apollo_write(freq_min);
 	cpu_apollo_write(freq_max);
@@ -284,7 +240,7 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	/*********************
 	 * CPU Cluster1
 	 */
-	write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor", data.cpu.atlas.governor);
+	write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor", data->cpu.atlas.governor);
 
 	cpu_atlas_write(freq_min);
 	cpu_atlas_write(freq_max);
@@ -310,10 +266,10 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	/*********************
 	 * GPU Defaults
 	 */
-	write("/sys/devices/14ac0000.mali/dvfs_min_lock",   data.gpu.dvfs.freq_min);
-	write("/sys/devices/14ac0000.mali/dvfs_max_lock",   data.gpu.dvfs.freq_max);
-	write("/sys/devices/14ac0000.mali/highspeed_clock", data.gpu.highspeed.freq);
-	write("/sys/devices/14ac0000.mali/highspeed_load",  data.gpu.highspeed.load);
+	write("/sys/devices/14ac0000.mali/dvfs_min_lock",   data->gpu.dvfs.freq_min);
+	write("/sys/devices/14ac0000.mali/dvfs_max_lock",   data->gpu.dvfs.freq_max);
+	write("/sys/devices/14ac0000.mali/highspeed_clock", data->gpu.highspeed.freq);
+	write("/sys/devices/14ac0000.mali/highspeed_load",  data->gpu.highspeed.load);
 
 	/*********************
 	 * Kernel Defaults
@@ -327,15 +283,15 @@ static void power_set_profile(struct sec_power_module *power, int profile) {
 	// The power-efficient workqueue is useful for lower-power-situations, but
 	// contraproductive in high-performance situations. This should reflect in
 	// the static power-profiles
-	write("/sys/module/workqueue/parameters/power_efficient", data.kernel.pewq);
+	write("/sys/module/workqueue/parameters/power_efficient", data->kernel.pewq);
 }
 
-static void power_reset_profile(struct sec_power_module *power) {
-	if (power->profile.requested != PROFILE_INVALID) {
-		power_set_profile(power, power->profile.requested);
+static void power_reset_profile(SecPowerModule *power) {
+	if (power->profile.requested == SecPowerProfiles::INVALID) {
+		// fallback to BALANCED if no valid profile was set using SET_PROFILE-hint
+		power_set_profile(power, SecPowerProfiles::BALANCED);
 	} else {
-		// fall back to BALANCED
-		power_set_profile(power, PROFILE_BALANCED);
+		power_set_profile(power, power->profile.requested);
 	}
 }
 
@@ -343,11 +299,11 @@ static void power_reset_profile(struct sec_power_module *power) {
 /***********************************
  * Inputs
  */
-static void power_fingerprint_state(bool state) {
+static void power_fingerprint_state(SecPowerModule *power, bool state) {
 	/*
 	 * Ordered power toggling:
-	 *    Turn on:   +Wakelocks  ->  (+PM   ->  Delay)  ->  +Regulator
-	 *    Turn off:  -Regulator  ->  (      -PM      )  ->  -Wakelocks
+	 *	Turn on:   +Wakelocks  ->  (+PM   ->  Delay)  ->  +Regulator
+	 *	Turn off:  -Regulator  ->  (	  -PM	  )  ->  -Wakelocks
 	 */
 	if (state) {
 		write(POWER_FINGERPRINT_WAKELOCKS, true);
@@ -365,7 +321,7 @@ static void power_fingerprint_state(bool state) {
 	}
 }
 
-static void power_dt2w_state(struct sec_power_module *power, bool state) {
+static void power_dt2w_state(SecPowerModule *power, bool state) {
 	power->input.dt2w = !!state;
 	if (state) {
 		write(POWER_DT2W_ENABLED, true);
@@ -374,7 +330,7 @@ static void power_dt2w_state(struct sec_power_module *power, bool state) {
 	}
 }
  
-static void power_input_device_state(struct sec_power_module *power, bool state) {
+static void power_input_device_state(SecPowerModule *power, bool state) {
 	ALOGDD("%s: state = %d", __func__, state);
 
 	if (state) {
@@ -382,15 +338,15 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 			write(power->input.touchscreen_control_path, true);
 		}
 
-		if (power->input.touchkeys_enabled && power->variant != sec_power_module::EDGE) {
+		if (power->input.touchkeys_enabled && power->variant != SecDeviceVariant::EDGE) {
 			write(POWER_TOUCHKEYS_ENABLED, true);
 			write(POWER_TOUCHKEYS_BRIGHTNESS, 255);
 		}
 
-		power_fingerprint_state(true);
+		power_fingerprint_state(power, true);
 		power_dt2w_state(power, power->input.dt2w);
 	} else {
-		if (power->variant != sec_power_module::EDGE) {
+		if (power->variant != SecDeviceVariant::EDGE) {
 			// save to current state to prevent enabling
 			read(POWER_TOUCHKEYS_ENABLED, &power->input.touchkeys_enabled);
 
@@ -403,16 +359,13 @@ static void power_input_device_state(struct sec_power_module *power, bool state)
 			write(power->input.touchscreen_control_path, false);
 		}
 
-		power_fingerprint_state(false);
+		power_fingerprint_state(power, false);
 		power_dt2w_state(power, power->input.dt2w);
 	}
 }
 
-static void power_set_interactive(struct power_module* module, int on) {
-	struct sec_power_module *power = container_of(module, struct sec_power_module, base);
-	bool screen_is_on = !!on;
-
-	ALOGDD("%s: enter; on=%d", __func__, on);
+void power_set_interactive(SecPowerModule *power, bool interactive) {
+	ALOGDD("%s: enter; on=%d", __func__, interactive ? 1 : 0);
 	POWER_LOCK();
 
 	if (!power->initialized) {
@@ -420,16 +373,16 @@ static void power_set_interactive(struct power_module* module, int on) {
 		return;
 	}
 
-	power->screen_on = screen_is_on;
+	power->screen_on = interactive;
 
-	if (!screen_is_on) {
-		power_set_profile(power, PROFILE_SCREEN_OFF);
+	if (!interactive) {
+		power_set_profile(power, SecPowerProfiles::SCREEN_OFF);
 	} else {
 		// reset to requested- or fallback-profile
 		power_reset_profile(power);
 	}
 
-	power_input_device_state(power, screen_is_on);
+	power_input_device_state(power, interactive);
 
 	POWER_UNLOCK();
 	ALOGDD("%s: exit;", __func__);
@@ -439,8 +392,7 @@ static void power_set_interactive(struct power_module* module, int on) {
  * Features
  */
 #ifdef POWER_HAS_LINEAGE_HINTS
-static int power_get_feature(struct power_module *module, feature_t feature) {
-	struct sec_power_module *power = container_of(module, struct sec_power_module, base);
+int power_get_feature(SecPowerModule *power, feature_t feature) {
 	int retval = -EINVAL;
 
 	ALOGDD("%s: enter; feature=%d", __func__, feature);
@@ -448,14 +400,13 @@ static int power_get_feature(struct power_module *module, feature_t feature) {
 
 	if (!power->initialized) {
 		ALOGDD("%s: exit; (not yet initialized)", __func__);
-		retval = -EAGAIN;
 		goto exit;
 	}
 
 	switch (feature) {
 		case POWER_FEATURE_SUPPORTED_PROFILES:
 			ALOGDD("%s: request for POWER_FEATURE_SUPPORTED_PROFILES = %d", __func__, PROFILE_MAX_USABLE);
-			retval = PROFILE_MAX_USABLE;
+			retval = static_cast<int>(SecPowerProfiles::MAX_PROFILES);
 			break;
 
 		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
@@ -472,9 +423,8 @@ exit:
 }
 #endif // POWER_HAS_LINEAGE_HINTS
 
-static void power_set_feature(struct power_module *module, feature_t feature, int state) {
-	struct sec_power_module *power = container_of(module, struct sec_power_module, base);
-	ALOGDD("%s: enter; feature=%d, state=%d", __func__, feature, state);
+void power_set_feature(SecPowerModule *power, feature_t feature, int32_t data) {
+	ALOGDD("%s: enter; feature=%d, data=%d", __func__, feature, data);
 	POWER_LOCK();
 
 	if (!power->initialized) {
@@ -484,44 +434,16 @@ static void power_set_feature(struct power_module *module, feature_t feature, in
 
 	switch (feature) {
 		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
-			ALOGDD("%s: set POWER_FEATURE_DOUBLE_TAP_TO_WAKE to \"%d\"", __func__, state);
-			power_dt2w_state(power, state);
+			ALOGDD("%s: set POWER_FEATURE_DOUBLE_TAP_TO_WAKE to \"%d\"", __func__, data);
+			power_dt2w_state(power, data);
 			break;
 
 		default:
-			ALOGW("Error setting the feature %d and state %d, it doesn't exist\n",
-				  feature, state);
+			ALOGW("Error setting the feature %d and data %d, it doesn't exist\n",
+				  feature, data);
 			break;
 	}
 
 	POWER_UNLOCK();
 	ALOGDD("%s: exit", __func__);
 }
-
-static struct hw_module_methods_t power_module_methods = {
-	.open = power_open,
-};
-
-struct sec_power_module HAL_MODULE_INFO_SYM = {
-
-	.base = {
-		.common = {
-			.tag = HARDWARE_MODULE_TAG,
-			.module_api_version = POWER_MODULE_API_VERSION_0_5,
-			.hal_api_version = HARDWARE_HAL_API_VERSION,
-			.id = POWER_HARDWARE_MODULE_ID,
-			.name = "Power HAL for Exynos 7420 SoCs",
-			.author = "Lukas Berger <mail@lukasberger.at>",
-			.methods = &power_module_methods,
-		},
-
-		.init = power_init,
-		.powerHint = power_hint,
-#ifdef POWER_HAS_LINEAGE_HINTS
-		.getFeature = power_get_feature,
-#endif
-		.setFeature = power_set_feature,
-		.setInteractive = power_set_interactive,
-	}
-
-};

@@ -18,20 +18,36 @@ LOCAL_PATH := device/samsung/zero-common/power
 
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES := \
+LOCAL_MODULE               := android.hardware.power@1.0-service.zero
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_MODULE_TAGS          := optional
+LOCAL_PROPRIETARY_MODULE   := true
+
+LOCAL_INIT_RC := hidl/android.hardware.power@1.0-service.zero.rc
+
+# HIDL Implementation
+LOCAL_SRC_FILES += \
+	hidl/Power.cpp \
+	hidl/service.cpp
+
+# Legacy power-HAL
+LOCAL_SRC_FILES += \
 	power.cpp \
 	utils.cpp
 
 LOCAL_SHARED_LIBRARIES := \
+	libbase \
 	libcutils \
+	libdl \
 	libhardware \
-	liblog
+	libhidlbase \
+	libhidltransport \
+	liblog \
+	libutils \
+	android.hardware.power@1.0 \
+	vendor.lineage.power@1.0
 
-LOCAL_MODULE               := power.$(TARGET_BOARD_PLATFORM)
-LOCAL_MODULE_RELATIVE_PATH := hw
-LOCAL_MODULE_TAGS          := optional
-LOCAL_CFLAGS               := -Wall -Werror -Wno-unused-parameter -Wno-unused-function
-LOCAL_PROPRIETARY_MODULE   := true
+LOCAL_CFLAGS := -Wall -Werror -Wno-unused-parameter -Wno-unused-function
 
 ifneq (,$(wildcard hardware/lineage/interfaces/power/1.0/ vendor/cmsdk/))
   LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
@@ -62,4 +78,4 @@ LOCAL_CFLAGS += -DSTRICT_BEHAVIOUR
 
 LOCAL_CFLAGS += -DNR_CPUS=$(TARGET_NR_CPUS)
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_EXECUTABLE)

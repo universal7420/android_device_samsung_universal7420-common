@@ -1,2 +1,0 @@
-allow system_server hal_power_hwservice:hwservice_manager find;
-allow system_server hal_lineage_power_hwservice:hwservice_manager find;
