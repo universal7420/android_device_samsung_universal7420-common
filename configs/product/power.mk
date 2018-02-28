@@ -17,7 +17,3 @@
 # Power
 PRODUCT_PACKAGES += \
    android.hardware.power@1.0-service.zero
-
-# permission-updater
-PRODUCT_COPY_FILES += \
-    device/samsung/zero-common/power/android.hardware.power@1.0-service.rc:system/vendor/etc/init/android.hardware.power@1.0-service.rc
