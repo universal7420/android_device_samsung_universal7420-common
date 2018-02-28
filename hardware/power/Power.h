@@ -95,6 +95,11 @@
 #define if_apollo_cpugov(gov)  __if_cluster_cpugov(0, gov)
 #define if_atlas_cpugov(gov)  __if_cluster_cpugov(4, gov)
 
+/*
+ * Quick-Casts
+ */
+#define cint(data)  static_cast<int>(data)
+
 namespace android {
 namespace hardware {
 namespace power {

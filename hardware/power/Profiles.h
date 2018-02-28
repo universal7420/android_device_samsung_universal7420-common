@@ -59,6 +59,13 @@ struct SecPowerProfileCpuCluster {
 
 };
 
+enum SecPowerProfileWifiPowerMode {
+	OFF = 0,
+	MAX = 1,
+	FAST = 2,
+	FORCE_OFF = 3
+}
+
 struct SecPowerProfile {
 
 	struct {
@@ -99,6 +106,14 @@ struct SecPowerProfile {
 		bool pewq;
 
 	} kernel;
+
+	struct {
+
+		SecPowerProfileWifiPowerMode power_mode;
+
+		unsigned int dtim_interval;
+
+	} wifi;
 
 };
 
