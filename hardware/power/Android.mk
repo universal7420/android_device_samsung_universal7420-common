@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/zero-common/power
+LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
@@ -23,17 +23,13 @@ LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE_TAGS          := optional
 LOCAL_PROPRIETARY_MODULE   := true
 
-LOCAL_INIT_RC := hidl/android.hardware.power@1.0-service.zero.rc
+LOCAL_INIT_RC := android.hardware.power@1.0-service.zero.rc
 
-# HIDL Implementation
-LOCAL_SRC_FILES += \
-	hidl/Power.cpp \
-	hidl/service.cpp
-
-# Legacy power-HAL
-LOCAL_SRC_FILES += \
-	power.cpp \
-	utils.cpp
+LOCAL_SRC_FILES := \
+	Service.cpp \
+	Power.cpp \
+	Profiles.cpp \
+	Utils.cpp
 
 LOCAL_SHARED_LIBRARIES := \
 	libbase \

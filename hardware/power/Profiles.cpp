@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2018 Lukas Berger <mail@lukasberger.at>
+ * Copyright (C) 2018 TeamNexus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,91 +14,61 @@
  * limitations under the License.
  */
 
-#include <string>
+#define LOG_TAG "zero-power-profiles"
+#define LOG_NDEBUG 0
 
-#ifndef EXYNOS5_POWER_HAL_PROFILES_INCLUDED
-#define EXYNOS5_POWER_HAL_PROFILES_INCLUDED
+#include <log/log.h>
 
-using namespace std;
+#include "Power.h"
+#include "Profiles.h"
 
-struct SecPowerProfileCpuCluster {
+namespace android {
+namespace hardware {
+namespace power {
+namespace V1_0 {
+namespace implementation {
 
-	const char* governor;
-
-	unsigned int freq_min;
-	unsigned int freq_max;
-	unsigned int freq_hispeed;
-
-	struct {
-
-		unsigned int lpr_ratio;
-
-		unsigned int lpr_down_elevation;
-		unsigned int lpr_up_elevation;
-
-	} nexus;
-	
-	struct {
-
-		string above_hispeed_delay;
-		string target_loads;
-
-		unsigned int go_hispeed_load;
-		unsigned int min_sample_time;
-		unsigned int timer_rate;
-		unsigned int timer_slack;
-		
-	} interactive;
-
-};
-
-struct SecPowerProfile {
-
-	struct {
-
-		struct SecPowerProfileCpuCluster apollo;
-
-		struct SecPowerProfileCpuCluster atlas;
-
-	} cpu;
-
-	struct {
-
-		bool boost;
-		bool semiboost;
-
-	} hmp;
-
-	struct {
-
-		struct {
-
-			unsigned int freq_min;
-			unsigned int freq_max;
-
-		} dvfs;
-
-		struct {
-
-			unsigned int freq;
-			unsigned int load;
-
-		} highspeed;
-
-	} gpu;
-
-	struct {
-
-		bool pewq;
-
-	} kernel;
-
-};
+const SecPowerProfile* Profiles::getProfileData(SecPowerProfiles profile) {
+	switch_uint32_t (profile)
+	{
+		case_uint32_t (SecPowerProfiles::SCREEN_OFF):
+		{
+			ALOGV("%s: returning kPowerProfileScreenOff", __func__);
+			return &kPowerProfileScreenOff;
+		}
+		case_uint32_t (SecPowerProfiles::POWER_SAVE):
+		{
+			ALOGV("%s: returning kPowerProfilePowerSave", __func__);
+			return &kPowerProfilePowerSave;
+		}
+		case_uint32_t (SecPowerProfiles::BIAS_POWER_SAVE):
+		{
+			ALOGV("%s: returning kPowerProfileBiasPowerSave", __func__);
+			return &kPowerProfileBiasPowerSave;
+		}
+		case_uint32_t (SecPowerProfiles::BALANCED):
+		{
+			ALOGV("%s: returning kPowerProfileBalanced", __func__);
+			return &kPowerProfileBalanced;
+		}
+		case_uint32_t (SecPowerProfiles::BIAS_PERFORMANCE):
+		{
+			ALOGV("%s: returning kPowerProfileBiasPerformance", __func__);
+			return &kPowerProfileBiasPerformance;
+		}
+		case_uint32_t (SecPowerProfiles::HIGH_PERFORMANCE):
+		{
+			ALOGV("%s: returning kPowerProfileHighPerformance", __func__);
+			return &kPowerProfileHighPerformance;
+		}
+	}
+	return nullptr;
+}
 
 /***********
  * ROFILE_SCREEN_OFF
-	 */
-SecPowerProfile kPowerProfileScreenOff = {
+ */
+const SecPowerProfile Profiles::kPowerProfileScreenOff = {
 	.cpu = {
 		.apollo = {
 			.governor = "nexus",
@@ -145,7 +115,7 @@ SecPowerProfile kPowerProfileScreenOff = {
 /***********
  * PROFILE_POWER_SAVE
  */
-SecPowerProfile kPowerProfilePowerSave = {
+const SecPowerProfile Profiles::kPowerProfilePowerSave = {
 	.cpu = {
 		.apollo = {
 			.governor = "nexus",
@@ -192,7 +162,7 @@ SecPowerProfile kPowerProfilePowerSave = {
 /***********
  * PROFILE_BIAS_POWER_SAVE
  */
-SecPowerProfile kPowerProfileBiasPowerSave = {
+const SecPowerProfile Profiles::kPowerProfileBiasPowerSave = {
 	.cpu = {
 		.apollo = {
 			.governor = "nexus",
@@ -239,7 +209,7 @@ SecPowerProfile kPowerProfileBiasPowerSave = {
 /***********
  * PROFILE_BALANCED
  */
-SecPowerProfile kPowerProfileBalanced = {
+const SecPowerProfile Profiles::kPowerProfileBalanced = {
 	.cpu = {
 		.apollo = {
 			.governor = "interactive",
@@ -289,7 +259,7 @@ SecPowerProfile kPowerProfileBalanced = {
 /***********
  * PROFILE_BIAS_PERFORMANCE
  */
-SecPowerProfile kPowerProfileBiasPerformance = {
+const SecPowerProfile Profiles::kPowerProfileBiasPerformance = {
 	.cpu = {
 		.apollo = {
 			.governor = "interactive",
@@ -339,7 +309,7 @@ SecPowerProfile kPowerProfileBiasPerformance = {
 /***********
  * PROFILE_HIGH_PERFORMANCE
  */
-SecPowerProfile kPowerProfileHighPerformance = {
+const SecPowerProfile Profiles::kPowerProfileHighPerformance = {
 	.cpu = {
 		.apollo = {
 			.governor = "interactive",
@@ -389,4 +359,8 @@ SecPowerProfile kPowerProfileHighPerformance = {
 	},
 };
 
-#endif // EXYNOS5_POWER_HAL_PROFILES_INCLUDED
+}  // namespace implementation
+}  // namespace V1_0
+}  // namespace power
+}  // namespace hardware
+}  // namespace android

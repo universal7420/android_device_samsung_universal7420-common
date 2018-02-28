@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "android.hardware.power@1.0-service.zero"
+#define LOG_TAG "zero-power-service"
+// #define LOG_NDEBUG 0
 
-#include <android/log.h>
 #include <hidl/LegacySupport.h>
 #include <hidl/HidlTransportSupport.h>
+#include <log/log.h>
 
 #include "Power.h"
 
