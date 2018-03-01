@@ -213,7 +213,7 @@ const SecPowerProfile Profiles::kPowerProfileBiasPowerSave = {
 		.pewq = true,
 	},
 	.wifi = {
-		.power_mode = FAST,
+		.power_mode = OFF,
 		.dtim_interval = 3,
 	},
 };
@@ -267,7 +267,7 @@ const SecPowerProfile Profiles::kPowerProfileBalanced = {
 		.pewq = true,
 	},
 	.wifi = {
-		.power_mode = MAX,
+		.power_mode = FORCE_OFF,
 		.dtim_interval = 2,
 	},
 };
@@ -321,7 +321,7 @@ const SecPowerProfile Profiles::kPowerProfileBiasPerformance = {
 		.pewq = false,
 	},
 	.wifi = {
-		.power_mode = OFF,
+		.power_mode = FORCE_OFF,
 		.dtim_interval = 1,
 	},
 };
