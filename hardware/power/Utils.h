@@ -34,13 +34,34 @@ using namespace ::std;
 #define __access(path, mode) \
 	(!access(path.c_str(), mode))
 
+#define __open_print_error() \
+	ALOGE("%s: failed to open \"%s\": %s (%d)", __func__, path.c_str(), strerror(errno), errno)
+
+#define __open_print_attempt_error() \
+	ALOGE("%s: failed to open \"%s\": %s (%d) (attempt %d out of %d)", __func__, path.c_str(), strerror(errno), errno, attempt + 1, OPEN_MAX_ATTEMPTS)
+
+#define __open_print_attempt_fail() \
+	ALOGE("%s: failed to open \"%s\": %s (%d) after %d attempts", __func__, path.c_str(), strerror(errno), errno, OPEN_MAX_ATTEMPTS)
+
+#define __open_print_attempt_success() \
+	ALOGI("%s: succeeded to open \"%s\" after %d attempts", __func__, path.c_str(), attempt)
+
 #ifdef STRICT_BEHAVIOUR
 
 	#define FILE_TRY_OPEN(stream, path) \
 	{ \
 		stream.open(path); \
 		if (!stream.is_open()) { \
-			ALOGE("%s: failed to open \"%s\": %s (%d)", __func__, path.c_str(), strerror(errno), errno); \
+			__open_print_error(); \
+			return false; \
+		} \
+	}
+
+	#define FILE_LEGACY_TRY_OPEN(path, mode) \
+	{ \
+		fd = open(path, mode); \
+		if (fd < 0) { \
+			__open_print_error(); \
 			return false; \
 		} \
 	}
@@ -62,17 +83,38 @@ using namespace ::std;
 		do { \
 			stream.open(path); \
 			if (!stream.is_open()) { \
-				ALOGE("%s: failed to open \"%s\": %s (%d) (attempt %d out of %d)", __func__, path.c_str(), strerror(errno), errno, attempt + 1, OPEN_MAX_ATTEMPTS); \
+				__open_print_attempt_error(); \
 				attempt++; \
 				usleep(OPEN_ATTEMPT_DELAY * 1000); \
 			} \
 		} while (attempt < OPEN_MAX_ATTEMPTS && !stream.is_open()); \
 	\
 		if (!stream.is_open()) { \
-			ALOGE("%s: failed to open \"%s\": %s (%d) after %d attempts", __func__, path.c_str(), strerror(errno), errno, OPEN_MAX_ATTEMPTS); \
+			__open_print_attempt_fail(); \
 			return false; \
 		} else if (attempt != 0) { \
-			ALOGI("%s: succeeded to open \"%s\" after %d attempts", __func__, path.c_str(), attempt); \
+			__open_print_attempt_success(); \
+		} \
+	}
+
+	#define FILE_LEGACY_TRY_OPEN(path, mode) \
+	{ \
+		int attempt = 0; \
+	\
+		do { \
+			fd = open(path, mode); \
+			if (fd < 0) { \
+				__open_print_attempt_error(); \
+				attempt++; \
+				usleep(OPEN_ATTEMPT_DELAY * 1000); \
+			} \
+		} while (attempt < OPEN_MAX_ATTEMPTS && !stream.is_open()); \
+	\
+		if (fd < 0) { \
+			__open_print_attempt_fail(); \
+			return false; \
+		} else if (attempt != 0) { \
+			__open_print_attempt_success(); \
 		} \
 	}
 
@@ -93,6 +135,11 @@ struct Utils {
 	static bool write(const string path, const bool data) ;
 	static bool write(const string path, const int data);
 	static bool write(const string path, const unsigned int data);
+
+	static bool writeLegacy(const string path, const string data);
+	static bool writeLegacy(const string path, const bool data) ;
+	static bool writeLegacy(const string path, const int data);
+	static bool writeLegacy(const string path, const unsigned int data);
 
 	static bool updateCpuGov(const int core);
 	static bool assertCpuGov(const int core, const string cpugov);

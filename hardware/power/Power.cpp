@@ -444,9 +444,9 @@ void Power::setFingerprintState(bool enabled) {
 
 void Power::setDT2WState() {
 	if (mIsDT2WEnabled) {
-		Utils::write(POWER_DT2W_ENABLED, true);
+		Utils::writeLegacy(POWER_DT2W_ENABLED, true);
 	} else {
-		Utils::write(POWER_DT2W_ENABLED, false);
+		Utils::writeLegacy(POWER_DT2W_ENABLED, false);
 	}
 }
 

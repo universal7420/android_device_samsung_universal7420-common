@@ -90,6 +90,37 @@ bool Utils::write(const string path, const unsigned int data) {
 	return write(path, to_string(data));
 }
 
+bool Utils::writeLegacy(const string path, const string data) {
+	int fd, len;
+	const char* cdata = data.c_str();
+
+	FILE_LEGACY_TRY_OPEN(cdata, O_WRONLY);
+
+	len = ::write(fd, cdata, strlen(cdata));
+	if (len < 0) {
+		ALOGE("%s: failed to write to \"%s\": %s (%d)", __func__, path.c_str(), strerror(errno), errno);
+		goto exit;
+	}
+
+	ALOGV("%s: store \"%s\" to \"%s\"", __func__, cdata, path.c_str());
+
+exit:
+	close(fd);
+	return true;
+}
+
+bool Utils::writeLegacy(const string path, const bool data) {
+	return writeLegacy(path, (data ? 1 : 0));
+}
+
+bool Utils::writeLegacy(const string path, const int data) {
+	return writeLegacy(path, to_string(data));
+}
+
+bool Utils::writeLegacy(const string path, const unsigned int data) {
+	return writeLegacy(path, to_string(data));
+}
+
 map<int, string> Utils::kCpuGovernors;
 
 bool Utils::updateCpuGov(const int core) {
