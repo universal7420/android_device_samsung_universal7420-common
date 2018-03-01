@@ -266,7 +266,14 @@ void Power::setProfile(SecPowerProfiles profile) {
 		return;
 #endif
 	}
-	
+
+	// to keep frequencies in range while screen-on we use the cpugovs, but
+	// while screen-off it can happen that frequencies get increased too much
+	// make sure our limits are being applied to the then-limiting,
+	// not very reliable, files too
+	Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", data->cpu.apollo.freq_min);
+	Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", data->cpu.apollo.freq_max);
+
 	cpu_apollo_write(freq_min);
 	cpu_apollo_write(freq_max);
 	cpu_apollo_write2(freq_hispeed, "hispeed_freq");
@@ -308,6 +315,13 @@ void Power::setProfile(SecPowerProfiles profile) {
 		return;
 #endif
 	}
+
+	// to keep frequencies in range while screen-on we use the cpugovs, but
+	// while screen-off it can happen that frequencies get increased too much
+	// make sure our limits are being applied to the then-limiting,
+	// not very reliable, files too
+	Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq", data->cpu.atlas.freq_min);
+	Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq", data->cpu.atlas.freq_max);
 
 	cpu_atlas_write(freq_min);
 	cpu_atlas_write(freq_max);
