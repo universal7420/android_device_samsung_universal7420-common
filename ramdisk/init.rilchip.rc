@@ -16,6 +16,10 @@
 # limitations under the License.
 #
 
+on post-fs-data
+	# Disable extensive modem driver debugging/dumping messages
+	write /sys/module/modem_utils/parameters "0"
+
 on early-boot
 # Assign TCP buffer thresholds to be ceiling value of technology maximums
 # Increased technology maximums should be reflected here.
