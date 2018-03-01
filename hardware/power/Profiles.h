@@ -64,7 +64,7 @@ enum SecPowerProfileWifiPowerMode {
 	MAX = 1,
 	FAST = 2,
 	FORCE_OFF = 3
-}
+};
 
 struct SecPowerProfile {
 
