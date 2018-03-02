@@ -110,10 +110,6 @@ const SecPowerProfile Profiles::kPowerProfileScreenOff = {
 	.kernel = {
 		.pewq = true,
 	},
-	.wifi = {
-		.power_mode = MAX,
-		.dtim_interval = 5,
-	},
 };
 
 /***********
@@ -161,10 +157,6 @@ const SecPowerProfile Profiles::kPowerProfilePowerSave = {
 	.kernel = {
 		.pewq = true,
 	},
-	.wifi = {
-		.power_mode = FAST,
-		.dtim_interval = 3,
-	},
 };
 
 /***********
@@ -211,10 +203,6 @@ const SecPowerProfile Profiles::kPowerProfileBiasPowerSave = {
 	},
 	.kernel = {
 		.pewq = true,
-	},
-	.wifi = {
-		.power_mode = OFF,
-		.dtim_interval = 3,
 	},
 };
 
@@ -266,10 +254,6 @@ const SecPowerProfile Profiles::kPowerProfileBalanced = {
 	.kernel = {
 		.pewq = true,
 	},
-	.wifi = {
-		.power_mode = FORCE_OFF,
-		.dtim_interval = 2,
-	},
 };
 
 /***********
@@ -319,10 +303,6 @@ const SecPowerProfile Profiles::kPowerProfileBiasPerformance = {
 	},
 	.kernel = {
 		.pewq = false,
-	},
-	.wifi = {
-		.power_mode = FORCE_OFF,
-		.dtim_interval = 1,
 	},
 };
 
@@ -376,10 +356,6 @@ const SecPowerProfile Profiles::kPowerProfileHighPerformance = {
 	},
 	.kernel = {
 		.pewq = false,
-	},
-	.wifi = {
-		.power_mode = FORCE_OFF,
-		.dtim_interval = 1,
 	},
 };
 

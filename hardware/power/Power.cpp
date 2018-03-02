@@ -373,20 +373,6 @@ void Power::setProfile(SecPowerProfiles profile) {
 	// contraproductive in high-performance situations. This should reflect in
 	// the static power-profiles
 	Utils::write("/sys/module/workqueue/parameters/power_efficient", data->kernel.pewq);
-
-	/*********************
-	 * WiFi Defaults
-	 */
-
-	// keep both PM-modes in sync in case something strange happens
-	// (e.g. suspending without the power-HAL noticing that)
-	Utils::write("/sys/module/dhd/parameters/wifi_pm_awake", cint(data->wifi.power_mode));
-	Utils::write("/sys/module/dhd/parameters/wifi_pm_suspended", cint(data->wifi.power_mode));
-
-	// keep both DTIM-intervals in sync in case something strange happens
-	// (e.g. suspending without the power-HAL noticing that)
-	Utils::write("/sys/module/dhd/parameters/dtim_awake", data->wifi.dtim_interval);
-	Utils::write("/sys/module/dhd/parameters/dtim_suspended", data->wifi.dtim_interval);
 }
 
 void Power::resetProfile() {
