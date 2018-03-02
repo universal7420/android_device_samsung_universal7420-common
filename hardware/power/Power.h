@@ -31,7 +31,7 @@
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
-#define POWER_DT2W_ENABLED                "/sys/android_touch/doubletap2wake"
+#define POWER_DT2W_ENABLED                "/sys/class/dt2w/enabled"
 #define POWER_TOUCHKEYS_ENABLED           "/sys/class/sec/sec_touchkey/input/enabled"
 #define POWER_TOUCHKEYS_BRIGHTNESS        "/sys/class/sec/sec_touchkey/brightness"
 #define POWER_FINGERPRINT_REGULATOR       "/sys/class/fingerprint/fingerprint/regulator"
