@@ -59,7 +59,7 @@ using namespace ::std;
 
 	#define FILE_LEGACY_TRY_OPEN(path, mode) \
 	{ \
-		fd = open(path, mode); \
+		fd = open(path.c_str(), mode); \
 		if (fd < 0) { \
 			__open_print_error(); \
 			return false; \

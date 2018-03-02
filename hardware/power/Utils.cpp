@@ -94,7 +94,7 @@ bool Utils::writeLegacy(const string path, const string data) {
 	int fd, len;
 	const char* cdata = data.c_str();
 
-	FILE_LEGACY_TRY_OPEN(cdata, O_WRONLY);
+	FILE_LEGACY_TRY_OPEN(path, O_WRONLY);
 
 	len = ::write(fd, cdata, strlen(cdata));
 	if (len < 0) {
