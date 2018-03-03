@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef GPSD_H
-#define GPSD_H
+#ifndef LIBSENSOR_H
+#define LIBSENSOR_H
 
 #include <android/sensor.h>
 

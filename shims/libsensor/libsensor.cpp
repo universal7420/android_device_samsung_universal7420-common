@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "gpsd_shim"
+#define LOG_TAG "libsensor_shim"
 #define LOG_NDEBUG 0
 
 #include <cutils/log.h>
 
-#include "gpsd.h"
+#include "libsensor.h"
 
 namespace android
 {
