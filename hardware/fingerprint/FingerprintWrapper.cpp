@@ -64,6 +64,16 @@ static void hal_notify_wrapped(const fingerprint_msg_t *msg)
     fingerprint_msg_t *new_msg = const_cast<fingerprint_msg_t *>(msg);
 
     switch (msg->type) {
+        case FINGERPRINT_ERROR:
+            if (msg->data.error >= FINGERPRINT_ERROR_VENDOR_BASE) {
+                new_msg->data.error = FINGERPRINT_ERROR_HW_UNAVAILABLE;
+            }
+
+        case FINGERPRINT_ACQUIRED:
+            if (msg->data.acquired.acquired_info >= FINGERPRINT_ACQUIRED_VENDOR_BASE) {
+                new_msg->data.acquired.acquired_info = FINGERPRINT_ACQUIRED_INSUFFICIENT;
+            }
+
         case FINGERPRINT_TEMPLATE_ENROLLING:
             new_msg->data.enroll.samples_remaining = 100 - msg->data.enroll.samples_remaining;
             break;
