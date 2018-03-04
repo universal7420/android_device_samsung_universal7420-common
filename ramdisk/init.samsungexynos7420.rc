@@ -406,6 +406,11 @@ on fs
     chmod 0660 /dev/p3
     chown system system /dev/p3
 
+# Permissions for NFC F/W download workaround
+    mkdir /dev/nfc/
+    chmod 0770 /dev/nfc/
+    chown nfc nfc /dev/nfc/
+
 # terminal mode
     chmod 0660 /sys/class/android_usb/android0/terminal_version
     chown system system /sys/class/android_usb/android0/terminal_version
