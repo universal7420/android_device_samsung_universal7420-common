@@ -18,7 +18,8 @@
 
 on post-fs-data
 	# Disable extensive modem driver debugging/dumping messages
-	write /sys/module/modem_utils/parameters "0"
+	write /sys/module/modem_utils/parameters/dflags "0"
+	write /sys/module/modem_utils/parameters/ipc_log_level "0"
 
 on early-boot
 # Assign TCP buffer thresholds to be ceiling value of technology maximums
