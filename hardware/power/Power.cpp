@@ -110,6 +110,10 @@ Return<void> Power::setInteractive(bool interactive)  {
 		resetProfile();
 	}
 
+	// speed up the device a bit
+	Utils::write("/sys/kernel/hmp/boostpulse_duration", 2500000); // 2.5s
+	Utils::write("/sys/kernel/hmp/boostpulse", true);
+
 	setInputState(interactive);
 
 	ALOGV("%s: exit;", __func__);
