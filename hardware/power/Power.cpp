@@ -440,11 +440,6 @@ void Power::setFingerprintState(bool enabled) {
 
 		Utils::write(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
-
-	// EXPERIMENTAL: delay exit of setInteractive()/setInputState()/setFingerprintState()
-	// for several milliseconds to allow the fingerprint-sensor to boot up so bauth
-	// can properly initialize afterwards and does not fail with "FP Sensor is out of order"
-	usleep(150 * 1000);
 }
 
 void Power::setDT2WState() {
