@@ -63,15 +63,6 @@ endif
 # power-HAL
 LOCAL_CFLAGS += -DSTRICT_BEHAVIOUR
 
-# Allow the power-HAL to invoke the pm-interfaces to
-# shutdown/boot the fingerprint. This may result in a longer
-# screen-on-delay and randomly non-working fingerprint-sensor
-# but ensures a complete shutdown of the sensor. The delay is
-# required to properly boot up the fingerprint before
-# continuing to set the sensor up
-# LOCAL_CFLAGS += -DFINGERPRINT_PM
-# LOCAL_CFLAGS += -DFINGERPRINT_PM_DELAY=100
-
 LOCAL_CFLAGS += -DNR_CPUS=$(TARGET_NR_CPUS)
 
 include $(BUILD_EXECUTABLE)
