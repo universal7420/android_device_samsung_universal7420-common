@@ -456,9 +456,9 @@ void Power::setFingerprintState(bool enabled) {
 	 */
 	if (enabled) {
 		Utils::write(POWER_FINGERPRINT_WAKELOCKS, true);
-		Utils::write(POWER_FINGERPRINT_PM, true);
+		// Utils::write(POWER_FINGERPRINT_PM, true);
 	} else {
-		Utils::write(POWER_FINGERPRINT_PM, false);
+		// Utils::write(POWER_FINGERPRINT_PM, false);
 		Utils::write(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
 }
