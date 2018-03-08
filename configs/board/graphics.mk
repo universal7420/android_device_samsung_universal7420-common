@@ -46,7 +46,7 @@ BOARD_HDMI_INCAPABLE := true
 
 # Metadata
 BOARD_USE_METADATABUFFERTYPE := true
-BOARD_USE_STOREMETADATA := true
+# BOARD_USE_STOREMETADATA := true  -- not working due to invalid buffer handles
 
 # Others
 BOARD_USE_CSC_HW := false
