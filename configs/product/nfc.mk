@@ -27,6 +27,4 @@ PRODUCT_PACKAGES += \
     NfcNci \
     Tag \
     com.android.nfc_extras \
-    android.hardware.nfc@1.0-impl \
-    android.hardware.nfc@1.0-service \
-    libnfc_nci.universal7420_shim
+    android.hardware.nfc@1.0-impl
