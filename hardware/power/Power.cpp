@@ -76,6 +76,7 @@ Power::Power()
 
 	// enable all input-devices
 	setInputState(true);
+	setFingerprintState(true);
 
 	ALOGV("%s: exit;", __func__);
 }
@@ -404,7 +405,6 @@ void Power::setInputState(bool enabled) {
 			Utils::write(POWER_TOUCHKEYS_BRIGHTNESS, 255);
 		}
 
-		setFingerprintState(true);
 		setDT2WState();
 	} else {
 		if (mVariant != SecDeviceVariant::EDGE) {
@@ -421,7 +421,6 @@ void Power::setInputState(bool enabled) {
 			Utils::write(mTouchControlPath, false);
 		}
 
-		setFingerprintState(false);
 		setDT2WState();
 	}
 }
@@ -462,9 +461,9 @@ void Power::setFingerprintState(bool enabled) {
 	 */
 	if (enabled) {
 		Utils::write(POWER_FINGERPRINT_WAKELOCKS, true);
-		// Utils::write(POWER_FINGERPRINT_PM, true);
+		Utils::write(POWER_FINGERPRINT_PM, true);
 	} else {
-		// Utils::write(POWER_FINGERPRINT_PM, false);
+		Utils::write(POWER_FINGERPRINT_PM, false);
 		Utils::write(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
 }
