@@ -153,8 +153,12 @@ enum class SecDeviceVariant : int32_t {
 	EDGE = 2,
 };
 
-struct Power : public IPower,
-               public ILineagePower {
+struct Power : 
+      public IPower
+#ifdef POWER_HAS_LINEAGE_HINTS
+    , public ILineagePower
+#endif
+{
 
 	Power();
 	~Power();
