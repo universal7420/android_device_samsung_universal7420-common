@@ -16,27 +16,70 @@
 # limitations under the License.
 #
 
+# RIL daemon for slot1
+service ril-daemon /vendor/bin/hw/rild -c 1
+	class main
+	socket rild stream 660 system radio
+	socket sap_uim_socket1 stream 660 bluetooth bluetooth
+	socket rild-debug stream 660 system radio
+	user radio
+	group radio cache inet misc audio sdcard_r sdcard_rw log vpn system readproc wakelock qcom_diag
+	capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+	onrestart restart cpboot-daemon
+	disabled
+
+# RIL daemon for slot2
+service ril-daemon1 /vendor/bin/hw/rild -c 2
+	class main
+	socket rild2 stream 660 system radio
+	socket rild-debug2 stream 660 system radio
+	user radio
+	group radio cache inet misc audio sdcard_r sdcard_rw log vpn system readproc wakelock qcom_diag
+	capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+	onrestart restart cpboot-daemon
+	disabled
+
+# Assign TCP buffer thresholds to be ceiling value of technology maximums
+# Increased technology maximums should be reflected here.
+on early-boot
+	write /proc/sys/net/core/rmem_max 2097152
+	write /proc/sys/net/core/wmem_max 2097152
+
+# Set properties required for proper dual-SIM support
+on init
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh init
+
 on post-fs-data
 	# Disable extensive modem driver debugging/dumping messages
 	write /sys/module/modem_utils/parameters/dflags "0"
 	write /sys/module/modem_utils/parameters/ipc_log_level "0"
 
-on early-boot
-# Assign TCP buffer thresholds to be ceiling value of technology maximums
-# Increased technology maximums should be reflected here.
-    write /proc/sys/net/core/rmem_max 2097152
-    write /proc/sys/net/core/wmem_max 2097152
+	# Primary RIL service launch point
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh start
 
 # A stopping zygote may indicate a soft-reboot. for a proper recognition
 # of the SIM-card after such a soft-reboot, stop our radio-daemon here
 on property:init.svc.zygote=stopping
-	stop ril-daemon
-	stop ril-daemon1
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh start
 	stop cpboot-daemon
 
 # If zygote restarts after dying, it's a good time to start our
 # radio-daemon again, but make sure that the modem-loader starts first
 on property:init.svc.zygote=restarting
-	start cpboot-daemon
-	start ril-daemon
-	start ril-daemon1
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh stop
+
+# Stop all RIL daemons if cbd goes down unexepcted
+on property:persist.sys.cpboot=disable
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh stop
+
+# Start all RIL daemons if a property-change requests it
+on property:ro.radio.noril=0
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh start
+
+# Stop all RIL daemons if a property-change requests it
+on property:ro.radio.noril=1
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh stop
+
+# Properly restart RIL-service if the device just got decrypted
+on property:vold.decrypt=trigger_post_fs_data
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh restart

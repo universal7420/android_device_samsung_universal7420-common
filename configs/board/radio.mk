@@ -18,9 +18,4 @@
 BOARD_PROVIDES_LIBRIL := true
 BOARD_PROVIDES_RILD := true
 
-# Dual-SIM Support
-ifeq ($(BOARD_HAS_DUAL_SIM),true)
-  include $(LOCAL_PATH)/configs/radio/dual/board.mk
-else
-  include $(LOCAL_PATH)/configs/radio/single/board.mk
-endif
+SIM_COUNT := 2
