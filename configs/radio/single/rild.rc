@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-service ril-daemon /vendor/bin/hw/rild -c 1 -l /vendor/lib64/libsec-ril.so
+service ril-daemon /vendor/bin/hw/rild -c 1
     class main
     socket rild stream 660 system radio
     socket sap_uim_socket1 stream 660 bluetooth bluetooth

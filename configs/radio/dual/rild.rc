@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-service ril-daemon1 /vendor/bin/hw/rild -c 2 -l /vendor/lib64/libsec-ril-dsds.so
+service ril-daemon1 /vendor/bin/hw/rild -c 2
     class main
     socket rild2 stream 660 system radio
     socket rild-debug2 stream 660 system radio

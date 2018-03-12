@@ -18,7 +18,7 @@
 PRODUCT_PACKAGES += \
 	libxml2 \
 	libprotobuf-cpp-full \
-	rild \
+	rild.zero \
 	libreference-ril \
 	libril \
 	libsecril-client \

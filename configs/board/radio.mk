@@ -16,6 +16,7 @@
 
 # Radio
 BOARD_PROVIDES_LIBRIL := true
+BOARD_PROVIDES_RILD := true
 
 # Dual-SIM Support
 ifeq ($(BOARD_HAS_DUAL_SIM),true)
