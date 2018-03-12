@@ -18,6 +18,8 @@
 #ifndef SAMSUNG_AUDIO_COMMON_H
 #define SAMSUNG_AUDIO_COMMON_H
 
+#include <zero-helpers.h>
+
 /*
  * Sound card specific defines.
  *
@@ -90,5 +92,35 @@
  * #define DSP_POWEROFF_DELAY 10 * 1000
  */
 /* #define DSP_POWEROFF_DELAY 0 */
+
+/*
+ * Runtime audience support detection
+ */
+#define AUDIENCE_SUPPORTED  zero_audio_supports_audience
+__maybe_unused
+static bool zero_audio_supports_audience() {
+	enum zero_model model = zero_model_read();
+	switch (model) {
+		case TMOBILE:
+		case CANADA:
+			return true;
+		default:
+			return false;
+	}
+}
+
+/*
+ * Runtime mixer paths file selection routine
+ */
+#define MIXER_PATHS_FILE_ROUTINE  zero_audio_select_mixer_paths
+__maybe_unused
+static bool zero_audio_select_mixer_paths(char *path) {
+	if (AUDIENCE_SUPPORTED())
+		strcpy(path, "/vendor/etc/mixer_paths_%d-audience.xml");
+	else
+		strcpy(path, "/vendor/etc/mixer_paths_%d.xml");
+
+	return true;
+}
 
 #endif // SAMSUNG_AUDIO_COMMON_H
