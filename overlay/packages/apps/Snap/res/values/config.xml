@@ -18,13 +18,13 @@
      for different hardware or product builds. -->
 <resources>
     <!-- Enable support for camera api v2 -->
-    <bool name="support_camera_api_v2">false</bool>
+    <bool name="support_camera_api_v2">true</bool>
 
     <!-- Opens back camera using openLegacy() and forces api v1 -->
-    <bool name="back_camera_open_legacy">true</bool>
+    <bool name="back_camera_open_legacy">false</bool>
 
     <!-- Opens front camera using openLegacy() and forces api v1 -->
-    <bool name="front_camera_open_legacy">true</bool>
+    <bool name="front_camera_open_legacy">false</bool>
 
     <!-- Restart preview for back camera onPictureTaken -->
     <bool name="back_camera_restart_preview_onPictureTaken">false</bool>
@@ -34,5 +34,5 @@
 
     <!-- Set's manufacturer specific parameters on startup.
          Example: lge-camera=1;cam-mode=0 -->
-    <string name="manufacturer_key_values">scene-mode-values=auto;rt-hdr=auto;drc=true;phase-af=on;video-size-values=3840x2160,2560x1440,1920x1080,1440x1080,1088x1088,1280x720,960x720,800x450,720x480,640x480,480x320,352x288,320x240,256x144,176x14</string>
+    <string name="manufacturer_key_values">video-size-values=3840x2160,2560x1440,1920x1080,1440x1080,1088x1088,1280x720,960x720,800x450,720x480,640x480,480x320,352x288,320x240,256x144,176x14</string>
 </resources>
