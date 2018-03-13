@@ -118,6 +118,9 @@ int main(int argc, char **argv) {
     int i;
     // ril/socket id received as -c parameter, otherwise set to 0
     const char *clientId = NULL;
+    // suffix added to automatic RIL implemention paths
+    const char *rilImplSuffix = NULL;
+	char newRilLibPath[PATH_MAX];
 
     RLOGD("**RIL Daemon Started**");
     RLOGD("**RILd param count=%d**", argc);
@@ -133,6 +136,9 @@ int main(int argc, char **argv) {
             break;
         } else if (0 == strcmp(argv[i], "-c") &&  (argc - i > 1)) {
             clientId = argv[i+1];
+            i += 2;
+        } else if (0 == strcmp(argv[i], "-s") &&  (argc - i > 1)) {
+            rilImplSuffix = argv[i+1];
             i += 2;
         } else {
             usage(argv[0]);
@@ -156,22 +162,33 @@ int main(int argc, char **argv) {
 
 		switch (model) {
 			case INDIA:
-				rilLibPath = "/vendor/lib64/ril/libsec-ril-india.so";
+				rilLibPath = "/vendor/lib64/ril/libsec-ril-india";
 				break;
 
 			case TMOBILE:
-				rilLibPath = "/vendor/lib64/ril/libsec-ril-tmobile.so";
+				rilLibPath = "/vendor/lib64/ril/libsec-ril-tmobile";
 				break;
 
 			case CANADA:
-				rilLibPath = "/vendor/lib64/ril/libsec-ril-canada.so";
+				rilLibPath = "/vendor/lib64/ril/libsec-ril-canada";
 				break;
 
 			default:
-				rilLibPath = "/vendor/lib64/ril/libsec-ril.so";
+				rilLibPath = "/vendor/lib64/ril/libsec-ril";
 				break;
 		}
 
+		strcpy(newRilLibPath, rilLibPath);
+
+		if (rilImplSuffix != NULL) {
+			strcat(newRilLibPath, rilLibPath);
+			strcat(newRilLibPath, "-");
+			strcat(newRilLibPath, rilImplSuffix);
+		}
+
+		strcat(newRilLibPath, ".so");
+		rilLibPath = (char *)newRilLibPath;
+		
 		RLOGI("auto RIL impl path: \"%s\"", rilLibPath);
     }
 

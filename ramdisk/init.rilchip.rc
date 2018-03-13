@@ -29,7 +29,7 @@ service ril-daemon /vendor/bin/hw/rild -c 1
 	disabled
 
 # RIL daemon for slot2
-service ril-daemon1 /vendor/bin/hw/rild -c 2
+service ril-daemon1 /vendor/bin/hw/rild -c 2 -s dsds
 	class main
 	socket rild2 stream 660 system radio
 	socket rild-debug2 stream 660 system radio
