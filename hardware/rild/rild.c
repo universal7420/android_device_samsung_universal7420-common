@@ -181,7 +181,6 @@ int main(int argc, char **argv) {
 		strcpy(newRilLibPath, rilLibPath);
 
 		if (rilImplSuffix != NULL) {
-			strcat(newRilLibPath, rilLibPath);
 			strcat(newRilLibPath, "-");
 			strcat(newRilLibPath, rilImplSuffix);
 		}
