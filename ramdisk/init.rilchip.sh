@@ -1,4 +1,4 @@
-#!/system/bin/sj
+#!/system/bin/sh
 #
 # Copyright (C) 2018 TeamNexus
 #
@@ -124,14 +124,14 @@ elif [ "$RILCHIP_STATE" == "stop" ]; then
 elif [ "$RILCHIP_STATE" == "restart" ]; then
 
 	# stop everything
-	$0 stop
+	/system/bin/sh $0 stop
 
 	# wait for modem-shutdown
 	debug "waiting for modem shutdown... (5s)"
 	sleep 5
 
 	# start everything again
-	$0 start
+	/system/bin/sh $0 start
 
 elif [ "$RILCHIP_STATE" == "status" ]; then
 
