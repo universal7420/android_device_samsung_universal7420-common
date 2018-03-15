@@ -162,19 +162,19 @@ int main(int argc, char **argv) {
 
 		switch (model) {
 			case INDIA:
-				rilLibPath = "/vendor/lib64/ril/libsec-ril-india";
+				rilLibPath = "/vendor/lib64/libsec-ril-india";
 				break;
 
 			case TMOBILE:
-				rilLibPath = "/vendor/lib64/ril/libsec-ril-tmobile";
+				rilLibPath = "/vendor/lib64/libsec-ril-tmobile";
 				break;
 
 			case CANADA:
-				rilLibPath = "/vendor/lib64/ril/libsec-ril-canada";
+				rilLibPath = "/vendor/lib64/libsec-ril-canada";
 				break;
 
 			default:
-				rilLibPath = "/vendor/lib64/ril/libsec-ril";
+				rilLibPath = "/vendor/lib64/libsec-ril";
 				break;
 		}
 
