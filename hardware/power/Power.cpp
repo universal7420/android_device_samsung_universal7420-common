@@ -375,10 +375,9 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 * Kernel Defaults
 	 */
 
-	// Keep dynamic hotplugging disabled to 1.) ensure availability of all
-	// clusters when power-HAL gets a setInteractive()-event and 2.)
-	// to drastically lower the the screen-on-delay
-	Utils::write("/sys/power/enable_dm_hotplug", false);
+	// Kernel got edited to allow faster dynamic hotplugging, fast enough for me to
+	// re-enable it. On huge screen-on-delays, disable this again.
+	Utils::write("/sys/power/enable_dm_hotplug", true);
 
 	// The power-efficient workqueue is useful for lower-power-situations, but
 	// contraproductive in high-performance situations. This should reflect in
