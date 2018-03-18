@@ -102,6 +102,11 @@ persist.data.netmgrd.qos.enable=false
 ro.use_data_netmgrd=false
 
 #
+# Power
+#
+sys.power.profiles=true
+
+#
 # RIL
 #
 persist.radio.add_power_save=1

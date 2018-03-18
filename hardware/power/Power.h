@@ -25,6 +25,8 @@
 #include <vendor/lineage/power/1.0/ILineagePower.h>
 #endif
 
+#include <android-base/properties.h>
+
 #include <hidl/Status.h>
 #include <hidl/MQDescriptor.h>
 
@@ -116,6 +118,7 @@ using ::vendor::lineage::power::V1_0::LineageFeature;
 using ::vendor::lineage::power::V1_0::LineagePowerHint;
 #endif
 
+using ::android::base::GetProperty;
 using ::android::hardware::Return;
 using ::android::hardware::Void;
 using ::android::hardware::hidl_vec;
@@ -232,6 +235,10 @@ private:
 	// updates the current state the doubletap2wake-capability. uses the 
 	// global member [mIsDT2WEnabled] to determine the new state
 	void setDT2WState();
+
+	// fetches the correct property and checks if the user disable
+	// a specific power-module.
+	bool isModuleEnabled(string module);
 
 };
 

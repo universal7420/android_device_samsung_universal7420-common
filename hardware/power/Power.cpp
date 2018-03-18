@@ -259,6 +259,12 @@ void Power::setProfile(SecPowerProfiles profile) {
 	// store it
 	mCurrentProfile = profile;
 
+	// check if user disabled power-profiles
+	if (!isModuleEnabled("profiles")) {
+		ALOGI("power profiles disabled by user!");
+		return;
+	}
+
 	// apply settings
 	const SecPowerProfile* data = Profiles::getProfileData(mCurrentProfile);
 
@@ -473,6 +479,10 @@ void Power::setDT2WState() {
 	} else {
 		Utils::write(POWER_DT2W_ENABLED, false);
 	}
+}
+
+bool Power::isModuleEnabled(string module) {
+	return (GetProperty("sys.power." + module, "true") == "true");
 }
 
 } // namespace implementation
