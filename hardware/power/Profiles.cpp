@@ -130,7 +130,7 @@ const SecPowerProfile Profiles::kPowerProfilePowerSave = {
 		},
 		.atlas = {
 			.governor = "nexus",
-			.freq_min = 400000,
+			.freq_min = 200000,
 			.freq_max = 2100000,
 			.freq_hispeed = 800000,
 			.nexus = {
@@ -177,7 +177,7 @@ const SecPowerProfile Profiles::kPowerProfileBiasPowerSave = {
 		},
 		.atlas = {
 			.governor = "nexus",
-			.freq_min = 600000,
+			.freq_min = 300000,
 			.freq_max = 2100000,
 			.freq_hispeed = 1000000,
 			.nexus = {
@@ -227,7 +227,7 @@ const SecPowerProfile Profiles::kPowerProfileBalanced = {
 		},
 		.atlas = {
 			.governor = "nexus",
-			.freq_min = 800000,
+			.freq_min = 400000,
 			.freq_max = 2100000,
 			.freq_hispeed = 1200000,
 			.nexus = {
@@ -277,7 +277,7 @@ const SecPowerProfile Profiles::kPowerProfileBiasPerformance = {
 		},
 		.atlas = {
 			.governor = "interactive",
-			.freq_min = 1000000,
+			.freq_min = 600000,
 			.freq_max = 2100000,
 			.freq_hispeed = 1600000,
 			.nexus = {
@@ -327,7 +327,7 @@ const SecPowerProfile Profiles::kPowerProfileHighPerformance = {
 		},
 		.atlas = {
 			.governor = "interactive",
-			.freq_min = 1000000,
+			.freq_min = 800000,
 			.freq_max = 2100000,
 			.freq_hispeed = 2100000,
 			.interactive = {
