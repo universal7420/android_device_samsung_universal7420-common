@@ -44,6 +44,10 @@ Vibrator::Vibrator(std::ofstream&& enable, std::ofstream&& amplitude) :
 
 // Methods from ::android::hardware::vibrator::V1_0::IVibrator follow.
 Return<Status> Vibrator::on(uint32_t timeout_ms) {
+    if (mCurrentIntensity == 0) {
+        return Status::OK;
+    }
+
     mEnable << timeout_ms << std::endl;
     if (!mEnable) {
         ALOGE("Failed to turn vibrator on (%d): %s", errno, strerror(errno));
@@ -56,7 +60,6 @@ Return<Status> Vibrator::off()  {
     mEnable << 0 << std::endl;
     if (!mEnable) {
         ALOGE("Failed to turn vibrator off (%d): %s", errno, strerror(errno));
-        return Status::UNKNOWN_ERROR;
     }
     return Status::OK;
 }
@@ -73,12 +76,13 @@ Return<Status> Vibrator::setAmplitude(uint8_t amplitude) {
     // MAX_VOLTAGE, and there are equal steps for every value in between.
     long intensity =
             std::lround(amplitude * AMPLITUDE_TO_INTENSITY_SCALE);
-    ALOGI("Setting intensity to: %ld", intensity);
+    ALOGI("Got amplitude %d, setting intensity to: %ld", amplitude, intensity);
     mAmplitude << intensity << std::endl;
     if (!mAmplitude) {
         ALOGE("Failed to set intensity (%d): %s", errno, strerror(errno));
         return Status::UNKNOWN_ERROR;
     }
+    mCurrentIntensity = intensity;
     return Status::OK;
 }
 

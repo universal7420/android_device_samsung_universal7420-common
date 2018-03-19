@@ -41,6 +41,7 @@ public:
 private:
   std::ofstream mEnable;
   std::ofstream mAmplitude;
+  int mCurrentIntensity;
 };
 }  // namespace implementation
 }  // namespace V1_0
