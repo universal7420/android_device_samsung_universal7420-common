@@ -2,4 +2,3 @@ service power-hal-1-0 /vendor/bin/hw/android.hardware.power@1.0-service.zero
     class hal
     user root
     group root
-    seclabel u:object_r:zero_power_service:s0
