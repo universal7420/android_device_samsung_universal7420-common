@@ -130,6 +130,7 @@
 ####################################
 # HIDL services
 /(vendor|system/vendor)/bin/hw/android\.hardware\.power@1\.0-service.zero    u:object_r:zero_power_service:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.vibrator@1\.0-service.zero     u:object_r:hal_vibrator_default_exec:s0
 
 ####################################
 # Nexus7420 Power HAL
