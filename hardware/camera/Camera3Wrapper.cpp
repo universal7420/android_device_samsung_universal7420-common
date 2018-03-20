@@ -59,28 +59,6 @@ static int check_vendor_module()
 
 static const camera_metadata_t * camera3_fixup_construct_default_request_settings(android::CameraMetadata metadata, int type)
 {
-    /* enable phase detection auto focus by default */
-    // int32_t pafMode[1] = {PAF_MODE_ON};
-    // metadata.update(PAF_MODE, pafMode, 1);
-
-    /* enable optical image stabilization by default */
-    // uint8_t oisMode[1] = {ANDROID_LENS_OPTICAL_STABILIZATION_MODE_ON};
-    // metadata.update(ANDROID_LENS_OPTICAL_STABILIZATION_MODE, oisMode, 1);
-
-    // int32_t oisOpMode[1];
-    /* video mode ois */
-    // if (type == CAMERA3_TEMPLATE_VIDEO_RECORD) {
-    //     oisOpMode[0] = OIS_OPERATION_MODE_VIDEO;
-    /* picture mode ois */
-    // } else {
-    //     oisOpMode[0] = OIS_OPERATION_MODE_PICTURE;
-    // }
-    // metadata.update(OIS_OPERATION_MODE, oisOpMode, 1);
-
-    /* enable realtime hdr by default */
-    // int32_t liveHdrLevel[1] = {1};
-    // metadata.update(LIVE_HDR_LEVEL, liveHdrLevel, 1);
-
     return metadata.release();
 }
 

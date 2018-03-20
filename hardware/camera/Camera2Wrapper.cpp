@@ -72,11 +72,7 @@ static char * camera2_fixup_getparams(int id __unused, const char * settings)
     params.dump();
 #endif
 
-    // params.set("scene-mode-values", "auto");
-    // params.set("rt-hdr", "auto");
-    // params.set("drc", "true");
-    // params.set("phase-af", "on");
-    // params.set("video-size-values", "3840x2160,2560x1440,1920x1080,1440x1080,1088x1088,1280x720,960x720,800x450,720x480,640x480,480x320,352x288,320x240,256x144,176x144");
+    params.set("video-size-values", "3840x2160,2560x1440,1920x1080,1440x1080,1088x1088,1280x720,960x720,800x450,720x480,640x480,480x320,352x288,320x240,256x144,176x144");
 
 #ifdef LOG_PARAMETERS
     ALOGV("%s: Fixed parameters:", __FUNCTION__);
