@@ -28,14 +28,6 @@ on init
 on post-fs-data
     setprop vold.post_fs_data_done 1
 
-# Enable kernel wakelock blocker
-	write /sys/class/kwakeblock/enabled 1
-
-# Set default blocked kernel wakelocks. They randomly prevent deep-sleep
-# from working. No instability observed when blocking these wakelocks.
-	write /sys/class/kwakeblock/block "eventpoll"
-	write /sys/class/kwakeblock/block "NETLINK"
-
 # Reset notification-LED
 	write /sys/class/leds/led_b/brightness 0
 	write /sys/class/leds/led_g/brightness 0
