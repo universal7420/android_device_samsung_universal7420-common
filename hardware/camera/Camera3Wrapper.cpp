@@ -56,36 +56,9 @@ static int check_vendor_module()
 /*******************************************************************
  * Camera3 wrapper fixup functions
  *******************************************************************/
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
-
-const uint8_t CAMERA_JPEG_QUALITY_100 = 100;
-
-const uint8_t CAMERA_SHADING_MODE_HIGH_QUALITY = ANDROID_SHADING_MODE_HIGH_QUALITY;
-
-// Vectors for high speed recording
-const int32_t CAMERA_HSR_VECTORS[] =
-{
-    /* Width, Height, lower FPS, upper FPS, Batch Size */
-    1920, 1080,  60,  60, 1,
-    1280,  720, 120, 120, 1,
-     720,  480, 120, 120, 1,
-};
 
 static const camera_metadata_t * camera3_fixup_construct_default_request_settings(android::CameraMetadata metadata, int type)
 {
-    /* Quality enhancements */
-    metadata.update(ANDROID_JPEG_QUALITY, &CAMERA_JPEG_QUALITY_100, 1);
-
-    switch (type) {
-        case CAMERA3_TEMPLATE_STILL_CAPTURE:
-            metadata.update(ANDROID_SHADING_MODE, &CAMERA_SHADING_MODE_HIGH_QUALITY, 1);
-            break;
-    }
-
-    /* High Speed Recording Fixup - Not recognized by at least Snap */
-    metadata.update(ANDROID_CONTROL_AVAILABLE_HIGH_SPEED_VIDEO_CONFIGURATIONS,
-            CAMERA_HSR_VECTORS, ARRAY_SIZE(CAMERA_HSR_VECTORS));
-
     return metadata.release();
 }
 
