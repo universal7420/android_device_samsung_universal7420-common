@@ -7,6 +7,13 @@
 #
 
 #
+# Ugly hacks. Thanks to whoever the idiots were which made
+# these goddamn ugly hacks required. Big thanks.
+#
+ro.product.board=universal7420
+ro.board.platform=exynos5
+
+#
 # ADB (rooted, with early-init support)
 #
 ro.adb.secure=0
