@@ -16,5 +16,5 @@
 #
 
 # Properties
-PRODUCT_COPY_FILES += \
-    device/samsung/zero-common/zero-common.prop:system/vendor/build.prop
+TARGET_VENDOR_PROP := device/samsung/zero-common/zero-common.prop
+TARGET_VENDOR_PROP_OVERRIDE := true
