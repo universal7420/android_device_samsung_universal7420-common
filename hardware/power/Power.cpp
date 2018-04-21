@@ -407,11 +407,9 @@ void Power::setInputState(bool enabled) {
 		}
 
 		if (mVariant != SecDeviceVariant::EDGE) {
-			Utils::write(POWER_TOUCHKEYS_ENABLED, true);
+			Utils::write(POWER_TOUCHKEYS_ENABLED, mTouchkeysEnabled);
 			Utils::write(POWER_TOUCHKEYS_BRIGHTNESS, 255);
 		}
-
-		setDT2WState();
 	} else {
 		if (mVariant != SecDeviceVariant::EDGE) {
 			// save to current state to prevent enabling
@@ -426,9 +424,9 @@ void Power::setInputState(bool enabled) {
 		if (!mTouchControlPath.empty() && !mIsDT2WEnabled) {
 			Utils::write(mTouchControlPath, false);
 		}
-
-		setDT2WState();
 	}
+
+	setDT2WState();
 }
 
 void Power::setFingerprintState(bool enabled) {
