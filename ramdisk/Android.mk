@@ -1,5 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
+include $(call all-subdir-makefiles,$(LOCAL_PATH))
+
 include $(CLEAR_VARS)
 LOCAL_MODULE		:= fstab.samsungexynos7420
 LOCAL_MODULE_TAGS	:= optional eng
