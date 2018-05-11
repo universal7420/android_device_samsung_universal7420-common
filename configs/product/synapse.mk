@@ -15,4 +15,4 @@
 # limitations under the License.
 #
 
-include device/samsung/zero-common/ramdisk/synapse/synapse.mk
+include device/samsung/zero-common/synapse/synapse.mk

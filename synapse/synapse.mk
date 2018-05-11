@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-SYNAPSE_PATH := device/samsung/zero-common/ramdisk/synapse
+SYNAPSE_PATH := device/samsung/zero-common/synapse
 
 # Synapse core script
 PRODUCT_COPY_FILES += \
