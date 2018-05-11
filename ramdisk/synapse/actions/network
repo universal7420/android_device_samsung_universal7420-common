@@ -1,11 +1,5 @@
 # By UpInTheAir for SkyHigh kernels
 
-if [ ! -f /su/xbin/busybox ]; then
-	BB=/system/xbin/busybox;
-else
-	BB=/su/xbin/busybox;
-fi;
-
 case $1 in
 tcp_security)
   P=/res/synapse/hrtkernel/tcp_security
@@ -152,8 +146,8 @@ gps_zone)
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.asia.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.asia.pool.ntp.org" ]; then
 			echo 2 > $P
-			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
-			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
 			echo "NTP_SERVER=asia.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=0.asia.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=1.asia.pool.ntp.org" >> $var_gps;
@@ -164,8 +158,8 @@ gps_zone)
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.europe.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.europe.pool.ntp.org" ]; then
 			echo 3 > $P
-			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
-			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
 			echo "NTP_SERVER=europe.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=0.europe.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=1.europe.pool.ntp.org" >> $var_gps;
@@ -176,8 +170,8 @@ gps_zone)
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.oceania.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.oceania.pool.ntp.org" ]; then
 			echo 4 > $P
-			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
-			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
 			echo "NTP_SERVER=oceania.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=0.oceania.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=1.oceania.pool.ntp.org" >> $var_gps;
@@ -188,8 +182,8 @@ gps_zone)
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.north-america.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.north-america.pool.ntp.org" ]; then
 			echo 5 > $P
-			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
-			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
 			echo "NTP_SERVER=north-america.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=0.north-america.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=1.north-america.pool.ntp.org" >> $var_gps;
@@ -200,8 +194,8 @@ gps_zone)
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.south-america.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.south-america.pool.ntp.org" ]; then
 			echo 6 > $P
-			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
-			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
 			echo "NTP_SERVER=south-america.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=0.south-america.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=1.south-america.pool.ntp.org" >> $var_gps;
@@ -212,8 +206,8 @@ gps_zone)
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.africa.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.africa.pool.ntp.org" ]; then
 			echo 7 > $P
-			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
-			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
 			echo "NTP_SERVER=africa.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=0.africa.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=1.africa.pool.ntp.org" >> $var_gps;
@@ -257,7 +251,7 @@ wifi_passwords_restore)
 	svc wifi disable 2> /dev/null;
 	rm -f /data/misc/dhcp/dhcpcd*;
 	cat /sdcard/hackerkernel/wifi/wifi.txt > $P
-	$BB chmod 660 $P;
+	chmod 660 $P;
 	svc wifi enable 2> /dev/null;
 	sleep 1
 	echo "WiFi Passwords Restored";

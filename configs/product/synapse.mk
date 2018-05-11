@@ -15,14 +15,4 @@
 # limitations under the License.
 #
 
-include $(CLEAR_VARS)
-LOCAL_MODULE            := 00synapse
-LOCAL_MODULE_TAGS       := optional eng
-LOCAL_MODULE_CLASS      := ETC
-LOCAL_SRC_FILES         := synapse/init
-LOCAL_MODULE_PATH       := $(TARGET_OUT_ETC)/init.d/
-
-$(LOCAL_BUILT_MODULE): $(LOCAL_MODULE_PATH)/$(LOCAL_MODULE)
-	$(hide) chmod 755 $@
-		
-include $(BUILD_PREBUILT)
+include device/samsung/zero-common/ramdisk/synapse/synapse.mk

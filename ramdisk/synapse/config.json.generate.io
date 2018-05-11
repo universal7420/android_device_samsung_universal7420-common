@@ -10,9 +10,9 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Internal Storage Scheduler",
-		default:`cat /sys/block/sda/queue/scheduler | busybox awk 'NR>1{print $1}' RS=[ FS=]`,
+		default:`cat /sys/block/sda/queue/scheduler | awk 'NR>1{print $1}' RS=[ FS=]`,
 		action:"scheduler /sys/block/sda/queue/scheduler",
-		values:[`while read values; do busybox printf "%s, \n" $values | busybox tr -d '[]'; done < /sys/block/sda/queue/scheduler`]
+		values:[`while read values; do printf "%s, \n" $values | tr -d '[]'; done < /sys/block/sda/queue/scheduler`]
 	}},
 	{ SSeekBar:{
 		title:"Internal_storage read-ahead",

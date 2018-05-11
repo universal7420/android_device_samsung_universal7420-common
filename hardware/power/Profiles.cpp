@@ -236,7 +236,7 @@ const SecPowerProfile Profiles::kPowerProfileBalanced = {
 	},
 	.gpu = {
 		.dvfs = {
-			.freq_min = 266,
+			.freq_min = 350,
 			.freq_max = 772,
 		},
 		.highspeed = {
@@ -286,7 +286,7 @@ const SecPowerProfile Profiles::kPowerProfileBiasPerformance = {
 	},
 	.gpu = {
 		.dvfs = {
-			.freq_min = 350,
+			.freq_min = 420,
 			.freq_max = 772,
 		},
 		.highspeed = {

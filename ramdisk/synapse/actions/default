@@ -1,8 +1,3 @@
-if [ ! -f /su/xbin/busybox ]; then
-	BB=/system/xbin/busybox;
-else
-	BB=/su/xbin/busybox;
-fi;
 case $1 in
 gamma)
   P=/sys/class/mdnie/mdnie/gamma_curve
@@ -93,7 +88,7 @@ vread)
 vwrite)
   P=/sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
   readvolt=$(/res/synapse/hrtkernel/actions/default vread)
-  default=`echo $readvolt | busybox awk '{$NF *= -1; print}'`
+  default=`echo $readvolt | awk '{$NF *= -1; print}'`
   if [ ! -z $2 ]
   then
   val=""
@@ -123,7 +118,7 @@ codename)
   echo "AldeXus"
   ;;    
 version)
-  echo `busybox uname -r`
+  echo `uname -r`
   ;;
 kernel_version)
   echo "2.0"
@@ -154,10 +149,7 @@ serial)
 susp)
   echo `cat /sys/kernel/power_suspend/power_suspend_version`
   ;;
-busybox_version)
-  $BB echo "$(busybox | head -1)"
-  ;;
 su_version)
-  $BB echo "$(su -v)"
+  echo "$(su -v)"
   ;;  
 esac

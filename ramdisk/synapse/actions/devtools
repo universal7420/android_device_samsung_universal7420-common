@@ -1,23 +1,17 @@
-if [ ! -f /su/xbin/busybox ]; then
-	BB=/system/xbin/busybox;
-else
-	BB=/su/xbin/busybox;
-fi;
-
-if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
-	$BB mount -o remount,rw /system;
+if [ "$(mount | grep system | grep -c ro)" -eq "1" ]; then
+	mount -o remount,rw /system;
 fi;
 
 case $1 in
 	reboot)
-		$BB sleep 1;
+		sleep 1;
 		reboot $2;
 	;;
 	cleardata)
 		am force-stop com.moro.synapsemod 2> /dev/null;
-		$BB sleep 1;
-		$BB rm -R /data/data/com.moro.synapsemod/databases;
-		$BB sleep 1;
+		sleep 1;
+		rm -R /data/data/com.moro.synapsemod/databases;
+		sleep 1;
 		am start -a android.intent.action.MAIN -n com.moro.synapsemod/.MainActivity 2> /dev/null;
   	;;
 	selinux)	
@@ -29,21 +23,21 @@ case $1 in
 			fi;
 		fi;
 
-		$BB echo `getenforce`;
+		echo `getenforce`;
 		#/sys/fs/selinux/enforce
 	;;
 	optimizedb)
-		for i in `$BB find /data -iname "*.db"`; do 
+		for i in `find /data -iname "*.db"`; do 
 			$sbin/sqlite3 $i 'VACUUM;' 2> /dev/null;
 			$sbin/sqlite3 $i 'REINDEX;' 2> /dev/null;
 		done;
 
-		for i in `$BB find /sdcard -iname "*.db"`; do
+		for i in `find /sdcard -iname "*.db"`; do
 			$sbin/sqlite3 $i 'VACUUM;' 2> /dev/null;
 			$sbin/sqlite3 $i 'REINDEX;' 2> /dev/null;
 		done;
 		
-		$BB echo "Databases have been optimized.";
+		echo "Databases have been optimized.";
 	;;
 	fix_wifi)
 		svc wifi disable 2> /dev/null;
@@ -52,4 +46,4 @@ case $1 in
 		echo "WIFI Release Renew is DONE";
 	;;
 esac;
-$BB mount -o remount,ro /system;
+mount -o remount,ro /system;

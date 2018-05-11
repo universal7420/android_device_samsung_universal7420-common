@@ -4,5 +4,5 @@ then
   then
   echo $2 > $1
   fi
-  echo `cat $1 | busybox awk 'NR>1{print $1}' RS=[ FS=]`
+  echo `cat $1 | awk 'NR>1{print $1}' RS=[ FS=]`
 fi

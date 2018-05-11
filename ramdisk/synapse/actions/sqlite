@@ -1,11 +1,5 @@
 ALDEON=/sdcard/aldeon;
 
-if [ ! -f /su/xbin/busybox ]; then
-	BB=/system/xbin/busybox;
-else
-	BB=/su/xbin/busybox;
-fi;
-
 if [ -f "/system/xbin/sqlite3" ]; then
 	SQL3=/system/xbin/sqlite3;
 else

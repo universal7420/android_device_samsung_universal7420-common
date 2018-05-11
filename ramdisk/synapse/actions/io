@@ -1,11 +1,5 @@
 # By thehacker911 for hacker kernels
 
-if [ ! -f /su/xbin/busybox ]; then
-	BB=/system/xbin/busybox;
-else
-	BB=/su/xbin/busybox;
-fi;
-
 case $1 in
 io_tweaking)
   P=/res/synapse/hrtkernel/io_tweaking

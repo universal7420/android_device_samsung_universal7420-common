@@ -1,0 +1,10 @@
+#!/system/bin/sh
+
+# Remoute /
+mount -o remount,rw /
+
+# Remoute /system/
+mount -o remount,rw /system
+
+# Give proper permissions
+chmod -R 0755 /res/synapse

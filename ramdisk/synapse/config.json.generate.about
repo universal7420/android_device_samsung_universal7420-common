@@ -109,17 +109,7 @@ cat << CTAG
 		action:"default serial"
 	}},
 	{ SDescription:{
-		description:" "
-	}},
-	{ SPane:{
-		title:"Busybox Version"
-	}},
-	{ SLiveLabel:{
-		refresh:10000,
-		action:"default busybox_version"
-	}},
-	{ SSpacer:{
-		height:1
+		description:""
 	}},
 	{ SPane:{
 		title:"SU Binary Version"

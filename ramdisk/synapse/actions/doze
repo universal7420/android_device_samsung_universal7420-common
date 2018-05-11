@@ -1,21 +1,15 @@
-if [ ! -f /su/xbin/busybox ]; then
-	BB=/system/xbin/busybox;
-else
-	BB=/su/xbin/busybox;
-fi;
-
 case $1 in
 doze_idle_mode)
   P=/res/synapse/quintz/doze_idle_mode
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
-	$BB sync;
+	sync;
 	dumpsys deviceidle disable
 	dumpsys battery reset
   elif [ "$2" == Enabled ]; then
     echo 1 > $P
-	$BB sync;
+	sync;
 	dumpsys deviceidle enable
 	dumpsys battery reset
   fi; fi
@@ -48,7 +42,7 @@ doze_profile)
 	echo "5" > /res/synapse/quintz/doze_max_temp_app_whitelist_duration;
 	echo "60" > /res/synapse/quintz/doze_mms_temp_app_whitelist_duration;
 	echo "20" > /res/synapse/quintz/doze_sms_temp_app_whitelist_duration;
-	$BB sh /res/synapse/actions/doze_apply > /dev/null 2>&1;
+	sh /res/synapse/actions/doze_apply > /dev/null 2>&1;
   elif [ "$2" == Battery ]; then
     echo 1 > $P
 	echo "10" > /res/synapse/quintz/doze_inactive_to;
@@ -67,7 +61,7 @@ doze_profile)
 	echo "5" > /res/synapse/quintz/doze_max_temp_app_whitelist_duration;
 	echo "60" > /res/synapse/quintz/doze_mms_temp_app_whitelist_duration;
 	echo "20" > /res/synapse/quintz/doze_sms_temp_app_whitelist_duration;
-	$BB sh /res/synapse/actions/doze_apply > /dev/null 2>&1;
+	sh /res/synapse/actions/doze_apply > /dev/null 2>&1;
   elif [ "$2" == User ]; then
     echo 2 > $P
 	# Nothing to do here
@@ -85,8 +79,8 @@ esac
 
 if [ -f "$1" ]; then
 	if [[ ! -z "$2" ]]; then
-		$BB echo "$2" > "$1"
+		echo "$2" > "$1"
 	fi;
 
-	$BB echo "$($BB cat "$1")";
+	echo "$(cat "$1")";
 fi;

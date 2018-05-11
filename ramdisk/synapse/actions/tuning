@@ -1,12 +1,6 @@
 # By UpInTheAir for SkyHigh kernels
 # performance, battery & turbo values by g.lewarne @ XDA
 
-if [ ! -f /su/xbin/busybox ]; then
-	BB=/system/xbin/busybox;
-else
-	BB=/su/xbin/busybox;
-fi;
-
 case $1 in
 hmp)
   P=/res/synapse/hrtkernel/tuning_hmp
