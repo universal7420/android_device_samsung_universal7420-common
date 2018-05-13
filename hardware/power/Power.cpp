@@ -372,10 +372,10 @@ void Power::setProfile(SecPowerProfiles profile) {
 	/*********************
 	 * GPU Defaults
 	 */
-	Utils::write("/sys/devices/14ac0000.mali/dvfs_min_lock",   data->gpu.dvfs.freq_min);
-	Utils::write("/sys/devices/14ac0000.mali/dvfs_max_lock",   data->gpu.dvfs.freq_max);
-	Utils::write("/sys/devices/14ac0000.mali/highspeed_clock", data->gpu.highspeed.freq);
-	Utils::write("/sys/devices/14ac0000.mali/highspeed_load",  data->gpu.highspeed.load);
+	Utils::write("/sys/devices/platform/gpusysfs/gpu_min_clock", data->gpu.dvfs.freq_min);
+	Utils::write("/sys/devices/platform/gpusysfs/gpu_max_clock", data->gpu.dvfs.freq_max);
+	Utils::write("/sys/devices/14ac0000.mali/highspeed_clock",   data->gpu.highspeed.freq);
+	Utils::write("/sys/devices/14ac0000.mali/highspeed_load",    data->gpu.highspeed.load);
 
 	/*********************
 	 * Kernel Defaults
