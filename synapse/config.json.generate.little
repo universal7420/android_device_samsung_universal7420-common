@@ -76,7 +76,7 @@ cat << CTAG
 
 `
 while read FREQ VOLT; do
-	echo '{ SSeekBar:{ default:'$VOLT', title:"'$(expr $FREQ / 1000)' MHz"'
+	echo '{ SSeekBar:{ default:'$VOLT', title:"'$(expr $FREQ / 1000)' MHz (Default: '$(/res/synapse/actions/c1volt defaults $FREQ | awk '{ print $0 / 1000 }')' mV)"'
 	echo ', action:"c0volt '${FREQ}'", unit:"mV", weight:0.001, min:500000, step:6250, max:1175000 }},'
 done < /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster0_volt_table
 `

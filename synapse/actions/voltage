@@ -19,6 +19,11 @@ ispvolt)
 	;;
 esac
 
+if [ "$1" == "defaults" ]; then
+	. $(dirname $0)/voltage-defaults
+	exit 0
+fi
+
 readValue() {
 	while read FREQ UVOLT; do
 		if [ $FREQ == $1 ]; then
