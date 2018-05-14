@@ -111,17 +111,8 @@ hotplug)
   fi
   echo `cat $P`
   ;;
-dev)
-  echo "minealex2244"
-  ;;
-codename)
-  echo "AldeXus"
-  ;;    
-version)
-  echo `uname -r`
-  ;;
 kernel_version)
-  echo "2.0"
+  echo `uname -r`
   ;;
 android_version)
   echo `getprop ro.build.version.release`

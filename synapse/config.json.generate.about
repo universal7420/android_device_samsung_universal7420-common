@@ -5,44 +5,7 @@ cat << CTAG
     name:"About",
     elements:[
 	{ SPane:{
-		title:"Developer"
-	}},
-	{ SLiveLabel:{
-		refresh:10000,
-		action:"default dev"
-	}},
-	{ SDescription:{
-		description:""
-	}},
-	{ SPane:{
-		title:"Kernel Code Name"
-	}},
-	{ SLiveLabel:{
-		refresh:10000,
-		action:"default codename"
-	}},
-	{ SDescription:{
-		description:""
-	}},
-	{ SPane:{
-		title:"Source",
-		description:"<br><div style='text-align:center;'><a href='https://github.com/minealex2244/Aldeon-Kernel'>GitHub</a></div>"
-	}},
-	{ SDescription:{
-		description:""
-	}},
-	{ SPane:{
-		title:"Kernel"
-	}},
-	{ SLiveLabel:{
-		refresh:10000,
-		action:"default version"
-	}},
-	{ SDescription:{
-		description:""
-	}},
-	{ SPane:{
-		title:"Kernel Version"
+		title:"Kernel-Version"
 	}},
 	{ SLiveLabel:{
 		refresh:10000,
@@ -52,7 +15,7 @@ cat << CTAG
 		description:""
 	}},
 	{ SPane:{
-		title:"Android Version"
+		title:"Android-Version"
 	}},
 	{ SLiveLabel:{
 		refresh:10000,
@@ -62,7 +25,7 @@ cat << CTAG
 		description:""
 	}},
 	{ SPane:{
-		title:"Rom/Firmware"
+		title:"ROM/Firmware"
 	}},
 	{ SLiveLabel:{
 		refresh:10000,
@@ -72,7 +35,7 @@ cat << CTAG
 		description:""
 	}},
 	{ SPane:{
-		title:"Build Date"
+		title:"Build-Date"
 	}},
 	{ SLiveLabel:{
 		refresh:10000,
