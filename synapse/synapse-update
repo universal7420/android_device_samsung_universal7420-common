@@ -7,10 +7,21 @@
 source=/system/res/synapse
 target=/res/synapse
 
-if [ "$1" != "--no-confirm" ]; then
-	echo ""
-	echo "MAKE SURE SYNAPSE IS CLOSED BEFORE YOU CONTINUE!!! - PRESS ENTER TO CONTINUE!!!"
-	read
+#
+# Force-stop Synapse application
+#
+if [ "$1" != "--no-force-stop" ]; then
+	echo -n "[*] Force-stopping Synapse application..."
+
+	am force-stop com.af.synapse
+	rc=$?
+
+	if [ $rc != 0 ]; then
+		echo " Failed..."
+		exit 1
+	fi
+
+	echo " Done!"
 fi
 
 #

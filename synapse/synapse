@@ -21,4 +21,4 @@ mount -o remount,rw /system
 mount -v -w -o size=4M,mode=0755 -t tmpfs tmpfs ${target}
 
 # Copy files and prebuild UCI config
-/system/bin/synapse-update --no-confirm
+/system/bin/synapse-update --no-force-stop
