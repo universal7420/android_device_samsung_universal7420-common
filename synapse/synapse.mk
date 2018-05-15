@@ -86,6 +86,7 @@ PRODUCT_COPY_FILES += \
 	$(SYNAPSE_PATH)/actions/tuning:$(SYNAPSE_TARGET)/actions/tuning \
 	$(SYNAPSE_PATH)/actions/voltage:$(SYNAPSE_TARGET)/actions/voltage \
 	$(SYNAPSE_PATH)/actions/voltage2:$(SYNAPSE_TARGET)/actions/voltage2 \
+	$(SYNAPSE_PATH)/actions/voltage-defaults:$(SYNAPSE_TARGET)/actions/voltage-defaults \
 	$(SYNAPSE_PATH)/hrtkernel/dns:$(SYNAPSE_TARGET)/hrtkernel/dns \
 	$(SYNAPSE_PATH)/hrtkernel/gps_zone:$(SYNAPSE_TARGET)/hrtkernel/gps_zone \
 	$(SYNAPSE_PATH)/hrtkernel/gpu_gov:$(SYNAPSE_TARGET)/hrtkernel/gpu_gov \
