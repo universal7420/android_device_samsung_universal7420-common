@@ -212,14 +212,17 @@ const SecPowerProfile Profiles::kPowerProfileBiasPowerSave = {
 const SecPowerProfile Profiles::kPowerProfileBalanced = {
 	.cpu = {
 		.apollo = {
-			.governor = "nexus",
+			.governor = "interactive",
 			.freq_min = 600000,
 			.freq_max = 1500000,
-			.freq_hispeed = 900000,
-			.nexus = {
-				.lpr_ratio = 150,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 3,
+			.freq_hispeed = 1000000,
+			.interactive = {
+				.above_hispeed_delay = "19000",
+				.go_hispeed_load = 85,
+				.min_sample_time = 40000,
+				.target_loads = "75",
+				.timer_rate = 20000,
+				.timer_slack = 20000,
 			},
 		},
 		.atlas = {
