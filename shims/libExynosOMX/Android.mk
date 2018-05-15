@@ -33,7 +33,6 @@ LOCAL_STATIC_LIBRARIES := \
     libarect
 
 LOCAL_C_INCLUDES := \
-    $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
     frameworks/native/include/media/openmax/ \
     hardware/samsung_slsi-cm/exynos/include \
     hardware/samsung_slsi-cm/exynos/libvideocodec/include \
