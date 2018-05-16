@@ -238,7 +238,7 @@ on boot
 # mobicore
     chmod 0660 /dev/s5p-smem
     chmod 0660 /dev/t-base-tui
-    chown system system /dev/s5p-smem
+    chown media system /dev/s5p-smem
     chown system system /dev/t-base-tui
     export MC_AUTH_TOKEN_PATH /efs
 
