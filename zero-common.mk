@@ -20,9 +20,419 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # include private blob configs
 -include vendor/samsung/zero-private/config.mk
+	
+#
+# AAPT
+#
+## This device is 640dpi.  However the platform doesn't
+## currently contain all of the bitmaps at 640dpi density so
+## we do this little trick to fall back to the xxhdpi version
+## if the 640dpi doesn't exist.
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := 640dpi
 
-# include splitted configs
--include $(LOCAL_PATH)/configs/product/*.mk
+# A list of dpis to select prebuilt apk, in precedence order.
+PRODUCT_AAPT_PREBUILT_DPI := xxxhdpi xxhdpi xhdpi hdpi
+
+#
+# Audio
+#
+## Configs
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+	$(LOCAL_PATH)/configs/audio/audio_policy.conf:system/vendor/etc/audio_policy.conf
+
+## Packages
+PRODUCT_PACKAGES += \
+	audio.primary.universal7420 \
+	audio.a2dp.default \
+	audio.r_submix.default \
+	audio.usb.default \
+	tinymix \
+	libtinycompress \
+	android.hardware.audio@2.0-impl \
+	android.hardware.audio.effect@2.0-impl
+
+#
+# Bluetooth
+#
+## Packages
+PRODUCT_PACKAGES += \
+	android.hardware.bluetooth@1.0-impl \
+	android.hardware.bluetooth@1.0-service \
+	libbt-vendor
+	
+#
+# Bootanimation
+#
+TARGET_SCREEN_HEIGHT := 2560
+TARGET_SCREEN_WIDTH := 1440
+
+#
+# Camera
+#
+## Packages
+PRODUCT_PACKAGES += \
+	camera.exynos5 \
+	libexynoscamera_shim \
+	camera.device@1.0-impl \
+	camera.device@3.2-impl \
+	android.hardware.camera.provider@2.4-impl \
+	android.hardware.camera.provider@2.4-service
+
+## Apps
+PRODUCT_PACKAGES += \
+	Camera2
+
+#
+# Configstore
+#
+PRODUCT_PACKAGES += \
+	android.hardware.configstore@1.0-impl \
+	android.hardware.configstore@1.0-service
+
+#
+# Doze
+#
+PRODUCT_PACKAGES += \
+	ZeroDoze
+
+#
+# DRM
+#
+PRODUCT_PACKAGES += \
+	android.hardware.drm@1.0-impl \
+	android.hardware.drm@1.0-service
+
+#
+# Features
+#
+PRODUCT_COPY_FILES += \
+	frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/vendor/etc/permissions/android.hardware.bluetooth_le.xml \
+	frameworks/native/data/etc/android.hardware.camera.xml:system/vendor/etc/permissions/android.hardware.camera.xml \
+	frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/vendor/etc/permissions/android.hardware.camera.flash-autofocus.xml \
+	frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
+	frameworks/native/data/etc/android.hardware.camera.full.xml:system/vendor/etc/permissions/android.hardware.camera.full.xml \
+	frameworks/native/data/etc/android.hardware.camera.raw.xml:system/vendor/etc/permissions/android.hardware.camera.raw.xml \
+	frameworks/native/data/etc/android.hardware.consumerir.xml:system/vendor/etc/permissions/android.hardware.consumerir.xml \
+	frameworks/native/data/etc/android.hardware.fingerprint.xml:system/vendor/etc/permissions/android.hardware.fingerprint.xml \
+	frameworks/native/data/etc/android.hardware.location.gps.xml:system/vendor/etc/permissions/android.hardware.location.gps.xml \
+	frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/vendor/etc/permissions/android.hardware.nfc.hce.xml \
+	frameworks/native/data/etc/android.hardware.nfc.xml:system/vendor/etc/permissions/android.hardware.nfc.xml \
+	frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/vendor/etc/permissions/android.hardware.opengles.aep.xml \
+	frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/vendor/etc/permissions/android.hardware.sensor.accelerometer.xml \
+	frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/vendor/etc/permissions/android.hardware.sensor.barometer.xml \
+	frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/vendor/etc/permissions/android.hardware.sensor.compass.xml \
+	frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/vendor/etc/permissions/android.hardware.sensor.gyroscope.xml \
+	frameworks/native/data/etc/android.hardware.sensor.light.xml:system/vendor/etc/permissions/android.hardware.sensor.light.xml \
+	frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/vendor/etc/permissions/android.hardware.sensor.proximity.xml \
+	frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:system/vendor/etc/permissions/android.hardware.sensor.stepcounter.xml \
+	frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:system/vendor/etc/permissions/android.hardware.sensor.stepdetector.xml \
+	frameworks/native/data/etc/android.hardware.sensor.heartrate.ecg.xml:system/vendor/etc/permissions/android.hardware.sensor.heartrate.ecg.xml \
+	frameworks/native/data/etc/android.hardware.sensor.heartrate.xml:system/vendor/etc/permissions/android.hardware.sensor.heartrate.xml \
+	frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/vendor/etc/permissions/android.hardware.telephony.gsm.xml \
+	frameworks/native/data/etc/android.hardware.telephony.cdma.xml:system/vendor/etc/permissions/android.hardware.telephony.cdma.xml \
+	frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/vendor/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
+	frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/vendor/etc/permissions/android.hardware.usb.accessory.xml \
+	frameworks/native/data/etc/android.hardware.usb.host.xml:system/vendor/etc/permissions/android.hardware.usb.host.xml \
+	frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/vendor/etc/permissions/android.hardware.wifi.direct.xml \
+	frameworks/native/data/etc/android.hardware.wifi.xml:system/vendor/etc/permissions/android.hardware.wifi.xml \
+	frameworks/native/data/etc/android.hardware.vulkan.level-1.xml:system/vendor/etc/permissions/android.hardware.vulkan.level.xml \
+	frameworks/native/data/etc/android.hardware.vulkan.version-1_0_3.xml:system/vendor/etc/permissions/android.hardware.vulkan.version.xml \
+	frameworks/native/data/etc/com.android.nfc_extras.xml:system/vendor/etc/permissions/com.android.nfc_extras.xml \
+	frameworks/native/data/etc/com.nxp.mifare.xml:system/vendor/etc/permissions/com.nxp.mifare.xml \
+	frameworks/native/data/etc/handheld_core_hardware.xml:system/vendor/etc/permissions/handheld_core_hardware.xml
+
+#
+# Fingerprint
+#
+PRODUCT_PACKAGES += \
+	fingerprint.exynos5 \
+	libbauthtzcommon_shim \
+	android.hardware.biometrics.fingerprint@2.1-impl \
+	android.hardware.biometrics.fingerprint@2.1-service
+
+#
+# GPS
+#
+## HIDL
+PRODUCT_PACKAGES += \
+	android.hardware.gnss@1.0-impl \
+	android.hardware.gnss@1.0-service
+
+## Shims
+PRODUCT_PACKAGES += \
+	libsensor_shim
+
+## Configs
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/gps/gps.conf:system/etc/gps.conf \
+	$(LOCAL_PATH)/configs/gps/gps.xml:system/etc/gps.xml \
+	$(LOCAL_PATH)/configs/gps/gnss.conf:system/etc/gnss.conf \
+	$(LOCAL_PATH)/configs/gps/lhd.conf:system/etc/lhd.conf
+
+#
+# Graphics
+#
+PRODUCT_PACKAGES += \
+	libhwc2on1adapter \
+	android.hardware.graphics.allocator@2.0-impl \
+	android.hardware.graphics.allocator@2.0-service \
+	android.hardware.graphics.composer@2.1-impl \
+	android.hardware.graphics.mapper@2.0-impl
+
+#
+# IR
+#
+PRODUCT_PACKAGES += \
+	android.hardware.ir@1.0-impl \
+	android.hardware.ir@1.0-service
+
+#
+# Keylayouts
+#
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/keylayout/sec_touchkey.kl:system/vendor/usr/keylayout/sec_touchkey.kl \
+	$(LOCAL_PATH)/configs/keylayout/sec_touchscreen.kl:system/vendor/usr/keylayout/sec_touchscreen.kl \
+	$(LOCAL_PATH)/configs/idc/Synaptics_HID_TouchPad.idc:system/vendor/usr/idc/Synaptics_HID_TouchPad.idc \
+	$(LOCAL_PATH)/configs/idc/ft5x06_ts.idc:system/vendor/usr/idc/ft5x06_ts.idc \
+	$(LOCAL_PATH)/configs/idc/sec_touchscreen.idc:system/vendor/usr/idc/sec_touchscreen.idc
+
+#
+# Keymaster
+#
+PRODUCT_PACKAGES += \
+	android.hardware.keymaster@3.0-impl \
+	android.hardware.keymaster@3.0-service
+
+#
+# Lights
+#
+PRODUCT_PACKAGES += \
+	android.hardware.light@2.0-impl \
+	android.hardware.light@2.0-service \
+	lights.universal7420
+
+#
+# LiveDisplay
+#
+## Packages
+PRODUCT_PACKAGES += \
+	vendor.lineage.livedisplay@1.0-service-sdm \
+	vendor.lineage.livedisplay-V1.0-java
+
+## Frameworks
+PRODUCT_BOOT_JARS += \
+	vendor.lineage.livedisplay-V1.0-java
+
+#
+# Media
+#
+## Profiles
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/media/media_codecs.xml:system/vendor/etc/media_codecs.xml \
+	$(LOCAL_PATH)/configs/media/media_codecs_performance.xml:system/vendor/etc/media_codecs_performance.xml \
+	$(LOCAL_PATH)/configs/media/media_profiles_V1_0.xml:system/vendor/etc/media_profiles_V1_0.xml \
+	frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/vendor/etc/media_codecs_google_audio.xml \
+	frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/vendor/etc/media_codecs_google_telephony.xml \
+	frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/vendor/etc/media_codecs_google_video.xml
+
+## Shims
+PRODUCT_PACKAGES += \
+	libstagefright_shim \
+	libui_shim \
+	libExynosOMX_shim
+
+## Service-overrides
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/init/android.hardware.media.omx@1.0-service.rc:system/vendor/etc/init/android.hardware.media.omx@1.0-service.rc \
+	$(LOCAL_PATH)/configs/init/mediaserver.rc:system/etc/init/mediaserver.rc
+
+#
+# Memtrack
+#
+PRODUCT_PACKAGES += \
+	android.hardware.memtrack@1.0-impl
+
+#
+# Network
+#
+PRODUCT_PACKAGES += \
+	netutils-wrapper-1.0
+
+#
+# NFC
+#
+## Configs
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/nfc/nfcee_access.xml:system/etc/nfcee_access.xml \
+	$(LOCAL_PATH)/configs/nfc/libnfc-sec-hal.conf:system/etc/libnfc-sec-hal.conf \
+	$(LOCAL_PATH)/configs/nfc/libnfc-sec.conf:system/etc/libnfc-brcm.conf
+
+## Packages
+PRODUCT_PACKAGES += \
+	libnfc-nci \
+	libnfc_nci_jni \
+	NfcNci \
+	Tag \
+	com.android.nfc_extras \
+	android.hardware.nfc@1.0-impl \
+	android.hardware.nfc@1.0-service
+
+#
+# Overlays
+#
+## Common
+DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay
+
+## Variant-specific
+ifneq ($(filter zerofltespr zeroltespr,$(TARGET_DEVICE)),)
+  DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-cdma
+else
+  DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-gsm
+endif
+
+## ROM-specific
+ifneq ($(NEXUS_VERSION),)
+  DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-nexus
+endif
+
+#
+# Packages
+#
+PRODUCT_PACKAGES += \
+	HealthService \
+	Jelly \
+	SamsungServiceMode
+
+#
+# Permissions
+#
+PRODUCT_COPY_FILES += \
+	device/samsung/zero-common/configs/permissions/com.samsung.permission.HRM_EXT.xml:system/vendor/etc/permissions/com.samsung.permission.HRM_EXT.xml \
+	device/samsung/zero-common/configs/permissions/com.samsung.permission.SSENSOR.xml:system/vendor/etc/permissions/com.samsung.permission.SSENSOR.xml
+
+#
+# Power
+#
+PRODUCT_PACKAGES += \
+   android.hardware.power@1.0-service.zero
+
+#
+# Properties
+#
+TARGET_VENDOR_PROP := device/samsung/zero-common/zero-common.prop
+TARGET_VENDOR_PROP_OVERRIDE := true
+
+#
+# Radio
+#
+PRODUCT_PACKAGES += \
+	libxml2 \
+	libprotobuf-cpp-full \
+	rild \
+	libreference-ril \
+	libril \
+	libsecril-client \
+	libsecril-client-sap \
+	android.hardware.radio@1.0 \
+	android.hardware.radio.deprecated@1.0 \
+	modemloader
+
+#
+# Ramdisk
+#
+PRODUCT_PACKAGES += \
+	fstab.samsungexynos7420 \
+	init.baseband.rc \
+	init.battery.rc \
+	init.power.rc \
+	init.rilchip.rc \
+	init.rilchip.sh \
+	init.samsungexynos7420.rc \
+	init.samsungexynos7420.usb.rc \
+	init.wifi.rc \
+	ueventd.samsungexynos7420.rc
+
+#
+# RenderScript HAL
+#
+PRODUCT_PACKAGES += \
+	android.hardware.renderscript@1.0-impl
+
+#
+# Security
+#
+## seccomp
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/seccomp/mediacodec.policy:system/vendor/etc/seccomp_policy/mediacodec.policy \
+	$(LOCAL_PATH)/configs/seccomp/mediaextractor.policy:system/vendor/etc/seccomp_policy/mediaextractor.policy
+
+#
+# Sensors
+#
+PRODUCT_PACKAGES += \
+	android.hardware.sensors@1.0-impl
+
+#
+# Skeletons
+#
+PRODUCT_PACKAGES += \
+	android.hidl.base@1.0
+
+#
+# Synapse
+#
+include device/samsung/zero-common/synapse/synapse.mk
+
+#
+# Tools
+#
+PRODUCT_PACKAGES += \
+	dtbhtoolExynos \
+	e2fsck_static \
+	make_ext4fs \
+	resetprop.zero \
+	resize2fs_static \
+	setup_fs
+
+#
+# USB
+#
+PRODUCT_PACKAGES += \
+	android.hardware.usb@1.0-impl \
+	android.hardware.usb@1.0-service
+
+#
+# Vibrator
+#
+PRODUCT_PACKAGES += \
+	android.hardware.vibrator@1.0-service.zero
+
+#
+# Wifi
+#
+## Configs
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf:system/vendor/etc/wifi/wpa_supplicant_overlay.conf \
+	$(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:system/vendor/etc/wifi/p2p_supplicant_overlay.conf \
+	$(LOCAL_PATH)/configs/wifi/filter_ie:system/etc/wifi/filter_ie
+
+## Packages
+PRODUCT_PACKAGES += \
+	android.hardware.wifi@1.0 \
+	android.hardware.wifi@1.0-impl \
+	android.hardware.wifi@1.0-service \
+	libnetcmdiface \
+	libwpa_client \
+	hostapd \
+	macloader \
+	wificond \
+	wifiloader \
+	wifilogd \
+	wlutil \
+	wpa_supplicant \
+	wpa_supplicant.conf
 
 # call Samsung LSI board support package
 $(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
