@@ -83,10 +83,10 @@ ro.hwui.text_large_cache_height=2048
 #
 # H/W Composer
 #
-debug.hwc.otf=1
-debug.sf.enable_hwc_vds=1
 debug.hwc.force_gpu=1
+debug.hwc.otf=1
 debug.egl.hw=0
+debug.sf.enable_hwc_vds=1
 debug.sf.hw=0
 persist.sys.ui.hw=false
 
