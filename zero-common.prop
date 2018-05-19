@@ -59,6 +59,7 @@ ro.product.first_api_level=22
 #
 # Graphics
 #
+# debug.hwc.skip_dma_types=0,2   -- do not skip the only support VPPs
 debug.sf.latch_unsignaled=1
 ro.bq.gpu_to_cpu_unsupported=1
 ro.sf.disable_triple_buffer=0
