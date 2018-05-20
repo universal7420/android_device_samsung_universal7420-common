@@ -54,6 +54,10 @@
 				<!-- {number} Normal high speed frequency chosen by the CPU-governor (if supported) -->
 				<freq_hispeed>400000</freq_hispeed>
 
+				<!-- {number} Frequency used in boostpulse mode (if supported, else any positive
+				     number to enable boostpules) or zero to disable boostpulses -->
+				<freq_boost>0</freq_boost>
+
 				<governor_data>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
@@ -81,6 +85,10 @@
 
 				<!-- {number} Normal high speed frequency chosen by the CPU-governor (if supported) -->
 				<freq_hispeed>300000</freq_hispeed>
+
+				<!-- {number} Frequency used in boostpulse mode (if supported, else any positive
+				     number to enable boostpules) or zero to disable boostpulses -->
+				<freq_boost>0</freq_boost>
 
 				<governor_data>
 					<lpr_ratio>150</lpr_ratio>
@@ -161,6 +169,19 @@
 
 		</ipa>
 
+		<input_booster>
+
+			<!-- {boolean} Whether the input-booster-settings should be applied or not -->
+			<enabled>true</enabled>
+
+			<!-- {string} Data written to the inout-booster head control file -->
+			<head>0 0 0 0 0 0</head>
+
+			<!-- {string} Data written to the inout-booster tail control file -->
+			<tail>0 0 0 0 0 0</tail>
+
+		</input_booster>
+
 	</screen_off>
 
 	<!--
@@ -177,6 +198,7 @@
 				<freq_min>200000</freq_min>
 				<freq_max>1000000</freq_max>
 				<freq_hispeed>800000</freq_hispeed>
+				<freq_boost>0</freq_boost>
 				<governor_data>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
@@ -192,6 +214,7 @@
 				<freq_min>200000</freq_min>
 				<freq_max>1000000</freq_max>
 				<freq_hispeed>800000</freq_hispeed>
+				<freq_boost>0</freq_boost>
 				<governor_data>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
@@ -228,6 +251,11 @@
 			<enabled>true</enabled>
 			<control_temp>45</control_temp>
 		</ipa>
+		<input_booster>
+			<enabled>true</enabled>
+			<tail>0 0 0 0 0 0</tail>
+			<head>0 0 0 0 0 0</head>
+		</input_booster>
 	</power_save>
 
 	<!--
@@ -243,6 +271,7 @@
 				<freq_min>400000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>800000</freq_hispeed>
+				<freq_boost>0</freq_boost>
 				<governor_data>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
@@ -258,6 +287,7 @@
 				<freq_min>400000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>800000</freq_hispeed>
+				<freq_boost>0</freq_boost>
 				<governor_data>
 					<lpr_ratio>125</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
@@ -294,6 +324,11 @@
 			<enabled>true</enabled>
 			<control_temp>55</control_temp>
 		</ipa>
+		<input_booster>
+			<enabled>true</enabled>
+			<tail>0 0 0 0 0 0</tail>
+			<head>0 0 0 0 0 0</head>
+		</input_booster>
 	</bias_power_save>
 
 	<!--
@@ -309,6 +344,7 @@
 				<freq_min>600000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
+				<freq_boost>1000000</freq_boost>
 				<governor_data>
 					<lpr_ratio>125</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
@@ -324,6 +360,7 @@
 				<freq_min>400000</freq_min>
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>1200000</freq_hispeed>
+				<freq_boost>0</freq_boost>
 				<governor_data>
 					<lpr_ratio>125</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
@@ -360,6 +397,11 @@
 			<enabled>true</enabled>
 			<control_temp>65</control_temp>
 		</ipa>
+		<input_booster>
+			<enabled>true</enabled>
+			<tail>0 0 0 0 0 0</tail>
+			<head>0 0 0 0 0 0</head>
+		</input_booster>
 	</balanced>
 
 	<!--
@@ -376,6 +418,7 @@
 				<freq_min>600000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>1100000</freq_hispeed>
+				<freq_boost>1200000</freq_boost>
 				<governor_data>
 					<above_hispeed_delay>19000</above_hispeed_delay>
 					<go_hispeed_load>95</go_hispeed_load>
@@ -395,6 +438,7 @@
 				<freq_min>600000</freq_min>
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>1200000</freq_hispeed>
+				<freq_boost>1000000</freq_boost>
 				<governor_data>
 					<lpr_ratio>125</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
@@ -431,6 +475,11 @@
 			<enabled>true</enabled>
 			<control_temp>70</control_temp>
 		</ipa>
+		<input_booster>
+			<enabled>true</enabled>
+			<tail>0 0 0 0 0 0</tail>
+			<head>0 0 0 0 0 0</head>
+		</input_booster>
 	</bias_performance>
 
 	<!--
@@ -446,6 +495,7 @@
 				<freq_min>800000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>1300000</freq_hispeed>
+				<freq_boost>1200000</freq_boost>
 				<governor_data>
 					<above_hispeed_delay>14000</above_hispeed_delay>
 					<go_hispeed_load>90</go_hispeed_load>
@@ -465,6 +515,7 @@
 				<freq_min>800000</freq_min>
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>1300000</freq_hispeed>
+				<freq_boost>1200000</freq_boost>
 				<governor_data>
 					<above_hispeed_delay>14000</above_hispeed_delay>
 					<go_hispeed_load>90</go_hispeed_load>
@@ -513,6 +564,11 @@
 			<enabled>true</enabled>
 			<control_temp>75</control_temp>
 		</ipa>
+		<input_booster>
+			<enabled>true</enabled>
+			<tail>0 0 0 0 0 0</tail>
+			<head>0 0 0 0 0 0</head>
+		</input_booster>
 	</performance>
 
 </profiles>

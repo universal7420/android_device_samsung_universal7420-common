@@ -187,6 +187,7 @@ private:
 #ifdef LOCK_PROTECTION
 	mutable std::mutex mLock;
 #endif
+	mutable std::mutex mBoostpulseLock;
 	
 	// Stores the current interactive-state of the device
 	// Default to <false>.
@@ -221,6 +222,9 @@ private:
 	//
 	// Private methods
 	//
+
+	// Sends a boostpulse request to the cpugov if supported.
+	void boostpulse(int duration);
 
 	// Set the current profile to [profile]. Also updates mCurrentProfile.
 	// Default to UNKNOWN

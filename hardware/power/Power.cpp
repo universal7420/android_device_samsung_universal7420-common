@@ -196,6 +196,7 @@ Return<void> Power::powerHint(PowerHint hint, int32_t data)  {
 		case_uint32_t (PowerHint::INTERACTION):
 		{
 			// ALOGV("%s: PowerHint::INTERACTION(%d)", __func__, data);
+			boostpulse(data);
 			break;
 		}
 		case_uint32_t (PowerHint::LAUNCH):
@@ -269,6 +270,46 @@ Return<int32_t> Power::getFeature(LineageFeature feature)  {
 #endif
 
 // Private Methods
+void Power::boostpulse(int duration) {
+	std::lock_guard<std::mutex> autolock(mBoostpulseLock);
+
+	if (duration <= 0) {
+		duration = (1000 / 60) * 10;
+	}
+
+	// get current profile data
+	const SecPowerProfile* data = Profiles::getProfileData(mCurrentProfile);
+
+	ALOGI("data->cpu.apollo.freq_boost := %u", data->cpu.apollo.freq_boost);
+	ALOGI("data->cpu.atlas.freq_boost := %u", data->cpu.atlas.freq_boost);
+
+	if (data->cpu.apollo.freq_boost) {
+		if (!Utils::updateCpuGov(0)) {
+			ALOGW("Failed to load current cpugov-configuration for APOLLO");
+#ifdef STRICT_BEHAVIOUR
+			return;
+#endif
+		}
+
+		Utils::writeCpuGov(0, "boost_freq", data->cpu.apollo.freq_boost);
+		Utils::writeCpuGov(0, "boostpulse_duration", duration * 1000);
+		Utils::writeCpuGov(0, "boostpulse", true);
+	}
+
+	if (data->cpu.atlas.freq_boost) {
+		if (!Utils::updateCpuGov(4)) {
+			ALOGW("Failed to load current cpugov-configuration for ATLAS");
+#ifdef STRICT_BEHAVIOUR
+			return;
+#endif
+		}
+
+		Utils::writeCpuGov(4, "boost_freq", data->cpu.atlas.freq_boost);
+		Utils::writeCpuGov(4, "boostpulse_duration", duration * 1000);
+		Utils::writeCpuGov(4, "boostpulse", true);
+	}
+}
+
 void Power::setProfile(SecPowerProfiles profile) {
 	auto begin = Utils::getTime();
  	ALOGI("%s: applying profile %d", __func__, profile);
@@ -398,6 +439,14 @@ void Power::setProfile(SecPowerProfiles profile) {
 		// contraproductive in high-performance situations. This should reflect in
 		// the static power-profiles
 		Utils::write("/sys/module/workqueue/parameters/power_efficient", data->kernel.pewq);
+	}
+
+	/*********************
+	 * Input-Booster Defaults
+	 */
+	if (data->input_booster.enabled) {
+		Utils::write("/sys/class/input_booster/tail", data->input_booster.tail);
+		Utils::write("/sys/class/input_booster/head", data->input_booster.head);
 	}
 
 	auto end = Utils::getTime();

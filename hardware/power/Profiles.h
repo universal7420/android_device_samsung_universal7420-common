@@ -44,6 +44,7 @@ struct SecPowerProfileCpuCluster {
 	unsigned int freq_min;
 	unsigned int freq_max;
 	unsigned int freq_hispeed;
+	unsigned int freq_boost;
 
 	struct {
 
@@ -117,6 +118,16 @@ struct SecPowerProfile {
 		int control_temp;
 
 	} ipa;
+
+	struct {
+
+		bool enabled;
+
+		string tail;
+
+		string head;
+
+	} input_booster;
 
 };
 

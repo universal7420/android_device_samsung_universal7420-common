@@ -107,11 +107,12 @@ void Profiles::loadProfilesImpl(const char *path) {
 #define XML_GET_INT(_path) TO_INT(XML_GET(_path))
 #define XML_GET_UINT(_path) TO_UINT(XML_GET(_path))
 
-#define XML_GET_CPUGOV(_gov)                                                    \
-	profile->cpu._gov.governor     = XML_GET     ("cpu/" #_gov "/governor");    \
-	profile->cpu._gov.freq_min     = XML_GET_UINT("cpu/" #_gov "/freq_min");    \
-	profile->cpu._gov.freq_max     = XML_GET_UINT("cpu/" #_gov "/freq_max");    \
-	profile->cpu._gov.freq_hispeed = XML_GET_UINT("cpu/" #_gov "/freq_hispeed")
+#define XML_GET_CPUGOV(_gov)                                                     \
+	profile->cpu._gov.governor     = XML_GET     ("cpu/" #_gov "/governor");     \
+	profile->cpu._gov.freq_min     = XML_GET_UINT("cpu/" #_gov "/freq_min");     \
+	profile->cpu._gov.freq_max     = XML_GET_UINT("cpu/" #_gov "/freq_max");     \
+	profile->cpu._gov.freq_hispeed = XML_GET_UINT("cpu/" #_gov "/freq_hispeed"); \
+	profile->cpu._gov.freq_boost   = XML_GET_UINT("cpu/" #_gov "/freq_boost")
 
 #define XML_GET_CPUGOV_DATA(_gov)                                         \
 	({                                                                    \
@@ -151,6 +152,7 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 	profile->gpu.highspeed.enabled = XML_GET_BOOL("gpu/highspeed/enabled");
 	profile->kernel.enabled        = XML_GET_BOOL("kernel/enabled");
 	profile->ipa.enabled           = XML_GET_BOOL("ipa/enabled");
+	profile->input_booster.enabled = XML_GET_BOOL("input_booster/enabled");
 
 	if (!profile->enabled) {
 		return;
@@ -190,6 +192,11 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 
 	if (profile->ipa.enabled) {
 		profile->ipa.control_temp = XML_GET_INT("ipa/control_temp");
+	}
+
+	if (profile->input_booster.enabled) {
+		profile->input_booster.tail = XML_GET("input_booster/tail");
+		profile->input_booster.head = XML_GET("input_booster/head");
 	}
 }
 
