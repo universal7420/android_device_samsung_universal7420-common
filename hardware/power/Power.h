@@ -33,6 +33,9 @@
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
+#include <chrono>
+#include <thread>
+
 #define POWER_DT2W_ENABLED                "/sys/class/dt2w/enabled"
 #define POWER_TOUCHKEYS_ENABLED           "/sys/class/sec/sec_touchkey/input/enabled"
 #define POWER_TOUCHKEYS_BRIGHTNESS        "/sys/class/sec/sec_touchkey/brightness"
@@ -127,6 +130,7 @@ using ::android::sp;
 using ::android::status_t;
 	
 using ::std::string;
+using ::std::thread;
 
 #ifdef LOCK_PROTECTION
   #define power_lock() \
@@ -222,9 +226,13 @@ private:
 	// Default to UNKNOWN
 	void setProfile(SecPowerProfiles profile);
 
+	// Set the current profile to [profile]. Also updates mCurrentProfile.
+	// Default to UNKNOWN
+	void setProfile(SecPowerProfiles profile, int delay);
+
 	// Either resets the current profile to mRequestedProfile or
 	// falls back to BALANCED if mRequestedProfile is set to INVALID.
-	void resetProfile();
+	void resetProfile(int delay = 0);
 
 	// updates the current state of managed input-devices.
 	void setInputState(bool enabled);

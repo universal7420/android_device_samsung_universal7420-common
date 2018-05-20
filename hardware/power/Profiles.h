@@ -17,6 +17,13 @@
 #ifndef ZERO_HARDWARE_POWER_V1_0_PROFILES_H
 #define ZERO_HARDWARE_POWER_V1_0_PROFILES_H
 
+#define PROFILES_PATH_USER    "/data/system/power_profiles.xml"
+#define PROFILES_PATH_VENDOR  "/vendor/etc/power_profiles.xml"
+#define PROFILES_PATH_SYSTEM  "/system/etc/power_profiles.xml"
+
+#include <libxml/parser.h>
+#include <libxml/xpath.h>
+
 #include "Power.h"
 
 namespace android {
@@ -30,6 +37,8 @@ using ::std::map;
 
 struct SecPowerProfileCpuCluster {
 
+	bool enabled;
+
 	string governor;
 
 	unsigned int freq_min;
@@ -38,13 +47,17 @@ struct SecPowerProfileCpuCluster {
 
 	struct {
 
-		unsigned int lpr_ratio;
+		unsigned int timer_rate;
 
+		unsigned int hispeed_delay;
+		unsigned int hispeed_load;
+
+		unsigned int lpr_ratio;
 		unsigned int lpr_down_elevation;
 		unsigned int lpr_up_elevation;
 
 	} nexus;
-	
+
 	struct {
 
 		string above_hispeed_delay;
@@ -54,14 +67,44 @@ struct SecPowerProfileCpuCluster {
 		unsigned int min_sample_time;
 		unsigned int timer_rate;
 		unsigned int timer_slack;
-		
+
+		unsigned int single_cluster0_min_freq;
+		unsigned int single_enter_load;
+		unsigned int single_enter_time;
+		unsigned int single_exit_load;
+		unsigned int single_exit_time;
+
+		#define INTERACTIVE_SINGLE_DEFAULT(load_coeff, time_coeff) \
+			.single_cluster0_min_freq = 800000,                    \
+			.single_enter_load = 95 - load_coeff,                  \
+			.single_enter_time = 199000 - time_coeff,              \
+			.single_exit_load = 60 - load_coeff,                   \
+			.single_exit_time = 99000 - time_coeff
+
+		unsigned int multi_cluster0_min_freq;
+		unsigned int multi_enter_load;
+		unsigned int multi_enter_time;
+		unsigned int multi_exit_load;
+		unsigned int multi_exit_time;
+
+		#define INTERACTIVE_MULTI_DEFAULT(load_coeff, time_coeff) \
+			.multi_cluster0_min_freq = 1200000,                   \
+			.multi_enter_load = 360 - load_coeff,                 \
+			.multi_enter_time = 79000 - time_coeff,               \
+			.multi_exit_load = 240 - load_coeff,                  \
+			.multi_exit_time = 299000 - time_coeff
+
 	} interactive;
 
 };
 
 struct SecPowerProfile {
 
+	bool enabled;
+
 	struct {
+
+		bool enabled;
 
 		struct SecPowerProfileCpuCluster apollo;
 
@@ -71,6 +114,8 @@ struct SecPowerProfile {
 
 	struct {
 
+		bool enabled;
+
 		bool boost;
 		bool semiboost;
 
@@ -78,7 +123,11 @@ struct SecPowerProfile {
 
 	struct {
 
+		bool enabled;
+
 		struct {
+
+			bool enabled;
 
 			unsigned int freq_min;
 			unsigned int freq_max;
@@ -86,6 +135,8 @@ struct SecPowerProfile {
 		} dvfs;
 
 		struct {
+
+			bool enabled;
 
 			unsigned int freq;
 			unsigned int load;
@@ -96,23 +147,37 @@ struct SecPowerProfile {
 
 	struct {
 
+		bool enabled;
+
 		bool pewq;
 
 	} kernel;
+
+	struct {
+
+		bool enabled;
+
+		int control_temp;
+
+	} ipa;
 
 };
 
 struct Profiles {
 
+	static void loadProfiles();
 	static const SecPowerProfile* getProfileData(SecPowerProfiles profile);
 
 private:
-	static const SecPowerProfile kPowerProfileScreenOff;
-	static const SecPowerProfile kPowerProfilePowerSave;
-	static const SecPowerProfile kPowerProfileBiasPowerSave;
-	static const SecPowerProfile kPowerProfileBalanced;
-	static const SecPowerProfile kPowerProfileBiasPerformance;
-	static const SecPowerProfile kPowerProfileHighPerformance;
+	static void loadProfilesImpl(const char *path);
+	static void loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, const char *path);
+
+	static SecPowerProfile kPowerProfileScreenOff;
+	static SecPowerProfile kPowerProfilePowerSave;
+	static SecPowerProfile kPowerProfileBiasPowerSave;
+	static SecPowerProfile kPowerProfileBalanced;
+	static SecPowerProfile kPowerProfileBiasPerformance;
+	static SecPowerProfile kPowerProfileHighPerformance;
 };
 
 }  // namespace implementation

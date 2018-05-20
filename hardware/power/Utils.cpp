@@ -210,6 +210,15 @@ bool Utils::read(const string path, int &v) {
 	return true;
 }
 
+/***********************************
+ * Timing
+ */
+milliseconds Utils::getTime() {
+	return duration_cast<milliseconds>(
+		system_clock::now().time_since_epoch()
+	);;
+}
+
 }  // namespace implementation
 }  // namespace V1_0
 }  // namespace power

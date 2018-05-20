@@ -40,8 +40,12 @@ LOCAL_SHARED_LIBRARIES := \
 	libhidltransport \
 	liblog \
 	libutils \
+	libxml2 \
 	android.hardware.power@1.0 \
 	vendor.lineage.power@1.0
+
+LOCAL_C_INCLUDES := \
+	external/libxml2/include
 
 LOCAL_CFLAGS := -Wall -Werror -Wno-unused-parameter -Wno-unused-function
 

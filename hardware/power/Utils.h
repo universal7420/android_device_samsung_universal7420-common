@@ -17,6 +17,7 @@
 #ifndef ZERO_HARDWARE_POWER_V1_0_UTILS_H
 #define ZERO_HARDWARE_POWER_V1_0_UTILS_H
 
+#include <chrono>
 #include <map>
 #include <string>
 
@@ -27,6 +28,7 @@ namespace V1_0 {
 namespace implementation {
 
 using namespace ::std;
+using namespace ::std::chrono;
 
 #define __stat_compare_mode(path, mode) \
 	(statMode(path) & mode) == mode
@@ -122,6 +124,44 @@ using namespace ::std;
 
 #endif //STRICT_BEHAVIOUR
 
+#ifdef LOG_NDEBUG
+
+	#define DEBUG_TIMING_START(_name) \
+		auto __begin_##_name = Utils::getTime()
+
+	#define DEBUG_TIMING_END(_name) \
+		ALOGV("%s: timing " #_name " took %lldms", __func__, (Utils::getTime() - __begin_##_name).count())
+
+	#define DEBUG_TIMING(_name, _func) \
+		DEBUG_TIMING_START(_name);     \
+		_func;                         \
+		DEBUG_TIMING_END(_name)
+
+#else
+	#define DEBUG_TIMING_START(_name) { }
+	#define DEBUG_TIMING_END(_name) { }
+	#define DEBUG_TIMING(_name, _func) _func
+#endif
+
+#define DELAY(_func, _delay)                                               \
+	if (delay <= 0) {                                                      \
+		_func;                                                             \
+	} else {                                                               \
+		thread t { [=](){                                                 \
+			std::this_thread::sleep_for(std::chrono::milliseconds(delay)); \
+			_func;                                                         \
+		}};                                                                \
+		t.detach();                                                       \
+	}
+
+#define ASYNC(_func)                                                       \
+	{                                                                      \
+		thread t { [=](){                                                  \
+			_func;                                                         \
+		}};                                                                \
+		t.detach();                                                        \
+	}
+
 struct Utils {
 
 	static bool isFile(const string path);
@@ -153,6 +193,8 @@ struct Utils {
 	static bool read(const string path, string &data);
 	static bool read(const string path, bool &data);
 	static bool read(const string path, int &data);
+
+	static milliseconds getTime();
 
 private:
 

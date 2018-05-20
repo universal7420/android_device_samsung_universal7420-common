@@ -67,6 +67,11 @@ Power::Power()
 	}
 
 	//
+	// profiles
+	//
+	DEBUG_TIMING(profiles, Profiles::loadProfiles());
+
+	//
 	// initial device-setup
 	//
 
@@ -102,7 +107,9 @@ status_t Power::registerAsSystemService() {
 Power::~Power() { }
 
 // Methods from ::android::hardware::power::V1_0::IPower follow.
-Return<void> Power::setInteractive(bool interactive)  {
+Return<void> Power::setInteractive(bool interactive) {
+	auto begin = Utils::getTime();
+
 	ALOGV("%s: enter; interactive=%d", __func__, interactive ? 1 : 0);
 	power_lock();
 
@@ -112,7 +119,7 @@ Return<void> Power::setInteractive(bool interactive)  {
 		setProfile(SecPowerProfiles::SCREEN_OFF);
 	} else {
 		// reset to requested- or fallback-profile
-		resetProfile();
+		resetProfile(500);
 	}
 
 	// speed up the device a bit
@@ -121,7 +128,10 @@ Return<void> Power::setInteractive(bool interactive)  {
 
 	setInputState(interactive);
 
-	ALOGV("%s: exit;", __func__);
+	auto end = Utils::getTime();
+	auto diff = end - begin;
+
+	ALOGV("%s: exit; took %lldms", __func__, diff.count());
 	return Void();
 }
 
@@ -254,6 +264,7 @@ Return<int32_t> Power::getFeature(LineageFeature feature)  {
 
 // Private Methods
 void Power::setProfile(SecPowerProfiles profile) {
+	auto begin = Utils::getTime();
  	ALOGI("%s: applying profile %d", __func__, profile);
 
 	// store it
@@ -299,6 +310,9 @@ void Power::setProfile(SecPowerProfiles profile) {
 	{
 		ALOGV("%s: APOLLO is running with cpugov \"nexus\"", __func__);
 
+		cpugov_apollo_write(nexus, timer_rate);
+		cpugov_apollo_write(nexus, hispeed_delay);
+		cpugov_apollo_write(nexus, hispeed_load);
 		cpugov_apollo_write2(nexus, lpr_ratio, "lpr_down_ratio");
 		cpugov_apollo_write2(nexus, lpr_ratio, "lpr_up_ratio");
 		cpugov_apollo_write(nexus, lpr_down_elevation);
@@ -314,6 +328,10 @@ void Power::setProfile(SecPowerProfiles profile) {
 		cpugov_apollo_write(interactive, target_loads);
 		cpugov_apollo_write(interactive, timer_rate);
 		cpugov_apollo_write(interactive, timer_slack);
+		// single
+		cpugov_apollo_write(interactive, single_enter_load);
+		// multi
+		cpugov_apollo_write(interactive, multi_enter_load);
 	}
 	else
 	{
@@ -348,6 +366,9 @@ void Power::setProfile(SecPowerProfiles profile) {
 	{
 		ALOGV("%s: ATLAS is running with cpugov \"nexus\"", __func__);
 
+		cpugov_atlas_write(nexus, timer_rate);
+		cpugov_atlas_write(nexus, hispeed_delay);
+		cpugov_atlas_write(nexus, hispeed_load);
 		cpugov_atlas_write2(nexus, lpr_ratio, "lpr_down_ratio");
 		cpugov_atlas_write2(nexus, lpr_ratio, "lpr_up_ratio");
 		cpugov_atlas_write(nexus, lpr_down_elevation);
@@ -363,11 +384,32 @@ void Power::setProfile(SecPowerProfiles profile) {
 		cpugov_atlas_write(interactive, target_loads);
 		cpugov_atlas_write(interactive, timer_rate);
 		cpugov_atlas_write(interactive, timer_slack);
+
+		// single
+		cpugov_atlas_write(interactive, single_cluster0_min_freq);
+		cpugov_atlas_write(interactive, single_enter_load);
+		cpugov_atlas_write(interactive, single_enter_time);
+		cpugov_atlas_write(interactive, single_exit_load);
+		cpugov_atlas_write(interactive, single_exit_time);
+
+		// multi
+		cpugov_atlas_write(interactive, multi_cluster0_min_freq);
+		cpugov_atlas_write(interactive, multi_enter_load);
+		cpugov_atlas_write(interactive, multi_enter_time);
+		cpugov_atlas_write(interactive, multi_exit_load);
+		cpugov_atlas_write(interactive, multi_exit_time);
 	}
 	else
 	{
 		ALOGE("%s: ATLAS is running with unknown/unsupported cpugov", __func__);
 	}
+
+	/*********************
+	 * IPA
+	 */
+	Utils::write("/sys/power/ipa/enabled", "Y");
+	Utils::write("/sys/power/ipa/little_max_freq", data->cpu.apollo.freq_max);
+	
 
 	/*********************
 	 * GPU Defaults
@@ -381,6 +423,9 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 * Kernel Defaults
 	 */
 
+	Utils::write("/sys/kernel/hmp/boost", data->hmp.boost);
+	Utils::write("/sys/kernel/hmp/semiboost", data->hmp.semiboost);
+
 	// Keep dynamic hotplugging disabled to 1.) ensure availability of all
 	// clusters when power-HAL gets a setInteractive()-event and 2.)
 	// to drastically lower the the screen-on-delay
@@ -390,43 +435,60 @@ void Power::setProfile(SecPowerProfiles profile) {
 	// contraproductive in high-performance situations. This should reflect in
 	// the static power-profiles
 	Utils::write("/sys/module/workqueue/parameters/power_efficient", data->kernel.pewq);
+
+	auto end = Utils::getTime();
+	auto diff = end - begin;
+
+	ALOGV("%s: exit; took %lldms", __func__, diff.count());
 }
 
-void Power::resetProfile() {
+void Power::setProfile(SecPowerProfiles profile, int delay) {
+	DELAY(setProfile(profile), delay);
+}
+
+void Power::resetProfile(int delay) {
 	if (mRequestedProfile == SecPowerProfiles::INVALID) {
-		setProfile(SecPowerProfiles::BALANCED);
+		setProfile(SecPowerProfiles::BALANCED, delay);
 	} else {
-		setProfile(mRequestedProfile);
+		setProfile(mRequestedProfile, delay);
 	}
 }
 
 void Power::setInputState(bool enabled) {
+	auto begin = Utils::getTime();
+ 	ALOGI("%s: enter; enabled=%d", __func__, enabled ? 1 : 0);
+
 	if (enabled) {
 		if (!mTouchControlPath.empty()) {
-			Utils::write(mTouchControlPath, true);
+			DEBUG_TIMING(touchscreen, Utils::write(mTouchControlPath, true));
 		}
 
 		if (mVariant != SecDeviceVariant::EDGE) {
-			Utils::write(POWER_TOUCHKEYS_ENABLED, mTouchkeysEnabled);
-			Utils::write(POWER_TOUCHKEYS_BRIGHTNESS, 255);
+			ASYNC(DEBUG_TIMING(touchkeys_state, Utils::write(POWER_TOUCHKEYS_ENABLED, mTouchkeysEnabled)));
+			DEBUG_TIMING(touchkeys_brightness, Utils::write(POWER_TOUCHKEYS_BRIGHTNESS, 255));
 		}
 	} else {
 		if (mVariant != SecDeviceVariant::EDGE) {
 			// save to current state to prevent enabling
-			Utils::read(POWER_TOUCHKEYS_ENABLED, mTouchkeysEnabled);
+			DEBUG_TIMING(touchkeys_state_read, Utils::read(POWER_TOUCHKEYS_ENABLED, mTouchkeysEnabled));
 
 			// disable them
-			Utils::write(POWER_TOUCHKEYS_ENABLED, false);
-			Utils::write(POWER_TOUCHKEYS_BRIGHTNESS, 0);
+			DEBUG_TIMING(touchkeys_state, Utils::write(POWER_TOUCHKEYS_ENABLED, false));
+			DEBUG_TIMING(touchkeys_brightness, Utils::write(POWER_TOUCHKEYS_BRIGHTNESS, 0));
 		}
 
 		// only disable touchscreen if we aren't using DT2W
 		if (!mTouchControlPath.empty() && !mIsDT2WEnabled) {
-			Utils::write(mTouchControlPath, false);
+			DEBUG_TIMING(touchscreen, Utils::write(mTouchControlPath, false));
 		}
 	}
 
-	setDT2WState();
+	DEBUG_TIMING(dt2w, setDT2WState());
+
+	auto end = Utils::getTime();
+	auto diff = end - begin;
+
+	ALOGV("%s: exit; took %lldms", __func__, diff.count());
 }
 
 void Power::setFingerprintState(bool enabled) {
@@ -464,11 +526,11 @@ void Power::setFingerprintState(bool enabled) {
 	 *   * setting internal pm management block
 	 */
 	if (enabled) {
-		Utils::write(POWER_FINGERPRINT_WAKELOCKS, true);
-		Utils::write(POWER_FINGERPRINT_PM, true);
+		DEBUG_TIMING(fingerprint_wakelocks, Utils::write(POWER_FINGERPRINT_WAKELOCKS, true));
+		DEBUG_TIMING(fingerprint_pm, Utils::write(POWER_FINGERPRINT_PM, true));
 	} else {
-		Utils::write(POWER_FINGERPRINT_PM, false);
-		Utils::write(POWER_FINGERPRINT_WAKELOCKS, false);
+		DEBUG_TIMING(fingerprint_pm, Utils::write(POWER_FINGERPRINT_PM, false));
+		DEBUG_TIMING(fingerprint_wakelocks, Utils::write(POWER_FINGERPRINT_WAKELOCKS, false));
 	}
 }
 

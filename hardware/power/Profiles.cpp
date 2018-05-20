@@ -21,12 +21,189 @@
 
 #include "Power.h"
 #include "Profiles.h"
+#include "Utils.h"
 
 namespace android {
 namespace hardware {
 namespace power {
 namespace V1_0 {
 namespace implementation {
+	
+SecPowerProfile Profiles::kPowerProfileScreenOff;
+SecPowerProfile Profiles::kPowerProfilePowerSave;
+SecPowerProfile Profiles::kPowerProfileBiasPowerSave;
+SecPowerProfile Profiles::kPowerProfileBalanced;
+SecPowerProfile Profiles::kPowerProfileBiasPerformance;
+SecPowerProfile Profiles::kPowerProfileHighPerformance;
+
+void Profiles::loadProfiles() {
+	if (Utils::isFile(PROFILES_PATH_USER)) {
+		loadProfilesImpl(PROFILES_PATH_USER);
+	} else if (Utils::isFile(PROFILES_PATH_VENDOR)) {
+		loadProfilesImpl(PROFILES_PATH_VENDOR);
+	} else if (Utils::isFile(PROFILES_PATH_SYSTEM)) {
+		loadProfilesImpl(PROFILES_PATH_SYSTEM);
+	} else {
+		LOG_FATAL("Could not find valid power profiles XML file");
+	}
+}
+
+void Profiles::loadProfilesImpl(const char *path) {
+	xmlInitParser();
+
+	xmlDoc *doc = xmlParseFile(path);
+	xmlXPathContext *ctx = xmlXPathNewContext(doc);
+
+	loadProfileImpl(
+		&kPowerProfileScreenOff,
+		ctx,
+		"/profiles/screen_off/");
+
+	loadProfileImpl(
+		&kPowerProfilePowerSave,
+		ctx,
+		"/profiles/power_save/");
+
+	loadProfileImpl(
+		&kPowerProfileBiasPowerSave,
+		ctx,
+		"/profiles/bias_power_save/");
+
+	loadProfileImpl(
+		&kPowerProfileBalanced,
+		ctx,
+		"/profiles/balanced/");
+
+	loadProfileImpl(
+		&kPowerProfileBiasPerformance,
+		ctx,
+		"/profiles/bias_performance/");
+
+	loadProfileImpl(
+		&kPowerProfileHighPerformance,
+		ctx,
+		"/profiles/performance/");
+}
+
+#define TO_BOOL(_c) ({ const char *str = _c; (!strcmp(str, "true") || !strcmp(str, "TRUE") || !strcmp(str, "1")); })
+#define TO_INT(_c) (std::stoi(_c))
+#define TO_UINT(_c) ((unsigned int)std::stoi(_c))
+
+#define XML_GET(_path)                                                          \
+	({                                                                          \
+		char objPath[255];                                                      \
+		strcpy(objPath, path);                                                  \
+		strcat(objPath, _path);                                                 \
+		xmlXPathObject *obj =                                                   \
+			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);                   \
+		if (!obj->nodesetval->nodeTab) {                                        \
+			LOG_FATAL("loadProfileImpl: missing XML node '%s%s'", path, _path); \
+		}                                                                       \
+		xmlNode *node = obj->nodesetval->nodeTab[0];                            \
+		((char *)node->children->content);                                      \
+	})
+
+#define XML_GET_BOOL(_path) TO_BOOL(XML_GET(_path))
+#define XML_GET_INT(_path) TO_INT(XML_GET(_path))
+#define XML_GET_UINT(_path) TO_UINT(XML_GET(_path))
+
+#define XML_GET_CPUGOV(_gov)                                                    \
+	profile->cpu._gov.governor     = XML_GET     ("cpu/" #_gov "/governor");    \
+	profile->cpu._gov.freq_min     = XML_GET_UINT("cpu/" #_gov "/freq_min");    \
+	profile->cpu._gov.freq_max     = XML_GET_UINT("cpu/" #_gov "/freq_max");    \
+	profile->cpu._gov.freq_hispeed = XML_GET_UINT("cpu/" #_gov "/freq_hispeed") \
+
+#define XML_GET_CPUGOV_NEXUS(_gov)                                                                       \
+	profile->cpu._gov.nexus.lpr_ratio          = XML_GET_UINT("cpu/" #_gov "/nexus/lpr_ratio");          \
+	profile->cpu._gov.nexus.lpr_down_elevation = XML_GET_UINT("cpu/" #_gov "/nexus/lpr_down_elevation"); \
+	profile->cpu._gov.nexus.lpr_up_elevation   = XML_GET_UINT("cpu/" #_gov "/nexus/lpr_up_elevation");   \
+	profile->cpu._gov.nexus.hispeed_delay      = XML_GET_UINT("cpu/" #_gov "/nexus/hispeed_delay");      \
+	profile->cpu._gov.nexus.hispeed_load       = XML_GET_UINT("cpu/" #_gov "/nexus/hispeed_load")
+
+#define XML_GET_CPUGOV_INTERACTIVE(_gov)                                                                               \
+	profile->cpu._gov.interactive.above_hispeed_delay = XML_GET     ("cpu/" #_gov "/interactive/above_hispeed_delay"); \
+	profile->cpu._gov.interactive.go_hispeed_load     = XML_GET_UINT("cpu/" #_gov "/interactive/go_hispeed_load");     \
+	profile->cpu._gov.interactive.min_sample_time     = XML_GET_UINT("cpu/" #_gov "/interactive/min_sample_time");     \
+	profile->cpu._gov.interactive.target_loads        = XML_GET     ("cpu/" #_gov "/interactive/target_loads");        \
+	profile->cpu._gov.interactive.timer_rate          = XML_GET_UINT("cpu/" #_gov "/interactive/timer_rate");          \
+	profile->cpu._gov.interactive.timer_slack         = XML_GET_UINT("cpu/" #_gov "/interactive/timer_slack")
+
+void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, const char *path) {
+	profile->enabled               = XML_GET_BOOL("enabled");
+	profile->cpu.enabled           = XML_GET_BOOL("cpu/enabled");
+	profile->cpu.apollo.enabled    = XML_GET_BOOL("cpu/apollo/enabled");
+	profile->cpu.atlas.enabled     = XML_GET_BOOL("cpu/atlas/enabled");
+	profile->hmp.enabled           = XML_GET_BOOL("hmp/enabled");
+	profile->gpu.enabled           = XML_GET_BOOL("gpu/enabled");
+	profile->gpu.dvfs.enabled      = XML_GET_BOOL("gpu/dvfs/enabled");
+	profile->gpu.highspeed.enabled = XML_GET_BOOL("gpu/highspeed/enabled");
+	profile->kernel.enabled        = XML_GET_BOOL("kernel/enabled");
+	profile->ipa.enabled           = XML_GET_BOOL("ipa/enabled");
+
+	if (!profile->enabled) {
+		return;
+	}
+
+	if (profile->cpu.enabled) {
+		if (profile->cpu.apollo.enabled) {
+			XML_GET_CPUGOV(apollo);
+
+			if (profile->cpu.apollo.governor == "nexus") {
+				XML_GET_CPUGOV_NEXUS(apollo);
+			} else if (profile->cpu.apollo.governor == "interactive") {
+				XML_GET_CPUGOV_INTERACTIVE(apollo);
+				profile->cpu.apollo.interactive.single_enter_load = XML_GET_UINT("cpu/apollo/interactive/single_enter_load");
+				profile->cpu.apollo.interactive.multi_enter_load  = XML_GET_UINT("cpu/apollo/interactive/multi_enter_load");
+			}
+		}
+
+		if (profile->cpu.atlas.enabled) {
+			XML_GET_CPUGOV(atlas);
+
+			if (profile->cpu.atlas.governor == "nexus") {
+				XML_GET_CPUGOV_NEXUS(atlas);
+			} else if (profile->cpu.atlas.governor == "interactive") {
+				XML_GET_CPUGOV_INTERACTIVE(atlas);
+				// single
+				profile->cpu.atlas.interactive.single_cluster0_min_freq = XML_GET_UINT("cpu/atlas/interactive/single_cluster0_min_freq");
+				profile->cpu.atlas.interactive.single_enter_load        = XML_GET_UINT("cpu/atlas/interactive/single_enter_load");
+				profile->cpu.atlas.interactive.single_enter_time        = XML_GET_UINT("cpu/atlas/interactive/single_enter_time");
+				profile->cpu.atlas.interactive.single_exit_load         = XML_GET_UINT("cpu/atlas/interactive/single_exit_load");
+				profile->cpu.atlas.interactive.single_exit_time         = XML_GET_UINT("cpu/atlas/interactive/single_exit_time");
+				// multi
+				profile->cpu.atlas.interactive.multi_cluster0_min_freq = XML_GET_UINT("cpu/atlas/interactive/multi_cluster0_min_freq");
+				profile->cpu.atlas.interactive.multi_enter_load        = XML_GET_UINT("cpu/atlas/interactive/multi_enter_load");
+				profile->cpu.atlas.interactive.multi_enter_time        = XML_GET_UINT("cpu/atlas/interactive/multi_enter_time");
+				profile->cpu.atlas.interactive.multi_exit_load         = XML_GET_UINT("cpu/atlas/interactive/multi_exit_load");
+				profile->cpu.atlas.interactive.multi_exit_time         = XML_GET_UINT("cpu/atlas/interactive/multi_exit_time");
+			}
+		}
+	}
+
+	if (profile->hmp.enabled) {
+		profile->hmp.boost     = XML_GET_BOOL("hmp/boost");
+		profile->hmp.semiboost = XML_GET_BOOL("hmp/semiboost");
+	}
+
+	if (profile->gpu.enabled) {
+		if (profile->gpu.dvfs.enabled) {
+			profile->gpu.dvfs.freq_min = XML_GET_UINT("gpu/dvfs/freq_min");
+			profile->gpu.dvfs.freq_max = XML_GET_UINT("gpu/dvfs/freq_max");
+		}
+		if (profile->gpu.highspeed.enabled) {
+			profile->gpu.highspeed.freq = XML_GET_UINT("gpu/highspeed/freq");
+			profile->gpu.highspeed.load = XML_GET_UINT("gpu/highspeed/load");
+		}
+	}
+
+	if (profile->kernel.enabled) {
+		profile->kernel.pewq = XML_GET_BOOL("kernel/pewq");
+	}
+
+	if (profile->ipa.enabled) {
+		profile->ipa.control_temp = XML_GET_INT("ipa/control_temp");
+	}
+}
 
 const SecPowerProfile* Profiles::getProfileData(SecPowerProfiles profile) {
 	switch_uint32_t (profile)
@@ -64,297 +241,6 @@ const SecPowerProfile* Profiles::getProfileData(SecPowerProfiles profile) {
 	}
 	return nullptr;
 }
-
-/***********
- * ROFILE_SCREEN_OFF
- */
-const SecPowerProfile Profiles::kPowerProfileScreenOff = {
-	.cpu = {
-		.apollo = {
-			.governor = "nexus",
-			.freq_min = 200000,
-			.freq_max = 600000,
-			.freq_hispeed = 400000,
-			.nexus = {
-				.lpr_ratio = 150,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 1,
-			},
-		},
-		.atlas = {
-			.governor = "nexus",
-			.freq_min = 200000,
-			.freq_max = 400000,
-			.freq_hispeed = 300000,
-			.nexus = {
-				.lpr_ratio = 150,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 1,
-			},
-		},
-	},
-	.gpu = {
-		.dvfs = {
-			.freq_min = 100,
-			.freq_max = 100,
-		},
-		.highspeed = {
-			.freq = 100,
-			.load = 100,
-		},
-	},
-	.hmp = {
-		.boost = false,
-		.semiboost = true,
-	},
-	.kernel = {
-		.pewq = true,
-	},
-};
-
-/***********
- * PROFILE_POWER_SAVE
- */
-const SecPowerProfile Profiles::kPowerProfilePowerSave = {
-	.cpu = {
-		.apollo = {
-			.governor = "nexus",
-			.freq_min = 400000,
-			.freq_hispeed = 700000,
-			.freq_max = 1500000,
-			.nexus = {
-				.lpr_ratio = 150,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 1,
-			},
-		},
-		.atlas = {
-			.governor = "nexus",
-			.freq_min = 200000,
-			.freq_max = 2100000,
-			.freq_hispeed = 800000,
-			.nexus = {
-				.lpr_ratio = 150,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 1,
-			},
-		},
-	},
-	.gpu = {
-		.dvfs = {
-			.freq_min = 160,
-			.freq_max = 772,
-		},
-		.highspeed = {
-			.freq = 772,
-			.load = 95,
-		},
-	},
-	.hmp = {
-		.boost = false,
-		.semiboost = false,
-	},
-	.kernel = {
-		.pewq = true,
-	},
-};
-
-/***********
- * PROFILE_BIAS_POWER_SAVE
- */
-const SecPowerProfile Profiles::kPowerProfileBiasPowerSave = {
-	.cpu = {
-		.apollo = {
-			.governor = "nexus",
-			.freq_min = 400000,
-			.freq_max = 1500000,
-			.freq_hispeed = 800000,
-			.nexus = {
-				.lpr_ratio = 125,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 1,
-			},
-		},
-		.atlas = {
-			.governor = "nexus",
-			.freq_min = 300000,
-			.freq_max = 2100000,
-			.freq_hispeed = 1000000,
-			.nexus = {
-				.lpr_ratio = 125,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 1,
-			},
-		},
-	},
-	.gpu = {
-		.dvfs = {
-			.freq_min = 266,
-			.freq_max = 772,
-		},
-		.highspeed = {
-			.freq = 772,
-			.load = 80,
-		},
-	},
-	.hmp = {
-		.boost = false,
-		.semiboost = true,
-	},
-	.kernel = {
-		.pewq = true,
-	},
-};
-
-/***********
- * PROFILE_BALANCED
- */
-const SecPowerProfile Profiles::kPowerProfileBalanced = {
-	.cpu = {
-		.apollo = {
-			.governor = "nexus",
-			.freq_min = 600000,
-			.freq_max = 1500000,
-			.freq_hispeed = 900000,
-			.nexus = {
-				.lpr_ratio = 150,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 3,
-			},
-		},
-		.atlas = {
-			.governor = "nexus",
-			.freq_min = 400000,
-			.freq_max = 2100000,
-			.freq_hispeed = 1200000,
-			.nexus = {
-				.lpr_ratio = 125,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 2,
-			},
-		},
-	},
-	.gpu = {
-		.dvfs = {
-			.freq_min = 350,
-			.freq_max = 772,
-		},
-		.highspeed = {
-			.freq = 772,
-			.load = 85,
-		},
-	},
-	.hmp = {
-		.boost = false,
-		.semiboost = true,
-	},
-	.kernel = {
-		.pewq = true,
-	},
-};
-
-/***********
- * PROFILE_BIAS_PERFORMANCE
- */
-const SecPowerProfile Profiles::kPowerProfileBiasPerformance = {
-	.cpu = {
-		.apollo = {
-			.governor = "interactive",
-			.freq_min = 800000,
-			.freq_max = 1500000,
-			.freq_hispeed = 1200000,
-			.interactive = {
-				.above_hispeed_delay = "19000",
-				.go_hispeed_load = 85,
-				.min_sample_time = 40000,
-				.target_loads = "75",
-				.timer_rate = 20000,
-				.timer_slack = 20000,
-			},
-		},
-		.atlas = {
-			.governor = "nexus",
-			.freq_min = 600000,
-			.freq_max = 2100000,
-			.freq_hispeed = 1600000,
-			.nexus = {
-				.lpr_ratio = 150,
-				.lpr_down_elevation = 1,
-				.lpr_up_elevation = 3,
-			},
-		},
-	},
-	.gpu = {
-		.dvfs = {
-			.freq_min = 420,
-			.freq_max = 772,
-		},
-		.highspeed = {
-			.freq = 772,
-			.load = 90,
-		},
-	},
-	.hmp = {
-		.boost = true,
-		.semiboost = false,
-	},
-	.kernel = {
-		.pewq = false,
-	},
-};
-
-/***********
- * PROFILE_HIGH_PERFORMANCE
- */
-const SecPowerProfile Profiles::kPowerProfileHighPerformance = {
-	.cpu = {
-		.apollo = {
-			.governor = "interactive",
-			.freq_min = 1000000,
-			.freq_max = 1500000,
-			.freq_hispeed = 1500000,
-			.interactive = {
-				.above_hispeed_delay = "19000",
-				.go_hispeed_load = 85,
-				.min_sample_time = 40000,
-				.target_loads = "75",
-				.timer_rate = 20000,
-				.timer_slack = 20000,
-			},
-		},
-		.atlas = {
-			.governor = "interactive",
-			.freq_min = 800000,
-			.freq_max = 2100000,
-			.freq_hispeed = 2100000,
-			.interactive = {
-				.above_hispeed_delay = "59000 1300000:39000 1700000:19000",
-				.go_hispeed_load = 89,
-				.min_sample_time = 40000,
-				.target_loads = "65 1500000:75",
-				.timer_rate = 20000,
-				.timer_slack = 20000,
-			},
-		},
-	},
-	.gpu = {
-		.dvfs = {
-			.freq_min = 544,
-			.freq_max = 772,
-		},
-		.highspeed = {
-			.freq = 772,
-			.load = 75,
-		},
-	},
-	.hmp = {
-		.boost = true,
-		.semiboost = false,
-	},
-	.kernel = {
-		.pewq = false,
-	},
-};
 
 }  // namespace implementation
 }  // namespace V1_0

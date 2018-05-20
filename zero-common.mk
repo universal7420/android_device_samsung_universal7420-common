@@ -319,6 +319,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
    android.hardware.power@1.0-service.zero
 
+PRODUCT_COPY_FILES += \
+	device/samsung/zero-common/hardware/power/profiles.xml:system/etc/power_profiles.xml
+
 #
 # Properties
 #
