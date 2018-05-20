@@ -210,6 +210,14 @@ bool Utils::read(const string path, int &v) {
 	return true;
 }
 
+bool Utils::screenIsOn() {
+	int brightness = 0;
+	if (!Utils::read("/sys/devices/13900000.dsim/backlight/panel/brightness", brightness)) {
+		return true;
+	}
+	return (brightness > 0);
+}
+
 /***********************************
  * Timing
  */

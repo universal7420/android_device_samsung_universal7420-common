@@ -115,6 +115,11 @@ Return<void> Power::setInteractive(bool interactive) {
 
 	this->mIsInteractive = interactive;
 
+	if (!interactive && Utils::screenIsOn()) {
+		ALOGW("%s: not disabling interactive state when screen is still on", __func__);
+		goto exit;
+	}
+
 	if (!interactive) {
 		setProfile(SecPowerProfiles::SCREEN_OFF);
 	} else {
@@ -128,6 +133,7 @@ Return<void> Power::setInteractive(bool interactive) {
 
 	setInputState(interactive);
 
+exit:
 	auto end = Utils::getTime();
 	auto diff = end - begin;
 

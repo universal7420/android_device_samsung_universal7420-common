@@ -194,6 +194,8 @@ struct Utils {
 	static bool read(const string path, bool &data);
 	static bool read(const string path, int &data);
 
+	static bool screenIsOn();
+
 	static milliseconds getTime();
 
 private:
