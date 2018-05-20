@@ -306,36 +306,9 @@ void Power::setProfile(SecPowerProfiles profile) {
 	cpu_apollo_write(freq_max);
 	cpu_apollo_write2(freq_hispeed, "hispeed_freq");
 
-	if_apollo_cpugov("nexus")
-	{
-		ALOGV("%s: APOLLO is running with cpugov \"nexus\"", __func__);
-
-		cpugov_apollo_write(nexus, timer_rate);
-		cpugov_apollo_write(nexus, hispeed_delay);
-		cpugov_apollo_write(nexus, hispeed_load);
-		cpugov_apollo_write2(nexus, lpr_ratio, "lpr_down_ratio");
-		cpugov_apollo_write2(nexus, lpr_ratio, "lpr_up_ratio");
-		cpugov_apollo_write(nexus, lpr_down_elevation);
-		cpugov_apollo_write(nexus, lpr_up_elevation);
-	}
-	else if_apollo_cpugov("interactive")
-	{
-		ALOGV("%s: APOLLO is running with cpugov \"interactive\"", __func__);
-
-		cpugov_apollo_write(interactive, above_hispeed_delay);
-		cpugov_apollo_write(interactive, go_hispeed_load);
-		cpugov_apollo_write(interactive, min_sample_time);
-		cpugov_apollo_write(interactive, target_loads);
-		cpugov_apollo_write(interactive, timer_rate);
-		cpugov_apollo_write(interactive, timer_slack);
-		// single
-		cpugov_apollo_write(interactive, single_enter_load);
-		// multi
-		cpugov_apollo_write(interactive, multi_enter_load);
-	}
-	else
-	{
-		ALOGE("%s: APOLLO is running with unknown/unsupported cpugov", __func__);
+	for (int i = 0; data->cpu.apollo.governor_data[i].name[0]; i++) {
+		Utils::writeCpuGov(0, data->cpu.apollo.governor_data[i].name,
+			std::string(data->cpu.apollo.governor_data[i].data));
 	}
 
 
@@ -362,46 +335,9 @@ void Power::setProfile(SecPowerProfiles profile) {
 	cpu_atlas_write(freq_max);
 	cpu_atlas_write2(freq_hispeed, "hispeed_freq");
 
-	if_atlas_cpugov("nexus")
-	{
-		ALOGV("%s: ATLAS is running with cpugov \"nexus\"", __func__);
-
-		cpugov_atlas_write(nexus, timer_rate);
-		cpugov_atlas_write(nexus, hispeed_delay);
-		cpugov_atlas_write(nexus, hispeed_load);
-		cpugov_atlas_write2(nexus, lpr_ratio, "lpr_down_ratio");
-		cpugov_atlas_write2(nexus, lpr_ratio, "lpr_up_ratio");
-		cpugov_atlas_write(nexus, lpr_down_elevation);
-		cpugov_atlas_write(nexus, lpr_up_elevation);
-	}
-	else if_atlas_cpugov("interactive")
-	{
-		ALOGV("%s: ATLAS is running with cpugov \"interactive\"", __func__);
-
-		cpugov_atlas_write(interactive, above_hispeed_delay);
-		cpugov_atlas_write(interactive, go_hispeed_load);
-		cpugov_atlas_write(interactive, min_sample_time);
-		cpugov_atlas_write(interactive, target_loads);
-		cpugov_atlas_write(interactive, timer_rate);
-		cpugov_atlas_write(interactive, timer_slack);
-
-		// single
-		cpugov_atlas_write(interactive, single_cluster0_min_freq);
-		cpugov_atlas_write(interactive, single_enter_load);
-		cpugov_atlas_write(interactive, single_enter_time);
-		cpugov_atlas_write(interactive, single_exit_load);
-		cpugov_atlas_write(interactive, single_exit_time);
-
-		// multi
-		cpugov_atlas_write(interactive, multi_cluster0_min_freq);
-		cpugov_atlas_write(interactive, multi_enter_load);
-		cpugov_atlas_write(interactive, multi_enter_time);
-		cpugov_atlas_write(interactive, multi_exit_load);
-		cpugov_atlas_write(interactive, multi_exit_time);
-	}
-	else
-	{
-		ALOGE("%s: ATLAS is running with unknown/unsupported cpugov", __func__);
+	for (int i = 0; data->cpu.atlas.governor_data[i].name[0]; i++) {
+		Utils::writeCpuGov(4, data->cpu.atlas.governor_data[i].name,
+			std::string(data->cpu.atlas.governor_data[i].data));
 	}
 
 	/*********************

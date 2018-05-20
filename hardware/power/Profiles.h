@@ -47,54 +47,11 @@ struct SecPowerProfileCpuCluster {
 
 	struct {
 
-		unsigned int timer_rate;
+		char name[64];
 
-		unsigned int hispeed_delay;
-		unsigned int hispeed_load;
+		char data[64];
 
-		unsigned int lpr_ratio;
-		unsigned int lpr_down_elevation;
-		unsigned int lpr_up_elevation;
-
-	} nexus;
-
-	struct {
-
-		string above_hispeed_delay;
-		string target_loads;
-
-		unsigned int go_hispeed_load;
-		unsigned int min_sample_time;
-		unsigned int timer_rate;
-		unsigned int timer_slack;
-
-		unsigned int single_cluster0_min_freq;
-		unsigned int single_enter_load;
-		unsigned int single_enter_time;
-		unsigned int single_exit_load;
-		unsigned int single_exit_time;
-
-		#define INTERACTIVE_SINGLE_DEFAULT(load_coeff, time_coeff) \
-			.single_cluster0_min_freq = 800000,                    \
-			.single_enter_load = 95 - load_coeff,                  \
-			.single_enter_time = 199000 - time_coeff,              \
-			.single_exit_load = 60 - load_coeff,                   \
-			.single_exit_time = 99000 - time_coeff
-
-		unsigned int multi_cluster0_min_freq;
-		unsigned int multi_enter_load;
-		unsigned int multi_enter_time;
-		unsigned int multi_exit_load;
-		unsigned int multi_exit_time;
-
-		#define INTERACTIVE_MULTI_DEFAULT(load_coeff, time_coeff) \
-			.multi_cluster0_min_freq = 1200000,                   \
-			.multi_enter_load = 360 - load_coeff,                 \
-			.multi_enter_time = 79000 - time_coeff,               \
-			.multi_exit_load = 240 - load_coeff,                  \
-			.multi_exit_time = 299000 - time_coeff
-
-	} interactive;
+	} governor_data[64];
 
 };
 

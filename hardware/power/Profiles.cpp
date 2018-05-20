@@ -89,18 +89,18 @@ void Profiles::loadProfilesImpl(const char *path) {
 #define TO_INT(_c) (std::stoi(_c))
 #define TO_UINT(_c) ((unsigned int)std::stoi(_c))
 
-#define XML_GET(_path)                                                          \
-	({                                                                          \
-		char objPath[255];                                                      \
-		strcpy(objPath, path);                                                  \
-		strcat(objPath, _path);                                                 \
-		xmlXPathObject *obj =                                                   \
-			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);                   \
-		if (!obj->nodesetval->nodeTab) {                                        \
-			LOG_FATAL("loadProfileImpl: missing XML node '%s%s'", path, _path); \
-		}                                                                       \
-		xmlNode *node = obj->nodesetval->nodeTab[0];                            \
-		((char *)node->children->content);                                      \
+#define XML_GET(_path)                                                    \
+	({                                                                    \
+		char objPath[255];                                                \
+		strcpy(objPath, path);                                            \
+		strcat(objPath, _path);                                           \
+		xmlXPathObject *obj =                                             \
+			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);             \
+		if (!obj->nodesetval->nodeTab) {                                  \
+			LOG_FATAL("loadProfileImpl: missing XML node '%s'", objPath); \
+		}                                                                 \
+		xmlNode *node = obj->nodesetval->nodeTab[0];                      \
+		((char *)node->children->content);                                \
 	})
 
 #define XML_GET_BOOL(_path) TO_BOOL(XML_GET(_path))
@@ -111,22 +111,34 @@ void Profiles::loadProfilesImpl(const char *path) {
 	profile->cpu._gov.governor     = XML_GET     ("cpu/" #_gov "/governor");    \
 	profile->cpu._gov.freq_min     = XML_GET_UINT("cpu/" #_gov "/freq_min");    \
 	profile->cpu._gov.freq_max     = XML_GET_UINT("cpu/" #_gov "/freq_max");    \
-	profile->cpu._gov.freq_hispeed = XML_GET_UINT("cpu/" #_gov "/freq_hispeed") \
+	profile->cpu._gov.freq_hispeed = XML_GET_UINT("cpu/" #_gov "/freq_hispeed")
 
-#define XML_GET_CPUGOV_NEXUS(_gov)                                                                       \
-	profile->cpu._gov.nexus.lpr_ratio          = XML_GET_UINT("cpu/" #_gov "/nexus/lpr_ratio");          \
-	profile->cpu._gov.nexus.lpr_down_elevation = XML_GET_UINT("cpu/" #_gov "/nexus/lpr_down_elevation"); \
-	profile->cpu._gov.nexus.lpr_up_elevation   = XML_GET_UINT("cpu/" #_gov "/nexus/lpr_up_elevation");   \
-	profile->cpu._gov.nexus.hispeed_delay      = XML_GET_UINT("cpu/" #_gov "/nexus/hispeed_delay");      \
-	profile->cpu._gov.nexus.hispeed_load       = XML_GET_UINT("cpu/" #_gov "/nexus/hispeed_load")
-
-#define XML_GET_CPUGOV_INTERACTIVE(_gov)                                                                               \
-	profile->cpu._gov.interactive.above_hispeed_delay = XML_GET     ("cpu/" #_gov "/interactive/above_hispeed_delay"); \
-	profile->cpu._gov.interactive.go_hispeed_load     = XML_GET_UINT("cpu/" #_gov "/interactive/go_hispeed_load");     \
-	profile->cpu._gov.interactive.min_sample_time     = XML_GET_UINT("cpu/" #_gov "/interactive/min_sample_time");     \
-	profile->cpu._gov.interactive.target_loads        = XML_GET     ("cpu/" #_gov "/interactive/target_loads");        \
-	profile->cpu._gov.interactive.timer_rate          = XML_GET_UINT("cpu/" #_gov "/interactive/timer_rate");          \
-	profile->cpu._gov.interactive.timer_slack         = XML_GET_UINT("cpu/" #_gov "/interactive/timer_slack")
+#define XML_GET_CPUGOV_DATA(_gov)                                         \
+	({                                                                    \
+		char objPath[255];                                                \
+		strcpy(objPath, path);                                            \
+		strcat(objPath, "cpu/" #_gov "/governor_data");                   \
+		xmlXPathObject *obj =                                             \
+			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);             \
+		if (!obj->nodesetval->nodeTab) {                                  \
+			LOG_FATAL("loadProfileImpl: missing XML node '%s'", objPath); \
+		}                                                                 \
+		xmlNode *node = obj->nodesetval->nodeTab[0]->children;            \
+		int index = 0;                                                    \
+		do {                                                              \
+			if (node->children) {                                         \
+				strcpy(profile->cpu._gov.governor_data[index].name,       \
+					(const char *)node->name);                            \
+				strcpy(profile->cpu._gov.governor_data[index].data,       \
+					(const char *)node->children->content);               \
+				index++;                                                  \
+			}                                                             \
+			node = node->next;                                            \
+		} while (node);                                                   \
+		ALOGI("last-index=%d", index);                                    \
+		profile->cpu._gov.governor_data[index].name[0] = 0;               \
+		profile->cpu._gov.governor_data[index].data[0] = 0;               \
+	})
 
 void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, const char *path) {
 	profile->enabled               = XML_GET_BOOL("enabled");
@@ -147,36 +159,12 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 	if (profile->cpu.enabled) {
 		if (profile->cpu.apollo.enabled) {
 			XML_GET_CPUGOV(apollo);
-
-			if (profile->cpu.apollo.governor == "nexus") {
-				XML_GET_CPUGOV_NEXUS(apollo);
-			} else if (profile->cpu.apollo.governor == "interactive") {
-				XML_GET_CPUGOV_INTERACTIVE(apollo);
-				profile->cpu.apollo.interactive.single_enter_load = XML_GET_UINT("cpu/apollo/interactive/single_enter_load");
-				profile->cpu.apollo.interactive.multi_enter_load  = XML_GET_UINT("cpu/apollo/interactive/multi_enter_load");
-			}
+			XML_GET_CPUGOV_DATA(apollo);
 		}
 
 		if (profile->cpu.atlas.enabled) {
 			XML_GET_CPUGOV(atlas);
-
-			if (profile->cpu.atlas.governor == "nexus") {
-				XML_GET_CPUGOV_NEXUS(atlas);
-			} else if (profile->cpu.atlas.governor == "interactive") {
-				XML_GET_CPUGOV_INTERACTIVE(atlas);
-				// single
-				profile->cpu.atlas.interactive.single_cluster0_min_freq = XML_GET_UINT("cpu/atlas/interactive/single_cluster0_min_freq");
-				profile->cpu.atlas.interactive.single_enter_load        = XML_GET_UINT("cpu/atlas/interactive/single_enter_load");
-				profile->cpu.atlas.interactive.single_enter_time        = XML_GET_UINT("cpu/atlas/interactive/single_enter_time");
-				profile->cpu.atlas.interactive.single_exit_load         = XML_GET_UINT("cpu/atlas/interactive/single_exit_load");
-				profile->cpu.atlas.interactive.single_exit_time         = XML_GET_UINT("cpu/atlas/interactive/single_exit_time");
-				// multi
-				profile->cpu.atlas.interactive.multi_cluster0_min_freq = XML_GET_UINT("cpu/atlas/interactive/multi_cluster0_min_freq");
-				profile->cpu.atlas.interactive.multi_enter_load        = XML_GET_UINT("cpu/atlas/interactive/multi_enter_load");
-				profile->cpu.atlas.interactive.multi_enter_time        = XML_GET_UINT("cpu/atlas/interactive/multi_enter_time");
-				profile->cpu.atlas.interactive.multi_exit_load         = XML_GET_UINT("cpu/atlas/interactive/multi_exit_load");
-				profile->cpu.atlas.interactive.multi_exit_time         = XML_GET_UINT("cpu/atlas/interactive/multi_exit_time");
-			}
+			XML_GET_CPUGOV_DATA(atlas);
 		}
 	}
 
