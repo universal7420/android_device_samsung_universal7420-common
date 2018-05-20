@@ -279,98 +279,120 @@ void Power::setProfile(SecPowerProfiles profile) {
 	// apply settings
 	const SecPowerProfile* data = Profiles::getProfileData(mCurrentProfile);
 
+	if (!data->enabled) {
+		return;
+	}
+
 	// online policy-cores before querying cpufreq-data
 	CPU_ONLINE(0);
 	CPU_ONLINE(4);
 
-	/*********************
-	 * CPU Cluster0
-	 */
-	Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", data->cpu.apollo.governor);
+	if (data->cpu.enabled)
+	{
+		/*********************
+		 * CPU Cluster0
+		 */
+		if (data->cpu.apollo.enabled) {
+			Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", data->cpu.apollo.governor);
 
-	if (!Utils::updateCpuGov(0)) {
-		ALOGW("Failed to load current cpugov-configuration for APOLLO");
+			if (!Utils::updateCpuGov(0)) {
+				ALOGW("Failed to load current cpugov-configuration for APOLLO");
 #ifdef STRICT_BEHAVIOUR
-		return;
+				return;
 #endif
-	}
+			}
 
-	// to keep frequencies in range while screen-on we use the cpugovs, but
-	// while screen-off it can happen that frequencies get increased too much
-	// make sure our limits are being applied to the then-limiting,
-	// not very reliable, files too
-	Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", data->cpu.apollo.freq_min);
-	Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", data->cpu.apollo.freq_max);
+			// to keep frequencies in range while screen-on we use the cpugovs, but
+			// while screen-off it can happen that frequencies get increased too much
+			// make sure our limits are being applied to the then-limiting,
+			// not very reliable, files too
+			Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", data->cpu.apollo.freq_min);
+			Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", data->cpu.apollo.freq_max);
 
-	cpu_apollo_write(freq_min);
-	cpu_apollo_write(freq_max);
-	cpu_apollo_write2(freq_hispeed, "hispeed_freq");
+			cpu_apollo_write(freq_min);
+			cpu_apollo_write(freq_max);
+			cpu_apollo_write2(freq_hispeed, "hispeed_freq");
 
-	for (int i = 0; data->cpu.apollo.governor_data[i].name[0]; i++) {
-		Utils::writeCpuGov(0, data->cpu.apollo.governor_data[i].name,
-			std::string(data->cpu.apollo.governor_data[i].data));
-	}
+			for (int i = 0; data->cpu.apollo.governor_data[i].name[0]; i++) {
+				Utils::writeCpuGov(0, data->cpu.apollo.governor_data[i].name,
+					std::string(data->cpu.apollo.governor_data[i].data));
+			}
+		}
 
 
-	/*********************
-	 * CPU Cluster1
-	 */
-	Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor", data->cpu.atlas.governor);
+		/*********************
+		 * CPU Cluster1
+		 */
+		if (data->cpu.atlas.enabled) {
+			Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor", data->cpu.atlas.governor);
 
-	if (!Utils::updateCpuGov(4)) {
-		ALOGW("Failed to load current cpugov-configuration for ATLAS");
+			if (!Utils::updateCpuGov(4)) {
+				ALOGW("Failed to load current cpugov-configuration for ATLAS");
 #ifdef STRICT_BEHAVIOUR
-		return;
+				return;
 #endif
-	}
+			}
 
-	// to keep frequencies in range while screen-on we use the cpugovs, but
-	// while screen-off it can happen that frequencies get increased too much
-	// make sure our limits are being applied to the then-limiting,
-	// not very reliable, files too
-	Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq", data->cpu.atlas.freq_min);
-	Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq", data->cpu.atlas.freq_max);
+			// to keep frequencies in range while screen-on we use the cpugovs, but
+			// while screen-off it can happen that frequencies get increased too much
+			// make sure our limits are being applied to the then-limiting,
+			// not very reliable, files too
+			Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq", data->cpu.atlas.freq_min);
+			Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq", data->cpu.atlas.freq_max);
 
-	cpu_atlas_write(freq_min);
-	cpu_atlas_write(freq_max);
-	cpu_atlas_write2(freq_hispeed, "hispeed_freq");
+			cpu_atlas_write(freq_min);
+			cpu_atlas_write(freq_max);
+			cpu_atlas_write2(freq_hispeed, "hispeed_freq");
 
-	for (int i = 0; data->cpu.atlas.governor_data[i].name[0]; i++) {
-		Utils::writeCpuGov(4, data->cpu.atlas.governor_data[i].name,
-			std::string(data->cpu.atlas.governor_data[i].data));
+			for (int i = 0; data->cpu.atlas.governor_data[i].name[0]; i++) {
+				Utils::writeCpuGov(4, data->cpu.atlas.governor_data[i].name,
+					std::string(data->cpu.atlas.governor_data[i].data));
+			}
+		}
 	}
 
 	/*********************
 	 * IPA
 	 */
-	Utils::write("/sys/power/ipa/enabled", "Y");
-	Utils::write("/sys/power/ipa/little_max_freq", data->cpu.apollo.freq_max);
+	if (data->ipa.enabled) {
+		Utils::write("/sys/power/ipa/enabled", "Y");
+		Utils::write("/sys/power/ipa/control_temp", data->ipa.control_temp);
+	}
 	
 
 	/*********************
 	 * GPU Defaults
 	 */
-	Utils::write("/sys/devices/platform/gpusysfs/gpu_min_clock", data->gpu.dvfs.freq_min);
-	Utils::write("/sys/devices/platform/gpusysfs/gpu_max_clock", data->gpu.dvfs.freq_max);
-	Utils::write("/sys/devices/14ac0000.mali/highspeed_clock",   data->gpu.highspeed.freq);
-	Utils::write("/sys/devices/14ac0000.mali/highspeed_load",    data->gpu.highspeed.load);
+	if (data->gpu.enabled) {
+		if (data->gpu.dvfs.enabled) {
+			Utils::write("/sys/devices/platform/gpusysfs/gpu_min_clock", data->gpu.dvfs.freq_min);
+			Utils::write("/sys/devices/platform/gpusysfs/gpu_max_clock", data->gpu.dvfs.freq_max);
+		}
+		if (data->gpu.highspeed.enabled) {
+			Utils::write("/sys/devices/14ac0000.mali/highspeed_clock",   data->gpu.highspeed.freq);
+			Utils::write("/sys/devices/14ac0000.mali/highspeed_load",    data->gpu.highspeed.load);
+		}
+	}
 
 	/*********************
 	 * Kernel Defaults
 	 */
+	if (data->hmp.enabled) {
+		Utils::write("/sys/kernel/hmp/boost", data->hmp.boost);
+		Utils::write("/sys/kernel/hmp/semiboost", data->hmp.semiboost);
+	}
 
-	Utils::write("/sys/kernel/hmp/boost", data->hmp.boost);
-	Utils::write("/sys/kernel/hmp/semiboost", data->hmp.semiboost);
+	if (data->kernel.enabled) {
+		// Keep dynamic hotplugging disabled to 1.) ensure availability of all
+		// clusters when power-HAL gets a setInteractive()-event and 2.)
+		// to drastically lower the the screen-on-delay
+		Utils::write("/sys/power/enable_dm_hotplug", false);
 
-	// Keep dynamic hotplugging disabled to 1.) ensure availability of all
-	// clusters when power-HAL gets a setInteractive()-event and 2.)
-	// to drastically lower the the screen-on-delay
-	Utils::write("/sys/power/enable_dm_hotplug", false);
-
-	// The power-efficient workqueue is useful for lower-power-situations, but
-	// contraproductive in high-performance situations. This should reflect in
-	// the static power-profiles
-	Utils::write("/sys/module/workqueue/parameters/power_efficient", data->kernel.pewq);
+		// The power-efficient workqueue is useful for lower-power-situations, but
+		// contraproductive in high-performance situations. This should reflect in
+		// the static power-profiles
+		Utils::write("/sys/module/workqueue/parameters/power_efficient", data->kernel.pewq);
+	}
 
 	auto end = Utils::getTime();
 	auto diff = end - begin;
