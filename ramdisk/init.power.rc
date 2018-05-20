@@ -91,6 +91,13 @@ on init
 
 on boot
 
+# cpusets
+    write /dev/cpuset/foreground/cpus 0-7
+    write /dev/cpuset/foreground/boost/cpus 4-7
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-4
+    write /dev/cpuset/top-app/cpus 4-7
+
 # Change permission for dvfshelper
     chown radio system /sys/power/cpufreq_table
     chmod 0664 /sys/power/cpufreq_table
