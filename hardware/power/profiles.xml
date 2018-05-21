@@ -59,6 +59,12 @@
 				<freq_boost>0</freq_boost>
 
 				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
 					<lpr_up_elevation>1</lpr_up_elevation>
@@ -91,6 +97,12 @@
 				<freq_boost>0</freq_boost>
 
 				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
 					<lpr_up_elevation>1</lpr_up_elevation>
@@ -200,6 +212,12 @@
 				<freq_hispeed>800000</freq_hispeed>
 				<freq_boost>0</freq_boost>
 				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
 					<lpr_up_elevation>1</lpr_up_elevation>
@@ -216,6 +234,12 @@
 				<freq_hispeed>800000</freq_hispeed>
 				<freq_boost>0</freq_boost>
 				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
 					<lpr_up_elevation>1</lpr_up_elevation>
@@ -273,6 +297,12 @@
 				<freq_hispeed>800000</freq_hispeed>
 				<freq_boost>0</freq_boost>
 				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
 					<lpr_ratio>150</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
 					<lpr_up_elevation>1</lpr_up_elevation>
@@ -289,6 +319,12 @@
 				<freq_hispeed>800000</freq_hispeed>
 				<freq_boost>0</freq_boost>
 				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
 					<lpr_ratio>125</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
 					<lpr_up_elevation>1</lpr_up_elevation>
@@ -346,10 +382,16 @@
 				<freq_hispeed>900000</freq_hispeed>
 				<freq_boost>1000000</freq_boost>
 				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
 					<lpr_ratio>125</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>1</lpr_up_elevation>
-					<hispeed_delay>1</hispeed_delay>
+					<lpr_up_elevation>2</lpr_up_elevation>
+					<hispeed_delay>0</hispeed_delay>
 					<hispeed_load>89</hispeed_load>
 					<io_is_busy>1</io_is_busy>
 				</governor_data>
@@ -359,14 +401,20 @@
 				<governor>nexus</governor>
 				<freq_min>400000</freq_min>
 				<freq_max>2100000</freq_max>
-				<freq_hispeed>1200000</freq_hispeed>
-				<freq_boost>0</freq_boost>
+				<freq_hispeed>900000</freq_hispeed>
+				<freq_boost>600000</freq_boost>
 				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
 					<lpr_ratio>125</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>1</lpr_up_elevation>
-					<hispeed_delay>1</hispeed_delay>
-					<hispeed_load>89</hispeed_load>
+					<lpr_up_elevation>2</lpr_up_elevation>
+					<hispeed_delay>0</hispeed_delay>
+					<hispeed_load>79</hispeed_load>
 					<io_is_busy>1</io_is_busy>
 				</governor_data>
 			</atlas>
@@ -440,11 +488,17 @@
 				<freq_hispeed>1200000</freq_hispeed>
 				<freq_boost>1000000</freq_boost>
 				<governor_data>
-					<lpr_ratio>125</lpr_ratio>
+					<down_load>35</down_load>
+					<down_step>1</down_step>
+					<down_delay>1</down_delay>
+					<up_load>40</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
+					<lpr_ratio>115</lpr_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>1</lpr_up_elevation>
+					<lpr_up_elevation>3</lpr_up_elevation>
 					<hispeed_delay>1</hispeed_delay>
-					<hispeed_load>89</hispeed_load>
+					<hispeed_load>75</hispeed_load>
 					<io_is_busy>1</io_is_busy>
 				</governor_data>
 			</atlas>
