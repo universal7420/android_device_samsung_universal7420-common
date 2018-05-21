@@ -356,6 +356,11 @@ void Power::setProfile(SecPowerProfiles profile) {
 			Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", data->cpu.apollo.freq_min);
 			Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", data->cpu.apollo.freq_max);
 
+			Utils::write("/sys/devices/system/cpu/cpu0/online", data->cpu.apollo.cores.core1);
+			Utils::write("/sys/devices/system/cpu/cpu1/online", data->cpu.apollo.cores.core2);
+			Utils::write("/sys/devices/system/cpu/cpu2/online", data->cpu.apollo.cores.core3);
+			Utils::write("/sys/devices/system/cpu/cpu3/online", data->cpu.apollo.cores.core4);
+
 			cpu_apollo_write(freq_min);
 			cpu_apollo_write(freq_max);
 			cpu_apollo_write2(freq_hispeed, "hispeed_freq");
@@ -365,7 +370,6 @@ void Power::setProfile(SecPowerProfiles profile) {
 					std::string(data->cpu.apollo.governor_data[i].data));
 			}
 		}
-
 
 		/*********************
 		 * CPU Cluster1
@@ -387,6 +391,11 @@ void Power::setProfile(SecPowerProfiles profile) {
 			Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq", data->cpu.atlas.freq_min);
 			Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq", data->cpu.atlas.freq_max);
 
+			Utils::write("/sys/devices/system/cpu/cpu4/online", data->cpu.atlas.cores.core1);
+			Utils::write("/sys/devices/system/cpu/cpu5/online", data->cpu.atlas.cores.core2);
+			Utils::write("/sys/devices/system/cpu/cpu6/online", data->cpu.atlas.cores.core3);
+			Utils::write("/sys/devices/system/cpu/cpu7/online", data->cpu.atlas.cores.core4);
+
 			cpu_atlas_write(freq_min);
 			cpu_atlas_write(freq_max);
 			cpu_atlas_write2(freq_hispeed, "hispeed_freq");
@@ -399,13 +408,23 @@ void Power::setProfile(SecPowerProfiles profile) {
 	}
 
 	/*********************
+	 * cpusets
+	 */
+	if (data->cpusets.enabled) {
+		Utils::write("/dev/cpuset/foreground/cpus",        data->cpusets.foreground);
+		Utils::write("/dev/cpuset/foreground/boost/cpus",  data->cpusets.foreground_boost);
+		Utils::write("/dev/cpuset/background/cpus",        data->cpusets.background);
+		Utils::write("/dev/cpuset/system-background/cpus", data->cpusets.system_background);
+		Utils::write("/dev/cpuset/top-app/cpus",           data->cpusets.top_app);
+	}
+
+	/*********************
 	 * IPA
 	 */
 	if (data->ipa.enabled) {
 		Utils::write("/sys/power/ipa/enabled", "Y");
 		Utils::write("/sys/power/ipa/control_temp", data->ipa.control_temp);
 	}
-	
 
 	/*********************
 	 * GPU Defaults

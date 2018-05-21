@@ -58,6 +58,26 @@
 				     number to enable boostpules) or zero to disable boostpulses -->
 				<freq_boost>0</freq_boost>
 
+				<!-- State of each core of this cluster  -->
+				<cores>
+
+					<!-- {boolean} Whether the core-states should be applied or not -->
+					<enabled>true</enabled>
+
+					<!-- {boolean} Core #1 of this cluster -->
+					<core1>true</core1>
+
+					<!-- {boolean} Core #2 of this cluster -->
+					<core2>true</core2>
+
+					<!-- {boolean} Core #3 of this cluster -->
+					<core3>true</core3>
+
+					<!-- {boolean} Core #4 of this cluster -->
+					<core4>true</core4>
+
+				</cores>
+
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -96,6 +116,26 @@
 				     number to enable boostpules) or zero to disable boostpulses -->
 				<freq_boost>0</freq_boost>
 
+				<!-- State of each core of this cluster  -->
+				<cores>
+
+					<!-- {boolean} Whether the core-states should be applied or not -->
+					<enabled>true</enabled>
+
+					<!-- {boolean} Core #1 of this cluster -->
+					<core1>true</core1>
+
+					<!-- {boolean} Core #2 of this cluster -->
+					<core2>false</core2>
+
+					<!-- {boolean} Core #3 of this cluster -->
+					<core3>false</core3>
+
+					<!-- {boolean} Core #4 of this cluster -->
+					<core4>false</core4>
+
+				</cores>
+
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -114,6 +154,28 @@
 			</atlas>
 
 		</cpu>
+
+		<cpusets>
+
+			<!-- {boolean} Whether the cpuset-settings should be applied or not -->
+			<enabled>true</enabled>
+
+			<!-- {string} CPU-configuration for the "foreground"-cpuset -->
+			<foreground>0-3</foreground>
+
+			<!-- {string} CPU-configuration for the "foreground/boost"-cpuset -->
+			<foreground_boost>0-3</foreground_boost>
+
+			<!-- {string} CPU-configuration for the "background"-cpuset -->
+			<background>0-3</background>
+
+			<!-- {string} CPU-configuration for the "system-background"-cpuset -->
+			<system_background>0-3</system_background>
+
+			<!-- {string} CPU-configuration for the "top-app"-cpuset -->
+			<top_app>0-3</top_app>
+
+		</cpusets>
 
 		<gpu>
 
@@ -211,6 +273,13 @@
 				<freq_max>1000000</freq_max>
 				<freq_hispeed>800000</freq_hispeed>
 				<freq_boost>0</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -233,6 +302,13 @@
 				<freq_max>1000000</freq_max>
 				<freq_hispeed>800000</freq_hispeed>
 				<freq_boost>0</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>false</core3>
+					<core4>false</core4>
+				</cores>
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -249,6 +325,14 @@
 				</governor_data>
 			</atlas>
 		</cpu>
+		<cpusets>
+			<enabled>true</enabled>
+			<foreground>0-5</foreground>
+			<foreground_boost>2-5</foreground_boost>
+			<background>0-3</background>
+			<system_background>0-3</system_background>
+			<top_app>2-5</top_app>
+		</cpusets>
 		<gpu>
 			<enabled>true</enabled>
 			<dvfs>
@@ -296,6 +380,13 @@
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>800000</freq_hispeed>
 				<freq_boost>0</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -318,6 +409,13 @@
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>800000</freq_hispeed>
 				<freq_boost>0</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -334,6 +432,14 @@
 				</governor_data>
 			</atlas>
 		</cpu>
+		<cpusets>
+			<enabled>true</enabled>
+			<foreground>0-7</foreground>
+			<foreground_boost>2-5</foreground_boost>
+			<background>0-4</background>
+			<system_background>0-4</system_background>
+			<top_app>4-7</top_app>
+		</cpusets>
 		<gpu>
 			<enabled>true</enabled>
 			<dvfs>
@@ -381,6 +487,13 @@
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
 				<freq_boost>1000000</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -403,6 +516,13 @@
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
 				<freq_boost>600000</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -419,6 +539,14 @@
 				</governor_data>
 			</atlas>
 		</cpu>
+		<cpusets>
+			<enabled>true</enabled>
+			<foreground>0-7</foreground>
+			<foreground_boost>4-7</foreground_boost>
+			<background>0-4</background>
+			<system_background>0-4</system_background>
+			<top_app>4-7</top_app>
+		</cpusets>
 		<gpu>
 			<enabled>true</enabled>
 			<dvfs>
@@ -467,6 +595,13 @@
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>1100000</freq_hispeed>
 				<freq_boost>1200000</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<above_hispeed_delay>19000</above_hispeed_delay>
 					<go_hispeed_load>95</go_hispeed_load>
@@ -487,6 +622,13 @@
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>1200000</freq_hispeed>
 				<freq_boost>1000000</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<down_load>35</down_load>
 					<down_step>1</down_step>
@@ -503,6 +645,14 @@
 				</governor_data>
 			</atlas>
 		</cpu>
+		<cpusets>
+			<enabled>true</enabled>
+			<foreground>0-7</foreground>
+			<foreground_boost>4-7</foreground_boost>
+			<background>0,1,6,7</background>
+			<system_background>2,3,4,5</system_background>
+			<top_app>4-7</top_app>
+		</cpusets>
 		<gpu>
 			<enabled>true</enabled>
 			<dvfs>
@@ -550,6 +700,13 @@
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>1300000</freq_hispeed>
 				<freq_boost>1200000</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<above_hispeed_delay>14000</above_hispeed_delay>
 					<go_hispeed_load>90</go_hispeed_load>
@@ -570,6 +727,13 @@
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>1300000</freq_hispeed>
 				<freq_boost>1200000</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
 				<governor_data>
 					<above_hispeed_delay>14000</above_hispeed_delay>
 					<go_hispeed_load>90</go_hispeed_load>
@@ -592,6 +756,14 @@
 				</governor_data>
 			</atlas>
 		</cpu>
+		<cpusets>
+			<enabled>true</enabled>
+			<foreground>0-7</foreground>
+			<foreground_boost>4-7</foreground_boost>
+			<background>0,1,6,7</background>
+			<system_background>2,3,4,5</system_background>
+			<top_app>4-7</top_app>
+		</cpusets>
 		<gpu>
 			<enabled>true</enabled>
 			<dvfs>

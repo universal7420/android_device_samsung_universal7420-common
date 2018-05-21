@@ -48,6 +48,20 @@ struct SecPowerProfileCpuCluster {
 
 	struct {
 
+		bool enabled;
+
+		bool core1;
+
+		bool core2;
+
+		bool core3;
+
+		bool core4;
+
+	} cores;
+
+	struct {
+
 		char name[64];
 
 		char data[64];
@@ -69,6 +83,22 @@ struct SecPowerProfile {
 		struct SecPowerProfileCpuCluster atlas;
 
 	} cpu;
+
+	struct {
+
+		bool enabled;
+
+		string foreground;
+
+		string foreground_boost;
+
+		string background;
+
+		string system_background;
+
+		string top_app;
+
+	} cpusets;
 
 	struct {
 

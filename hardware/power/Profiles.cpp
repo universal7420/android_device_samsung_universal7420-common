@@ -107,12 +107,18 @@ void Profiles::loadProfilesImpl(const char *path) {
 #define XML_GET_INT(_path) TO_INT(XML_GET(_path))
 #define XML_GET_UINT(_path) TO_UINT(XML_GET(_path))
 
-#define XML_GET_CPUGOV(_gov)                                                     \
-	profile->cpu._gov.governor     = XML_GET     ("cpu/" #_gov "/governor");     \
-	profile->cpu._gov.freq_min     = XML_GET_UINT("cpu/" #_gov "/freq_min");     \
-	profile->cpu._gov.freq_max     = XML_GET_UINT("cpu/" #_gov "/freq_max");     \
-	profile->cpu._gov.freq_hispeed = XML_GET_UINT("cpu/" #_gov "/freq_hispeed"); \
-	profile->cpu._gov.freq_boost   = XML_GET_UINT("cpu/" #_gov "/freq_boost")
+#define XML_GET_CPUGOV(_gov)                                                       \
+	profile->cpu._gov.governor     = XML_GET     ("cpu/" #_gov "/governor");       \
+	profile->cpu._gov.freq_min     = XML_GET_UINT("cpu/" #_gov "/freq_min");       \
+	profile->cpu._gov.freq_max     = XML_GET_UINT("cpu/" #_gov "/freq_max");       \
+	profile->cpu._gov.freq_hispeed = XML_GET_UINT("cpu/" #_gov "/freq_hispeed");   \
+	profile->cpu._gov.freq_boost   = XML_GET_UINT("cpu/" #_gov "/freq_boost");     \
+	if (profile->cpu._gov.cores.enabled) {                                         \
+		profile->cpu._gov.cores.core1 = XML_GET_BOOL("cpu/" #_gov "/cores/core1"); \
+		profile->cpu._gov.cores.core2 = XML_GET_BOOL("cpu/" #_gov "/cores/core2"); \
+		profile->cpu._gov.cores.core3 = XML_GET_BOOL("cpu/" #_gov "/cores/core3"); \
+		profile->cpu._gov.cores.core4 = XML_GET_BOOL("cpu/" #_gov "/cores/core4"); \
+	}
 
 #define XML_GET_CPUGOV_DATA(_gov)                                         \
 	({                                                                    \
@@ -142,17 +148,20 @@ void Profiles::loadProfilesImpl(const char *path) {
 	})
 
 void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, const char *path) {
-	profile->enabled               = XML_GET_BOOL("enabled");
-	profile->cpu.enabled           = XML_GET_BOOL("cpu/enabled");
-	profile->cpu.apollo.enabled    = XML_GET_BOOL("cpu/apollo/enabled");
-	profile->cpu.atlas.enabled     = XML_GET_BOOL("cpu/atlas/enabled");
-	profile->hmp.enabled           = XML_GET_BOOL("hmp/enabled");
-	profile->gpu.enabled           = XML_GET_BOOL("gpu/enabled");
-	profile->gpu.dvfs.enabled      = XML_GET_BOOL("gpu/dvfs/enabled");
-	profile->gpu.highspeed.enabled = XML_GET_BOOL("gpu/highspeed/enabled");
-	profile->kernel.enabled        = XML_GET_BOOL("kernel/enabled");
-	profile->ipa.enabled           = XML_GET_BOOL("ipa/enabled");
-	profile->input_booster.enabled = XML_GET_BOOL("input_booster/enabled");
+	profile->enabled                  = XML_GET_BOOL("enabled");
+	profile->cpu.enabled              = XML_GET_BOOL("cpu/enabled");
+	profile->cpu.apollo.enabled       = XML_GET_BOOL("cpu/apollo/enabled");
+	profile->cpu.apollo.cores.enabled = XML_GET_BOOL("cpu/apollo/cores/enabled");
+	profile->cpu.atlas.enabled        = XML_GET_BOOL("cpu/atlas/enabled");
+	profile->cpu.atlas.cores.enabled  = XML_GET_BOOL("cpu/atlas/cores/enabled");
+	profile->cpusets.enabled          = XML_GET_BOOL("cpusets/enabled");
+	profile->hmp.enabled              = XML_GET_BOOL("hmp/enabled");
+	profile->gpu.enabled              = XML_GET_BOOL("gpu/enabled");
+	profile->gpu.dvfs.enabled         = XML_GET_BOOL("gpu/dvfs/enabled");
+	profile->gpu.highspeed.enabled    = XML_GET_BOOL("gpu/highspeed/enabled");
+	profile->kernel.enabled           = XML_GET_BOOL("kernel/enabled");
+	profile->ipa.enabled              = XML_GET_BOOL("ipa/enabled");
+	profile->input_booster.enabled    = XML_GET_BOOL("input_booster/enabled");
 
 	if (!profile->enabled) {
 		return;
@@ -168,6 +177,14 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 			XML_GET_CPUGOV(atlas);
 			XML_GET_CPUGOV_DATA(atlas);
 		}
+	}
+
+	if (profile->cpusets.enabled) {
+		profile->cpusets.foreground        = XML_GET("cpusets/foreground");
+		profile->cpusets.foreground_boost  = XML_GET("cpusets/foreground_boost");
+		profile->cpusets.background        = XML_GET("cpusets/background");
+		profile->cpusets.system_background = XML_GET("cpusets/system_background");
+		profile->cpusets.top_app           = XML_GET("cpusets/top_app");
 	}
 
 	if (profile->hmp.enabled) {
