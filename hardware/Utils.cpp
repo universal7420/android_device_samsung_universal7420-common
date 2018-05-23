@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "zero-power-utils"
+#define LOG_TAG "zero-utils"
 #define LOG_NDEBUG 0
 
 #include <log/log.h>
@@ -30,11 +30,9 @@
 
 #include "Utils.h"
 
-namespace android {
-namespace hardware {
-namespace power {
-namespace V1_0 {
-namespace implementation {
+namespace vendor {
+namespace nexus {
+namespace zero {
 
 bool Utils::isFile(const string path) {
 	return __stat_compare_mode(path, S_IFREG);
@@ -221,14 +219,12 @@ bool Utils::screenIsOn() {
 /***********************************
  * Timing
  */
-milliseconds Utils::getTime() {
-	return duration_cast<milliseconds>(
+std::chrono::milliseconds Utils::getTime() {
+	return duration_cast<std::chrono::milliseconds>(
 		system_clock::now().time_since_epoch()
 	);;
 }
 
-}  // namespace implementation
-}  // namespace V1_0
-}  // namespace power
-}  // namespace hardware
-}  // namespace android
+}  // namespace zero
+}  // namespace nexus
+}  // namespace vendor

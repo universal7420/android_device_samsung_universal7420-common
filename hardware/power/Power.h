@@ -36,6 +36,8 @@
 #include <chrono>
 #include <thread>
 
+using std::ostringstream;
+
 #define POWER_DT2W_ENABLED                "/sys/class/dt2w/enabled"
 #define POWER_TOUCHKEYS_ENABLED           "/sys/class/sec/sec_touchkey/input/enabled"
 #define POWER_TOUCHKEYS_BRIGHTNESS        "/sys/class/sec/sec_touchkey/brightness"

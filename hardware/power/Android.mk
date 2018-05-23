@@ -28,8 +28,7 @@ LOCAL_INIT_RC := android.hardware.power@1.0-service.zero.rc
 LOCAL_SRC_FILES := \
 	Service.cpp \
 	Power.cpp \
-	Profiles.cpp \
-	Utils.cpp
+	Profiles.cpp
 
 LOCAL_SHARED_LIBRARIES := \
 	libbase \
@@ -41,6 +40,7 @@ LOCAL_SHARED_LIBRARIES := \
 	liblog \
 	libutils \
 	libxml2 \
+	libzeroutils \
 	android.hardware.power@1.0 \
 	vendor.lineage.power@1.0
 

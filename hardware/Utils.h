@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef ZERO_HARDWARE_POWER_V1_0_UTILS_H
-#define ZERO_HARDWARE_POWER_V1_0_UTILS_H
+#ifndef VENDOR_NEXUS_ZERO_UTILS_H
+#define VENDOR_NEXUS_ZERO_UTILS_H
 
 #include <chrono>
 #include <map>
 #include <string>
 
-namespace android {
-namespace hardware {
-namespace power {
-namespace V1_0 {
-namespace implementation {
+namespace vendor {
+namespace nexus {
+namespace zero {
 
 using namespace ::std;
 using namespace ::std::chrono;
@@ -196,7 +194,7 @@ struct Utils {
 
 	static bool screenIsOn();
 
-	static milliseconds getTime();
+	static std::chrono::milliseconds getTime();
 
 private:
 
@@ -207,10 +205,8 @@ private:
 
 };
 
-}  // namespace implementation
-}  // namespace V1_0
-}  // namespace power
-}  // namespace hardware
-}  // namespace android
+}  // namespace zero
+}  // namespace nexus
+}  // namespace vendor
 
-#endif  // ZERO_HARDWARE_POWER_V1_0_UTILS_H
+#endif  // VENDOR_NEXUS_ZERO_UTILS_H

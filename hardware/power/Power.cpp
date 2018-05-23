@@ -26,13 +26,15 @@
 
 #include "Power.h"
 #include "Profiles.h"
-#include "Utils.h"
+#include "../Utils.h"
 
 namespace android {
 namespace hardware {
 namespace power {
 namespace V1_0 {
 namespace implementation {
+
+using ::vendor::nexus::zero::Utils;
 
 Power::Power()
 {
