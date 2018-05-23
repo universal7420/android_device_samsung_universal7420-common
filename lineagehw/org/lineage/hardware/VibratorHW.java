@@ -40,8 +40,7 @@ public class VibratorHW {
 
     public static int getCurIntensity()  {
         if (FileUtils.isFileReadable(LEVEL_PATH)) {
-            String actualIntensity = FileUtils.readOneLine(LEVEL_PATH).replace("intensity: ", "");
-            return Integer.parseInt(actualIntensity) / 100;
+            return Integer.parseInt(FileUtils.readOneLine(LEVEL_PATH));
         }
         return 0;
     }
