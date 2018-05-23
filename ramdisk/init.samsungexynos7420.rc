@@ -574,7 +574,7 @@ on fs
     chown system radio /sys/class/sensors/irled_remote/irled_send_result
 
 # Default MDNIE mode (cinema)
-    write /sys/class/mdnie/mdnie/mode 3
+    write /sys/class/mdnie/mdnie/mode 4
 
 # Copy DRM Key
     copy /system/app/wv.keys /factory/wv.keys
@@ -716,9 +716,6 @@ on property:sys.boot_completed=1
 
 # EHCI runtime enable for LPA
     write /sys/devices/platform/s5p-ehci/power/control auto
-    
-# Change MDNIE mode for vibrant colors
-    write /sys/class/mdnie/mdnie/mode 4
 
 service charger /charger
     class charger
