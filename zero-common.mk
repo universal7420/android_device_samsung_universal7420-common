@@ -314,10 +314,17 @@ PRODUCT_COPY_FILES += \
 	device/samsung/zero-common/configs/permissions/com.samsung.permission.SSENSOR.xml:system/vendor/etc/permissions/com.samsung.permission.SSENSOR.xml
 
 #
+# Persistent Storage
+#
+PRODUCT_PACKAGES += \
+	zerops \
+	libzerops
+
+#
 # Power
 #
 PRODUCT_PACKAGES += \
-   android.hardware.power@1.0-service.zero
+	android.hardware.power@1.0-service.zero
 
 PRODUCT_COPY_FILES += \
 	device/samsung/zero-common/hardware/power/profiles.xml:system/etc/power_profiles.xml

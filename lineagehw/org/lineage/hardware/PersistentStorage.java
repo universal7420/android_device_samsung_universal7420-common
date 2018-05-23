@@ -16,16 +16,10 @@
 
 package org.lineageos.hardware;
 
-import android.os.FileUtils;
 import android.util.Slog;
 
 import java.io.File;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.MessageDigest;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -40,14 +34,20 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class PersistentStorage {
 
-    public static final int MAX_KEY_LEN = 64;
-    public static final int MAX_VALUE_LEN = 4096;
-
     private static final String TAG = "PersistentStorage";
 
-    private static final String PERSIST_DATA_PATH = "/persdata/absolute";
-
     private static final ReadWriteLock rwl = new ReentrantReadWriteLock();
+
+	static { System.loadLibrary("/vendor/lib64/libzerops.so"); }
+	
+	/* bool vendor::nexus::zero::PersistentStorage::available() */
+	private static native boolean _ZN6vendor5nexus4zero17PersistentStorage9availableEv();
+
+	/* bool vendor::nexus::zero::PersistentStorage::getCString(const char *, char **) */
+	private static native boolean _ZN6vendor5nexus4zero17PersistentStorage10getCStringEPKcPPc(String[] params);
+
+	/* bool vendor::nexus::zero::PersistentStorage::putCString(const char *, const char *) */
+	private static native boolean _ZN6vendor5nexus4zero17PersistentStorage10putCStringEPKcS4_(String[] params);
 
     /**
      * Whether device supports persistent properties
@@ -55,8 +55,7 @@ public class PersistentStorage {
      * @return boolean Supported devices must return always true
      */
     public static boolean isSupported() {
-        final File file = new File(PERSIST_DATA_PATH);
-        return file.exists() && file.isDirectory() && file.canRead() && file.canWrite();
+        return _ZN6vendor5nexus4zero17PersistentStorage9availableEv();
     }
 
     /**
@@ -66,49 +65,48 @@ public class PersistentStorage {
      * @return previously stored byte array, null if not found
      */
     public static byte[] get(String key) {
-        if (!isSupported() || key.length() > MAX_KEY_LEN) {
+        try {
+			return getString(key).getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+            Slog.e(TAG, e.getMessage(), e);
+			return null;
+        }
+    }
+
+    /**
+     * Gets a string from persistent storage.
+     *
+     * @param key
+     * @return previously stored string, null if not found
+     */
+    public static String getString(String key) {
+        if (!isSupported()) {
             return null;
         }
-
-        final String encodedKey = encode(key);
-        if (encodedKey == null) {
-            return null;
-        }
-
-        FileInputStream fis = null;
 
         try {
             rwl.readLock().lock();
 
-            final File prop = new File(PERSIST_DATA_PATH + "/" + encodedKey);
+			String[] params = {
+				key, /* [In]  key  */
+				null /* [Out] data */
+			};
 
-            if (!prop.exists()) {
-                    Slog.e(TAG, "Unable to read from " + prop.getAbsolutePath());
-                return null;
-            }
+			if (!_ZN6vendor5nexus4zero17PersistentStorage10getCStringEPKcPPc(params)) {
+				Slog.e(TAG, "Native implementation failed to gather data");
+				return null;
+			}
 
-            final byte[] buffer = new byte[MAX_VALUE_LEN];
-            fis = new FileInputStream(prop);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            int len = fis.read(buffer);
-            bos.write(buffer, 0, len);
-            return bos.toByteArray();
-
+			Slog.i(TAG, "Gathered data for \"" + key + "\"");
+			return params[1];
         } catch (Exception e) {
             Slog.e(TAG, e.getMessage(), e);
         } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException ex) {
-                    // skip it
-                }
-            }
             rwl.readLock().unlock();
         }
 
         return null;
-    }
+	}
 
     /**
      * Writes a byte array to persistent storage.
@@ -123,70 +121,53 @@ public class PersistentStorage {
      * @return true if the operation succeeded
      */
     public static boolean set(String key, byte[] buffer) {
-        if (!isSupported() ||
-                key == null || key.length() > MAX_KEY_LEN ||
-                (buffer != null && buffer.length > MAX_VALUE_LEN)) {
-            return false;
+        try {
+			return setString(key, new String(buffer, "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+            Slog.e(TAG, e.getMessage(), e);
+			return false;
         }
+    }
 
-        final String encodedKey = encode(key);
-        if (encodedKey == null) {
+    /**
+     * Writes a string to persistent storage.
+     *
+     * The storage of the data is implementation specific. In this implementation,
+     * we hash the key with SHA-256 and use the hex string as the stored key.
+     *
+     * Implementations should delete the key if a null buffer is passed.
+     *
+     * @param key
+     * @param buffer
+     * @return true if the operation succeeded
+     */
+    public static boolean setString(String key, String buffer) {
+        if (!isSupported()) {
             return false;
         }
 
         try {
             rwl.writeLock().lock();
 
-            final File prop = new File(PERSIST_DATA_PATH + "/" + encodedKey);
+			String[] params = {
+				key,   /* [In] key  */
+				buffer /* [In] data */
+			};
 
-            File tmp = null;
-            if (buffer != null) {
-                tmp = File.createTempFile(key, "tmp",
-                        new File(PERSIST_DATA_PATH));
-                if (!FileUtils.copyToFile(new ByteArrayInputStream(buffer), tmp)) {
-                    Slog.e(TAG, "Unable to create temporary file!");
-                    return false;
-                }
-            }
+			if (!_ZN6vendor5nexus4zero17PersistentStorage10putCStringEPKcS4_(params)) {
+				Slog.e(TAG, "Native implementation failed to store data");
+				return false;
+			}
 
-            if (prop.exists()) {
-                prop.delete();
-            }
-
-            if (tmp != null) {
-                tmp.renameTo(prop);
-            }
-
+			Slog.i(TAG, "Stored data for \"" + key + "\"");
+			return true;
         } catch (Exception e) {
             Slog.e(TAG, e.getMessage(), e);
-            return false;
-
         } finally {
             rwl.writeLock().unlock();
         }
-        return true;
+
+        return false;
     }
 
-    /**
-     * Used for encoding keys with SHA-256
-     *
-     * @param key
-     * @return
-     */
-    private static String encode(String key) {
-        try {
-            MessageDigest d = MessageDigest.getInstance("SHA-256");
-            byte[] hash = d.digest(key.getBytes("UTF-8"));
-            StringBuilder encoded = new StringBuilder();
-
-            for (byte b : hash) {
-                encoded.append(String.format("%02x", b & 0xff));
-            }
-
-            return encoded.toString();
-        } catch (Exception e) {
-            Slog.e(TAG, e.getMessage(), e);
-        }
-        return null;
-    }
 }
