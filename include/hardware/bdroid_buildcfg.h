@@ -20,7 +20,8 @@
 
 #define BTM_DEF_LOCAL_NAME   "Samsung Galaxy S6"
 
-#define BTM_WBS_INCLUDED TRUE       /* Enable WBS */
-#define BTIF_HF_WBS_PREFERRED TRUE  /* Use WBS    */
+#define BLE_VND_INCLUDED         TRUE
+#define BTIF_HF_WBS_PREFERRED    TRUE    /* Use WBS */
+#define BTM_WBS_INCLUDED         TRUE    /* Enable WBS */
 
 #endif
