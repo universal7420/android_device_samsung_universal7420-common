@@ -372,6 +372,10 @@ on fs
 # Permissions for LCD ALPM
     chown system system /sys/class/lcd/panel/alpm
 
+# Permissions for LCD Adaptive Control
+    chown system system /sys/class/lcd/panel/adaptive_control
+	cmod 0660 /sys/class/lcd/panel/adaptive_control
+
 # Permissions for LCD
     chown system radio /sys/class/lcd/panel/manufacture_code
     chown system radio /sys/class/lcd/panel/lcd_type
