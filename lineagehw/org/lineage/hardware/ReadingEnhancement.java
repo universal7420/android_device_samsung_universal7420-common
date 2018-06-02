@@ -24,15 +24,15 @@ import org.lineageos.internal.util.FileUtils;
  */
 public class ReadingEnhancement {
 
-	private static final String ACCESSIBILITY_FILE = "/sys/devices/13900000.dsim/lcd/panel/mdnie/accessibility";
+    private static final String ACCESSIBILITY_FILE = "/sys/devices/13900000.dsim/lcd/panel/mdnie/accessibility";
 
-	public static boolean isSupported() {
-		return FileUtils.isFileWritable(ACCESSIBILITY_FILE);
-	}
+    public static boolean isSupported() {
+        return FileUtils.isFileWritable(ACCESSIBILITY_FILE);
+    }
 
     public static boolean setGrayscale(boolean state) {
-		return FileUtils.writeLine(ACCESSIBILITY_FILE,
-			(state ? "5" : "0"));
+        return FileUtils.writeLine(ACCESSIBILITY_FILE,
+            (state ? "4" : "0"));
     }
 
 }
