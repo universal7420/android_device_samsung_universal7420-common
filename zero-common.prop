@@ -60,9 +60,6 @@ ro.product.first_api_level=22
 # Graphics
 #
 # debug.hwc.skip_dma_types=0,2   -- do not skip the only support VPPs
-debug.sf.latch_unsignaled=1
-ro.bq.gpu_to_cpu_unsupported=1
-ro.sf.disable_triple_buffer=0
 
 #
 # HWUI
@@ -83,12 +80,7 @@ ro.hwui.text_large_cache_height=2048
 #
 # H/W Composer
 #
-debug.hwc.force_gpu=1
-debug.hwc.otf=1
-debug.egl.hw=0
-debug.sf.enable_hwc_vds=1
-debug.sf.hw=0
-persist.sys.ui.hw=false
+debug.hwc.max_hw_overlays=0
 
 #
 # Logging
