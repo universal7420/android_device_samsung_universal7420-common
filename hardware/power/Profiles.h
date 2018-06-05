@@ -88,6 +88,8 @@ struct SecPowerProfile {
 
 		bool enabled;
 
+		string defaults;
+
 		string foreground;
 
 		string foreground_boost;

@@ -182,6 +182,7 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 	}
 
 	if (profile->cpusets.enabled) {
+		profile->cpusets.defaults          = XML_GET("cpusets/default");
 		profile->cpusets.foreground        = XML_GET("cpusets/foreground");
 		profile->cpusets.foreground_boost  = XML_GET("cpusets/foreground_boost");
 		profile->cpusets.background        = XML_GET("cpusets/background");

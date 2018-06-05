@@ -413,6 +413,7 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 * cpusets
 	 */
 	if (data->cpusets.enabled) {
+		Utils::write("/dev/cpuset/cpus",                   data->cpusets.defaults);
 		Utils::write("/dev/cpuset/foreground/cpus",        data->cpusets.foreground);
 		Utils::write("/dev/cpuset/foreground/boost/cpus",  data->cpusets.foreground_boost);
 		Utils::write("/dev/cpuset/background/cpus",        data->cpusets.background);

@@ -160,6 +160,9 @@
 			<!-- {boolean} Whether the cpuset-settings should be applied or not -->
 			<enabled>true</enabled>
 
+			<!-- {string} CPU-configuration for the default cpuset (tasks without specific cpuset) -->
+			<default>0-3</default>
+
 			<!-- {string} CPU-configuration for the "foreground"-cpuset -->
 			<foreground>0-3</foreground>
 
@@ -327,6 +330,7 @@
 		</cpu>
 		<cpusets>
 			<enabled>true</enabled>
+			<default>0-5</default>
 			<foreground>0-5</foreground>
 			<foreground_boost>2-5</foreground_boost>
 			<background>0-3</background>
@@ -434,6 +438,7 @@
 		</cpu>
 		<cpusets>
 			<enabled>true</enabled>
+			<default>0-5</default>
 			<foreground>0-7</foreground>
 			<foreground_boost>2-5</foreground_boost>
 			<background>0-4</background>
@@ -541,6 +546,7 @@
 		</cpu>
 		<cpusets>
 			<enabled>true</enabled>
+			<default>0-5</default>
 			<foreground>0-7</foreground>
 			<foreground_boost>4-7</foreground_boost>
 			<background>0-4</background>
@@ -647,6 +653,7 @@
 		</cpu>
 		<cpusets>
 			<enabled>true</enabled>
+			<default>0-7</default>
 			<foreground>0-7</foreground>
 			<foreground_boost>4-7</foreground_boost>
 			<background>0,1,6,7</background>
@@ -758,6 +765,7 @@
 		</cpu>
 		<cpusets>
 			<enabled>true</enabled>
+			<default>0-7</default>
 			<foreground>0-7</foreground>
 			<foreground_boost>4-7</foreground_boost>
 			<background>0,1,6,7</background>
