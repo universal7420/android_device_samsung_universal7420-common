@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "zero-power-profiles"
-#define LOG_NDEBUG 0
+// #define LOG_NDEBUG 0
 
 #include <log/log.h>
 
@@ -144,7 +144,6 @@ void Profiles::loadProfilesImpl(const char *path) {
 			}                                                             \
 			node = node->next;                                            \
 		} while (node);                                                   \
-		ALOGI("last-index=%d", index);                                    \
 		profile->cpu._gov.governor_data[index].name[0] = 0;               \
 		profile->cpu._gov.governor_data[index].data[0] = 0;               \
 	})

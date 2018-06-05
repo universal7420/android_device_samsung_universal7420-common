@@ -17,7 +17,7 @@
  */
 
 #define LOG_TAG "zero-power"
-#define LOG_NDEBUG 0
+// #define LOG_NDEBUG 0
 
 #include <log/log.h>
 
@@ -281,9 +281,6 @@ void Power::boostpulse(int duration) {
 
 	// get current profile data
 	const SecPowerProfile* data = Profiles::getProfileData(mCurrentProfile);
-
-	ALOGI("data->cpu.apollo.freq_boost := %u", data->cpu.apollo.freq_boost);
-	ALOGI("data->cpu.atlas.freq_boost := %u", data->cpu.atlas.freq_boost);
 
 	if (data->cpu.apollo.freq_boost) {
 		if (!Utils::updateCpuGov(0)) {

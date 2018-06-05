@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "zero-utils"
-#define LOG_NDEBUG 0
+// #define LOG_NDEBUG 0
 
 #include <log/log.h>
 
