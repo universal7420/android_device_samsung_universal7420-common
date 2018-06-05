@@ -491,7 +491,7 @@
 				<freq_min>600000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
-				<freq_boost>1000000</freq_boost>
+				<freq_boost>900000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
@@ -520,7 +520,7 @@
 				<freq_min>400000</freq_min>
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
-				<freq_boost>600000</freq_boost>
+				<freq_boost>0</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
@@ -600,7 +600,7 @@
 				<freq_min>600000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>1100000</freq_hispeed>
-				<freq_boost>1200000</freq_boost>
+				<freq_boost>900000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
@@ -627,7 +627,7 @@
 				<freq_min>600000</freq_min>
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>1200000</freq_hispeed>
-				<freq_boost>1000000</freq_boost>
+				<freq_boost>900000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
@@ -706,7 +706,7 @@
 				<freq_min>800000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>1300000</freq_hispeed>
-				<freq_boost>1200000</freq_boost>
+				<freq_boost>1100000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
@@ -733,7 +733,7 @@
 				<freq_min>800000</freq_min>
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>1300000</freq_hispeed>
-				<freq_boost>1200000</freq_boost>
+				<freq_boost>900000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
