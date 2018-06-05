@@ -219,7 +219,6 @@ PRODUCT_PACKAGES += \
 #
 ## Packages
 PRODUCT_PACKAGES += \
-	vendor.lineage.livedisplay@1.0-service.zero \
 	vendor.lineage.livedisplay-V1.0-java
 
 ## Frameworks
