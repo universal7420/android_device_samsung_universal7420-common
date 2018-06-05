@@ -33,13 +33,6 @@ af.fast_track_multiplier=1
 audio_hal.force_voice_config=wide
 
 #
-# Compositing
-#
-debug.composition.type=gpu
-ro.opengles.version=196610
-video.accelerate.hw=1
-
-#
 # Dalvik
 #
 dalvik.vm.image-dex2oat-filter=speed
@@ -59,7 +52,7 @@ ro.product.first_api_level=22
 #
 # Graphics
 #
-# debug.hwc.skip_dma_types=0,2   -- do not skip the only support VPPs
+ro.opengles.version=196610
 
 #
 # HWUI
@@ -78,9 +71,9 @@ ro.hwui.text_large_cache_width=4096
 ro.hwui.text_large_cache_height=2048
 
 #
-# H/W Composer
+# HW Composer
 #
-debug.hwc.max_hw_overlays=0
+debug.hwc.max_hw_overlays=4    # -- We only have 4 working HW windows right now
 
 #
 # Logging
