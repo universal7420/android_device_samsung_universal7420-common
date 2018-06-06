@@ -19,6 +19,12 @@ zero_build_fingerprint := "Samsung/$(PRODUCT_NAME)/$(PRODUCT_NAME):$(PLATFORM_VE
 zero_build_flavor      := "$(PRODUCT_NAME)-$(TARGET_BUILD_VARIANT)"
 zero_build_descr       := "$(zero_build_flavor) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER) test-keys"
 
+ifeq ($(BUILD_IS_RELEASE),true)
+  zero_ota_url := https://stor.lukasberger.at/TeamNexus/ota.php?device=$(PRODUCT_NAME)&channel=release
+else
+  zero_ota_url := https://stor.lukasberger.at/TeamNexus/ota.php?device=$(PRODUCT_NAME)&channel=testing
+endif
+
 __PRODUCT_TARGET_NAME := $(PRODUCT_NAME)
 
 # Override build-properties to avoid too long fingerprints
@@ -41,3 +47,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	ro.vendor.product.brand=$(PRODUCT_BRAND) \
 	ro.vendor.product.manufacturer=$(PRODUCT_MANUFACTURER) \
 	ro.vendor.product.model=$(PRODUCT_MODEL)
+
+
+FINAL_VENDOR_BUILD_PROPERTIES += \
+	lineage.updater.uri=$(zero_ota_url)
