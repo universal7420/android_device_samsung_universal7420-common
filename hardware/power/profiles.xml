@@ -85,9 +85,10 @@
 					<up_load>50</up_load>
 					<up_step>1</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>150</lpr_ratio>
-					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>1</lpr_up_elevation>
+					<lpr_down_ratio>0</lpr_down_ratio>
+					<lpr_down_elevation>0</lpr_down_elevation>
+					<lpr_up_ratio>0</lpr_up_ratio>
+					<lpr_up_elevation>0</lpr_up_elevation>
 					<hispeed_delay>2</hispeed_delay>
 					<hispeed_load>99</hispeed_load>
 					<io_is_busy>0</io_is_busy>
@@ -143,9 +144,10 @@
 					<up_load>50</up_load>
 					<up_step>1</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>150</lpr_ratio>
-					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>1</lpr_up_elevation>
+					<lpr_down_ratio>0</lpr_down_ratio>
+					<lpr_down_elevation>0</lpr_down_elevation>
+					<lpr_up_ratio>0</lpr_up_ratio>
+					<lpr_up_elevation>0</lpr_up_elevation>
 					<hispeed_delay>2</hispeed_delay>
 					<hispeed_load>99</hispeed_load>
 					<io_is_busy>0</io_is_busy>
@@ -290,8 +292,9 @@
 					<up_load>50</up_load>
 					<up_step>1</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>150</lpr_ratio>
-					<lpr_down_elevation>1</lpr_down_elevation>
+					<lpr_down_ratio>100</lpr_down_ratio>
+					<lpr_down_elevation>2</lpr_down_elevation>
+					<lpr_up_ratio>125</lpr_up_ratio>
 					<lpr_up_elevation>1</lpr_up_elevation>
 					<hispeed_delay>1</hispeed_delay>
 					<hispeed_load>99</hispeed_load>
@@ -319,8 +322,9 @@
 					<up_load>50</up_load>
 					<up_step>1</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>150</lpr_ratio>
-					<lpr_down_elevation>1</lpr_down_elevation>
+					<lpr_down_ratio>100</lpr_down_ratio>
+					<lpr_down_elevation>2</lpr_down_elevation>
+					<lpr_up_ratio>125</lpr_up_ratio>
 					<lpr_up_elevation>1</lpr_up_elevation>
 					<hispeed_delay>1</hispeed_delay>
 					<hispeed_load>99</hispeed_load>
@@ -396,12 +400,13 @@
 					<down_step>1</down_step>
 					<down_delay>0</down_delay>
 					<up_load>50</up_load>
-					<up_step>1</up_step>
+					<up_step>2</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>150</lpr_ratio>
+					<lpr_down_ratio>115</lpr_down_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>1</lpr_up_elevation>
-					<hispeed_delay>1</hispeed_delay>
+					<lpr_up_ratio>125</lpr_up_ratio>
+					<lpr_up_elevation>2</lpr_up_elevation>
+					<hispeed_delay>0</hispeed_delay>
 					<hispeed_load>99</hispeed_load>
 					<io_is_busy>1</io_is_busy>
 				</governor_data>
@@ -427,10 +432,11 @@
 					<up_load>50</up_load>
 					<up_step>1</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>125</lpr_ratio>
+					<lpr_down_ratio>115</lpr_down_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>1</lpr_up_elevation>
-					<hispeed_delay>1</hispeed_delay>
+					<lpr_up_ratio>125</lpr_up_ratio>
+					<lpr_up_elevation>2</lpr_up_elevation>
+					<hispeed_delay>0</hispeed_delay>
 					<hispeed_load>99</hispeed_load>
 					<io_is_busy>1</io_is_busy>
 				</governor_data>
@@ -501,14 +507,15 @@
 				</cores>
 				<governor_data>
 					<down_load>40</down_load>
-					<down_step>1</down_step>
+					<down_step>2</down_step>
 					<down_delay>0</down_delay>
 					<up_load>50</up_load>
 					<up_step>1</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>125</lpr_ratio>
-					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>2</lpr_up_elevation>
+					<lpr_down_ratio>125</lpr_down_ratio>
+					<lpr_down_elevation>2</lpr_down_elevation>
+					<lpr_up_ratio>100</lpr_up_ratio>
+					<lpr_up_elevation>3</lpr_up_elevation>
 					<hispeed_delay>0</hispeed_delay>
 					<hispeed_load>89</hispeed_load>
 					<io_is_busy>1</io_is_busy>
@@ -520,7 +527,7 @@
 				<freq_min>400000</freq_min>
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
-				<freq_boost>0</freq_boost>
+				<freq_boost>900000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
@@ -533,11 +540,12 @@
 					<down_step>1</down_step>
 					<down_delay>0</down_delay>
 					<up_load>50</up_load>
-					<up_step>1</up_step>
+					<up_step>2</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>125</lpr_ratio>
-					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>2</lpr_up_elevation>
+					<lpr_down_ratio>125</lpr_down_ratio>
+					<lpr_down_elevation>2</lpr_down_elevation>
+					<lpr_up_ratio>100</lpr_up_ratio>
+					<lpr_up_elevation>3</lpr_up_elevation>
 					<hispeed_delay>0</hispeed_delay>
 					<hispeed_load>79</hispeed_load>
 					<io_is_busy>1</io_is_busy>
@@ -600,7 +608,7 @@
 				<freq_min>600000</freq_min>
 				<freq_max>1500000</freq_max>
 				<freq_hispeed>1100000</freq_hispeed>
-				<freq_boost>900000</freq_boost>
+				<freq_boost>1100000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
@@ -626,8 +634,8 @@
 				<governor>nexus</governor>
 				<freq_min>600000</freq_min>
 				<freq_max>2100000</freq_max>
-				<freq_hispeed>1200000</freq_hispeed>
-				<freq_boost>900000</freq_boost>
+				<freq_hispeed>1100000</freq_hispeed>
+				<freq_boost>1100000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
@@ -642,10 +650,11 @@
 					<up_load>40</up_load>
 					<up_step>1</up_step>
 					<up_delay>0</up_delay>
-					<lpr_ratio>115</lpr_ratio>
+					<lpr_down_ratio>125</lpr_down_ratio>
 					<lpr_down_elevation>1</lpr_down_elevation>
-					<lpr_up_elevation>3</lpr_up_elevation>
-					<hispeed_delay>1</hispeed_delay>
+					<lpr_up_ratio>100</lpr_up_ratio>
+					<lpr_up_elevation>5</lpr_up_elevation>
+					<hispeed_delay>0</hispeed_delay>
 					<hispeed_load>75</hispeed_load>
 					<io_is_busy>1</io_is_busy>
 				</governor_data>
@@ -733,7 +742,7 @@
 				<freq_min>800000</freq_min>
 				<freq_max>2100000</freq_max>
 				<freq_hispeed>1300000</freq_hispeed>
-				<freq_boost>900000</freq_boost>
+				<freq_boost>1100000</freq_boost>
 				<cores>
 					<enabled>true</enabled>
 					<core1>true</core1>
