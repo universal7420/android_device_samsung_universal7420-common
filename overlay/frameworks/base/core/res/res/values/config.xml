@@ -203,14 +203,32 @@
          Zone N + 1     array[N] <= LUX < infinity
          Must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLevels">
-        <item>9</item>
-        <item>30</item>
-        <item>100</item>
-        <item>325</item>
-        <item>1250</item>
-        <item>3500</item>
-        <item>10000</item>
-        <item>20000</item>
+        <item>10</item>    <!-- 0-9 -->
+        <item>20</item>    <!-- 10-39 -->
+        <item>40</item>    <!-- 40-59 -->
+        <item>60</item>    <!-- 60-79 -->
+        <item>80</item>    <!-- 80-99 -->
+        <item>100</item>   <!-- 100-199 -->
+        <item>200</item>   <!-- 200-399 -->
+        <item>400</item>   <!-- 400-599 -->
+        <item>600</item>   <!-- 600-799 -->
+        <item>800</item>   <!-- 800-999 -->
+        <item>1000</item>  <!-- 1000-1999 -->
+        <item>2000</item>  <!-- 2000-3999 -->
+        <item>4000</item>  <!-- 4000-5999 -->
+        <item>6000</item>  <!-- 6000-7999 -->
+        <item>8000</item>  <!-- 8000-9999 -->
+        <item>10000</item> <!-- 10000-11999 -->
+        <item>12000</item> <!-- 12000-13999 -->
+        <item>14000</item> <!-- 14000-15999 -->
+        <item>16000</item> <!-- 16000-17999 -->
+        <item>18000</item> <!-- 18000-19999 -->
+        <item>20000</item> <!-- 20000-21999 -->
+        <item>22000</item> <!-- 22000-23999 -->
+        <item>24000</item> <!-- 24000-25999 -->
+        <item>26000</item> <!-- 28000-27999 -->
+        <item>28000</item> <!-- 28000-29999 -->
+        <item>30000</item> <!-- 30000+ -->
     </integer-array>
 
     <!-- Array of output values for LCD backlight corresponding to the LUX values
@@ -218,15 +236,32 @@
          than the size of the config_autoBrightnessLevels array.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-        <item>18</item>   <!-- 0-9 -->
-        <item>30</item>   <!-- 10-30 -->
-        <item>59</item>   <!-- 31-100 -->
-        <item>74</item>   <!-- 101-325 -->
-        <item>92</item>   <!-- 326-1250 -->
-        <item>118</item>  <!-- 1251-3500 -->
-        <item>155</item>  <!-- 3501-10000 -->
-        <item>222</item>  <!-- 10001-20000 -->
-        <item>255</item>  <!-- 20001+ -->
+        <item>10</item>  <!-- 0-9 -->
+        <item>20</item>  <!-- 10-39 -->
+        <item>30</item>  <!-- 40-59 -->
+        <item>40</item>  <!-- 60-79 -->
+        <item>50</item>  <!-- 80-99 -->
+        <item>60</item>  <!-- 100-199 -->
+        <item>70</item>  <!-- 200-399 -->
+        <item>80</item>  <!-- 400-599 -->
+        <item>90</item>  <!-- 600-799 -->
+        <item>100</item> <!-- 800-999 -->
+        <item>110</item> <!-- 1000-1999 -->
+        <item>120</item> <!-- 2000-3999 -->
+        <item>130</item> <!-- 4000-5999 -->
+        <item>140</item> <!-- 6000-7999 -->
+        <item>150</item> <!-- 8000-9999 -->
+        <item>160</item> <!-- 10000-11999 -->
+        <item>170</item> <!-- 12000-13999 -->
+        <item>180</item> <!-- 14000-15999 -->
+        <item>190</item> <!-- 16000-17999 -->
+        <item>200</item> <!-- 18000-19999 -->
+        <item>210</item> <!-- 20000-21999 -->
+        <item>220</item> <!-- 22000-23999 -->
+        <item>230</item> <!-- 24000-25999 -->
+        <item>240</item> <!-- 28000-27999 -->
+        <item>250</item> <!-- 28000-29999 -->
+        <item>255</item> <!-- 30000+ -->
     </integer-array>
 
     <!-- Array of output values for button backlight corresponding to the LUX values
@@ -234,30 +269,64 @@
          than the size of the config_autoBrightnessLevels array.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessButtonBacklightValues">
-        <item>255</item>   <!-- 0-9 -->
-        <item>255</item>   <!-- 10-30 -->
-        <item>255</item>   <!-- 31-100 -->
-        <item>255</item>   <!-- 101-325 -->
-        <item>255</item>   <!-- 326-1250 -->
-        <item>255</item>  <!-- 1251-3500 -->
-        <item>255</item>  <!-- 3501-10000 -->
-        <item>255</item>  <!-- 10001-20000 -->
-        <item>255</item>  <!-- 20001+ -->
+        <item>255</item> <!-- 0-9 -->
+        <item>255</item> <!-- 10-39 -->
+        <item>255</item> <!-- 40-59 -->
+        <item>255</item> <!-- 60-79 -->
+        <item>255</item> <!-- 80-99 -->
+        <item>255</item> <!-- 100-199 -->
+        <item>255</item> <!-- 200-399 -->
+        <item>255</item> <!-- 400-599 -->
+        <item>255</item> <!-- 600-799 -->
+        <item>255</item> <!-- 800-999 -->
+        <item>255</item> <!-- 1000-1999 -->
+        <item>255</item> <!-- 2000-3999 -->
+        <item>255</item> <!-- 4000-5999 -->
+        <item>255</item> <!-- 6000-7999 -->
+        <item>255</item> <!-- 8000-9999 -->
+        <item>255</item> <!-- 10000-11999 -->
+        <item>255</item> <!-- 12000-13999 -->
+        <item>255</item> <!-- 14000-15999 -->
+        <item>255</item> <!-- 16000-17999 -->
+        <item>255</item> <!-- 18000-19999 -->
+        <item>255</item> <!-- 20000-21999 -->
+        <item>255</item> <!-- 22000-23999 -->
+        <item>255</item> <!-- 24000-25999 -->
+        <item>255</item> <!-- 28000-27999 -->
+        <item>255</item> <!-- 28000-29999 -->
+        <item>255</item> <!-- 30000+ -->
     </integer-array>
 
     <!-- Array of output values for keyboard backlight corresponding to the LUX values
         in the config_autoBrightnessLevels array. This array should have size one greater
         than the size of the config_autoBrightnessLevels array. -->
     <integer-array name="config_autoBrightnessKeyboardBacklightValues">
-        <item>255</item>   <!-- 0-9 -->
-        <item>255</item>   <!-- 10-30 -->
-        <item>255</item>   <!-- 31-100 -->
-        <item>255</item>   <!-- 101-325 -->
-        <item>255</item>   <!-- 326-1250 -->
-        <item>255</item>  <!-- 1251-3500 -->
-        <item>255</item>  <!-- 3501-10000 -->
-        <item>255</item>  <!-- 10001-20000 -->
-        <item>255</item>  <!-- 20001+ -->
+        <item>255</item> <!-- 0-9 -->
+        <item>255</item> <!-- 10-39 -->
+        <item>255</item> <!-- 40-59 -->
+        <item>255</item> <!-- 60-79 -->
+        <item>255</item> <!-- 80-99 -->
+        <item>255</item> <!-- 100-199 -->
+        <item>255</item> <!-- 200-399 -->
+        <item>255</item> <!-- 400-599 -->
+        <item>255</item> <!-- 600-799 -->
+        <item>255</item> <!-- 800-999 -->
+        <item>255</item> <!-- 1000-1999 -->
+        <item>255</item> <!-- 2000-3999 -->
+        <item>255</item> <!-- 4000-5999 -->
+        <item>255</item> <!-- 6000-7999 -->
+        <item>255</item> <!-- 8000-9999 -->
+        <item>255</item> <!-- 10000-11999 -->
+        <item>255</item> <!-- 12000-13999 -->
+        <item>255</item> <!-- 14000-15999 -->
+        <item>255</item> <!-- 16000-17999 -->
+        <item>255</item> <!-- 18000-19999 -->
+        <item>255</item> <!-- 20000-21999 -->
+        <item>255</item> <!-- 22000-23999 -->
+        <item>255</item> <!-- 24000-25999 -->
+        <item>255</item> <!-- 28000-27999 -->
+        <item>255</item> <!-- 28000-29999 -->
+        <item>255</item> <!-- 30000+ -->
     </integer-array>
 
     <!-- Boolean indicating if current platform supports BLE peripheral mode -->
@@ -435,7 +504,7 @@
          The duplication is necessary, because this information is used before the features are
          available to the system.-->
     <bool name="config_freeformWindowManagement">true</bool>
-	
+
     <!-- Default files to pin via Pinner Service -->
     <string-array translatable="false" name="config_defaultPinnerServiceFiles">
         <item>"/system/framework/arm64/boot-framework.oat"</item>
