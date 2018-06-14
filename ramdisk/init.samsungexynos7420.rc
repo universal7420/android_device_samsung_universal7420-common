@@ -360,35 +360,52 @@ on fs
     chown system system /sys/class/ion_cma/ion_video_ext/isolated
 
 # Permissions for backlight
-    chmod 0660 /sys/class/backlight/panel/brightness
     chown system system /sys/class/backlight/panel/brightness
+    chmod 0660 /sys/class/backlight/panel/brightness
     chown system system /sys/class/backlight/panel/auto_brightness
+    chmod 0660 /sys/class/backlight/panel/auto_brightness
 
 # Permissions for LCD HMT
     chown system system /sys/class/lcd/panel/hmt_on
+    chmod 0660 /sys/class/lcd/panel/hmt_on
     chown system system /sys/class/lcd/panel/hmt_bright
+    chmod 0660 /sys/class/lcd/panel/hmt_bright
     chown system system /sys/class/mdnie/mdnie/hmt_color_temperature
+    chmod 0660 /sys/class/mdnie/mdnie/hmt_color_temperature
 
 # Permissions for LCD ALPM
     chown system system /sys/class/lcd/panel/alpm
+    chmod 0660 /sys/class/lcd/panel/alpm
 
 # Permissions for LCD Adaptive Control
     chown system system /sys/class/lcd/panel/adaptive_control
-	cmod 0660 /sys/class/lcd/panel/adaptive_control
+    chmod 0660 /sys/class/lcd/panel/adaptive_control
 
 # Permissions for LCD
     chown system radio /sys/class/lcd/panel/manufacture_code
+    chmod 0660 /sys/class/lcd/panel/manufacture_code
     chown system radio /sys/class/lcd/panel/lcd_type
+    chmod 0660 /sys/class/lcd/panel/lcd_type
     chown system system /sys/class/lcd/panel/siop_enable
+    chmod 0660 /sys/class/lcd/panel/siop_enable
     chown system system /sys/class/lcd/panel/temperature
-    chown system media_rw /sys/class/backlight/panel/weakness_hbm_comp
+    chmod 0660 /sys/class/lcd/panel/temperature
+    chown system system /sys/class/backlight/panel/weakness_hbm_comp
+    chmod 0660 /sys/class/backlight/panel/weakness_hbm_comp
 
 # Permissions for MDNIE
-    chown system media_rw /sys/class/mdnie/mdnie/mode
-    chown system media_rw /sys/class/mdnie/mdnie/scenario
+    chown system system /sys/class/mdnie/mdnie/mode
+    chmod 0660 /sys/class/mdnie/mdnie/mode
+    chown system system /sys/class/mdnie/mdnie/scenario
+    chmod 0660 /sys/class/mdnie/mdnie/scenario
     chown system system /sys/class/mdnie/mdnie/accessibility
+    chmod 0660 /sys/class/mdnie/mdnie/accessibility
     chown system system /sys/class/mdnie/mdnie/auto_brightness
+    chmod 0660 /sys/class/mdnie/mdnie/auto_brightness
     chown system system /sys/class/mdnie/mdnie/sensorRGB
+    chmod 0660 /sys/class/mdnie/mdnie/sensorRGB
+    chown system system /sys/class/mdnie/mdnie/lux
+    chmod 0660 /sys/class/mdnie/mdnie/lux
 
 # Permissions for System LSI NFC
 # NFC : Permissions for NFC
