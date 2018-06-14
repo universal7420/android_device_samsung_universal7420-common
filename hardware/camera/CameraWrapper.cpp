@@ -62,7 +62,7 @@ camera_module_t HAL_MODULE_INFO_SYM = {
     .get_vendor_tag_ops = camera_get_vendor_tag_ops,
     .open_legacy = camera_open_legacy,
     .set_torch_mode = camera_set_torch_mode,
-    .init = NULL,
+    .init = camera_init,
     .reserved = {0},
 };
 
@@ -126,4 +126,12 @@ static int camera_set_torch_mode(const char* camera_id, bool enabled)
     if (check_vendor_module())
         return 0;
     return gVendorModule->set_torch_mode(camera_id, enabled);
+}
+
+static int camera_init(void)
+{
+    ALOGV("%s", __FUNCTION__);
+    if (check_vendor_module())
+        return 0;
+    return gVendorModule->init();
 }
