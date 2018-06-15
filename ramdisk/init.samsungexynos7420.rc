@@ -594,10 +594,11 @@ on fs
     write /sys/class/mdnie/mdnie/mode 4
 
 # Copy DRM Key
-    copy /system/app/wv.keys /factory/wv.keys
+    copy /efs/wv.keys /factory/wv.keys
 
 # Permission for DRM Key
-    chmod 0644 /factory/wv.keys
+    chmod 0664 /factory/wv.keys
+    chown system system /factory/wv.keys
 
 # ARGOSD network_throughput
     chown system system /dev/network_throughput

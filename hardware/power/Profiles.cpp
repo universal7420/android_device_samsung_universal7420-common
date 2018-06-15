@@ -162,6 +162,7 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 	profile->gpu.highspeed.enabled    = XML_GET_BOOL("gpu/highspeed/enabled");
 	profile->kernel.enabled           = XML_GET_BOOL("kernel/enabled");
 	profile->ipa.enabled              = XML_GET_BOOL("ipa/enabled");
+	profile->slow.enabled             = XML_GET_BOOL("slow/enabled");
 	profile->input_booster.enabled    = XML_GET_BOOL("input_booster/enabled");
 
 	if (!profile->enabled) {
@@ -211,6 +212,11 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 
 	if (profile->ipa.enabled) {
 		profile->ipa.control_temp = XML_GET_INT("ipa/control_temp");
+	}
+
+	if (profile->slow.enabled) {
+		profile->slow.mode_toggle = XML_GET_BOOL("slow/mode_toggle");
+		profile->slow.timer_rate = XML_GET_INT("slow/timer_rate");
 	}
 
 	if (profile->input_booster.enabled) {

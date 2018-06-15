@@ -130,8 +130,8 @@ Return<void> Power::setInteractive(bool interactive) {
 	}
 
 	// speed up the device a bit
-	Utils::write("/sys/kernel/hmp/boostpulse_duration", 2500000); // 2.5s
-	Utils::write("/sys/kernel/hmp/boostpulse", true);
+	/* Utils::write("/sys/kernel/hmp/boostpulse_duration", 2500000); // 2.5s
+	Utils::write("/sys/kernel/hmp/boostpulse", true); */
 
 	setInputState(interactive);
 
@@ -458,6 +458,14 @@ void Power::setProfile(SecPowerProfiles profile) {
 		// contraproductive in high-performance situations. This should reflect in
 		// the static power-profiles
 		Utils::write("/sys/module/workqueue/parameters/power_efficient", data->kernel.pewq);
+	}
+
+	/*********************
+	 * Slow Mode Defaults
+	 */
+	if (data->slow.enabled) {
+		Utils::write("/sys/devices/virtual/sec/sec_slow/enforced_slow_mode", data->slow.mode_toggle);
+		Utils::write("/sys/devices/virtual/sec/sec_slow/timer_rate", data->slow.timer_rate);
 	}
 
 	/*********************
