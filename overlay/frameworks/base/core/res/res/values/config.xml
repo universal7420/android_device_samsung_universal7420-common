@@ -192,7 +192,7 @@
          some range of adjustment to dim the screen further than usual in very
          dark rooms. The contents of the screen must still be clearly visible
          in darkness (although they may not be visible in a bright room). -->
-    <integer name="config_screenBrightnessDark">0</integer>
+    <integer name="config_screenBrightnessDark">5</integer>
 
     <!-- Array of light sensor LUX values to define our levels for auto backlight brightness support.
          The N entries of this array define N  1 zones as follows:
@@ -203,14 +203,14 @@
          Zone N + 1     array[N] <= LUX < infinity
          Must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLevels">
-        <item>9</item>
-        <item>30</item>
-        <item>100</item>
-        <item>325</item>
-        <item>1250</item>
+        <item>50</item>
+        <item>350</item>
+        <item>1000</item>
+        <item>2000</item>
         <item>3500</item>
-        <item>10000</item>
-        <item>20000</item>
+        <item>5000</item>
+        <item>6250</item>
+        <item>7500</item>
     </integer-array>
 
     <!-- Array of output values for LCD backlight corresponding to the LUX values
@@ -218,15 +218,15 @@
          than the size of the config_autoBrightnessLevels array.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-        <item>18</item>   <!-- 0-9 -->
-        <item>30</item>   <!-- 10-30 -->
-        <item>59</item>   <!-- 31-100 -->
-        <item>74</item>   <!-- 101-325 -->
-        <item>92</item>   <!-- 326-1250 -->
-        <item>118</item>  <!-- 1251-3500 -->
-        <item>155</item>  <!-- 3501-10000 -->
-        <item>222</item>  <!-- 10001-20000 -->
-        <item>255</item>  <!-- 20001+ -->
+        <item>5</item>   <!-- 0-50 -->
+        <item>30</item>  <!-- 51-350 -->
+        <item>60</item>  <!-- 351-1000 -->
+        <item>80</item>  <!-- 1001-2000 -->
+        <item>90</item>  <!-- 2001-3500 -->
+        <item>100</item> <!-- 3501-5000 -->
+        <item>130</item> <!-- 5001-6250 -->
+        <item>170</item> <!-- 6251-7500 -->
+        <item>255</item> <!-- 7501+ -->
     </integer-array>
 
     <!-- Array of output values for button backlight corresponding to the LUX values
@@ -234,30 +234,30 @@
          than the size of the config_autoBrightnessLevels array.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessButtonBacklightValues">
-        <item>255</item>   <!-- 0-9 -->
-        <item>255</item>   <!-- 10-30 -->
-        <item>255</item>   <!-- 31-100 -->
-        <item>255</item>   <!-- 101-325 -->
-        <item>255</item>   <!-- 326-1250 -->
-        <item>255</item>  <!-- 1251-3500 -->
-        <item>255</item>  <!-- 3501-10000 -->
-        <item>255</item>  <!-- 10001-20000 -->
-        <item>255</item>  <!-- 20001+ -->
+        <item>255</item> <!-- 0-50 -->
+        <item>255</item> <!-- 51-350 -->
+        <item>255</item> <!-- 351-1000 -->
+        <item>255</item> <!-- 1001-2000 -->
+        <item>255</item> <!-- 2001-3500 -->
+        <item>255</item> <!-- 3501-5000 -->
+        <item>255</item> <!-- 5001-6250 -->
+        <item>255</item> <!-- 6251-7500 -->
+        <item>255</item> <!-- 7501+ -->
     </integer-array>
 
     <!-- Array of output values for keyboard backlight corresponding to the LUX values
         in the config_autoBrightnessLevels array. This array should have size one greater
         than the size of the config_autoBrightnessLevels array. -->
     <integer-array name="config_autoBrightnessKeyboardBacklightValues">
-        <item>255</item>   <!-- 0-9 -->
-        <item>255</item>   <!-- 10-30 -->
-        <item>255</item>   <!-- 31-100 -->
-        <item>255</item>   <!-- 101-325 -->
-        <item>255</item>   <!-- 326-1250 -->
-        <item>255</item>  <!-- 1251-3500 -->
-        <item>255</item>  <!-- 3501-10000 -->
-        <item>255</item>  <!-- 10001-20000 -->
-        <item>255</item>  <!-- 20001+ -->
+        <item>255</item> <!-- 0-50 -->
+        <item>255</item> <!-- 51-350 -->
+        <item>255</item> <!-- 351-1000 -->
+        <item>255</item> <!-- 1001-2000 -->
+        <item>255</item> <!-- 2001-3500 -->
+        <item>255</item> <!-- 3501-5000 -->
+        <item>255</item> <!-- 5001-6250 -->
+        <item>255</item> <!-- 6251-7500 -->
+        <item>255</item> <!-- 7501+ -->
     </integer-array>
 
     <!-- Boolean indicating if current platform supports BLE peripheral mode -->
@@ -424,6 +424,14 @@
 
     <!-- Allow automatic adjusting of the screen brightness while dozing in low power state. -->
     <bool name="config_allowAutoBrightnessWhileDozing">true</bool>
+
+    <!-- Stability requirements in milliseconds for accepting a new brightness level.  This is used
+         for debouncing the light sensor.  Different constants are used to debounce the light sensor
+         when adapting to brighter or darker environments.  This parameter controls how quickly
+         brightness changes occur in response to an observed change in light level that exceeds the
+         hysteresis threshold. -->
+    <integer name="config_autoBrightnessBrighteningLightDebounce">1000</integer>
+    <integer name="config_autoBrightnessDarkeningLightDebounce">1000</integer>
 
     <!-- If we allow automatic adjustment of screen brightness while dozing, how many times we want
          to reduce it to preserve the battery. Value of 100% means no scaling. -->
