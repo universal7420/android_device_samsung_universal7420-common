@@ -705,11 +705,6 @@ on fs
     chown system usb /sys/class/usb_notify/usb_control/disable
     chmod 0664 /sys/class/usb_notify/usb_control/disable
 
-on property:init.svc.bootanim=stopped
-# Reset startup boost
-    write /sys/kernel/hmp/boost "0"
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq "200000"
-
 # ARGOSD
 service argos-daemon /system/bin/argosd
     class main
