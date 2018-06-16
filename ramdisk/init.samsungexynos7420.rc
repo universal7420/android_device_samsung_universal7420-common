@@ -727,30 +727,6 @@ on property:sys.boot_completed=1
     write /proc/sys/vm/dirty_bytes 62914560
     write /proc/sys/vm/dirty_background_bytes 20971520
 
-# EHCI runtime enable for LPA
-    write /sys/devices/platform/s5p-ehci/power/control auto
-
 service charger /charger
     class charger
     seclabel u:r:charger:s0
-
-# DRK/CS service
-service cs_service /system/bin/cs
-    class main
-    user system
-    group system
-    disabled
-
-on property:sys.mobicoredaemon.enable=true
-    start cs_service
-
-# IPSec for VOLTE
-    chown root system /dev/socket
-    chmod 0775 /dev/socket
-
-# IPSec for VOLTE
-service ipsec-daemon /system/bin/IPSecService
-    class main
-    socket ipsec_socket stream 660 system system
-    user system
-    group system net_raw inet net_admin
