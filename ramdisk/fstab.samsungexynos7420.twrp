@@ -5,6 +5,7 @@
 # Images
 /boot        emmc    /dev/block/platform/15570000.ufs/by-name/BOOT        flags=backup=1;display="Boot"
 /recovery    emmc    /dev/block/platform/15570000.ufs/by-name/RECOVERY    flags=backup=1;display="Recovery"
+/misc        emmc    /dev/block/platform/15570000.ufs/by-name/OTA         display="OTA"
 /radio       emmc    /dev/block/platform/15570000.ufs/by-name/RADIO       flags=backup=1;display="Radio"
 
 # System Partitions

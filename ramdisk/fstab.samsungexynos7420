@@ -9,6 +9,7 @@
 # Images
 /dev/block/platform/15570000.ufs/by-name/BOOT                 /boot          emmc      defaults                                                                                           defaults
 /dev/block/platform/15570000.ufs/by-name/RECOVERY             /recovery      emmc      defaults                                                                                           defaults
+/dev/block/platform/15570000.ufs/by-name/OTA                  /misc          emmc      defaults                                                                                           defaults
 
 # System partitions
 /dev/block/platform/15570000.ufs/by-name/EFS                  /efs           ext4      noatime,nosuid,nodev,noauto_da_alloc,discard,data=ordered,errors=panic                             wait,check
