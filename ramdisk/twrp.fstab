@@ -1,7 +1,0 @@
-
-/efs      ext4 /dev/block/platform/15570000.ufs/by-name/EFS
-/boot     emmc /dev/block/platform/15570000.ufs/by-name/BOOT
-/recovery emmc /dev/block/platform/15570000.ufs/by-name/RECOVERY
-/cache    ext4 /dev/block/platform/15570000.ufs/by-name/CACHE
-/system   ext4 /dev/block/platform/15570000.ufs/by-name/SYSTEM
-/data     ext4 /dev/block/platform/15570000.ufs/by-name/USERDATA
