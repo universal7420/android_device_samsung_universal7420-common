@@ -33,21 +33,6 @@ typedef struct wrapper_camera3_device {
 #define VENDOR_CALL(device, func, ...) ({ \
     wrapper_camera3_device_t *__wrapper_dev = (wrapper_camera3_device_t*) device; \
     __wrapper_dev->vendor->ops->func(__wrapper_dev->vendor, ##__VA_ARGS__); \
-    ALOGV("OUT(%s)---", __func__); \
-})
-
-#define VENDOR_CALL_RETURNS(device, func, ...) ({ \
-    wrapper_camera3_device_t *__wrapper_dev = (wrapper_camera3_device_t*) device; \
-    auto __result = __wrapper_dev->vendor->ops->func(__wrapper_dev->vendor, ##__VA_ARGS__); \
-    ALOGV("OUT(%s)---", __func__); \
-    __result; \
-})
-
-#define VENDOR_CALL_RESULT(device, func, ...) ({ \
-    wrapper_camera3_device_t *__wrapper_dev = (wrapper_camera3_device_t*) device; \
-    int __result = __wrapper_dev->vendor->ops->func(__wrapper_dev->vendor, ##__VA_ARGS__); \
-    ALOGV("OUT(%s)--- ret(%d)", __func__, __result); \
-    __result; \
 })
 
 #define CAMERA_ID(device) (((wrapper_camera3_device_t *)(device))->id)
@@ -89,7 +74,7 @@ static int camera3_initialize(const camera3_device_t *device, const camera3_call
     if (!device)
         return -1;
 
-    return VENDOR_CALL_RESULT(device, initialize, callback_ops);
+    return VENDOR_CALL(device, initialize, callback_ops);
 }
 
 static int camera3_configure_streams(const camera3_device *device, camera3_stream_configuration_t *stream_list)
@@ -100,7 +85,7 @@ static int camera3_configure_streams(const camera3_device *device, camera3_strea
     if (!device)
         return -1;
 
-    return VENDOR_CALL_RESULT(device, configure_streams, stream_list);
+    return VENDOR_CALL(device, configure_streams, stream_list);
 }
 
 static int camera3_register_stream_buffers(const camera3_device *device, const camera3_stream_buffer_set_t *buffer_set)
@@ -111,7 +96,7 @@ static int camera3_register_stream_buffers(const camera3_device *device, const c
     if (!device)
         return -1;
 
-    return VENDOR_CALL_RESULT(device, register_stream_buffers, buffer_set);
+    return VENDOR_CALL(device, register_stream_buffers, buffer_set);
 }
 
 static const camera_metadata_t *camera3_construct_default_request_settings(const camera3_device_t *device, int type)
@@ -123,7 +108,7 @@ static const camera_metadata_t *camera3_construct_default_request_settings(const
         return NULL;
 
     android::CameraMetadata metadata;
-    metadata = VENDOR_CALL_RETURNS(device, construct_default_request_settings, type);
+    metadata = VENDOR_CALL(device, construct_default_request_settings, type);
     return camera3_fixup_construct_default_request_settings(metadata, type);
 }
 
@@ -135,7 +120,7 @@ static int camera3_process_capture_request(const camera3_device_t *device, camer
     if (!device)
         return -1;
 
-    return VENDOR_CALL_RESULT(device, process_capture_request, request);
+    return VENDOR_CALL(device, process_capture_request, request);
 }
 
 static void camera3_get_metadata_vendor_tag_ops(const camera3_device *device, vendor_tag_query_ops_t* ops)
@@ -168,7 +153,7 @@ static int camera3_flush(const camera3_device_t* device)
     if (!device)
         return -1;
 
-    return 0; // VENDOR_CALL_RESULT(device, flush);
+    return VENDOR_CALL(device, flush);
 }
 
 static int camera3_device_close(hw_device_t *device)
@@ -260,14 +245,14 @@ int camera3_device_open(const hw_module_t *module, const char *name,
         memset(camera3_ops, 0, sizeof(*camera3_ops));
 
         camera3_device->base.common.tag = HARDWARE_DEVICE_TAG;
-        camera3_device->base.common.version = CAMERA_DEVICE_API_VERSION_3_2;
+        camera3_device->base.common.version = CAMERA_DEVICE_API_VERSION_3_4;
         camera3_device->base.common.module = (hw_module_t *)(module);
         camera3_device->base.common.close = camera3_device_close;
         camera3_device->base.ops = camera3_ops;
 
         camera3_ops->initialize = camera3_initialize;
         camera3_ops->configure_streams = camera3_configure_streams;
-        camera3_ops->register_stream_buffers = camera3_register_stream_buffers;
+        camera3_ops->register_stream_buffers = NULL;
         camera3_ops->construct_default_request_settings = camera3_construct_default_request_settings;
         camera3_ops->process_capture_request = camera3_process_capture_request;
         camera3_ops->get_metadata_vendor_tag_ops = camera3_get_metadata_vendor_tag_ops;
