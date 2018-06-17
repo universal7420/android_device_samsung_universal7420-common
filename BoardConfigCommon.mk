@@ -234,7 +234,7 @@ DEVICE_MANIFEST_FILE += device/samsung/zero-common/configs/manifest.xml
 #
 # NFC
 #
-BOARD_NFC_HAL_SUFFIX := universal7420
+BOARD_NFC_HAL_SUFFIX := universal7420.unused
 
 #
 # OpenMAX

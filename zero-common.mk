@@ -277,7 +277,8 @@ PRODUCT_PACKAGES += \
 	Tag \
 	com.android.nfc_extras \
 	android.hardware.nfc@1.0-impl \
-	android.hardware.nfc@1.0-service
+	android.hardware.nfc@1.0-service \
+	nfc_nci.universal7420
 
 #
 # Overlays
