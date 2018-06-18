@@ -126,8 +126,24 @@ static uint64_t get_authenticator_id(struct fingerprint_device *dev)
 static int cancel(struct fingerprint_device *dev)
 {
     device_t *device = (device_t *) dev;
+    fingerprint_msg_t *cancel_msg;
+    int ret = 0;
 
-    return device->vendor.device->cancel(device->vendor.device);
+    ret = device->vendor.device->cancel(device->vendor.device);
+
+	if (!ret) {
+        cancel_msg = (fingerprint_msg_t *)malloc(sizeof(fingerprint_msg_t));
+        memset(cancel_msg, 0, sizeof(fingerprint_msg_t));
+
+        cancel_msg->type = FINGERPRINT_ERROR;
+        cancel_msg->data.error = FINGERPRINT_ERROR_CANCELED;
+
+        original_notify(cancel_msg);
+
+		free(cancel_msg);
+	}
+
+    return ret;
 }
 
 static int enumerate(struct fingerprint_device *dev)
