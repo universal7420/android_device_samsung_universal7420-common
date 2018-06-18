@@ -70,3 +70,16 @@ gralloc
 ## NFC
 BrcmNfcJni
 BrcmNfcNfa
+
+## Radio - USE WITH CAUTION
+ARGOS
+CAT
+CSST
+DCT
+RILD
+RILC
+RILClient
+RILJ
+RIL_SAP
+SIMRecords
+SST
