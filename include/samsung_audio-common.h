@@ -19,6 +19,7 @@
 #define SAMSUNG_AUDIO_COMMON_H
 
 #include <zero-helpers.h>
+#include <hardware/ril.h>
 
 /*
  * Sound card specific defines.
