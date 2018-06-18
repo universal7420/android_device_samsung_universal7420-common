@@ -88,6 +88,17 @@ logd.logpersistd.size=1024
 logd.logpersistd.size.rotate=64
 
 #
+# Logging Suppression
+#
+log.tag.bauth_FPBAuthSensorControl=S
+log.tag.bauth_FPBAuthServiceStorage=S
+log.tag.bauth_FPBAuthService=S
+log.tag.BrcmNfcJni=S
+log.tag.BrcmNfcNfa=S
+log.tag.TLC_BAUTH=S
+log.tag.tlc_communication=S
+
+#
 # Media
 #
 media.sf.omx-plugin=libffmpeg_omx.so,libsomxcore.so
