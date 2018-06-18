@@ -155,6 +155,9 @@ elif [ "$RILCHIP_STATE" == "stop" ]; then
 		svc_stop ril-daemon1
 	fi
 
+	# FIXUP: disable RIL-wakelock after stopping the services
+	echo "radio-interface" > /sys/power/wake_unlock
+
 elif [ "$RILCHIP_STATE" == "restart" ]; then
 
 	# stop everything
