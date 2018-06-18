@@ -88,13 +88,13 @@ on property:persist.sys.cpboot=disable
 #
 # Start all RIL daemons if a property-change requests it
 #
-on property:ro.radio.noril=0
+on property:ro.radio.noril=no
 	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh start
 
 #
 # Stop all RIL daemons if a property-change requests it
 #
-on property:ro.radio.noril=1
+on property:ro.radio.noril=yes
 	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh stop
 
 #
@@ -102,3 +102,9 @@ on property:ro.radio.noril=1
 #
 on property:vold.decrypt=trigger_post_fs_data
 	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh restart
+
+#
+# Run late-init commands for final ro.radio.noril-checks
+#
+on property:init.svc.bootanim=stopped
+	exec u:r:su:s0 root root -- /system/bin/sh /init.rilchip.sh late-init

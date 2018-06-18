@@ -89,10 +89,25 @@ if [ "$RILCHIP_STATE" == "init" ]; then
 		$RILCHIP_RESETPROP ro.telephony.ril.config         simactivation
 	fi
 
+elif [ "$RILCHIP_STATE" == "late-init" ]; then
+
+	NORIL=$(getprop ro.ril.noril)
+
+	# If RIL is disabled, stop everything
+	if [ "$NORIL" == "1" ] || ["$NORIL" == "yes" ]; then
+		/system/bin/sh $0 stop
+	fi
+
 elif [ "$RILCHIP_STATE" == "start" ]; then
 
 	SIMSLOT_COUNT=$(cat /proc/simslot_count)
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
+
+	# on QC-modem devices we need to control other services too
+	if [ -f /system/bin/qmuxd ]; then
+		svc_start qmuxd
+		svc_start mdm_helper_proxy
+	fi
 
 	# start modem boot daemon
 	svc_start cpboot-daemon
@@ -109,6 +124,12 @@ elif [ "$RILCHIP_STATE" == "stop" ]; then
 
 	SIMSLOT_COUNT=$(cat /proc/simslot_count)
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
+
+	# on QC-modem devices we need to control other services too
+	if [ -f /system/bin/qmuxd ]; then
+		svc_stop qmuxd
+		svc_stop mdm_helper_proxy
+	fi
 
 	# stop modem boot daemon
 	svc_stop cpboot-daemon
