@@ -33,8 +33,11 @@ ExynosCameraActivityControl
 ExynosCameraActivityFlash
 ExynosCameraActivitySpecialCapture
 ExynosCameraBufferManager
+ExynosCameraFrame
+ExynosCameraFrameFactory
 ExynosCameraFrameFactory3aaIspTpu
 ExynosCameraFrameManager
+ExynosCameraFrameSelector
 ExynosCameraMCPipe
 ExynosCameraMetadataConverter
 ExynosCameraNode
@@ -44,15 +47,20 @@ ExynosCameraPipe3AC
 ExynosCameraPipeFlite
 ExynosCameraPipeGSC
 ExynosCameraPipeISPC
+ExynosCameraPipeJpeg
 ExynosCameraRequestManager
+ExynosCameraSensorInfo
 ExynosCameraStreamManager
 ExynosCameraUtils
+ExynosJpegEncoderForCamera
 SecCameraPreviewFrameScheduler
+UniPlugin
 
 ## Fingerprint
 bauth_FPBAuthSensorControl
 bauth_FPBAuthServiceStorage
 bauth_FPBAuthService
+bauth_service
 TLC_BAUTH
 tlc_communication
 
