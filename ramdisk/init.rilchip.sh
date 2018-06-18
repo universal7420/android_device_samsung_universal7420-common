@@ -43,7 +43,7 @@ function debug {
 
 function svc_start {
 	if [ "$(getprop init.svc.$1)" == "running" ]; then
-		warn "failed ot start $1: already running!"
+		warn "failed to start $1: already running!"
 		return 0
 	fi
 
@@ -53,7 +53,7 @@ function svc_start {
 
 function svc_stop {
 	if [ "$(getprop init.svc.$1)" == "stopped" ]; then
-		warn "failed ot start $1: already stopped!"
+		warn "failed to stop $1: already stopped!"
 		return 0
 	fi
 
@@ -70,11 +70,12 @@ debug "rilchip command: \"$RILCHIP_STATE\""
 if [ "$RILCHIP_STATE" == "init" ]; then
 
 	if [ ! -f /proc/simslot_count ]; then
-		error "cannot find /proc/simslot_count..."
-		exit 0
+		error "cannot find /proc/simslot_count, assuming 1"
+		SIMSLOT_COUNT=1
+	else
+		SIMSLOT_COUNT=$(cat /proc/simslot_count)
 	fi
 
-	SIMSLOT_COUNT=$(cat /proc/simslot_count)
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	if [ "$SIMSLOT_COUNT" == "1" ]; then
@@ -100,7 +101,13 @@ elif [ "$RILCHIP_STATE" == "late-init" ]; then
 
 elif [ "$RILCHIP_STATE" == "start" ]; then
 
-	SIMSLOT_COUNT=$(cat /proc/simslot_count)
+	if [ ! -f /proc/simslot_count ]; then
+		error "cannot find /proc/simslot_count, assuming 1"
+		SIMSLOT_COUNT=1
+	else
+		SIMSLOT_COUNT=$(cat /proc/simslot_count)
+	fi
+
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	# on QC-modem devices we need to control other services too
@@ -122,7 +129,13 @@ elif [ "$RILCHIP_STATE" == "start" ]; then
 
 elif [ "$RILCHIP_STATE" == "stop" ]; then
 
-	SIMSLOT_COUNT=$(cat /proc/simslot_count)
+	if [ ! -f /proc/simslot_count ]; then
+		error "cannot find /proc/simslot_count, assuming 1"
+		SIMSLOT_COUNT=1
+	else
+		SIMSLOT_COUNT=$(cat /proc/simslot_count)
+	fi
+
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	# on QC-modem devices we need to control other services too
@@ -156,8 +169,20 @@ elif [ "$RILCHIP_STATE" == "restart" ]; then
 
 elif [ "$RILCHIP_STATE" == "status" ]; then
 
-	SIMSLOT_COUNT=$(cat /proc/simslot_count)
+	if [ ! -f /proc/simslot_count ]; then
+		error "cannot find /proc/simslot_count, assuming 1"
+		SIMSLOT_COUNT=1
+	else
+		SIMSLOT_COUNT=$(cat /proc/simslot_count)
+	fi
+
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
+
+	# dump QC-modem daemons
+	if [ -f /system/bin/qmuxd ]; then
+		svc_status qmuxd
+		svc_status mdm_helper_proxy
+	fi
 
 	# dump modem boot daemon
 	svc_status cpboot-daemon
