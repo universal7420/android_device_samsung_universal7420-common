@@ -36,6 +36,7 @@
 #endif
 
 #define SEC_NFC_WRITE_DUMP_LEN  24
+#define SEC_NFC_WRITE_DUMP_BUF_SIZE  (SEC_NFC_WRITE_DUMP_LEN * 3)
 
 static union {
     const nfc_nci_module_t *module;
@@ -102,7 +103,7 @@ void sec_nfc_data_callback(
 
 #ifdef LOG_VDEBUG
 	int i = 0, j = 0;
-	char data_dump_buf[48];
+	char data_dump_buf[SEC_NFC_WRITE_DUMP_BUF_SIZE];
 #endif
 
 #ifdef LOG_VDEBUG
@@ -129,7 +130,7 @@ static int sec_nfc_write(
 	int ret = 0;
 #ifdef LOG_VDEBUG
 	int i = 0, j = 0;
-	char data_dump_buf[48];
+	char data_dump_buf[SEC_NFC_WRITE_DUMP_BUF_SIZE];
 #endif
 
 	ALOGV("%s(%p): enter(%d, %p)", __FUNCTION__, sec_dev, data_len, p_data);
