@@ -39,16 +39,16 @@
 #define SEC_NFC_WRITE_DUMP_BUF_SIZE  (SEC_NFC_WRITE_DUMP_LEN * 3)
 
 static union {
-    const nfc_nci_module_t *module;
-    const hw_module_t *hw_module;
+	const nfc_nci_module_t *module;
+	const hw_module_t *hw_module;
 } nfc_nci_vendor;
 
 const sec_nfc_nci_device_t *current_sec_dev;
 
 static int sec_nfc_open(
-		const struct nfc_nci_device* dev,
-		nfc_stack_callback_t* p_cback,
-		nfc_stack_data_callback_t* p_data_cback)
+        const struct nfc_nci_device* dev,
+        nfc_stack_callback_t* p_cback,
+        nfc_stack_data_callback_t* p_data_cback)
 {
 	const sec_nfc_nci_device_t *sec_dev = (sec_nfc_nci_device_t *)dev;
 	int ret = 0;
@@ -62,9 +62,9 @@ static int sec_nfc_open(
 	}
 
 	ret = sec_dev->vendor.device->open(
-		dev,
-		sec_nfc_callback,
-		sec_nfc_data_callback);
+	    dev,
+	    sec_nfc_callback,
+	    sec_nfc_data_callback);
 
 	// store current SEC NFC instance
 	current_sec_dev = sec_dev;
@@ -79,8 +79,8 @@ exit:
 }
 
 void sec_nfc_callback(
-		nfc_event_t event,
-		nfc_status_t event_status)
+        nfc_event_t event,
+        nfc_status_t event_status)
 {
 	ALOGV("%s: enter(%d, %d)", __FUNCTION__, event, event_status);
 
@@ -93,8 +93,8 @@ void sec_nfc_callback(
 }
 
 void sec_nfc_data_callback(
-		uint16_t data_len,
-		uint8_t* p_data)
+        uint16_t data_len,
+        uint8_t* p_data)
 {
 	ALOGV("%s: enter(%d, %p)", __FUNCTION__, data_len, p_data);
 
@@ -122,9 +122,9 @@ void sec_nfc_data_callback(
 }
 
 static int sec_nfc_write(
-		const struct nfc_nci_device* dev,
-		uint16_t data_len,
-		const uint8_t* p_data)
+        const struct nfc_nci_device* dev,
+        uint16_t data_len,
+        const uint8_t* p_data)
 {
 	const sec_nfc_nci_device_t *sec_dev = (sec_nfc_nci_device_t *)dev;
 	int ret = 0;
@@ -152,8 +152,8 @@ static int sec_nfc_write(
 }
 
 static int sec_nfc_core_initialized(
-		const struct nfc_nci_device* dev,
-		uint8_t* p_core_init_rsp_params)
+        const struct nfc_nci_device* dev,
+        uint8_t* p_core_init_rsp_params)
 {
 	const sec_nfc_nci_device_t *sec_dev = (sec_nfc_nci_device_t *)dev;
 	int ret = 0;
@@ -167,7 +167,7 @@ static int sec_nfc_core_initialized(
 }
 
 static int sec_nfc_pre_discover(
-		const struct nfc_nci_device* dev)
+        const struct nfc_nci_device* dev)
 {
 	const sec_nfc_nci_device_t *sec_dev = (sec_nfc_nci_device_t *)dev;
 	int ret = 0;
@@ -181,7 +181,7 @@ static int sec_nfc_pre_discover(
 }
 
 static int sec_nfc_close(
-		const struct nfc_nci_device* dev)
+        const struct nfc_nci_device* dev)
 {
 	const sec_nfc_nci_device_t *sec_dev = (sec_nfc_nci_device_t *)dev;
 	int ret = 0;
@@ -202,7 +202,7 @@ static int sec_nfc_close(
 }
 
 static int sec_nfc_control_granted(
-		const struct nfc_nci_device* dev)
+        const struct nfc_nci_device* dev)
 {
 	const sec_nfc_nci_device_t *sec_dev = (sec_nfc_nci_device_t *)dev;
 	int ret = 0;
@@ -216,7 +216,7 @@ static int sec_nfc_control_granted(
 }
 
 static int sec_nfc_power_cycle(
-		const struct nfc_nci_device* dev)
+        const struct nfc_nci_device* dev)
 {
 	const sec_nfc_nci_device_t *sec_dev = (sec_nfc_nci_device_t *)dev;
 	int ret = 0;
@@ -230,7 +230,7 @@ static int sec_nfc_power_cycle(
 }
 
 static int hal_close(
-		hw_device_t *dev)
+        hw_device_t *dev)
 {
 	ALOGV("%s(%p): enter", __FUNCTION__, dev);
 
@@ -241,9 +241,9 @@ static int hal_close(
 }
 
 static int hal_open(
-		const hw_module_t* module,
-		const char* name,
-		hw_device_t** device)
+        const hw_module_t* module,
+        const char* name,
+        hw_device_t** device)
 {
 	sec_nfc_nci_device_t *dev = NULL;
 	int ret = 0;
@@ -298,23 +298,23 @@ static int hal_open(
 	// Vendor NCI HAL
 	if (!nfc_nci_vendor.module) {
 		ret = hw_get_module_by_class(
-			"nfc_nci",
-			"vendor",
-			&nfc_nci_vendor.hw_module);
+		    "nfc_nci",
+		    "vendor",
+		    &nfc_nci_vendor.hw_module);
 		if (ret) {
 			ALOGE("%s(%p): failed to load NFC NCI vendor module: %s (%d)", __FUNCTION__, module, strerror(-ret), -ret);
 			goto exit;
 		}
 	}
 
-    ret = nfc_nci_vendor.module->common.methods->open(
-		nfc_nci_vendor.hw_module,
-		name,
-		&dev->vendor.hw_device);
-    if (ret) {
+	ret = nfc_nci_vendor.module->common.methods->open(
+	    nfc_nci_vendor.hw_module,
+	    name,
+	    &dev->vendor.hw_device);
+	if (ret) {
 		ALOGE("%s(%p): failed to open NFC NCI vendor HAL: %s (%d)", __FUNCTION__, module, strerror(-ret), -ret);
 		goto exit;
-    }
+	}
 
 	*device = (hw_device_t *)dev;
 

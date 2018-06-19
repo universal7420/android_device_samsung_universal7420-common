@@ -36,50 +36,50 @@ typedef struct sec_nfc_nci_device {
 	sec_nfc_data_t *device;
 	sec_nfc_callbacks_t *callbacks;
 
-    union {
-        nfc_nci_device_t *device;
-        hw_device_t *hw_device;
-    } vendor;
+	union {
+		nfc_nci_device_t *device;
+		hw_device_t *hw_device;
+	} vendor;
 } sec_nfc_nci_device_t;
 
 static int sec_nfc_open(
-		const struct nfc_nci_device* dev,
-		nfc_stack_callback_t* p_cback,
-		nfc_stack_data_callback_t* p_data_cback);
+        const struct nfc_nci_device* dev,
+        nfc_stack_callback_t* p_cback,
+        nfc_stack_data_callback_t* p_data_cback);
 
 void sec_nfc_callback(
-		nfc_event_t event,
-		nfc_status_t event_status);
+        nfc_event_t event,
+        nfc_status_t event_status);
 
 void sec_nfc_data_callback(
-		uint16_t data_len,
-		uint8_t* p_data);
+        uint16_t data_len,
+        uint8_t* p_data);
 
 static int sec_nfc_write(
-		const struct nfc_nci_device* dev,
-		uint16_t data_len,
-		const uint8_t* p_data);
+        const struct nfc_nci_device* dev,
+        uint16_t data_len,
+        const uint8_t* p_data);
 
 static int sec_nfc_core_initialized(
-		const struct nfc_nci_device* dev,
-		uint8_t* p_core_init_rsp_params);
+        const struct nfc_nci_device* dev,
+        uint8_t* p_core_init_rsp_params);
 
 static int sec_nfc_pre_discover(
-		const struct nfc_nci_device* dev);
+        const struct nfc_nci_device* dev);
 
 static int sec_nfc_close(
-		const struct nfc_nci_device* dev);
+        const struct nfc_nci_device* dev);
 
 static int sec_nfc_control_granted(
-		const struct nfc_nci_device* dev);
+        const struct nfc_nci_device* dev);
 
 static int sec_nfc_power_cycle(
-		const struct nfc_nci_device* dev);
+        const struct nfc_nci_device* dev);
 
 static int hal_open(
-		const hw_module_t* module,
-		const char* name,
-		hw_device_t** device);
+        const hw_module_t* module,
+        const char* name,
+        hw_device_t** device);
 		
 static int hal_close(
-		hw_device_t *dev);
+        hw_device_t *dev);
