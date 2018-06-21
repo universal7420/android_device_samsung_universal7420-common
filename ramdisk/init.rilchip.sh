@@ -36,9 +36,7 @@ function error {
 }
 
 function debug {
-	if [ ! -z $RILCHIP_DEBUG ]; then
-		log "D" "$1"
-	fi
+	log "D" "$1"
 }
 
 function svc_start {
@@ -66,6 +64,13 @@ function svc_status {
 }
 
 debug "rilchip command: \"$RILCHIP_STATE\""
+
+debug "baseband: \"$(getprop ro.boot.baseband)\""
+if [ "$(getprop ro.boot.baseband)" == "mdm2" ]; then
+	IS_QC_DEVICE=1
+else
+	IS_QC_DEVICE=0
+fi
 
 if [ "$RILCHIP_STATE" == "init" ]; then
 
@@ -111,7 +116,7 @@ elif [ "$RILCHIP_STATE" == "start" ]; then
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	# on QC-modem devices we need to control other services too
-	if [ -f /system/bin/qmuxd ]; then
+	if [ $IS_QC_DEVICE == 1 ]; then
 		svc_start qmuxd
 		svc_start mdm_helper_proxy
 	fi
@@ -139,7 +144,7 @@ elif [ "$RILCHIP_STATE" == "stop" ]; then
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	# on QC-modem devices we need to control other services too
-	if [ -f /system/bin/qmuxd ]; then
+	if [ $IS_QC_DEVICE == 1 ]; then
 		svc_stop qmuxd
 		svc_stop mdm_helper_proxy
 	fi
@@ -182,7 +187,7 @@ elif [ "$RILCHIP_STATE" == "status" ]; then
 	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	# dump QC-modem daemons
-	if [ -f /system/bin/qmuxd ]; then
+	if [ $IS_QC_DEVICE == 1 ]; then
 		svc_status qmuxd
 		svc_status mdm_helper_proxy
 	fi
