@@ -102,6 +102,7 @@ static bool zero_audio_supports_audience() {
 	switch (model) {
 		case TMOBILE:
 		case CANADA:
+		case SPRINT:
 			return true;
 		default:
 			return false;
