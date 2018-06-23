@@ -65,23 +65,22 @@ function svc_status {
 
 debug "rilchip command: \"$RILCHIP_STATE\""
 
-debug "baseband: \"$(getprop ro.boot.baseband)\""
 if [ "$(getprop ro.boot.baseband)" == "mdm2" ]; then
 	IS_QC_DEVICE=1
 else
 	IS_QC_DEVICE=0
 fi
+debug "baseband: \"$(getprop ro.boot.baseband)\""
+
+if [ ! -f /proc/simslot_count ]; then
+	error "cannot find /proc/simslot_count, assuming 1"
+	SIMSLOT_COUNT=1
+else
+	SIMSLOT_COUNT=$(cat /proc/simslot_count)
+fi
+debug "simslot count: $SIMSLOT_COUNT"
 
 if [ "$RILCHIP_STATE" == "init" ]; then
-
-	if [ ! -f /proc/simslot_count ]; then
-		error "cannot find /proc/simslot_count, assuming 1"
-		SIMSLOT_COUNT=1
-	else
-		SIMSLOT_COUNT=$(cat /proc/simslot_count)
-	fi
-
-	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	if [ "$SIMSLOT_COUNT" == "1" ]; then
 		# RIL configuration
@@ -106,15 +105,6 @@ elif [ "$RILCHIP_STATE" == "late-init" ]; then
 
 elif [ "$RILCHIP_STATE" == "start" ]; then
 
-	if [ ! -f /proc/simslot_count ]; then
-		error "cannot find /proc/simslot_count, assuming 1"
-		SIMSLOT_COUNT=1
-	else
-		SIMSLOT_COUNT=$(cat /proc/simslot_count)
-	fi
-
-	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
-
 	# on QC-modem devices we need to control other services too
 	if [ $IS_QC_DEVICE == 1 ]; then
 		svc_start qmuxd
@@ -133,15 +123,6 @@ elif [ "$RILCHIP_STATE" == "start" ]; then
 	fi
 
 elif [ "$RILCHIP_STATE" == "stop" ]; then
-
-	if [ ! -f /proc/simslot_count ]; then
-		error "cannot find /proc/simslot_count, assuming 1"
-		SIMSLOT_COUNT=1
-	else
-		SIMSLOT_COUNT=$(cat /proc/simslot_count)
-	fi
-
-	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	# on QC-modem devices we need to control other services too
 	if [ $IS_QC_DEVICE == 1 ]; then
@@ -176,15 +157,6 @@ elif [ "$RILCHIP_STATE" == "restart" ]; then
 	/system/bin/sh $0 start
 
 elif [ "$RILCHIP_STATE" == "status" ]; then
-
-	if [ ! -f /proc/simslot_count ]; then
-		error "cannot find /proc/simslot_count, assuming 1"
-		SIMSLOT_COUNT=1
-	else
-		SIMSLOT_COUNT=$(cat /proc/simslot_count)
-	fi
-
-	debug "SIMSLOT_COUNT = $SIMSLOT_COUNT"
 
 	# dump QC-modem daemons
 	if [ $IS_QC_DEVICE == 1 ]; then
