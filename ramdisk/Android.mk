@@ -8,23 +8,29 @@ LOCAL_SRC_FILES		:= fstab.samsungexynos7420
 LOCAL_MODULE_PATH	:= $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
-ifneq ($(filter zerofltespr zeroltespr,$(TARGET_DEVICE)),)
 include $(CLEAR_VARS)
 LOCAL_MODULE            := init.baseband.rc
 LOCAL_MODULE_TAGS       := optional eng
 LOCAL_MODULE_CLASS      := ETC
-LOCAL_SRC_FILES         := init.baseband.rc.cdma
+  ifneq ($(filter zerofltespr zeroltespr,$(TARGET_DEVICE)),)
+    LOCAL_SRC_FILES       := init.baseband.rc.cdma
+  else
+    LOCAL_SRC_FILES       := init.baseband.rc.gsm
+  endif
 LOCAL_MODULE_PATH       := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
-else
+
 include $(CLEAR_VARS)
-LOCAL_MODULE            := init.baseband.rc
+LOCAL_MODULE            := init.rilchip.prop
 LOCAL_MODULE_TAGS       := optional eng
 LOCAL_MODULE_CLASS      := ETC
-LOCAL_SRC_FILES         := init.baseband.rc.gsm
+  ifneq ($(filter zerofltespr zeroltespr,$(TARGET_DEVICE)),)
+    LOCAL_SRC_FILES       := init.rilchip.prop.cdma
+  else
+    LOCAL_SRC_FILES       := init.rilchip.prop.gsm
+  endif
 LOCAL_MODULE_PATH       := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
-endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE            := init.battery.rc

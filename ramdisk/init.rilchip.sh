@@ -109,10 +109,10 @@ elif [ "$RILCHIP_STATE" == "start" ]; then
 	if [ $IS_QC_DEVICE == 1 ]; then
 		svc_start qmuxd
 		svc_start mdm_helper_proxy
+	else
+		# start modem boot daemon (not needed on QC-devices)
+		svc_start cpboot-daemon
 	fi
-
-	# start modem boot daemon
-	svc_start cpboot-daemon
 
 	# start slot1 daemon
 	svc_start ril-daemon
@@ -128,10 +128,10 @@ elif [ "$RILCHIP_STATE" == "stop" ]; then
 	if [ $IS_QC_DEVICE == 1 ]; then
 		svc_stop qmuxd
 		svc_stop mdm_helper_proxy
+	else
+		# stop modem boot daemon (not needed on QC-devices)
+		svc_stop cpboot-daemon
 	fi
-
-	# stop modem boot daemon
-	svc_stop cpboot-daemon
 
 	# stop slot1 daemon
 	svc_stop ril-daemon
@@ -162,10 +162,10 @@ elif [ "$RILCHIP_STATE" == "status" ]; then
 	if [ $IS_QC_DEVICE == 1 ]; then
 		svc_status qmuxd
 		svc_status mdm_helper_proxy
+	else
+		# dump modem boot daemon (not needed on QC-devices)
+		svc_status cpboot-daemon
 	fi
-
-	# dump modem boot daemon
-	svc_status cpboot-daemon
 
 	# dump slot1 daemon
 	svc_status ril-daemon

@@ -1,0 +1,14 @@
+#
+# Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2017 The LineageOS Project
+# Copyright (C)      TeamNexus
+#
+
+persist.radio.snapshot_enabled=1
+persist.radio.snapshot_timer=22
+persist.eons.enabled=false
+telephony.lteOnCdmaDevice=1
+persist.rmnet.mux=enabled
+persist.cne.feature=0
+persist.radio.lte_vrte_ltd=1
+persist.security.ams.enforcing=1

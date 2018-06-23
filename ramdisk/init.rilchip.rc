@@ -17,33 +17,6 @@
 #
 
 #
-# RIL daemon for slot1
-#
-service ril-daemon /vendor/bin/hw/rild -c 1
-	class main
-	socket rild stream 660 system radio
-	socket sap_uim_socket1 stream 660 bluetooth bluetooth
-	socket rild-debug stream 660 system radio
-	user radio
-	group radio cache inet misc audio sdcard_r sdcard_rw log vpn system readproc wakelock qcom_diag
-	capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
-	onrestart restart cpboot-daemon
-	disabled
-
-#
-# RIL daemon for slot2
-#
-service ril-daemon1 /vendor/bin/hw/rild -c 2 -s dsds
-	class main
-	socket rild2 stream 660 system radio
-	socket rild-debug2 stream 660 system radio
-	user radio
-	group radio cache inet misc audio sdcard_r sdcard_rw log vpn system readproc wakelock qcom_diag
-	capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
-	onrestart restart cpboot-daemon
-	disabled
-
-#
 # Assign TCP buffer thresholds to be ceiling value of technology maximums
 # Increased technology maximums should be reflected here.
 #

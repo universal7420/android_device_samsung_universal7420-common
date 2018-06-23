@@ -3,6 +3,10 @@ on early-init
     mkdir /cpdump 0771 system system
     mkdir /efs 0771 radio system
 
+on init
+#carrier
+    mkdir /carrier 0771 system system
+
 on post-fs-data
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
@@ -46,6 +50,38 @@ on fs
     chmod 0775 /dev/block/platform/15570000.ufs/by-name
 
     mount tmpfs tmpfs /cpdump size=150M,mode=0700,uid=0,gid=0
+
+#carrier
+    wait /dev/block/platform/15570000.ufs/by-name/CARRIER
+    check_fs /dev/block/platform/15570000.ufs/by-name/CARRIER ext4
+    mount ext4 /dev/block/platform/15570000.ufs/by-name/CARRIER /carrier nosuid nodev barrier=1
+    chown system system /carrier
+    chmod 0771 /carrier
+
+#
+# RIL daemon for slot1
+#
+service ril-daemon /vendor/bin/hw/rild -c 1
+	class main
+    socket rild stream 660 root radio
+    socket rild-debug stream 660 radio system
+    socket rild-cas stream 660 casdrm mmb
+	user root
+	group radio cache inet misc audio sdcard_r sdcard_rw log vpn system readproc wakelock qcom_diag
+	capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+	disabled
+
+#
+# RIL daemon for slot2
+#
+service ril-daemon1 /system/bin/rild -c 2
+    class main
+    socket rild2 stream 660 root radio
+    socket rild-debug2 stream 660 radio system
+    user root
+    group radio cache inet misc audio log vpn qcom_diag system drmrpc sdcard_r sdcard_rw diag readproc wakelock
+	capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+    disabled
 
 # AT Distributor for factory test
 service at_distributor /system/bin/at_distributor

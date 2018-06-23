@@ -358,6 +358,7 @@ PRODUCT_PACKAGES += \
 	init.baseband.rc \
 	init.battery.rc \
 	init.power.rc \
+	init.rilchip.prop \
 	init.rilchip.rc \
 	init.rilchip.sh \
 	init.samsungexynos7420.rc \
