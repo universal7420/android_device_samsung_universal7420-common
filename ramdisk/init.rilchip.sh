@@ -100,7 +100,7 @@ elif [ "$RILCHIP_STATE" == "late-init" ]; then
 	NORIL=$(getprop ro.ril.noril)
 
 	# If RIL is disabled, stop everything
-	if [ "$NORIL" == "1" ] || ["$NORIL" == "yes" ] || [ $IS_QC_DEVICE == 1 ]; then
+	if [[ "$NORIL" == "1" ]] || [[ "$NORIL" == "yes" ]] || [[ $IS_QC_DEVICE == 1 ]]; then
 		/system/bin/sh $0 stop
 	fi
 
