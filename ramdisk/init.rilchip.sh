@@ -50,7 +50,7 @@ function svc_start {
 }
 
 function svc_stop {
-	if [ "$(getprop init.svc.$1)" == "stopped" ]; then
+	if [[ "$(getprop init.svc.$1)" == "stopped" ]] || [[ "$(getprop init.svc.$1)" == "" ]]; then
 		warn "failed to stop $1: already stopped!"
 		return 0
 	fi
