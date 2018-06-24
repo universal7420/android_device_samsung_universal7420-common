@@ -191,8 +191,11 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 	}
 
 	if (profile->hmp.enabled) {
-		profile->hmp.boost     = XML_GET_BOOL("hmp/boost");
-		profile->hmp.semiboost = XML_GET_BOOL("hmp/semiboost");
+		profile->hmp.boost                   = XML_GET_BOOL("hmp/boost");
+		profile->hmp.semiboost               = XML_GET_BOOL("hmp/semiboost");
+		profile->hmp.power_migration         = XML_GET_BOOL("hmp/power_migration");
+		profile->hmp.active_down_migration   = XML_GET_BOOL("hmp/active_down_migration");
+		profile->hmp.aggressive_up_migration = XML_GET_BOOL("hmp/aggressive_up_migration");
 	}
 
 	if (profile->gpu.enabled) {

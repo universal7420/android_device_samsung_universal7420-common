@@ -444,8 +444,11 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 * Kernel Defaults
 	 */
 	if (data->hmp.enabled) {
-		Utils::write("/sys/kernel/hmp/boost", data->hmp.boost);
-		Utils::write("/sys/kernel/hmp/semiboost", data->hmp.semiboost);
+		Utils::write("/sys/kernel/hmp/boost",                   data->hmp.boost);
+		Utils::write("/sys/kernel/hmp/semiboost",               data->hmp.semiboost);
+		Utils::write("/sys/kernel/hmp/power_migration",         data->hmp.power_migration);
+		Utils::write("/sys/kernel/hmp/active_down_migration",   data->hmp.semiboost);
+		Utils::write("/sys/kernel/hmp/aggressive_up_migration", data->hmp.aggressive_up_migration);
 	}
 
 	if (data->kernel.enabled) {

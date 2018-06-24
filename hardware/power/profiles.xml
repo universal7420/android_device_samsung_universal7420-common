@@ -226,6 +226,15 @@
 			<!-- {boolean} Whether to put the HMP scheduler into semiboost-mode (split tasks between both clusters) -->
 			<semiboost>false</semiboost>
 
+			<!-- {boolean} Whether to use power-aware task migration instead of the default GTS -->
+			<power_migration>true</power_migration>
+
+			<!-- {boolean} Whether to aggressively migrate tasks onto the little cluster -->
+			<active_down_migration>true</active_down_migration>
+
+			<!-- {boolean} Whether to aggressively migrate tasks onto the big cluster -->
+			<aggressive_up_migration>false</aggressive_up_migration>
+
 		</hmp>
 
 		<kernel>
@@ -371,6 +380,9 @@
 			<enabled>true</enabled>
 			<boost>false</boost>
 			<semiboost>false</semiboost>
+			<power_migration>true</power_migration>
+			<active_down_migration>true</active_down_migration>
+			<aggressive_up_migration>false</aggressive_up_migration>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
@@ -486,6 +498,9 @@
 			<enabled>true</enabled>
 			<boost>false</boost>
 			<semiboost>false</semiboost>
+			<power_migration>true</power_migration>
+			<active_down_migration>true</active_down_migration>
+			<aggressive_up_migration>false</aggressive_up_migration>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
@@ -628,7 +643,10 @@
 		<hmp>
 			<enabled>true</enabled>
 			<boost>false</boost>
-			<semiboost>true</semiboost>
+			<semiboost>false</semiboost>
+			<power_migration>false</power_migration>
+			<active_down_migration>false</active_down_migration>
+			<aggressive_up_migration>false</aggressive_up_migration>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
@@ -773,6 +791,9 @@
 			<enabled>true</enabled>
 			<boost>false</boost>
 			<semiboost>true</semiboost>
+			<power_migration>false</power_migration>
+			<active_down_migration>false</active_down_migration>
+			<aggressive_up_migration>true</aggressive_up_migration>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
@@ -916,6 +937,9 @@
 			<enabled>true</enabled>
 			<boost>true</boost>
 			<semiboost>false</semiboost>
+			<power_migration>false</power_migration>
+			<active_down_migration>false</active_down_migration>
+			<aggressive_up_migration>false</aggressive_up_migration>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
