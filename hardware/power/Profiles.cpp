@@ -178,6 +178,9 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 	profile->cpu.atlas.cores.enabled  = XML_GET_BOOL("cpu/atlas/cores/enabled", "false");
 	profile->cpusets.enabled          = XML_GET_BOOL("cpusets/enabled", "false");
 	profile->hmp.enabled              = XML_GET_BOOL("hmp/enabled", "false");
+	profile->hmp.threshold.enabled    = XML_GET_BOOL("hmp/threshold/enabled", "false");
+	profile->hmp.sb_threshold.enabled = XML_GET_BOOL("hmp/sb_threshold/enabled", "false");
+	profile->hmp.enabled              = XML_GET_BOOL("hmp/enabled", "false");
 	profile->gpu.enabled              = XML_GET_BOOL("gpu/enabled", "false");
 	profile->gpu.dvfs.enabled         = XML_GET_BOOL("gpu/dvfs/enabled", "false");
 	profile->gpu.highspeed.enabled    = XML_GET_BOOL("gpu/highspeed/enabled", "false");
@@ -218,6 +221,14 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 		profile->hmp.power_migration         = XML_GET_BOOL("hmp/power_migration", "false");
 		profile->hmp.active_down_migration   = XML_GET_BOOL("hmp/active_down_migration", "false");
 		profile->hmp.aggressive_up_migration = XML_GET_BOOL("hmp/aggressive_up_migration", "false");
+		if (profile->hmp.threshold.enabled) {
+			profile->hmp.threshold.down = XML_GET_UINT("hmp/threshold/down", "214");
+			profile->hmp.threshold.up   = XML_GET_UINT("hmp/threshold/up",   "479");
+		}
+		if (profile->hmp.sb_threshold.enabled) {
+			profile->hmp.sb_threshold.down = XML_GET_UINT("hmp/sb_threshold/down", "150");
+			profile->hmp.sb_threshold.up   = XML_GET_UINT("hmp/sb_threshold/up",   "100");
+		}
 	}
 
 	if (profile->gpu.enabled) {

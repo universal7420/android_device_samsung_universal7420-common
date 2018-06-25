@@ -449,6 +449,14 @@ void Power::setProfile(SecPowerProfiles profile) {
 		Utils::write("/sys/kernel/hmp/power_migration",         data->hmp.power_migration);
 		Utils::write("/sys/kernel/hmp/active_down_migration",   data->hmp.semiboost);
 		Utils::write("/sys/kernel/hmp/aggressive_up_migration", data->hmp.aggressive_up_migration);
+		if (data->hmp.threshold.enabled) {
+			Utils::write("/sys/kernel/hmp/down_threshold",          data->hmp.threshold.down);
+			Utils::write("/sys/kernel/hmp/up_threshold",            data->hmp.threshold.up);
+		}
+		if (data->hmp.sb_threshold.enabled) {
+			Utils::write("/sys/kernel/hmp/sb_down_threshold",       data->hmp.sb_threshold.down);
+			Utils::write("/sys/kernel/hmp/sb_up_threshold",         data->hmp.sb_threshold.up);
+		}
 	}
 
 	if (data->kernel.enabled) {

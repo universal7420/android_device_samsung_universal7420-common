@@ -235,6 +235,34 @@
 			<!-- {boolean} Whether to aggressively migrate tasks onto the big cluster -->
 			<aggressive_up_migration>false</aggressive_up_migration>
 
+			<!-- Default (non-boosted) HMP task migration thresholds -->
+			<threshold>
+
+				<!-- {boolean} Whether to apply HMP default threshold settings or not -->
+				<enabled>true</enabled>
+
+				<!-- {number} Threshold for down-migrating -->
+				<down>214</down>
+
+				<!-- {number} Threshold for up-migrating -->
+				<up>479</up>
+
+			</threshold>
+
+			<!-- Semi-boost HMP task migration thresholds -->
+			<sb_threshold>
+
+				<!-- {boolean} Whether to apply HMP default threshold settings or not -->
+				<enabled>true</enabled>
+
+				<!-- {number} Threshold for down-migrating -->
+				<down>150</down>
+
+				<!-- {number} Threshold for up-migrating -->
+				<up>400</up>
+
+			</sb_threshold>
+
 		</hmp>
 
 		<kernel>
@@ -420,6 +448,16 @@
 			<power_migration>true</power_migration>
 			<active_down_migration>true</active_down_migration>
 			<aggressive_up_migration>false</aggressive_up_migration>
+			<threshold>
+				<enabled>true</enabled>
+				<down>214</down>
+				<up>479</up>
+			</threshold>
+			<threshold>
+				<enabled>true</enabled>
+				<down>150</down>
+				<up>400</up>
+			</threshold>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
@@ -551,6 +589,16 @@
 			<power_migration>true</power_migration>
 			<active_down_migration>true</active_down_migration>
 			<aggressive_up_migration>false</aggressive_up_migration>
+			<threshold>
+				<enabled>true</enabled>
+				<down>214</down>
+				<up>479</up>
+			</threshold>
+			<sb_threshold>
+				<enabled>true</enabled>
+				<down>150</down>
+				<up>400</up>
+			</sb_threshold>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
@@ -618,8 +666,8 @@
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
 					<target_loads>80</target_loads>
-					<timer_rate>20000</timer_rate>
-					<timer_slack>20000</timer_slack>
+					<timer_rate>10000</timer_rate>
+					<timer_slack>0</timer_slack>
 
 					<!-- Single mode -->
 					<single_cluster0_min_freq>0</single_cluster0_min_freq>
@@ -662,8 +710,8 @@
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
 					<target_loads>65 1500000:75</target_loads>
-					<timer_rate>20000</timer_rate>
-					<timer_slack>20000</timer_slack>
+					<timer_rate>10000</timer_rate>
+					<timer_slack>0</timer_slack>
 
 					<!-- Single mode -->
 					<single_cluster0_min_freq>0</single_cluster0_min_freq>
@@ -688,7 +736,7 @@
 			<foreground_boost>4-7</foreground_boost>
 			<background>0-1</background>
 			<system_background>0-3</system_background>
-			<top_app>0-7</top_app>
+			<top_app>4-7</top_app>
 		</cpusets>
 		<gpu>
 			<enabled>true</enabled>
@@ -707,9 +755,19 @@
 			<enabled>true</enabled>
 			<boost>false</boost>
 			<semiboost>false</semiboost>
-			<power_migration>false</power_migration>
+			<power_migration>true</power_migration>
 			<active_down_migration>false</active_down_migration>
 			<aggressive_up_migration>false</aggressive_up_migration>
+			<threshold>
+				<enabled>true</enabled>
+				<down>200</down>
+				<up>400</up>
+			</threshold>
+			<sb_threshold>
+				<enabled>true</enabled>
+				<down>200</down>
+				<up>400</up>
+			</sb_threshold>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
@@ -778,8 +836,8 @@
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
 					<target_loads>80</target_loads>
-					<timer_rate>20000</timer_rate>
-					<timer_slack>20000</timer_slack>
+					<timer_rate>10000</timer_rate>
+					<timer_slack>0</timer_slack>
 
 					<!-- Single mode -->
 					<single_cluster0_min_freq>0</single_cluster0_min_freq>
@@ -822,8 +880,8 @@
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
 					<target_loads>65 1500000:75</target_loads>
-					<timer_rate>20000</timer_rate>
-					<timer_slack>20000</timer_slack>
+					<timer_rate>10000</timer_rate>
+					<timer_slack>0</timer_slack>
 
 					<!-- Single mode -->
 					<single_cluster0_min_freq>400000</single_cluster0_min_freq>
@@ -867,9 +925,19 @@
 			<enabled>true</enabled>
 			<boost>false</boost>
 			<semiboost>true</semiboost>
-			<power_migration>false</power_migration>
+			<power_migration>true</power_migration>
 			<active_down_migration>false</active_down_migration>
 			<aggressive_up_migration>true</aggressive_up_migration>
+			<threshold>
+				<enabled>true</enabled>
+				<down>200</down>
+				<up>400</up>
+			</threshold>
+			<sb_threshold>
+				<enabled>true</enabled>
+				<down>200</down>
+				<up>300</up>
+			</sb_threshold>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>
@@ -895,7 +963,7 @@
 		<slow>
 			<enabled>true</enabled>
 			<mode_toggle>true</mode_toggle>
-			<timer_rate>20000</timer_rate>
+			<timer_rate>10000</timer_rate>
 		</slow>
 		<input_booster>
 			<enabled>true</enabled>
@@ -937,8 +1005,8 @@
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
 					<target_loads>75</target_loads>
-					<timer_rate>20000</timer_rate>
-					<timer_slack>20000</timer_slack>
+					<timer_rate>10000</timer_rate>
+					<timer_slack>0</timer_slack>
 
 					<!-- Single mode -->
 					<single_cluster0_min_freq>0</single_cluster0_min_freq>
@@ -981,8 +1049,8 @@
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
 					<target_loads>65 1500000:75</target_loads>
-					<timer_rate>20000</timer_rate>
-					<timer_slack>20000</timer_slack>
+					<timer_rate>10000</timer_rate>
+					<timer_slack>0</timer_slack>
 
 					<!-- Single mode -->
 					<single_cluster0_min_freq>800000</single_cluster0_min_freq>
@@ -1026,9 +1094,19 @@
 			<enabled>true</enabled>
 			<boost>true</boost>
 			<semiboost>false</semiboost>
-			<power_migration>false</power_migration>
+			<power_migration>true</power_migration>
 			<active_down_migration>false</active_down_migration>
-			<aggressive_up_migration>false</aggressive_up_migration>
+			<aggressive_up_migration>true</aggressive_up_migration>
+			<threshold>
+				<enabled>true</enabled>
+				<down>150</down>
+				<up>300</up>
+			</threshold>
+			<sb_threshold>
+				<enabled>true</enabled>
+				<down>100</down>
+				<up>200</up>
+			</sb_threshold>
 		</hmp>
 		<kernel>
 			<enabled>true</enabled>

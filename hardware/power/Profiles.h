@@ -70,6 +70,16 @@ struct SecPowerProfileCpuCluster {
 
 };
 
+struct SecPowerHmpThreshold {
+
+	bool enabled;
+
+	unsigned int down;
+
+	unsigned int up;
+
+};
+
 struct SecPowerProfile {
 
 	bool enabled;
@@ -113,6 +123,9 @@ struct SecPowerProfile {
 
 		bool active_down_migration;
 		bool aggressive_up_migration;
+
+		SecPowerHmpThreshold threshold;
+		SecPowerHmpThreshold sb_threshold;
 
 	} hmp;
 
