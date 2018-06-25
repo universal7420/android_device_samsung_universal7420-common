@@ -182,6 +182,7 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 	profile->gpu.dvfs.enabled         = XML_GET_BOOL("gpu/dvfs/enabled", "false");
 	profile->gpu.highspeed.enabled    = XML_GET_BOOL("gpu/highspeed/enabled", "false");
 	profile->kernel.enabled           = XML_GET_BOOL("kernel/enabled", "false");
+	profile->runtime_pm.enabled       = XML_GET_BOOL("runtime_pm/enabled", "false");
 	profile->ipa.enabled              = XML_GET_BOOL("ipa/enabled", "false");
 	profile->slow.enabled             = XML_GET_BOOL("slow/enabled", "false");
 	profile->input_booster.enabled    = XML_GET_BOOL("input_booster/enabled", "false");
@@ -232,6 +233,19 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 
 	if (profile->kernel.enabled) {
 		profile->kernel.pewq = XML_GET_BOOL("kernel/pewq", "false");
+	}
+
+	if (profile->runtime_pm.enabled) {
+		profile->runtime_pm.aud  = XML_GET_BOOL("runtime_pm/aud",  "true");
+		profile->runtime_pm.cam0 = XML_GET_BOOL("runtime_pm/cam0", "true");
+		profile->runtime_pm.cam1 = XML_GET_BOOL("runtime_pm/cam1", "true");
+		profile->runtime_pm.disp = XML_GET_BOOL("runtime_pm/disp", "true");
+		profile->runtime_pm.g3d  = XML_GET_BOOL("runtime_pm/g3d",  "true");
+		profile->runtime_pm.isp0 = XML_GET_BOOL("runtime_pm/isp0", "true");
+		profile->runtime_pm.isp1 = XML_GET_BOOL("runtime_pm/isp1", "true");
+		profile->runtime_pm.mfc  = XML_GET_BOOL("runtime_pm/mfc",  "true");
+		profile->runtime_pm.mscl = XML_GET_BOOL("runtime_pm/mscl", "true");
+		profile->runtime_pm.vpp  = XML_GET_BOOL("runtime_pm/vpp",  "true");
 	}
 
 	if (profile->ipa.enabled) {

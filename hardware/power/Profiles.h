@@ -152,6 +152,32 @@ struct SecPowerProfile {
 
 		bool enabled;
 
+		bool aud;
+
+		bool cam0;
+
+		bool cam1;
+
+		bool disp;
+
+		bool g3d;
+
+		bool isp0;
+
+		bool isp1;
+
+		bool mfc;
+
+		bool mscl;
+
+		bool vpp;
+
+	} runtime_pm;
+
+	struct {
+
+		bool enabled;
+
 		int control_temp;
 
 	} ipa;

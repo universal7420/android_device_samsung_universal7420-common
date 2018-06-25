@@ -247,6 +247,43 @@
 
 		</kernel>
 
+		<runtime_pm>
+
+			<!-- {boolean} Whether the Runtime PM-settings should be applied or not -->
+			<enabled>true</enabled>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-aud -->
+			<aud>true</aud>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-cam0 -->
+			<cam0>true</cam0>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-cam1 -->
+			<cam1>true</cam1>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-disp -->
+			<disp>true</disp>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-g3d -->
+			<g3d>true</g3d>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-isp0 -->
+			<isp0>true</isp0>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-isp1 -->
+			<isp1>true</isp1>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-mfc -->
+			<mfc>true</mfc>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-mscl -->
+			<mscl>true</mscl>
+
+			<!-- {boolean} Whether to enable runtime power management to pd-vpp -->
+			<vpp>true</vpp>
+
+		</runtime_pm>
+
 		<ipa>
 
 			<!-- {boolean} Whether the IPA-settings should be applied or not -->
@@ -388,6 +425,19 @@
 			<enabled>true</enabled>
 			<pewq>true</pewq>
 		</kernel>
+		<runtime_pm>
+			<enabled>true</enabled>
+			<aud>true</aud>
+			<cam0>true</cam0>
+			<cam1>true</cam1>
+			<disp>true</disp>
+			<g3d>true</g3d>
+			<isp0>true</isp0>
+			<isp1>true</isp1>
+			<mfc>true</mfc>
+			<mscl>true</mscl>
+			<vpp>true</vpp>
+		</runtime_pm>
 		<ipa>
 			<enabled>true</enabled>
 			<control_temp>55</control_temp>
@@ -506,6 +556,19 @@
 			<enabled>true</enabled>
 			<pewq>false</pewq>
 		</kernel>
+		<runtime_pm>
+			<enabled>true</enabled>
+			<aud>true</aud>
+			<cam0>true</cam0>
+			<cam1>true</cam1>
+			<disp>true</disp>
+			<g3d>true</g3d>
+			<isp0>true</isp0>
+			<isp1>true</isp1>
+			<mfc>true</mfc>
+			<mscl>true</mscl>
+			<vpp>true</vpp>
+		</runtime_pm>
 		<ipa>
 			<enabled>true</enabled>
 			<control_temp>60</control_temp>
@@ -652,6 +715,19 @@
 			<enabled>true</enabled>
 			<pewq>true</pewq>
 		</kernel>
+		<runtime_pm>
+			<enabled>true</enabled>
+			<aud>true</aud>
+			<cam0>true</cam0>
+			<cam1>true</cam1>
+			<disp>true</disp>
+			<g3d>true</g3d>
+			<isp0>true</isp0>
+			<isp1>true</isp1>
+			<mfc>true</mfc>
+			<mscl>true</mscl>
+			<vpp>true</vpp>
+		</runtime_pm>
 		<ipa>
 			<enabled>true</enabled>
 			<control_temp>65</control_temp>
@@ -799,6 +875,19 @@
 			<enabled>true</enabled>
 			<pewq>true</pewq>
 		</kernel>
+		<runtime_pm>
+			<enabled>true</enabled>
+			<aud>true</aud>
+			<cam0>true</cam0>
+			<cam1>true</cam1>
+			<disp>true</disp>
+			<g3d>true</g3d>
+			<isp0>true</isp0>
+			<isp1>true</isp1>
+			<mfc>true</mfc>
+			<mscl>true</mscl>
+			<vpp>true</vpp>
+		</runtime_pm>
 		<ipa>
 			<enabled>true</enabled>
 			<control_temp>70</control_temp>
@@ -945,6 +1034,19 @@
 			<enabled>true</enabled>
 			<pewq>false</pewq>
 		</kernel>
+		<runtime_pm>
+			<enabled>true</enabled>
+			<aud>true</aud>
+			<cam0>true</cam0>
+			<cam1>true</cam1>
+			<disp>true</disp>
+			<g3d>true</g3d>
+			<isp0>true</isp0>
+			<isp1>true</isp1>
+			<mfc>true</mfc>
+			<mscl>true</mscl>
+			<vpp>true</vpp>
+		</runtime_pm>
 		<ipa>
 			<enabled>true</enabled>
 			<control_temp>75</control_temp>
