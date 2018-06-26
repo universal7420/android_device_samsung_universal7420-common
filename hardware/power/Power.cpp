@@ -472,22 +472,6 @@ void Power::setProfile(SecPowerProfiles profile) {
 	}
 
 	/*********************
-	 * Runtime PM Defaults
-	 */
-	if (data->runtime_pm.enabled) {
-		Utils::write("/sys/class/runtime_pm/pd-aud/control",  data->runtime_pm.aud);
-		Utils::write("/sys/class/runtime_pm/pd-cam0/control", data->runtime_pm.cam0);
-		Utils::write("/sys/class/runtime_pm/pd-cam1/control", data->runtime_pm.cam1);
-		Utils::write("/sys/class/runtime_pm/pd-disp/control", data->runtime_pm.disp);
-		Utils::write("/sys/class/runtime_pm/pd-g3d/control",  data->runtime_pm.g3d);
-		Utils::write("/sys/class/runtime_pm/pd-isp0/control", data->runtime_pm.isp0);
-		Utils::write("/sys/class/runtime_pm/pd-isp1/control", data->runtime_pm.isp1);
-		Utils::write("/sys/class/runtime_pm/pd-mfc/control",  data->runtime_pm.mfc);
-		Utils::write("/sys/class/runtime_pm/pd-mscl/control", data->runtime_pm.mscl);
-		Utils::write("/sys/class/runtime_pm/pd-vpp/control",  data->runtime_pm.vpp);
-	}
-
-	/*********************
 	 * Slow Mode Defaults
 	 */
 	if (data->slow.enabled) {
