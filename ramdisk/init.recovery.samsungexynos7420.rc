@@ -3,8 +3,24 @@ on post-fs-data
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
 
+    # CPU frequencies
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 400000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1500000
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 800000
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2100000
+
     # GPU DVFS configuration
     write /sys/devices/14ac0000.mali/dvfs_min_lock 420
+
+    # HMP configuration
+    write /sys/kernel/hmp/boost 1
+    write /sys/kernel/hmp/semiboost 0
+    write /sys/kernel/hmp/power_migration 0
+    write /sys/kernel/hmp/active_down_migration 0
+    write /sys/kernel/hmp/aggressive_up_migration 1
+
+    # IPA configuration
+    write /sys/power/ipa/control_temp 65
 
     # ADB sysfs permisisons
     chown system system /sys/class/android_usb/android0/f_mass_storage/lun/file
