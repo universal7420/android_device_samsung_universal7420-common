@@ -55,6 +55,10 @@ using ::std::map;
 #define PROFILE_STRING(_name) \
 	PROFILE_DEFINE(string, _name)
 
+#define PROFILE_WRITE(_path, _parent, _name) \
+	if (data->_parent.__##_name##_set) \
+		Utils::write(_path, data->_parent._name);
+	
 struct SecPowerProfileCpuCluster {
 
 	PROFILE_BOOL(enabled);

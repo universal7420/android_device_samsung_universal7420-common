@@ -339,7 +339,7 @@ void Power::setProfile(SecPowerProfiles profile) {
 		 * CPU Cluster0
 		 */
 		if (data->cpu.apollo.enabled) {
-			Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", data->cpu.apollo.governor);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", cpu.apollo, governor);
 
 			if (!Utils::updateCpuGov(0)) {
 				ALOGW("Failed to load current cpugov-configuration for APOLLO");
@@ -352,13 +352,13 @@ void Power::setProfile(SecPowerProfiles profile) {
 			// while screen-off it can happen that frequencies get increased too much
 			// make sure our limits are being applied to the then-limiting,
 			// not very reliable, files too
-			Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", data->cpu.apollo.freq_min);
-			Utils::write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", data->cpu.apollo.freq_max);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", cpu.apollo, freq_min);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", cpu.apollo, freq_max);
 
-			Utils::write("/sys/devices/system/cpu/cpu0/online", data->cpu.apollo.cores.core1);
-			Utils::write("/sys/devices/system/cpu/cpu1/online", data->cpu.apollo.cores.core2);
-			Utils::write("/sys/devices/system/cpu/cpu2/online", data->cpu.apollo.cores.core3);
-			Utils::write("/sys/devices/system/cpu/cpu3/online", data->cpu.apollo.cores.core4);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu0/online", cpu.apollo.cores, core1);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu1/online", cpu.apollo.cores, core2);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu2/online", cpu.apollo.cores, core3);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu3/online", cpu.apollo.cores, core4);
 
 			cpu_apollo_write(freq_min);
 			cpu_apollo_write(freq_max);
@@ -374,7 +374,7 @@ void Power::setProfile(SecPowerProfiles profile) {
 		 * CPU Cluster1
 		 */
 		if (data->cpu.atlas.enabled) {
-			Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor", data->cpu.atlas.governor);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor", cpu.atlas, governor);
 
 			if (!Utils::updateCpuGov(4)) {
 				ALOGW("Failed to load current cpugov-configuration for ATLAS");
@@ -387,13 +387,13 @@ void Power::setProfile(SecPowerProfiles profile) {
 			// while screen-off it can happen that frequencies get increased too much
 			// make sure our limits are being applied to the then-limiting,
 			// not very reliable, files too
-			Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq", data->cpu.atlas.freq_min);
-			Utils::write("/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq", data->cpu.atlas.freq_max);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq", cpu.atlas, freq_min);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq", cpu.atlas, freq_max);
 
-			Utils::write("/sys/devices/system/cpu/cpu4/online", data->cpu.atlas.cores.core1);
-			Utils::write("/sys/devices/system/cpu/cpu5/online", data->cpu.atlas.cores.core2);
-			Utils::write("/sys/devices/system/cpu/cpu6/online", data->cpu.atlas.cores.core3);
-			Utils::write("/sys/devices/system/cpu/cpu7/online", data->cpu.atlas.cores.core4);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu4/online", cpu.atlas.cores, core1);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu5/online", cpu.atlas.cores, core2);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu6/online", cpu.atlas.cores, core3);
+			PROFILE_WRITE("/sys/devices/system/cpu/cpu7/online", cpu.atlas.cores, core4);
 
 			cpu_atlas_write(freq_min);
 			cpu_atlas_write(freq_max);
@@ -410,12 +410,12 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 * cpusets
 	 */
 	if (data->cpusets.enabled) {
-		Utils::write("/dev/cpuset/cpus",                   data->cpusets.defaults);
-		Utils::write("/dev/cpuset/foreground/cpus",        data->cpusets.foreground);
-		Utils::write("/dev/cpuset/foreground/boost/cpus",  data->cpusets.foreground_boost);
-		Utils::write("/dev/cpuset/background/cpus",        data->cpusets.background);
-		Utils::write("/dev/cpuset/system-background/cpus", data->cpusets.system_background);
-		Utils::write("/dev/cpuset/top-app/cpus",           data->cpusets.top_app);
+		PROFILE_WRITE("/dev/cpuset/cpus",                   cpusets, defaults);
+		PROFILE_WRITE("/dev/cpuset/foreground/cpus",        cpusets, foreground);
+		PROFILE_WRITE("/dev/cpuset/foreground/boost/cpus",  cpusets, foreground_boost);
+		PROFILE_WRITE("/dev/cpuset/background/cpus",        cpusets, background);
+		PROFILE_WRITE("/dev/cpuset/system-background/cpus", cpusets, system_background);
+		PROFILE_WRITE("/dev/cpuset/top-app/cpus",           cpusets, top_app);
 	}
 
 	/*********************
@@ -423,7 +423,7 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 */
 	if (data->ipa.enabled) {
 		Utils::write("/sys/power/ipa/enabled", "Y");
-		Utils::write("/sys/power/ipa/control_temp", data->ipa.control_temp);
+		PROFILE_WRITE("/sys/power/ipa/control_temp", ipa, control_temp);
 	}
 
 	/*********************
@@ -431,12 +431,12 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 */
 	if (data->gpu.enabled) {
 		if (data->gpu.dvfs.enabled) {
-			Utils::write("/sys/devices/platform/gpusysfs/gpu_min_clock", data->gpu.dvfs.freq_min);
-			Utils::write("/sys/devices/platform/gpusysfs/gpu_max_clock", data->gpu.dvfs.freq_max);
+			PROFILE_WRITE("/sys/devices/platform/gpusysfs/gpu_min_clock", gpu.dvfs, freq_min);
+			PROFILE_WRITE("/sys/devices/platform/gpusysfs/gpu_max_clock", gpu.dvfs, freq_max);
 		}
 		if (data->gpu.highspeed.enabled) {
-			Utils::write("/sys/devices/14ac0000.mali/highspeed_clock",   data->gpu.highspeed.freq);
-			Utils::write("/sys/devices/14ac0000.mali/highspeed_load",    data->gpu.highspeed.load);
+			PROFILE_WRITE("/sys/devices/14ac0000.mali/highspeed_clock", gpu.highspeed, freq);
+			PROFILE_WRITE("/sys/devices/14ac0000.mali/highspeed_load",  gpu.highspeed, load);
 		}
 	}
 
@@ -444,18 +444,18 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 * Kernel Defaults
 	 */
 	if (data->hmp.enabled) {
-		Utils::write("/sys/kernel/hmp/boost",                   data->hmp.boost);
-		Utils::write("/sys/kernel/hmp/semiboost",               data->hmp.semiboost);
-		Utils::write("/sys/kernel/hmp/power_migration",         data->hmp.power_migration);
-		Utils::write("/sys/kernel/hmp/active_down_migration",   data->hmp.semiboost);
-		Utils::write("/sys/kernel/hmp/aggressive_up_migration", data->hmp.aggressive_up_migration);
+		PROFILE_WRITE("/sys/kernel/hmp/boost",                   hmp, boost);
+		PROFILE_WRITE("/sys/kernel/hmp/semiboost",               hmp, semiboost);
+		PROFILE_WRITE("/sys/kernel/hmp/power_migration",         hmp, power_migration);
+		PROFILE_WRITE("/sys/kernel/hmp/active_down_migration",   hmp, semiboost);
+		PROFILE_WRITE("/sys/kernel/hmp/aggressive_up_migration", hmp, aggressive_up_migration);
 		if (data->hmp.threshold.enabled) {
-			Utils::write("/sys/kernel/hmp/down_threshold",          data->hmp.threshold.down);
-			Utils::write("/sys/kernel/hmp/up_threshold",            data->hmp.threshold.up);
+			PROFILE_WRITE("/sys/kernel/hmp/down_threshold", hmp.threshold, down);
+			PROFILE_WRITE("/sys/kernel/hmp/up_threshold",   hmp.threshold, up);
 		}
 		if (data->hmp.sb_threshold.enabled) {
-			Utils::write("/sys/kernel/hmp/sb_down_threshold",       data->hmp.sb_threshold.down);
-			Utils::write("/sys/kernel/hmp/sb_up_threshold",         data->hmp.sb_threshold.up);
+			PROFILE_WRITE("/sys/kernel/hmp/sb_down_threshold", hmp.sb_threshold, down);
+			PROFILE_WRITE("/sys/kernel/hmp/sb_up_threshold",   hmp.sb_threshold, up);
 		}
 	}
 
@@ -468,23 +468,23 @@ void Power::setProfile(SecPowerProfiles profile) {
 		// The power-efficient workqueue is useful for lower-power-situations, but
 		// contraproductive in high-performance situations. This should reflect in
 		// the static power-profiles
-		Utils::write("/sys/module/workqueue/parameters/power_efficient", data->kernel.pewq);
+		PROFILE_WRITE("/sys/module/workqueue/parameters/power_efficient", kernel, pewq);
 	}
 
 	/*********************
 	 * Slow Mode Defaults
 	 */
 	if (data->slow.enabled) {
-		Utils::write("/sys/devices/virtual/sec/sec_slow/enforced_slow_mode", data->slow.mode_toggle);
-		Utils::write("/sys/devices/virtual/sec/sec_slow/timer_rate", data->slow.timer_rate);
+		PROFILE_WRITE("/sys/devices/virtual/sec/sec_slow/enforced_slow_mode", slow, mode_toggle);
+		PROFILE_WRITE("/sys/devices/virtual/sec/sec_slow/timer_rate",         slow, timer_rate);
 	}
 
 	/*********************
 	 * Input-Booster Defaults
 	 */
 	if (data->input_booster.enabled) {
-		Utils::write("/sys/class/input_booster/tail", data->input_booster.tail);
-		Utils::write("/sys/class/input_booster/head", data->input_booster.head);
+		PROFILE_WRITE("/sys/class/input_booster/tail", input_booster, tail);
+		PROFILE_WRITE("/sys/class/input_booster/head", input_booster, head);
 	}
 
 	auto end = Utils::getTime();
