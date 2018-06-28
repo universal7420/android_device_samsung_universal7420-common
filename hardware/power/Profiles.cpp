@@ -44,6 +44,15 @@ SecPowerProfile Profiles::kPowerProfileBalanced;
 SecPowerProfile Profiles::kPowerProfileBiasPerformance;
 SecPowerProfile Profiles::kPowerProfileHighPerformance;
 
+map<string, SecPowerProfile *> Profiles::kProfileNameToData = {
+	{ "screen_off", &kPowerProfileScreenOff },
+	{ "power_save", &kPowerProfilePowerSave },
+	{ "bias_power_save", &kPowerProfileBiasPowerSave },
+	{ "balanced", &kPowerProfileBalanced },
+	{ "bias_performance", &kPowerProfileBiasPerformance },
+	{ "performance", &kPowerProfileHighPerformance },
+};
+
 void Profiles::loadProfiles() {
 	if (Utils::isFile(PROFILES_PATH_USER)) {
 		loadProfilesImpl(PROFILES_PATH_USER);
@@ -65,86 +74,174 @@ void Profiles::loadProfilesImpl(const char *path) {
 	loadProfileImpl(
 		&kPowerProfileScreenOff,
 		ctx,
-		"/profiles/screen_off/");
+		"/profiles/screen_off");
 
 	loadProfileImpl(
 		&kPowerProfilePowerSave,
 		ctx,
-		"/profiles/power_save/");
+		"/profiles/power_save");
 
 	loadProfileImpl(
 		&kPowerProfileBiasPowerSave,
 		ctx,
-		"/profiles/bias_power_save/");
+		"/profiles/bias_power_save");
 
 	loadProfileImpl(
 		&kPowerProfileBalanced,
 		ctx,
-		"/profiles/balanced/");
+		"/profiles/balanced");
 
 	loadProfileImpl(
 		&kPowerProfileBiasPerformance,
 		ctx,
-		"/profiles/bias_performance/");
+		"/profiles/bias_performance");
 
 	loadProfileImpl(
 		&kPowerProfileHighPerformance,
 		ctx,
-		"/profiles/performance/");
+		"/profiles/performance");
 }
 
-#define TO_BOOL(_c) ({ const char *str = _c; (!strcmp(str, "true") || !strcmp(str, "TRUE") || !strcmp(str, "1")); })
-#define TO_INT(_c) (std::stoi(_c))
-#define TO_UINT(_c) ((unsigned int)std::stoi(_c))
+static inline bool to_bool(const char *c) {
+	return !strcmp(c, "true") || !strcmp(c, "TRUE") || !strcmp(c, "1");
+}
 
-#define XML_GET(_path, _default)                                          \
-	({                                                                    \
-		char objPath[255];                                                \
-		const char *result = NULL;                                        \
-		strcpy(objPath, path);                                            \
-		strcat(objPath, _path);                                           \
-		xmlXPathObject *obj =                                             \
-			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);             \
-		if (!obj->nodesetval->nodeTab ||                                  \
-			!obj->nodesetval->nodeTab[0] ||                               \
-			!obj->nodesetval->nodeTab[0]->children ||                     \
-			!obj->nodesetval->nodeTab[0]->children->content) {            \
-			ALOGE("loadProfileImpl: missing XML node '%s'"                \
-				", using default '%s'", objPath, _default);               \
-			result = (const char *)_default;                              \
-		} else {                                                          \
-			xmlNode *node = obj->nodesetval->nodeTab[0];                  \
-			result = (const char *)node->children->content;               \
-			if (LOG_DEBUG) ALOGV("Loaded XML node '%s': \"%s\"",          \
-				objPath, result);                                         \
-		}                                                                 \
-		result;                                                           \
+static inline int to_int(const char *c) {
+	return std::stoi(c);
+}
+
+static inline unsigned int to_uint(const char *c) {
+	return (unsigned int)std::stoi(c);
+}
+
+#define XML_GET(_path)                                                \
+	({                                                                \
+		char objPath[255];                                            \
+		const char *result = NULL;                                    \
+		strcpy(objPath, path);                                        \
+		strcat(objPath, "/" _path);                                   \
+		xmlXPathObject *obj =                                         \
+			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);         \
+		if (!obj->nodesetval->nodeTab ||                              \
+			!obj->nodesetval->nodeTab[0]) {        \
+			ALOGE("loadProfileImpl: missing XML node '%s'", objPath); \
+			result = NULL;                                            \
+		} else {                                                      \
+			xmlNode *node = obj->nodesetval->nodeTab[0];              \
+			result = (const char *)node->children->content;           \
+			if (LOG_DEBUG) ALOGV("Loaded XML node '%s': \"%s\"",      \
+				objPath, result);                                     \
+		}                                                             \
+		result;                                                       \
 	})
 
-#define XML_GET_BOOL(_path, _default) TO_BOOL(XML_GET(_path, _default))
-#define XML_GET_INT(_path, _default) TO_INT(XML_GET(_path, _default))
-#define XML_GET_UINT(_path, _default) TO_UINT(XML_GET(_path, _default))
+#define XML_GET_ATTR(_path, _attr)                                    \
+	({                                                                \
+		char objPath[255];                                            \
+		strcpy(objPath, path);                                        \
+		if (_path) {                                                  \
+			strcat(objPath, "/");                                     \
+			strcat(objPath, _path);                                   \
+		}                                                             \
+		xmlXPathObject *obj =                                         \
+			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);         \
+		const char *result = NULL;                                    \
+		if (!obj ||                                                   \
+		    !obj->nodesetval ||                                       \
+		    !obj->nodesetval->nodeTab ||                              \
+			!obj->nodesetval->nodeTab[0])                             \
+		{                                                             \
+			ALOGE("loadProfileImpl: missing XML node '%s'", objPath); \
+			result = NULL;                                            \
+		} else {                                                      \
+			xmlNode *node = obj->nodesetval->nodeTab[0];              \
+			xmlAttr *attr = node->properties;                         \
+			while (attr) {                                            \
+				if (!strcmp((const char *)attr->name, _attr)) {       \
+					result = (const char *)xmlNodeListGetString(node->doc, attr->children, 1); \
+					break;                                            \
+				}                                                     \
+				attr = attr->next;                                    \
+			}                                                         \
+		}                                                             \
+		result;                                                       \
+	})
 
-#define XML_GET_CPUCLUSTER(_cl, _cln)                                                    \
-	profile->cpu._cl.governor     = XML_GET     ("cpu/" #_cl "/governor",     "nexus");  \
-	profile->cpu._cl.freq_min     = XML_GET_UINT("cpu/" #_cl "/freq_min",     "200000"); \
-	profile->cpu._cl.freq_max     = XML_GET_UINT("cpu/" #_cl "/freq_max",                \
-		(_cln == 0 ? "1500000" : "2100000"));                                            \
-	profile->cpu._cl.freq_hispeed = XML_GET_UINT("cpu/" #_cl "/freq_hispeed",            \
-		(_cln == 0 ? "1500000" : "2100000"));                                            \
-	profile->cpu._cl.freq_boost   = XML_GET_UINT("cpu/" #_cl "/freq_boost",   "0");      \
-	if (profile->cpu._cl.cores.enabled) {                                                \
-		profile->cpu._cl.cores.core1 = XML_GET_BOOL("cpu/" #_cl "/cores/core1", "true"); \
-		profile->cpu._cl.cores.core2 = XML_GET_BOOL("cpu/" #_cl "/cores/core2", "true"); \
-		profile->cpu._cl.cores.core3 = XML_GET_BOOL("cpu/" #_cl "/cores/core3", "true"); \
-		profile->cpu._cl.cores.core4 = XML_GET_BOOL("cpu/" #_cl "/cores/core4", "true"); \
+#define __PROFILE_SET(_parent, _name, _path, _default, _type) \
+	{                                                         \
+		const char *c = XML_GET(_path);                       \
+		if (c) {                                              \
+			profile->_parent._name = to_##_type(c);           \
+			profile->_parent.__##_name##_set = true;          \
+		} else if (!profile->_parent.__##_name##_set) {       \
+			profile->_parent._name = to_##_type(_default);    \
+		}                                                     \
+	}
+
+#define __PROFILE_SET2(_name, _path, _default, _type)  \
+	{                                                  \
+		const char *c = XML_GET(_path);                \
+		if (c) {                                       \
+			profile->_name = to_##_type(c);            \
+			profile->__##_name##_set = true;           \
+		} else if (!profile->__##_name##_set) {        \
+			profile->_name = to_##_type(_default);     \
+		}                                              \
+	}
+
+#define PROFILE_SET(_parent, _name, _path, _default)           \
+	{                                                          \
+		const char *c = XML_GET(_path);                        \
+		if (c) {                                               \
+			profile->_parent._name = c;                        \
+			profile->_parent.__##_name##_set = true;           \
+		} else if (!profile->_parent.__##_name##_set) {        \
+			profile->_parent._name = _default;                 \
+		}                                                      \
+	}
+
+#define PROFILE_SET_BOOL(_parent, _name, _path, _default) \
+	__PROFILE_SET(_parent, _name, _path, _default, bool); \
+	ALOGV("loadProfileImpl: [%s] "  #_parent "." #_name " := '%s'", path, profile->_parent._name ? "true" : "false");
+
+#define PROFILE_SET_INT(_parent, _name, _path, _default) \
+	__PROFILE_SET(_parent, _name, _path, _default, int); \
+	ALOGV("loadProfileImpl: [%s] " #_parent "." #_name " := '%d'", path, profile->_parent._name);
+
+#define PROFILE_SET_UINT(_parent, _name, _path, _default) \
+	__PROFILE_SET(_parent, _name, _path, _default, uint); \
+	ALOGV("loadProfileImpl: [%s] " #_parent "." #_name " := '%u'", path, profile->_parent._name);
+
+#define PROFILE_SET_BOOL2(_name, _path, _default) \
+	__PROFILE_SET2(_name, _path, _default, bool); \
+	ALOGV("loadProfileImpl: [%s] " #_name " := '%s'", path, profile->_name ? "true" : "false");
+
+#define PROFILE_SET_INT2(_name, _path, _default) \
+	__PROFILE_SET2(_name, _path, _default, int); \
+	ALOGV("loadProfileImpl: [%s] " #_name " := '%d'", path, profile->_name);
+
+#define PROFILE_SET_UINT2(_name, _path, _default) \
+	__PROFILE_SET2(_name, _path, _default, uint); \
+	ALOGV("loadProfileImpl: [%s] " #_name " := '%u'", path, profile->_name);
+
+#define XML_GET_CPUCLUSTER(_cl, _cln)                                                                          \
+	PROFILE_SET     (cpu._cl, governor,     "cpu/" #_cl "/governor",     "nexus");                             \
+	PROFILE_SET_UINT(cpu._cl, freq_min,     "cpu/" #_cl "/freq_min",     "200000");                            \
+	PROFILE_SET_UINT(cpu._cl, freq_max,     "cpu/" #_cl "/freq_max",     (_cln == 0 ? "1500000" : "2100000")); \
+	PROFILE_SET_UINT(cpu._cl, freq_hispeed, "cpu/" #_cl "/freq_hispeed", (_cln == 0 ? "1500000" : "2100000")); \
+	PROFILE_SET_UINT(cpu._cl, freq_boost,   "cpu/" #_cl "/freq_boost",   "0");                                 \
+	if (profile->cpu._cl.cores.enabled) {                                                                      \
+		PROFILE_SET_BOOL(cpu._cl.cores, core1, "cpu/" #_cl "/cores/core1", "true");                            \
+		PROFILE_SET_BOOL(cpu._cl.cores, core2, "cpu/" #_cl "/cores/core2", "true");                            \
+		PROFILE_SET_BOOL(cpu._cl.cores, core3, "cpu/" #_cl "/cores/core3", "true");                            \
+		PROFILE_SET_BOOL(cpu._cl.cores, core4, "cpu/" #_cl "/cores/core4", "true");                            \
 	}
 
 #define XML_GET_CPUGOV(_gov)                                            \
 	{                                                                   \
 		char objPath[255];                                              \
 		strcpy(objPath, path);                                          \
-		strcat(objPath, "cpu/" #_gov "/governor_data");                 \
+		strcat(objPath, "/cpu/" #_gov "/governor_data");                \
 		xmlXPathObject *obj =                                           \
 			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);           \
 		if (!obj->nodesetval->nodeTab ||                                \
@@ -169,28 +266,78 @@ void Profiles::loadProfilesImpl(const char *path) {
 		}                                                               \
 	}
 
+#define XML_HAS_NODE(_path)                                           \
+	({                                                                \
+		char objPath[255];                                            \
+		strcpy(objPath, path);                                        \
+		strcat(objPath, "/" _path);                                   \
+		xmlXPathObject *obj =                                         \
+			xmlXPathEvalExpression ((xmlChar *)objPath, ctx);         \
+		bool result = true;                                           \
+		if (!obj->nodesetval->nodeTab ||                              \
+		    !obj->nodesetval->nodeTab[0] ||                           \
+		    !obj->nodesetval->nodeTab[0]->children)                   \
+		{                                                             \
+			ALOGE("loadProfileImpl: missing XML node '%s'", objPath); \
+			result = false;                                           \
+		}                                                             \
+		(result);                                                     \
+	})
+
+#define PROFILE_INIT(_name, _path)                                       \
+	{                                                                    \
+		if (XML_HAS_NODE(_path)) {                                       \
+			PROFILE_SET_BOOL(_name, enabled, _path "/enabled", "false"); \
+			profile->__##_name##_set = true;                             \
+		} else {                                                         \
+			profile->__##_name##_set = false;                            \
+		}                                                                \
+	}
+
+#define PROFILE_INIT2(_parent, _name, _path)                                     \
+	{                                                                            \
+		if (XML_HAS_NODE(_path)) {                                               \
+			PROFILE_SET_BOOL(_parent._name, enabled, _path "/enabled", "false"); \
+			profile->_parent.__##_name##_set = true;                             \
+		} else {                                                                 \
+			profile->_parent.__##_name##_set = false;                            \
+		}                                                                        \
+	}
+
 void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, const char *path) {
-	profile->enabled                  = XML_GET_BOOL("enabled", "false");
-	profile->cpu.enabled              = XML_GET_BOOL("cpu/enabled", "false");
-	profile->cpu.apollo.enabled       = XML_GET_BOOL("cpu/apollo/enabled", "false");
-	profile->cpu.apollo.cores.enabled = XML_GET_BOOL("cpu/apollo/cores/enabled", "false");
-	profile->cpu.atlas.enabled        = XML_GET_BOOL("cpu/atlas/enabled", "false");
-	profile->cpu.atlas.cores.enabled  = XML_GET_BOOL("cpu/atlas/cores/enabled", "false");
-	profile->cpusets.enabled          = XML_GET_BOOL("cpusets/enabled", "false");
-	profile->hmp.enabled              = XML_GET_BOOL("hmp/enabled", "false");
-	profile->hmp.threshold.enabled    = XML_GET_BOOL("hmp/threshold/enabled", "false");
-	profile->hmp.sb_threshold.enabled = XML_GET_BOOL("hmp/sb_threshold/enabled", "false");
-	profile->hmp.enabled              = XML_GET_BOOL("hmp/enabled", "false");
-	profile->gpu.enabled              = XML_GET_BOOL("gpu/enabled", "false");
-	profile->gpu.dvfs.enabled         = XML_GET_BOOL("gpu/dvfs/enabled", "false");
-	profile->gpu.highspeed.enabled    = XML_GET_BOOL("gpu/highspeed/enabled", "false");
-	profile->kernel.enabled           = XML_GET_BOOL("kernel/enabled", "false");
-	profile->ipa.enabled              = XML_GET_BOOL("ipa/enabled", "false");
-	profile->slow.enabled             = XML_GET_BOOL("slow/enabled", "false");
-	profile->input_booster.enabled    = XML_GET_BOOL("input_booster/enabled", "false");
+	PROFILE_SET_BOOL2(enabled, "enabled", "false");
+
+	PROFILE_INIT (cpu,                         "cpu");
+	PROFILE_INIT2(cpu,           apollo,       "cpu/apollo");
+	PROFILE_INIT2(cpu.apollo,    cores,        "cpu/apollo/cores");
+	PROFILE_INIT2(cpu,           atlas,        "cpu/atlas");
+	PROFILE_INIT2(cpu.atlas,     cores,        "cpu/atlas/cores");
+	PROFILE_INIT (cpusets,                     "cpusets");
+	PROFILE_INIT (hmp,                         "hmp");
+	PROFILE_INIT2(hmp,           threshold,    "hmp/threshold");
+	PROFILE_INIT2(hmp,           sb_threshold, "hmp/sb_threshold");
+	PROFILE_INIT (gpu,                         "gpu");
+	PROFILE_INIT2(gpu,           dvfs,         "gpu/dvfs");
+	PROFILE_INIT2(gpu,           highspeed,    "gpu/highspeed");
+	PROFILE_INIT (kernel,                      "kernel");
+	PROFILE_INIT (ipa,                         "ipa");
+	PROFILE_INIT (slow,                        "slow");
+	PROFILE_INIT (input_booster,               "input_booster");
 
 	if (!profile->enabled) {
 		return;
+	}
+
+	{
+		const char *parent = XML_GET_ATTR(nullptr, "extends");
+		if (parent) {
+			ALOGI("Profile '%s' inherits from profile '%s'", path, parent);
+
+			const SecPowerProfile *parentProfile = getProfileData(parent);
+			memcpy(profile, parentProfile, sizeof(SecPowerProfile));
+		} else {
+			ALOGI("Profile '%s' is not extending any profile", path);
+		}
 	}
 
 	if (profile->cpu.enabled) {
@@ -205,58 +352,60 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 		}
 	}
 
-	if (profile->cpusets.enabled) {
-		profile->cpusets.defaults          = XML_GET("cpusets/default", "0-7");
-		profile->cpusets.foreground        = XML_GET("cpusets/foreground", "0-7");
-		profile->cpusets.foreground_boost  = XML_GET("cpusets/foreground_boost", "0-7");
-		profile->cpusets.background        = XML_GET("cpusets/background", "0-7");
-		profile->cpusets.system_background = XML_GET("cpusets/system_background", "0-7");
-		profile->cpusets.top_app           = XML_GET("cpusets/top_app", "0-7");
+	if (profile->cpusets.enabled) { 
+		PROFILE_SET(cpusets, defaults,          "cpusets/default",           "0-7");
+		PROFILE_SET(cpusets, foreground,        "cpusets/foreground",        "0-7");
+		PROFILE_SET(cpusets, foreground_boost,  "cpusets/foreground_boost",  "0-7");
+		PROFILE_SET(cpusets, background,        "cpusets/background",        "0-7");
+		PROFILE_SET(cpusets, system_background, "cpusets/system_background", "0-7");
+		PROFILE_SET(cpusets, top_app,           "cpusets/top_app",           "0-7");
 	}
 
 	if (profile->hmp.enabled) {
-		profile->hmp.boost                   = XML_GET_BOOL("hmp/boost", "false");
-		profile->hmp.semiboost               = XML_GET_BOOL("hmp/semiboost", "false");
-		profile->hmp.power_migration         = XML_GET_BOOL("hmp/power_migration", "false");
-		profile->hmp.active_down_migration   = XML_GET_BOOL("hmp/active_down_migration", "false");
-		profile->hmp.aggressive_up_migration = XML_GET_BOOL("hmp/aggressive_up_migration", "false");
+		PROFILE_SET_BOOL(hmp, boost,                   "hmp/boost",                   "false");
+		PROFILE_SET_BOOL(hmp, semiboost,               "hmp/semiboost",               "false");
+		PROFILE_SET_BOOL(hmp, power_migration,         "hmp/power_migration",         "false");
+		PROFILE_SET_BOOL(hmp, active_down_migration,   "hmp/active_down_migration",   "false");
+		PROFILE_SET_BOOL(hmp, aggressive_up_migration, "hmp/aggressive_up_migration", "false");
+
 		if (profile->hmp.threshold.enabled) {
-			profile->hmp.threshold.down = XML_GET_UINT("hmp/threshold/down", "214");
-			profile->hmp.threshold.up   = XML_GET_UINT("hmp/threshold/up",   "479");
+			PROFILE_SET_UINT(hmp.threshold, down, "hmp/threshold/down", "214");
+			PROFILE_SET_UINT(hmp.threshold, up,   "hmp/threshold/up",   "479");
 		}
+
 		if (profile->hmp.sb_threshold.enabled) {
-			profile->hmp.sb_threshold.down = XML_GET_UINT("hmp/sb_threshold/down", "150");
-			profile->hmp.sb_threshold.up   = XML_GET_UINT("hmp/sb_threshold/up",   "100");
+			PROFILE_SET_UINT(hmp.sb_threshold, down, "hmp/sb_threshold/down", "150");
+			PROFILE_SET_UINT(hmp.sb_threshold, up,   "hmp/sb_threshold/up",   "100");
 		}
 	}
 
 	if (profile->gpu.enabled) {
 		if (profile->gpu.dvfs.enabled) {
-			profile->gpu.dvfs.freq_min = XML_GET_UINT("gpu/dvfs/freq_min", "100");
-			profile->gpu.dvfs.freq_max = XML_GET_UINT("gpu/dvfs/freq_max", "772");
+			PROFILE_SET_UINT(gpu.dvfs, freq_min, "gpu/dvfs/freq_min", "100");
+			PROFILE_SET_UINT(gpu.dvfs, freq_max, "gpu/dvfs/freq_max", "772");
 		}
 		if (profile->gpu.highspeed.enabled) {
-			profile->gpu.highspeed.freq = XML_GET_UINT("gpu/highspeed/freq", "772");
-			profile->gpu.highspeed.load = XML_GET_UINT("gpu/highspeed/load", "99");
+			PROFILE_SET_UINT(gpu.highspeed, freq, "gpu/highspeed/freq", "772");
+			PROFILE_SET_UINT(gpu.highspeed, load, "gpu/highspeed/load", "99");
 		}
 	}
 
 	if (profile->kernel.enabled) {
-		profile->kernel.pewq = XML_GET_BOOL("kernel/pewq", "false");
+		PROFILE_SET_BOOL(kernel, pewq, "kernel/pewq", "false");
 	}
 
 	if (profile->ipa.enabled) {
-		profile->ipa.control_temp = XML_GET_INT("ipa/control_temp", "65");
+		PROFILE_SET_INT(ipa, control_temp, "ipa/control_temp", "65");
 	}
 
 	if (profile->slow.enabled) {
-		profile->slow.mode_toggle = XML_GET_BOOL("slow/mode_toggle", "false");
-		profile->slow.timer_rate = XML_GET_INT("slow/timer_rate", "0");
+		PROFILE_SET_BOOL(slow, mode_toggle, "slow/mode_toggle", "false");
+		PROFILE_SET_INT (slow, timer_rate,   "slow/timer_rate",  "0");
 	}
 
 	if (profile->input_booster.enabled) {
-		profile->input_booster.tail = XML_GET("input_booster/tail", "0 0 0 0 0 0");
-		profile->input_booster.head = XML_GET("input_booster/head", "0 0 0 0 0 0");
+		PROFILE_SET(input_booster, tail, "input_booster/tail", "0 0 0 0 0 0");
+		PROFILE_SET(input_booster, head, "input_booster/head", "0 0 0 0 0 0");
 	}
 }
 
@@ -295,6 +444,10 @@ const SecPowerProfile* Profiles::getProfileData(SecPowerProfiles profile) {
 		}
 	}
 	return nullptr;
+}
+
+const SecPowerProfile* Profiles::getProfileData(string profileName) {
+	return kProfileNameToData[profileName];
 }
 
 }  // namespace implementation

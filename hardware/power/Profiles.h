@@ -35,159 +35,170 @@ namespace implementation {
 using ::std::string;
 using ::std::map;
 
+#define PROFILE_DEFINE(_type, _name) \
+	_type _name; \
+	bool __##_name##_set
+
+#define PROFILE_DEFINE2(_type, _name, _size) \
+	_type _name[_size]; \
+	bool __##_name##_set
+
+#define PROFILE_INT(_name) \
+	PROFILE_DEFINE(int, _name)
+
+#define PROFILE_UINT(_name) \
+	PROFILE_DEFINE(unsigned int, _name)
+
+#define PROFILE_BOOL(_name) \
+	PROFILE_DEFINE(bool, _name)
+
+#define PROFILE_STRING(_name) \
+	PROFILE_DEFINE(string, _name)
+
 struct SecPowerProfileCpuCluster {
 
-	bool enabled;
+	PROFILE_BOOL(enabled);
 
-	string governor;
+	PROFILE_STRING(governor);
 
-	unsigned int freq_min;
-	unsigned int freq_max;
-	unsigned int freq_hispeed;
-	unsigned int freq_boost;
+	PROFILE_UINT(freq_min);
+	PROFILE_UINT(freq_max);
+	PROFILE_UINT(freq_hispeed);
+	PROFILE_UINT(freq_boost);
 
-	struct {
+	PROFILE_DEFINE(struct {
 
-		bool enabled;
+		PROFILE_BOOL(enabled);
 
-		bool core1;
+		PROFILE_BOOL(core1);
+		PROFILE_BOOL(core2);
+		PROFILE_BOOL(core3);
+		PROFILE_BOOL(core4);
 
-		bool core2;
+	}, cores);
 
-		bool core3;
-
-		bool core4;
-
-	} cores;
-
-	struct {
+	PROFILE_DEFINE2(struct {
 
 		char name[64];
 
 		char data[64];
 
-	} governor_data[64];
+	}, governor_data, 64);
 
 };
 
 struct SecPowerHmpThreshold {
 
-	bool enabled;
+	PROFILE_BOOL(enabled);
 
-	unsigned int down;
-
-	unsigned int up;
+	PROFILE_UINT(down);
+	PROFILE_UINT(up);
 
 };
 
 struct SecPowerProfile {
 
-	bool enabled;
+	PROFILE_BOOL(enabled);
 
-	struct {
+	PROFILE_DEFINE(struct {
 
-		bool enabled;
+		PROFILE_BOOL(enabled);
 
-		struct SecPowerProfileCpuCluster apollo;
+		PROFILE_DEFINE(SecPowerProfileCpuCluster, apollo);
 
-		struct SecPowerProfileCpuCluster atlas;
+		PROFILE_DEFINE(SecPowerProfileCpuCluster, atlas);
 
-	} cpu;
+	}, cpu);
 
-	struct {
+	PROFILE_DEFINE(struct {
 
-		bool enabled;
+		PROFILE_BOOL(enabled);
 
-		string defaults;
+		PROFILE_STRING(defaults);
+		PROFILE_STRING(foreground);
+		PROFILE_STRING(foreground_boost);
+		PROFILE_STRING(background);
+		PROFILE_STRING(system_background);
+		PROFILE_STRING(top_app);
 
-		string foreground;
+	}, cpusets);
 
-		string foreground_boost;
+	PROFILE_DEFINE(struct {
 
-		string background;
+		PROFILE_BOOL(enabled);
 
-		string system_background;
+		PROFILE_BOOL(boost);
+		PROFILE_BOOL(semiboost);
 
-		string top_app;
+		PROFILE_BOOL(power_migration);
 
-	} cpusets;
+		PROFILE_BOOL(active_down_migration);
+		PROFILE_BOOL(aggressive_up_migration);
 
-	struct {
+		PROFILE_DEFINE(SecPowerHmpThreshold, threshold);
+		PROFILE_DEFINE(SecPowerHmpThreshold, sb_threshold);
 
-		bool enabled;
+	}, hmp);
 
-		bool boost;
-		bool semiboost;
+	PROFILE_DEFINE(struct {
 
-		bool power_migration;
+		PROFILE_BOOL(enabled);
 
-		bool active_down_migration;
-		bool aggressive_up_migration;
+		PROFILE_DEFINE(struct {
 
-		SecPowerHmpThreshold threshold;
-		SecPowerHmpThreshold sb_threshold;
+			PROFILE_BOOL(enabled);
 
-	} hmp;
+			PROFILE_UINT(freq_min);
+			PROFILE_UINT(freq_max);
 
-	struct {
+		}, dvfs);
 
-		bool enabled;
+		PROFILE_DEFINE(struct {
 
-		struct {
+			PROFILE_BOOL(enabled);
 
-			bool enabled;
+			PROFILE_UINT(freq);
+			PROFILE_UINT(load);
 
-			unsigned int freq_min;
-			unsigned int freq_max;
+		}, highspeed);
 
-		} dvfs;
+	}, gpu);
 
-		struct {
+	PROFILE_DEFINE(struct {
 
-			bool enabled;
+		PROFILE_BOOL(enabled);
 
-			unsigned int freq;
-			unsigned int load;
+		PROFILE_BOOL(pewq);
 
-		} highspeed;
+	}, kernel);
 
-	} gpu;
+	PROFILE_DEFINE(struct {
 
-	struct {
+		PROFILE_BOOL(enabled);
 
-		bool enabled;
+		PROFILE_INT(control_temp);
 
-		bool pewq;
+	}, ipa);
 
-	} kernel;
+	PROFILE_DEFINE(struct {
 
-	struct {
+		PROFILE_BOOL(enabled);
 
-		bool enabled;
+		PROFILE_BOOL(mode_toggle);
 
-		int control_temp;
+		PROFILE_INT(timer_rate);
 
-	} ipa;
+	}, slow);
 
-	struct {
+	PROFILE_DEFINE(struct {
 
-		bool enabled;
+		PROFILE_BOOL(enabled);
 
-		bool mode_toggle;
+		PROFILE_STRING(tail);
 
-		int timer_rate;
+		PROFILE_STRING(head);
 
-	} slow;
-
-	struct {
-
-		bool enabled;
-
-		string tail;
-
-		string head;
-
-	} input_booster;
+	}, input_booster);
 
 };
 
@@ -195,10 +206,13 @@ struct Profiles {
 
 	static void loadProfiles();
 	static const SecPowerProfile* getProfileData(SecPowerProfiles profile);
+	static const SecPowerProfile* getProfileData(string profileName);
 
 private:
 	static void loadProfilesImpl(const char *path);
 	static void loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, const char *path);
+
+	static map<string, SecPowerProfile *> kProfileNameToData;
 
 	static SecPowerProfile kPowerProfileScreenOff;
 	static SecPowerProfile kPowerProfilePowerSave;
