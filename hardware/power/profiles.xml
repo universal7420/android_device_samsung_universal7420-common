@@ -24,60 +24,23 @@
 
 	<!-- Profile applied in screen-off situations -->
 	<screen_off>
-
-		<!-- boolean: takes "true", "TRUE" or "1" as value (case-sensitive!) -->
-		<!-- number:  takes any numbers are value (make sure the value makes sense) -->
-		<!-- string:  takes any character sequence as value -->
-
-		<!-- {boolean} Whether this profiles should be used or not -->
 		<enabled>true</enabled>
-
 		<cpu>
-
-			<!-- {boolean} Whether the CPU settings should be applied or not -->
 			<enabled>true</enabled>
-
 			<apollo>
-
-				<!-- {boolean} Whether the settings for the APOLLO-cluster should be applied or not -->
 				<enabled>true</enabled>
-
-				<!-- {string} The governor used on this cluster -->
 				<governor>nexus</governor>
-
-				<!-- {number} Minimal frequency of this cluster -->
 				<freq_min>200000</freq_min>
-
-				<!-- {number} Maximal frequency of this cluster -->
 				<freq_max>600000</freq_max>
-
-				<!-- {number} Normal high speed frequency chosen by the CPU-governor (if supported) -->
 				<freq_hispeed>400000</freq_hispeed>
-
-				<!-- {number} Frequency used in boostpulse mode (if supported, else any positive
-				     number to enable boostpules) or zero to disable boostpulses -->
 				<freq_boost>0</freq_boost>
-
-				<!-- State of each core of this cluster  -->
 				<cores>
-
-					<!-- {boolean} Whether the core-states should be applied or not -->
 					<enabled>true</enabled>
-
-					<!-- {boolean} Core #1 of this cluster -->
 					<core1>true</core1>
-
-					<!-- {boolean} Core #2 of this cluster -->
 					<core2>true</core2>
-
-					<!-- {boolean} Core #3 of this cluster -->
 					<core3>true</core3>
-
-					<!-- {boolean} Core #4 of this cluster -->
 					<core4>true</core4>
-
 				</cores>
-
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -93,50 +56,21 @@
 					<hispeed_load>99</hispeed_load>
 					<io_is_busy>0</io_is_busy>
 				</governor_data>
-
 			</apollo>
-
 			<atlas>
-
-				<!-- {boolean} Whether the settings for the ATLAS-cluster should be applied or not -->
 				<enabled>true</enabled>
-
-				<!-- {string} The governor used on this cluster -->
 				<governor>nexus</governor>
-
-				<!-- {number} Minimal frequency of this cluster -->
 				<freq_min>200000</freq_min>
-
-				<!-- {number} Maximal frequency of this cluster -->
 				<freq_max>400000</freq_max>
-
-				<!-- {number} Normal high speed frequency chosen by the CPU-governor (if supported) -->
 				<freq_hispeed>300000</freq_hispeed>
-
-				<!-- {number} Frequency used in boostpulse mode (if supported, else any positive
-				     number to enable boostpules) or zero to disable boostpulses -->
 				<freq_boost>0</freq_boost>
-
-				<!-- State of each core of this cluster  -->
 				<cores>
-
-					<!-- {boolean} Whether the core-states should be applied or not -->
 					<enabled>true</enabled>
-
-					<!-- {boolean} Core #1 of this cluster -->
 					<core1>true</core1>
-
-					<!-- {boolean} Core #2 of this cluster -->
-					<core2>false</core2>
-
-					<!-- {boolean} Core #3 of this cluster -->
-					<core3>false</core3>
-
-					<!-- {boolean} Core #4 of this cluster -->
-					<core4>false</core4>
-
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
 				</cores>
-
 				<governor_data>
 					<down_load>40</down_load>
 					<down_step>1</down_step>
@@ -152,445 +86,80 @@
 					<hispeed_load>99</hispeed_load>
 					<io_is_busy>0</io_is_busy>
 				</governor_data>
-
 			</atlas>
-
 		</cpu>
-
 		<cpusets>
-
-			<!-- {boolean} Whether the cpuset-settings should be applied or not -->
-			<enabled>true</enabled>
-
-			<!-- {string} CPU-configuration for the default cpuset (tasks without specific cpuset) -->
+			<enabled>false</enabled>
 			<default>0-3</default>
-
-			<!-- {string} CPU-configuration for the "foreground"-cpuset -->
 			<foreground>0-3</foreground>
-
-			<!-- {string} CPU-configuration for the "foreground/boost"-cpuset -->
 			<foreground_boost>0-3</foreground_boost>
-
-			<!-- {string} CPU-configuration for the "background"-cpuset -->
 			<background>0-3</background>
-
-			<!-- {string} CPU-configuration for the "system-background"-cpuset -->
 			<system_background>0-3</system_background>
-
-			<!-- {string} CPU-configuration for the "top-app"-cpuset -->
 			<top_app>0-3</top_app>
-
 		</cpusets>
-
-		<gpu>
-
-			<!-- {boolean} Whether the GPU settings should be applied or not -->
-			<enabled>true</enabled>
-
-			<dvfs>
-
-				<!-- {boolean} Whether the DVFS settings for the GPU should be applied or not -->
-				<enabled>true</enabled>
-
-				<!-- {number} Minimal frequency of the GPU -->
-				<freq_min>100</freq_min>
-
-				<!-- {number} Maximal frequency of the GPU -->
-				<freq_max>100</freq_max>
-
-			</dvfs>
-
-			<highspeed>
-
-				<!-- {boolean} Whether the high speed settings for the GPU should be applied or not -->
-				<enabled>true</enabled>
-
-				<!-- {number} Frequency set if GPU does to high speed-mode -->
-				<freq>100</freq>
-
-				<!-- {number} Load at which high speed frequency is triggered -->
-				<load>100</load>
-
-			</highspeed>
-
-		</gpu>
-
 		<hmp>
-
-			<!-- {boolean} Whether the HMP settings should be applied or not -->
-			<enabled>true</enabled>
-
-			<!-- {boolean} Whether to put the HMP scheduler into boost-mode (move task to big cluster) -->
+			<enabled>false</enabled>
 			<boost>false</boost>
-
-			<!-- {boolean} Whether to put the HMP scheduler into semiboost-mode (split tasks between both clusters) -->
 			<semiboost>false</semiboost>
-
-			<!-- {boolean} Whether to use power-aware task migration instead of the default GTS -->
-			<power_migration>true</power_migration>
-
-			<!-- {boolean} Whether to aggressively migrate tasks onto the little cluster -->
-			<active_down_migration>true</active_down_migration>
-
-			<!-- {boolean} Whether to aggressively migrate tasks onto the big cluster -->
+			<power_migration>false</power_migration>
+			<active_down_migration>false</active_down_migration>
 			<aggressive_up_migration>false</aggressive_up_migration>
-
-			<!-- Default (non-boosted) HMP task migration thresholds -->
 			<threshold>
-
-				<!-- {boolean} Whether to apply HMP default threshold settings or not -->
-				<enabled>true</enabled>
-
-				<!-- {number} Threshold for down-migrating -->
+				<enabled>false</enabled>
 				<down>214</down>
-
-				<!-- {number} Threshold for up-migrating -->
 				<up>479</up>
-
 			</threshold>
-
-			<!-- Semi-boost HMP task migration thresholds -->
 			<sb_threshold>
-
-				<!-- {boolean} Whether to apply HMP default threshold settings or not -->
-				<enabled>true</enabled>
-
-				<!-- {number} Threshold for down-migrating -->
+				<enabled>false</enabled>
 				<down>150</down>
-
-				<!-- {number} Threshold for up-migrating -->
 				<up>400</up>
-
 			</sb_threshold>
-
 		</hmp>
-
+		<gpu>
+			<enabled>true</enabled>
+			<dvfs>
+				<enabled>true</enabled>
+				<freq_min>100</freq_min>
+				<freq_max>100</freq_max>
+			</dvfs>
+			<highspeed>
+				<enabled>true</enabled>
+				<freq>100</freq>
+				<load>100</load>
+			</highspeed>
+		</gpu>
 		<kernel>
-
-			<!-- {boolean} Whether the kernel-settings should be applied or not -->
-			<enabled>true</enabled>
-
-			<!-- {boolean} Whether to enable kernel-internal power-efficient workqueues -->
+			<enabled>false</enabled>
 			<pewq>true</pewq>
-
 		</kernel>
-
 		<ipa>
-
-			<!-- {boolean} Whether the IPA-settings should be applied or not -->
 			<enabled>true</enabled>
-
-			<!-- {number} Temperature in C° at which the IPA thermal system limits device performance -->
 			<control_temp>45</control_temp>
-
 		</ipa>
-
 		<slow>
-
-			<!-- {boolean} Whether the sec_slow-settings should be applied or not -->
-			<enabled>true</enabled>
-
-			<!-- {boolean} Whether the sec_slow-mode should be enabled or not -->
+			<enabled>false</enabled>
 			<mode_toggle>false</mode_toggle>
-
-			<!-- {number} Rate of sec_slow observer timer -->
 			<timer_rate>0</timer_rate>
-
 		</slow>
-
 		<input_booster>
-
-			<!-- {boolean} Whether the input-booster-settings should be applied or not -->
-			<enabled>true</enabled>
-
-			<!-- {string} Data written to the inout-booster head control file -->
+			<enabled>false</enabled>
 			<head>0 0 0 0 0 0</head>
-
-			<!-- {string} Data written to the inout-booster tail control file -->
 			<tail>0 0 0 0 0 0</tail>
-
 		</input_booster>
-
 	</screen_off>
 
 	<!--
 		Profile applied when user manually set profile to powersave or
 		the systems applies extreme power savings.
 	-->
-	<power_save>
+	<power_save extends="screen_off">
 		<enabled>true</enabled>
 		<cpu>
-			<enabled>true</enabled>
 			<apollo>
-				<enabled>true</enabled>
-				<governor>nexus</governor>
-				<freq_min>200000</freq_min>
-				<freq_max>1500000</freq_max>
-				<freq_hispeed>900000</freq_hispeed>
-				<freq_boost>0</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
-				<governor_data>
-					<down_load>40</down_load>
-					<down_step>2</down_step>
-					<down_delay>0</down_delay>
-					<up_load>50</up_load>
-					<up_step>1</up_step>
-					<up_delay>0</up_delay>
-					<lpr_down_ratio>125</lpr_down_ratio>
-					<lpr_down_elevation>2</lpr_down_elevation>
-					<lpr_up_ratio>100</lpr_up_ratio>
-					<lpr_up_elevation>3</lpr_up_elevation>
-					<hispeed_delay>0</hispeed_delay>
-					<hispeed_load>89</hispeed_load>
-					<io_is_busy>1</io_is_busy>
-				</governor_data>
-			</apollo>
-			<atlas>
-				<enabled>true</enabled>
-				<governor>nexus</governor>
-				<freq_min>200000</freq_min>
-				<freq_max>2100000</freq_max>
-				<freq_hispeed>900000</freq_hispeed>
-				<freq_boost>0</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
-				<governor_data>
-					<down_load>40</down_load>
-					<down_step>1</down_step>
-					<down_delay>0</down_delay>
-					<up_load>50</up_load>
-					<up_step>2</up_step>
-					<up_delay>0</up_delay>
-					<lpr_down_ratio>125</lpr_down_ratio>
-					<lpr_down_elevation>2</lpr_down_elevation>
-					<lpr_up_ratio>100</lpr_up_ratio>
-					<lpr_up_elevation>3</lpr_up_elevation>
-					<hispeed_delay>0</hispeed_delay>
-					<hispeed_load>79</hispeed_load>
-					<io_is_busy>1</io_is_busy>
-				</governor_data>
-			</atlas>
-		</cpu>
-		<cpusets>
-			<enabled>true</enabled>
-			<default>0-5</default>
-			<foreground>0-7</foreground>
-			<foreground_boost>4-7</foreground_boost>
-			<background>0-4</background>
-			<system_background>0-4</system_background>
-			<top_app>4-7</top_app>
-		</cpusets>
-		<gpu>
-			<enabled>true</enabled>
-			<dvfs>
-				<enabled>true</enabled>
-				<freq_min>100</freq_min>
-				<freq_max>700</freq_max>
-			</dvfs>
-			<highspeed>
-				<enabled>true</enabled>
-				<freq>420</freq>
-				<load>99</load>
-			</highspeed>
-		</gpu>
-		<hmp>
-			<enabled>true</enabled>
-			<boost>false</boost>
-			<semiboost>false</semiboost>
-			<power_migration>true</power_migration>
-			<active_down_migration>true</active_down_migration>
-			<aggressive_up_migration>false</aggressive_up_migration>
-			<threshold>
-				<enabled>true</enabled>
-				<down>214</down>
-				<up>479</up>
-			</threshold>
-			<threshold>
-				<enabled>true</enabled>
-				<down>150</down>
-				<up>400</up>
-			</threshold>
-		</hmp>
-		<kernel>
-			<enabled>true</enabled>
-			<pewq>true</pewq>
-		</kernel>
-		<ipa>
-			<enabled>true</enabled>
-			<control_temp>55</control_temp>
-		</ipa>
-		<slow>
-			<enabled>true</enabled>
-			<mode_toggle>false</mode_toggle>
-			<timer_rate>0</timer_rate>
-		</slow>
-		<input_booster>
-			<enabled>true</enabled>
-			<tail>0 0 0 0 0 0</tail>
-			<head>0 0 0 0 0 0</head>
-		</input_booster>
-	</power_save>
-
-	<!--
-		Profile for moderate power savings
-	-->
-	<bias_power_save>
-		<enabled>true</enabled>
-		<cpu>
-			<enabled>true</enabled>
-			<apollo>
-				<enabled>true</enabled>
-				<governor>nexus</governor>
-				<freq_min>600000</freq_min>
-				<freq_max>1500000</freq_max>
-				<freq_hispeed>900000</freq_hispeed>
-				<freq_boost>0</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
-				<governor_data>
-					<down_load>40</down_load>
-					<down_step>2</down_step>
-					<down_delay>0</down_delay>
-					<up_load>50</up_load>
-					<up_step>1</up_step>
-					<up_delay>0</up_delay>
-					<lpr_down_ratio>125</lpr_down_ratio>
-					<lpr_down_elevation>2</lpr_down_elevation>
-					<lpr_up_ratio>100</lpr_up_ratio>
-					<lpr_up_elevation>3</lpr_up_elevation>
-					<hispeed_delay>0</hispeed_delay>
-					<hispeed_load>89</hispeed_load>
-					<io_is_busy>1</io_is_busy>
-				</governor_data>
-			</apollo>
-			<atlas>
-				<enabled>true</enabled>
-				<governor>nexus</governor>
-				<freq_min>400000</freq_min>
-				<freq_max>2100000</freq_max>
-				<freq_hispeed>900000</freq_hispeed>
-				<freq_boost>0</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
-				<governor_data>
-					<down_load>40</down_load>
-					<down_step>1</down_step>
-					<down_delay>0</down_delay>
-					<up_load>50</up_load>
-					<up_step>2</up_step>
-					<up_delay>0</up_delay>
-					<lpr_down_ratio>125</lpr_down_ratio>
-					<lpr_down_elevation>2</lpr_down_elevation>
-					<lpr_up_ratio>100</lpr_up_ratio>
-					<lpr_up_elevation>3</lpr_up_elevation>
-					<hispeed_delay>0</hispeed_delay>
-					<hispeed_load>79</hispeed_load>
-					<io_is_busy>1</io_is_busy>
-				</governor_data>
-			</atlas>
-		</cpu>
-		<cpusets>
-			<enabled>true</enabled>
-			<default>0-5</default>
-			<foreground>0-7</foreground>
-			<foreground_boost>4-7</foreground_boost>
-			<background>0-4</background>
-			<system_background>0-4</system_background>
-			<top_app>4-7</top_app>
-		</cpusets>
-		<gpu>
-			<enabled>true</enabled>
-			<dvfs>
-				<enabled>true</enabled>
-				<freq_min>100</freq_min>
-				<freq_max>700</freq_max>
-			</dvfs>
-			<highspeed>
-				<enabled>true</enabled>
-				<freq>420</freq>
-				<load>97</load>
-			</highspeed>
-		</gpu>
-		<hmp>
-			<enabled>true</enabled>
-			<boost>false</boost>
-			<semiboost>false</semiboost>
-			<power_migration>true</power_migration>
-			<active_down_migration>true</active_down_migration>
-			<aggressive_up_migration>false</aggressive_up_migration>
-			<threshold>
-				<enabled>true</enabled>
-				<down>214</down>
-				<up>479</up>
-			</threshold>
-			<sb_threshold>
-				<enabled>true</enabled>
-				<down>150</down>
-				<up>400</up>
-			</sb_threshold>
-		</hmp>
-		<kernel>
-			<enabled>true</enabled>
-			<pewq>false</pewq>
-		</kernel>
-		<ipa>
-			<enabled>true</enabled>
-			<control_temp>60</control_temp>
-		</ipa>
-		<slow>
-			<enabled>true</enabled>
-			<mode_toggle>true</mode_toggle>
-			<timer_rate>25000</timer_rate>
-		</slow>
-		<input_booster>
-			<enabled>true</enabled>
-			<tail>0 0 0 0 0 0</tail>
-			<head>0 0 0 0 0 0</head>
-		</input_booster>
-	</bias_power_save>
-
-	<!--
-		Profile for balanced system performance and efficiency
-	-->
-	<balanced>
-		<enabled>true</enabled>
-		<cpu>
-			<enabled>true</enabled>
-			<apollo>
-				<enabled>true</enabled>
 				<governor>interactive</governor>
 				<freq_min>400000</freq_min>
 				<freq_max>1500000</freq_max>
-				<freq_hispeed>1000000</freq_hispeed>
-				<freq_boost>700000</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
+				<freq_hispeed>900000</freq_hispeed>
 				<governor_data>
 					<!-- Mode index -->
 					<param_index>0</param_index>
@@ -599,325 +168,13 @@
 					<boost>0</boost>
 					<boostpulse_duration>40000</boostpulse_duration>
 					<enforced_mode>0</enforced_mode>
-					<go_hispeed_load>90</go_hispeed_load>
+					<go_hispeed_load>85</go_hispeed_load>
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
-					<target_loads>80</target_loads>
-					<timer_rate>10000</timer_rate>
-					<timer_slack>0</timer_slack>
-
-					<!-- Single mode -->
-					<single_cluster0_min_freq>0</single_cluster0_min_freq>
-					<single_enter_load>200</single_enter_load>
-					<single_enter_time>160000</single_enter_time>
-					<single_exit_load>90</single_exit_load>
-					<single_exit_time>80000</single_exit_time>
-
-					<!-- Multi mode -->
-					<multi_cluster0_min_freq>0</multi_cluster0_min_freq>
-					<multi_enter_load>800</multi_enter_load>
-					<multi_enter_time>80000</multi_enter_time>
-					<multi_exit_load>360</multi_exit_load>
-					<multi_exit_time>320000</multi_exit_time>
-				</governor_data>
-			</apollo>
-			<atlas>
-				<enabled>true</enabled>
-				<governor>interactive</governor>
-				<freq_min>400000</freq_min>
-				<freq_max>2100000</freq_max>
-				<freq_hispeed>1000000</freq_hispeed>
-				<freq_boost>0</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
-				<governor_data>
-					<!-- Mode index -->
-					<param_index>0</param_index>
-
-					<above_hispeed_delay>59000 1300000:39000 1700000:19000</above_hispeed_delay>
-					<boost>0</boost>
-					<boostpulse_duration>40000</boostpulse_duration>
-					<enforced_mode>0</enforced_mode>
-					<go_hispeed_load>90</go_hispeed_load>
-					<io_is_busy>0</io_is_busy>
-					<min_sample_time>40000</min_sample_time>
-					<target_loads>65 1500000:75</target_loads>
-					<timer_rate>10000</timer_rate>
-					<timer_slack>0</timer_slack>
-
-					<!-- Single mode -->
-					<single_cluster0_min_freq>0</single_cluster0_min_freq>
-					<single_enter_load>95</single_enter_load>
-					<single_enter_time>199000</single_enter_time>
-					<single_exit_load>60</single_exit_load>
-					<single_exit_time>99000</single_exit_time>
-
-					<!-- Multi mode -->
-					<multi_cluster0_min_freq>0</multi_cluster0_min_freq>
-					<multi_enter_load>360</multi_enter_load>
-					<multi_enter_time>79000</multi_enter_time>
-					<multi_exit_load>240</multi_exit_load>
-					<multi_exit_time>299000</multi_exit_time>
-				</governor_data>
-			</atlas>
-		</cpu>
-		<cpusets>
-			<enabled>true</enabled>
-			<default>0-7</default>
-			<foreground>0-2,4-7</foreground>
-			<foreground_boost>4-7</foreground_boost>
-			<background>0-1</background>
-			<system_background>0-3</system_background>
-			<top_app>4-7</top_app>
-		</cpusets>
-		<gpu>
-			<enabled>true</enabled>
-			<dvfs>
-				<enabled>true</enabled>
-				<freq_min>160</freq_min>
-				<freq_max>700</freq_max>
-			</dvfs>
-			<highspeed>
-				<enabled>true</enabled>
-				<freq>544</freq>
-				<load>90</load>
-			</highspeed>
-		</gpu>
-		<hmp>
-			<enabled>true</enabled>
-			<boost>false</boost>
-			<semiboost>false</semiboost>
-			<power_migration>true</power_migration>
-			<active_down_migration>false</active_down_migration>
-			<aggressive_up_migration>false</aggressive_up_migration>
-			<threshold>
-				<enabled>true</enabled>
-				<down>200</down>
-				<up>400</up>
-			</threshold>
-			<sb_threshold>
-				<enabled>true</enabled>
-				<down>200</down>
-				<up>400</up>
-			</sb_threshold>
-		</hmp>
-		<kernel>
-			<enabled>true</enabled>
-			<pewq>true</pewq>
-		</kernel>
-		<ipa>
-			<enabled>true</enabled>
-			<control_temp>65</control_temp>
-		</ipa>
-		<slow>
-			<enabled>true</enabled>
-			<mode_toggle>true</mode_toggle>
-			<timer_rate>25000</timer_rate>
-		</slow>
-		<input_booster>
-			<enabled>true</enabled>
-			<tail>0 0 0 0 0 0</tail>
-			<head>0 0 0 0 0 0</head>
-		</input_booster>
-	</balanced>
-
-	<!--
-		Profile for balanced system performance and efficiency,
-		but being closer to the performable system
-	-->
-	<bias_performance>
-		<enabled>true</enabled>
-		<cpu>
-			<enabled>true</enabled>
-			<apollo>
-				<enabled>true</enabled>
-				<governor>interactive</governor>
-				<freq_min>400000</freq_min>
-				<freq_max>1500000</freq_max>
-				<freq_hispeed>1100000</freq_hispeed>
-				<freq_boost>800000</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
-				<governor_data>
-					<!-- Mode index -->
-					<param_index>0</param_index>
-
-					<above_hispeed_delay>19000</above_hispeed_delay>
-					<boost>0</boost>
-					<boostpulse_duration>40000</boostpulse_duration>
-					<enforced_mode>0</enforced_mode>
-					<go_hispeed_load>90</go_hispeed_load>
-					<io_is_busy>0</io_is_busy>
-					<min_sample_time>40000</min_sample_time>
-					<target_loads>80</target_loads>
-					<timer_rate>10000</timer_rate>
-					<timer_slack>0</timer_slack>
-
-					<!-- Single mode -->
-					<single_cluster0_min_freq>0</single_cluster0_min_freq>
-					<single_enter_load>200</single_enter_load>
-					<single_enter_time>160000</single_enter_time>
-					<single_exit_load>90</single_exit_load>
-					<single_exit_time>80000</single_exit_time>
-
-					<!-- Multi mode -->
-					<multi_cluster0_min_freq>0</multi_cluster0_min_freq>
-					<multi_enter_load>800</multi_enter_load>
-					<multi_enter_time>80000</multi_enter_time>
-					<multi_exit_load>360</multi_exit_load>
-					<multi_exit_time>320000</multi_exit_time>
-				</governor_data>
-			</apollo>
-			<atlas>
-				<enabled>true</enabled>
-				<governor>interactive</governor>
-				<freq_min>600000</freq_min>
-				<freq_max>2100000</freq_max>
-				<freq_hispeed>1200000</freq_hispeed>
-				<freq_boost>400000</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
-				<governor_data>
-					<!-- Mode index -->
-					<param_index>0</param_index>
-
-					<above_hispeed_delay>59000 1300000:39000 1700000:19000</above_hispeed_delay>
-					<boost>0</boost>
-					<boostpulse_duration>40000</boostpulse_duration>
-					<enforced_mode>0</enforced_mode>
-					<go_hispeed_load>90</go_hispeed_load>
-					<io_is_busy>0</io_is_busy>
-					<min_sample_time>40000</min_sample_time>
-					<target_loads>65 1500000:75</target_loads>
-					<timer_rate>10000</timer_rate>
-					<timer_slack>0</timer_slack>
-
-					<!-- Single mode -->
-					<single_cluster0_min_freq>400000</single_cluster0_min_freq>
-					<single_enter_load>95</single_enter_load>
-					<single_enter_time>199000</single_enter_time>
-					<single_exit_load>60</single_exit_load>
-					<single_exit_time>99000</single_exit_time>
-
-					<!-- Multi mode -->
-					<multi_cluster0_min_freq>800000</multi_cluster0_min_freq>
-					<multi_enter_load>360</multi_enter_load>
-					<multi_enter_time>79000</multi_enter_time>
-					<multi_exit_load>240</multi_exit_load>
-					<multi_exit_time>299000</multi_exit_time>
-				</governor_data>
-			</atlas>
-		</cpu>
-		<cpusets>
-			<enabled>true</enabled>
-			<default>0-7</default>
-			<foreground>0-2,4-7</foreground>
-			<foreground_boost>4-7</foreground_boost>
-			<background>0-1</background>
-			<system_background>0-3</system_background>
-			<top_app>0-7</top_app>
-		</cpusets>
-		<gpu>
-			<enabled>true</enabled>
-			<dvfs>
-				<enabled>true</enabled>
-				<freq_min>266</freq_min>
-				<freq_max>700</freq_max>
-			</dvfs>
-			<highspeed>
-				<enabled>true</enabled>
-				<freq>700</freq>
-				<load>90</load>
-			</highspeed>
-		</gpu>
-		<hmp>
-			<enabled>true</enabled>
-			<boost>false</boost>
-			<semiboost>true</semiboost>
-			<power_migration>true</power_migration>
-			<active_down_migration>false</active_down_migration>
-			<aggressive_up_migration>true</aggressive_up_migration>
-			<threshold>
-				<enabled>true</enabled>
-				<down>200</down>
-				<up>400</up>
-			</threshold>
-			<sb_threshold>
-				<enabled>true</enabled>
-				<down>200</down>
-				<up>300</up>
-			</sb_threshold>
-		</hmp>
-		<kernel>
-			<enabled>true</enabled>
-			<pewq>true</pewq>
-		</kernel>
-		<ipa>
-			<enabled>true</enabled>
-			<control_temp>70</control_temp>
-		</ipa>
-		<slow>
-			<enabled>true</enabled>
-			<mode_toggle>true</mode_toggle>
-			<timer_rate>10000</timer_rate>
-		</slow>
-		<input_booster>
-			<enabled>true</enabled>
-			<tail>0 0 0 0 0 0</tail>
-			<head>0 0 0 0 0 0</head>
-		</input_booster>
-	</bias_performance>
-
-	<!--
-		Profile for full system performance
-	-->
-	<performance>
-		<enabled>true</enabled>
-		<cpu>
-			<enabled>true</enabled>
-			<apollo>
-				<enabled>true</enabled>
-				<governor>interactive</governor>
-				<freq_min>800000</freq_min>
-				<freq_max>1500000</freq_max>
-				<freq_hispeed>1300000</freq_hispeed>
-				<freq_boost>900000</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
-				<governor_data>
-					<!-- Mode index -->
-					<param_index>0</param_index>
-
-					<above_hispeed_delay>19000</above_hispeed_delay>
-					<boost>0</boost>
-					<boostpulse_duration>40000</boostpulse_duration>
-					<enforced_mode>0</enforced_mode>
-					<go_hispeed_load>75</go_hispeed_load>
-					<io_is_busy>0</io_is_busy>
-					<min_sample_time>40000</min_sample_time>
+					<mode>0</mode>
 					<target_loads>75</target_loads>
-					<timer_rate>10000</timer_rate>
-					<timer_slack>0</timer_slack>
+					<timer_rate>20000</timer_rate>
+					<timer_slack>20000</timer_slack>
 
 					<!-- Single mode -->
 					<single_cluster0_min_freq>0</single_cluster0_min_freq>
@@ -935,19 +192,10 @@
 				</governor_data>
 			</apollo>
 			<atlas>
-				<enabled>true</enabled>
 				<governor>interactive</governor>
-				<freq_min>1200000</freq_min>
+				<freq_min>400000</freq_min>
 				<freq_max>2100000</freq_max>
-				<freq_hispeed>1300000</freq_hispeed>
-				<freq_boost>900000</freq_boost>
-				<cores>
-					<enabled>true</enabled>
-					<core1>true</core1>
-					<core2>true</core2>
-					<core3>true</core3>
-					<core4>true</core4>
-				</cores>
+				<freq_hispeed>1000000</freq_hispeed>
 				<governor_data>
 					<!-- Mode index -->
 					<param_index>0</param_index>
@@ -956,12 +204,13 @@
 					<boost>0</boost>
 					<boostpulse_duration>40000</boostpulse_duration>
 					<enforced_mode>0</enforced_mode>
-					<go_hispeed_load>80</go_hispeed_load>
+					<go_hispeed_load>89</go_hispeed_load>
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
+					<mode>0</mode>
 					<target_loads>65 1500000:75</target_loads>
-					<timer_rate>10000</timer_rate>
-					<timer_slack>0</timer_slack>
+					<timer_rate>20000</timer_rate>
+					<timer_slack>20000</timer_slack>
 
 					<!-- Single mode -->
 					<single_cluster0_min_freq>800000</single_cluster0_min_freq>
@@ -979,64 +228,91 @@
 				</governor_data>
 			</atlas>
 		</cpu>
-		<cpusets>
-			<enabled>true</enabled>
-			<default>0-7</default>
-			<foreground>0-2,4-7</foreground>
-			<foreground_boost>4-7</foreground_boost>
-			<background>0-1</background>
-			<system_background>0-3</system_background>
-			<top_app>4-7</top_app>
-		</cpusets>
 		<gpu>
-			<enabled>true</enabled>
 			<dvfs>
-				<enabled>true</enabled>
-				<freq_min>420</freq_min>
+				<freq_min>266</freq_min>
 				<freq_max>772</freq_max>
 			</dvfs>
 			<highspeed>
-				<enabled>true</enabled>
-				<freq>772</freq>
-				<load>80</load>
+				<freq>544</freq>
+				<load>89</load>
 			</highspeed>
 		</gpu>
-		<hmp>
-			<enabled>true</enabled>
-			<boost>true</boost>
-			<semiboost>false</semiboost>
-			<power_migration>true</power_migration>
-			<active_down_migration>false</active_down_migration>
-			<aggressive_up_migration>true</aggressive_up_migration>
-			<threshold>
-				<enabled>true</enabled>
-				<down>150</down>
-				<up>300</up>
-			</threshold>
-			<sb_threshold>
-				<enabled>true</enabled>
-				<down>100</down>
-				<up>200</up>
-			</sb_threshold>
-		</hmp>
-		<kernel>
-			<enabled>true</enabled>
-			<pewq>false</pewq>
-		</kernel>
 		<ipa>
-			<enabled>true</enabled>
+			<control_temp>65</control_temp>
+		</ipa>
+	</power_save>
+
+	<!--
+		Profile for moderate power savings
+	-->
+	<bias_power_save extends="power_save">
+		<enabled>true</enabled>
+	</bias_power_save>
+
+	<!--
+		Profile for balanced system performance and efficiency
+	-->
+	<balanced extends="bias_power_save">
+		<enabled>true</enabled>
+		<gpu>
+			<highspeed>
+				<freq>700</freq>
+			</highspeed>
+		</gpu>
+	</balanced>
+
+	<!--
+		Profile for balanced system performance and efficiency,
+		but being closer to the performable system
+	-->
+	<bias_performance extends="balanced">
+		<enabled>true</enabled>
+		<cpu>
+			<apollo>
+				<freq_min>600000</freq_min>
+			</apollo>
+			<atlas>
+				<freq_min>600000</freq_min>
+			</atlas>
+		</cpu>
+		<gpu>
+			<dvfs>
+				<freq_min>420</freq_min>
+			</dvfs>
+			<highspeed>
+				<freq>700</freq>
+			</highspeed>
+		</gpu>
+		<ipa>
+			<control_temp>70</control_temp>
+		</ipa>
+	</bias_performance>
+
+	<!--
+		Profile for full system performance
+	-->
+	<performance extends="bias_performance">
+		<enabled>true</enabled>
+		<cpu>
+			<apollo>
+				<freq_min>800000</freq_min>
+			</apollo>
+			<atlas>
+				<freq_min>800000</freq_min>
+			</atlas>
+		</cpu>
+		<gpu>
+			<dvfs>
+				<freq_min>544</freq_min>
+			</dvfs>
+			<highspeed>
+				<freq>772</freq>
+			</highspeed>
+		</gpu>
+		<ipa>
 			<control_temp>75</control_temp>
 		</ipa>
-		<slow>
-			<enabled>true</enabled>
-			<mode_toggle>true</mode_toggle>
-			<timer_rate>15000</timer_rate>
-		</slow>
-		<input_booster>
-			<enabled>true</enabled>
-			<tail>0 0 0 0 0 0</tail>
-			<head>0 0 0 0 0 0</head>
-		</input_booster>
 	</performance>
 
 </profiles>
