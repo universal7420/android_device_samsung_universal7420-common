@@ -98,10 +98,10 @@
 			<top_app>0-3</top_app>
 		</cpusets>
 		<hmp>
-			<enabled>false</enabled>
+			<enabled>true</enabled>
 			<boost>false</boost>
 			<semiboost>false</semiboost>
-			<power_migration>false</power_migration>
+			<power_migration>true</power_migration>
 			<active_down_migration>false</active_down_migration>
 			<aggressive_up_migration>false</aggressive_up_migration>
 			<threshold>
@@ -276,6 +276,9 @@
 				<freq_min>600000</freq_min>
 			</atlas>
 		</cpu>
+		<hmp>
+			<power_migration>false</power_migration>
+		</hmp>
 		<gpu>
 			<dvfs>
 				<freq_min>420</freq_min>
