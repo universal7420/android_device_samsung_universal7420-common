@@ -30,58 +30,6 @@ on late-fs
 # init.power.rc
 #
 on init
-    write /proc/sys/kernel/sched_compat_yield 1
-    write /dev/cpuctl/cpu.shares 1024
-
-    mkdir /dev/cpuctl/bg_cached
-    chown system system /dev/cpuctl/bg_cached/tasks
-    chown system system /dev/cpuctl/bg_cached/cpu.cfs_period_us
-    chown system system /dev/cpuctl/bg_cached/cpu.cfs_quota_us
-    chmod 0666 /dev/cpuctl/bg_cached/tasks
-    chmod 0664 /dev/cpuctl/bg_cached/cpu.cfs_period_us
-    chmod 0664 /dev/cpuctl/bg_cached/cpu.cfs_quota_us
-
-    write /dev/cpuctl/bg_cached/cpu.shares 52
-    write /dev/cpuctl/bg_cached/cpu.rt_runtime_us 700000
-    write /dev/cpuctl/bg_cached/cpu.rt_period_us 1000000
-    write /dev/cpuctl/bg_cached/cpu.cfs_period_us 20000
-    write /dev/cpuctl/bg_cached/cpu.cfs_quota_us 10000
-
-    mkdir /dev/cpuctl/bg_abnormal
-    chown system system /dev/cpuctl/bg_abnormal/tasks
-    chown system system /dev/cpuctl/bg_abnormal/cpu.cfs_period_us
-    chown system system /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us
-    chmod 0666 /dev/cpuctl/bg_abnormal/tasks
-    chmod 0664 /dev/cpuctl/bg_abnormal/cpu.cfs_period_us
-    chmod 0664 /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us
-    # 5.0 %
-    write /dev/cpuctl/bg_abnormal/cpu.shares 52
-    write /dev/cpuctl/bg_abnormal/cpu.rt_runtime_us 700000
-    write /dev/cpuctl/bg_abnormal/cpu.rt_period_us 1000000
-    write /dev/cpuctl/bg_abnormal/cpu.cfs_period_us 20000
-    write /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us 10000
-
-# battery-enhancements
-	write /proc/sys/vm/oom_kill_allocating_task 0
-	write /proc/sys/vm/panic_on_oom 0
-	write /proc/sys/vm/laptop_mode 5
-	write /proc/sys/vm/dirty_ratio 90
-	write /proc/sys/vm/dirty_background_ratio 80
-	write /proc/sys/vm/overcommit_memory 1
-	write /proc/sys/vm/block_dump 0
-	write /proc/sys/fs/nr_open 105396
-	write /proc/sys/fs/inotify/max_queued_events 32000
-	write /proc/sys/fs/inotify/max_user_instances 256
-	write /proc/sys/fs/inotify/max_user_watches 10240
-	write /proc/sys/fs/file-max 165164
-	write /proc/sys/kernel/panic_on_oops 1
-	write /proc/sys/kernel/panic 5
-	write /proc/sys/kernel/sched_latency_ns 18000000
-	write /proc/sys/kernel/sched_min_granularity_ns 1500000
-	write /proc/sys/kernel/sched_wakeup_granularity_ns 3000000
-	write /proc/sys/kernel/sched_rt_runtime_us "-1"
-	write /proc/sys/kernel/sched_rt_period_us 1000000
-
 # change own for camera preview lagging
     chown system system /sys/kernel/hmp/down_threshold
 
