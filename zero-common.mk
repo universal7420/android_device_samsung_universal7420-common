@@ -405,7 +405,7 @@ PRODUCT_PACKAGES += \
 #
 # Synapse
 #
-include device/samsung/zero-common/synapse/synapse.mk
+# include device/samsung/zero-common/synapse/synapse.mk
 
 #
 # Tools
