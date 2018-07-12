@@ -431,8 +431,8 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 */
 	if (data->gpu.enabled) {
 		if (data->gpu.dvfs.enabled) {
-			PROFILE_WRITE("/sys/devices/platform/gpusysfs/gpu_min_clock", gpu.dvfs, freq_min);
-			PROFILE_WRITE("/sys/devices/platform/gpusysfs/gpu_max_clock", gpu.dvfs, freq_max);
+			PROFILE_WRITE("/sys/devices/14ac0000.mali/dvfs_min_lock", gpu.dvfs, freq_min);
+			PROFILE_WRITE("/sys/devices/14ac0000.mali/dvfs_max_lock", gpu.dvfs, freq_max);
 		}
 		if (data->gpu.highspeed.enabled) {
 			PROFILE_WRITE("/sys/devices/14ac0000.mali/highspeed_clock", gpu.highspeed, freq);
