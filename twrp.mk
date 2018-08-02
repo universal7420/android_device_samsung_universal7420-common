@@ -19,10 +19,20 @@
 TW_NO_REBOOT_BOOTLOADER := true
 TW_HAS_DOWNLOAD_MODE := true
 
+# Encryption support
+#  -- Only enable standard crypto for now to support AOSP/CM crypto
+TW_INCLUDE_CRYPTO := true
+# TW_INCLUDE_CRYPTO_SAMSUNG := true
+# TARGET_HW_DISK_ENCRYPTION := true
+# TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+# TWRP_INCLUDE_LOGCAT := true
+# TARGET_USES_LOGD := true
+
 # TWRP
 TW_DEVICE_VERSION := TeamNexus
 TW_EXCLUDE_SUPERSU := true
-# TW_INCLUDE_CRYPTO := true
+TW_NO_EXFAT_FUSE := true
+TW_NO_USB_STORAGE := true
 TW_THEME := portrait_hdpi
 
 PRODUCT_COPY_FILES += \
@@ -34,6 +44,7 @@ TARGET_RECOVERY_PIXEL_FORMAT := "ABGR_8888"
 
 # Screen
 TW_BRIGHTNESS_PATH := "/sys/devices/13900000.dsim/backlight/panel/brightness"
+TW_DEFAULT_BRIGHTNESS := 162
 TW_MAX_BRIGHTNESS := 255
 TW_SCREEN_BLANK_ON_BOOT := true
 
