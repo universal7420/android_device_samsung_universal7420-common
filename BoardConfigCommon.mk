@@ -109,6 +109,11 @@ BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charg
 CHARGING_ENABLED_PATH := "/sys/class/power_supply/battery/batt_lp_charging"
 
 #
+# Debugging
+#
+TARGET_BUILD_DEBUGGABLE := true
+
+#
 # Device
 #
 BOARD_VENDOR := samsung
