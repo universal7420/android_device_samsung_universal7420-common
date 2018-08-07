@@ -18,6 +18,7 @@
 #define ZERO_HELPERS_H
 
 #include <cutils/properties.h>
+#include <string.h>
 
 #ifndef __maybe_unused
   #define __maybe_unused  __attribute__((unused))
