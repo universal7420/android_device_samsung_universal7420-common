@@ -224,17 +224,6 @@ PRODUCT_PACKAGES += \
 	lights.universal7420
 
 #
-# LiveDisplay
-#
-## Packages
-PRODUCT_PACKAGES += \
-	vendor.lineage.livedisplay-V1.0-java
-
-## Frameworks
-PRODUCT_BOOT_JARS += \
-	vendor.lineage.livedisplay-V1.0-java
-
-#
 # Media
 #
 ## Profiles
