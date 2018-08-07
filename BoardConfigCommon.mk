@@ -328,7 +328,7 @@ BOARD_USES_TRUST_KEYMASTER := true
 BOARD_SECCOMP_POLICY += device/samsung/zero-common/seccomp
 
 ## Sepolicy
-BOARD_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+# BOARD_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
 
 #
 # Sensors
