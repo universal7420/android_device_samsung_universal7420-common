@@ -17,10 +17,6 @@
 #include <hardware/nfc.h>
 #include <hardware/nfc_tag.h>
 
-#define false (0)
-#define true (1)
-typedef int8_t bool;
-
 typedef struct sec_nfc_data {
 	bool opened;
 } sec_nfc_data_t;
