@@ -3,11 +3,11 @@ type zero_power_service, exec_type, file_type;
 
 allow zero_power_service hidl_base_hwservice:hwservice_manager add;
 allow zero_power_service hal_power_hwservice:hwservice_manager add;
-allow zero_power_service hal_lineage_power_hwservice:hwservice_manager add;
+#allow zero_power_service hal_lineage_power_hwservice:hwservice_manager add;
 
 allow zero_power_service hwbinder_device:chr_file { ioctl read write };
 
 allow system_server hal_power_hwservice:hwservice_manager find;
-allow system_server hal_lineage_power_hwservice:hwservice_manager find;
+#allow system_server hal_lineage_power_hwservice:hwservice_manager find;
 
 allow system_server zero_power_service:binder { call };

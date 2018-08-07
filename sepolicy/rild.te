@@ -6,8 +6,6 @@ allow rild imei_efs_file:file r_file_perms;
 allow rild app_efs_file:dir r_dir_perms;
 allow rild app_efs_file:file r_file_perms;
 
-allow cpboot-daemon self:capability { dac_read_search };
-
 # /dev/knox_kap
 allow rild knox_kap_device:chr_file rw_file_perms;
 
