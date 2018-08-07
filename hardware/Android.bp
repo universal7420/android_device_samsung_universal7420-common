@@ -1,6 +1,5 @@
 subdirs = [
     "camera",
-    "livedisplay",
     "vibrator",
 ]
 
