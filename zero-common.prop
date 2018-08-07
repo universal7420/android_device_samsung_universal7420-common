@@ -141,6 +141,7 @@ ro.sf.lcd_density=640
 # Storage
 #
 ro.sys.sdcardfs=1
+ro.sys.sdcardfs.legacy-mounting=1
 
 #
 # WiFi
