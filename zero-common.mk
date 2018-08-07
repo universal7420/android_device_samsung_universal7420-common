@@ -93,8 +93,8 @@ PRODUCT_PACKAGES += \
 #
 # Doze
 #
-PRODUCT_PACKAGES += \
-	ZeroDoze
+#PRODUCT_PACKAGES += \
+#	ZeroDoze
 
 #
 # DRM
