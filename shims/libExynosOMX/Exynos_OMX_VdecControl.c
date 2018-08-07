@@ -18,6 +18,7 @@
 #define LOG_TAG "libExynosOMX_shim"
 
 #include <dlfcn.h>
+#include <string.h>
 #include <utils/Log.h>
 
 int Exynos_OSAL_Strcmp(const char *s1, const char *s2)
