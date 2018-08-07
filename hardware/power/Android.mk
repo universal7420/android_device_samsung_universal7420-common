@@ -41,8 +41,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libutils \
 	libxml2 \
 	libzeroutils \
-	android.hardware.power@1.0 \
-	vendor.lineage.power@1.0
+	android.hardware.power@1.0
 
 LOCAL_C_INCLUDES := \
 	external/libxml2/include
@@ -50,6 +49,7 @@ LOCAL_C_INCLUDES := \
 LOCAL_CFLAGS := -Wall -Werror -Wno-unused-parameter -Wno-unused-function
 
 ifneq (,$(wildcard hardware/lineage/interfaces/power/1.0/ vendor/cmsdk/))
+  LOCAL_SHARED_LIBRARIES += vendor.lineage.power@1.0
   LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
 endif
 
