@@ -75,8 +75,10 @@ ro.hwui.text_large_cache_height=2048
 #
 # HW Composer
 #
-# -- We only have 6 working HW windows right now
-debug.hwc.max_hw_overlays=6
+debug.hwc.force_gpu=1
+debug.egl.hw=0
+debug.sf.hw=0
+persist.sys.ui.hw=false
 
 #
 # Logging
