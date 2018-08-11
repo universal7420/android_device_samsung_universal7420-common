@@ -231,6 +231,9 @@
 			</atlas>
 		</cpu>
 		<gpu>
+			<dvfs>
+				<freq_min>350</freq_min>
+			</dvfs>
 			<highspeed>
 				<freq>600</freq>
 			</highspeed>
@@ -258,6 +261,9 @@
 			<semiboost>true</semiboost>
 		</hmp>
 		<gpu>
+			<dvfs>
+				<freq_min>420</freq_min>
+			</dvfs>
 			<highspeed>
 				<freq>700</freq>
 			</highspeed>
@@ -347,7 +353,7 @@
 		</hmp>
 		<gpu>
 			<dvfs>
-				<freq_min>420</freq_min>
+				<freq_min>544</freq_min>
 			</dvfs>
 			<highspeed>
 				<freq>700</freq>
@@ -373,7 +379,7 @@
 		</cpu>
 		<gpu>
 			<dvfs>
-				<freq_min>544</freq_min>
+				<freq_min>600</freq_min>
 			</dvfs>
 			<highspeed>
 				<freq>772</freq>
