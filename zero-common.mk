@@ -180,6 +180,12 @@ PRODUCT_PACKAGES += \
 	android.hardware.graphics.mapper@2.0-impl
 
 #
+# Init
+#
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/init/zero.wifi.rc:system/vendor/etc/init/zero.wifi.rc
+
+#
 # IR
 #
 PRODUCT_PACKAGES += \
@@ -359,7 +365,6 @@ PRODUCT_PACKAGES += \
 	init.samsungexynos7420.rc \
 	init.samsungexynos7420.usb.rc \
 	init.recovery.samsungexynos7420.rc \
-	init.wifi.rc \
 	ueventd.samsungexynos7420.rc
 
 #
