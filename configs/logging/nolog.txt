@@ -70,3 +70,10 @@ gralloc
 ## NFC
 BrcmNfcJni
 BrcmNfcNfa
+
+## WiFi
+android_os_HwBinder
+SupplicantP2pIfaceHal
+WifiP2pNative
+WifiP2pService
+wpa_supplicant
