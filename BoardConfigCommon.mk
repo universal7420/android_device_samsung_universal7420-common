@@ -199,13 +199,9 @@ BOARD_USES_VIRTUAL_DISPLAY := true
 # Hardware Classes
 #
 ## LineageOS HW
-BOARD_HARDWARE_CLASS += \
-	hardware/samsung/lineagehw \
-	device/samsung/zero-common/lineagehw
-
-## NexusOS HW
-BOARD_NEXUS_HARDWARE_CLASS += \
-	device/samsung/zero-common/nexus/hardware
+JAVA_SOURCE_OVERLAYS := \
+    org.lineageos.hardware|hardware/samsung/lineagehw|**/*.java \
+    org.lineageos.hardware|device/samsung/zero-common/lineagehw|**/*.java
 
 #
 # Init
