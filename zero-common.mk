@@ -268,8 +268,9 @@ PRODUCT_PACKAGES += \
 ## Configs
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/configs/nfc/nfcee_access.xml:system/etc/nfcee_access.xml \
-	$(LOCAL_PATH)/configs/nfc/libnfc-sec-hal.conf:system/etc/libnfc-sec-hal.conf \
-	$(LOCAL_PATH)/configs/nfc/libnfc-nci.conf:system/etc/libnfc-nci.conf
+	$(LOCAL_PATH)/configs/nfc/libnfc-nci.conf:system/vendor/etc/libnfc-nci.conf \
+	$(LOCAL_PATH)/configs/nfc/libnfc-sec.conf:system/vendor/etc/libnfc-sec.conf \
+	$(LOCAL_PATH)/configs/nfc/libnfc-sec-hal.conf:system/vendor/etc/libnfc-sec-hal.conf
 
 ## Packages
 PRODUCT_PACKAGES += \
@@ -279,8 +280,7 @@ PRODUCT_PACKAGES += \
 	Tag \
 	com.android.nfc_extras \
 	android.hardware.nfc@1.0-impl \
-	android.hardware.nfc@1.0-service \
-	nfc_nci.universal7420
+	android.hardware.nfc@1.0-service
 
 #
 # Overlays
