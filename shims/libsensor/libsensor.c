@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 TeamNexus
+ * Copyright (C) 2017 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,7 @@
 
 #include <cutils/log.h>
 
-#include "libsensor.h"
-
-namespace android
+int _ZN7android16SensorEventQueue4readEP12ASensorEventm(void *a1, void *a2, unsigned long a3)
 {
-
-ssize_t SensorEventQueue::read(ASensorEvent* events, unsigned long numEvents)
-{
-	return this->read(events, static_cast<size_t>(numEvents));
-}
-
+	return 0;
 }
