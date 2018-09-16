@@ -139,7 +139,7 @@ TARGET_LD_SHIM_LIBS += \
 #
 ## Shims
 TARGET_LD_SHIM_LIBS += \
-	/system/bin/gpsd|/vendor/lib64/libsensor_shim.so
+	/vendor/bin/gpsd|/vendor/lib64/libsensor_shim.so
 
 #
 # Graphics
