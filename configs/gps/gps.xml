@@ -16,7 +16,7 @@
     SuplSslMethod="SSLv23_NO_TLSv1_2"
     SuplEnable="true"
     SuplUseApn="false"
-    SuplTlsCertPath="/vendor/etc/gnss/gps.cer"
+    SuplTlsCertPath="/system/bin/gps.cer"
     SuplUT1Seconds="20"
     SuplUT2Seconds="20"
     SuplUT3Seconds="20"
