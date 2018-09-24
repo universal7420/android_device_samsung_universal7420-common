@@ -150,7 +150,7 @@ ro.sys.sdcardfs.legacy-mounting=1
 # WiFi
 #
 wifi.interface=wlan0
-wifi.direct.non-concurrent=true
+wifi.direct.interface=p2p-dev-wlan0
 
 #
 # Wireless Display
