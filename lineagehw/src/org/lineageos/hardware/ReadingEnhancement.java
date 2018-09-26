@@ -30,7 +30,11 @@ public class ReadingEnhancement {
         return FileUtils.isFileWritable(ACCESSIBILITY_FILE);
     }
 
-    public static boolean setGrayscale(boolean state) {
+    public static boolean isEnabled() {
+        return Integer.parseInt(FileUtils.readOneLine(ACCESSIBILITY_FILE)) == 4;
+    }
+
+    public static boolean setEnabled(boolean state) {
         return FileUtils.writeLine(ACCESSIBILITY_FILE,
             (state ? "4" : "0"));
     }
