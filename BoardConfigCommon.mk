@@ -233,6 +233,11 @@ TARGET_CUSTOM_DTBTOOL := dtbhtoolExynos
 DEVICE_MANIFEST_FILE += device/samsung/zero-common/configs/manifest.xml
 
 #
+# Networking
+#
+TARGET_NEEDS_NETD_DIRECT_CONNECT_RULE := true
+
+#
 # NFC
 #
 BOARD_NFC_HAL_SUFFIX := universal7420.unused
