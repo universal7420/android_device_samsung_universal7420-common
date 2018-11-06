@@ -1,4 +1,5 @@
 subdirs = [
+    "bluetooth",
     "camera",
     "vibrator",
 ]
