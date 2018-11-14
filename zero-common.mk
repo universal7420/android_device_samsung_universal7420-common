@@ -158,10 +158,6 @@ PRODUCT_PACKAGES += \
 	android.hardware.gnss@1.0-impl.zero \
 	android.hardware.gnss@1.0-service
 
-## Shims
-PRODUCT_PACKAGES += \
-	libsensor_shim
-
 ## Configs
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/configs/gps/gps.conf:system/etc/gps.conf \
