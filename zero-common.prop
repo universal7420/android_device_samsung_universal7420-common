@@ -75,9 +75,9 @@ ro.hwui.text_large_cache_height=2048
 #
 # HW Composer
 #
-debug.hwc.force_gpu=0
+debug.hwc.force_gpu=1
 debug.hwc.winupdate=0
-persist.sys.ui.hw=true
+persist.sys.ui.hw=false
 
 #
 # Logging
