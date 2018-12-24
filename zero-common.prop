@@ -26,6 +26,7 @@ persist.sys.usb.config=adb
 persist.service.adb.enable=1
 persist.service.debuggable=1
 sys.usb.ffs.aio_compat=1
+lineage.service.adb.root=1
 
 #
 # Audio
