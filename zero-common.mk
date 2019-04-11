@@ -457,6 +457,9 @@ PRODUCT_PACKAGES += \
 $(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
 $(call inherit-product, hardware/samsung_slsi-cm/exynos7420/exynos7420.mk)
 
+# Get NexusOS-blobs, apps, branding, etc.
+$(call inherit-product-if-exists, vendor/nexus/product.mk)
+
 # Get private non-open-source blobs
 $(call inherit-product-if-exists, vendor/samsung/zero-private/zero-private-vendor.mk)
 
