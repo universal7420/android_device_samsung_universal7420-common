@@ -394,6 +394,12 @@ PRODUCT_PACKAGES += \
 # include device/samsung/zero-common/synapse/synapse.mk
 
 #
+# Touch
+#
+PRODUCT_PACKAGES += \
+	vendor.lineage.touch@1.0-service.samsung
+
+#
 # Tools
 #
 PRODUCT_PACKAGES += \
