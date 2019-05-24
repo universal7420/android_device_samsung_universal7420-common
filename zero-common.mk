@@ -369,6 +369,12 @@ PRODUCT_PACKAGES += \
 	android.hardware.renderscript@1.0-impl
 
 #
+# Screen
+#
+PRODUCT_PACKAGES += \
+	vendor.lineage.touch@1.0-service.zero
+
+#
 # Security
 #
 ## seccomp
