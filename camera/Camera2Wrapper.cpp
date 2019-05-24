@@ -20,8 +20,24 @@
 #define LOG_TAG "Camera2Wrapper"
 #include <cutils/log.h>
 
+#include <unistd.h>
+
 #include "CameraWrapper.h"
 #include "Camera2Wrapper.h"
+
+#include <sys/time.h>
+
+/* current_timestamp() function from stack overflow:
+ * https://stackoverflow.com/questions/3756323/how-to-get-the-current-time-in-milliseconds-from-c-in-linux/17083824
+ */
+
+long long current_timestamp() {
+    struct timeval te;
+    gettimeofday(&te, NULL); // get current time
+    long long milliseconds = te.tv_sec*1000LL + te.tv_usec/1000; // calculate milliseconds
+    // printf("milliseconds: %lld\n", milliseconds);
+    return milliseconds;
+}
 
 typedef struct wrapper_camera2_device {
     camera_device_t base;
@@ -249,24 +265,45 @@ static void camera2_release_recording_frame(struct camera_device * device,
     VENDOR_CALL(device, release_recording_frame, opaque);
 }
 
+long long CancelAFTimeGuard = 0;
+
 static int camera2_auto_focus(struct camera_device * device)
 {
+    int Ret;
     ALOGV("%s->%08X->%08X", __FUNCTION__, (uintptr_t)device, (uintptr_t)(((wrapper_camera2_device_t*)device)->vendor));
 
     if(!device)
         return -EINVAL;
 
-    return VENDOR_CALL(device, auto_focus);
+    /* Call the auto_focus function */
+    Ret = VENDOR_CALL(device, auto_focus);
+
+    /* Set the cancel_auto_focus time guard to now plus 1 second */
+    CancelAFTimeGuard = current_timestamp() + 1000;
+
+    return Ret;
 }
 
 static int camera2_cancel_auto_focus(struct camera_device * device)
 {
+    int Ret;
     ALOGV("%s->%08X->%08X", __FUNCTION__, (uintptr_t)device, (uintptr_t)(((wrapper_camera2_device_t*)device)->vendor));
 
     if(!device)
         return -EINVAL;
 
-    return VENDOR_CALL(device, cancel_auto_focus);
+    /* Calculate the difference between our guard time and now */
+    long long TimeDiff = CancelAFTimeGuard - current_timestamp();
+    /* Post a log message and return success (skipping the call) if the diff is greater than 0 */
+    if(TimeDiff > 0) {
+        ALOGV("%s: CancelAFTimeGuard for %lli mS\n", __FUNCTION__, TimeDiff * 1000);
+        return 0;
+    }
+
+    /* No active time guard so call the vendor function */
+    Ret = VENDOR_CALL(device, cancel_auto_focus);
+
+    return Ret;
 }
 
 static int camera2_take_picture(struct camera_device * device)
