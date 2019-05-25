@@ -138,6 +138,19 @@ static int camera2_set_preview_window(struct camera_device * device,
     return VENDOR_CALL(device, set_preview_window, window);
 }
 
+uint8_t BlockNotifyCb = 0;
+camera_notify_callback UserNotifyCb = NULL;
+
+void WrappedNotifyCb (int32_t msg_type, int32_t ext1, int32_t ext2, void *user) {
+    ALOGV("%s->In", __FUNCTION__);
+
+    /* If the notify callback is valid and we are not blocking callbacks */
+    if((UserNotifyCb != NULL) && (BlockNotifyCb == 0)) {
+        ALOGV("%s->Calling UserNotifyCb", __FUNCTION__);
+        UserNotifyCb(msg_type, ext1, ext2, user);
+    }
+}
+
 static void camera2_set_callbacks(struct camera_device * device,
         camera_notify_callback notify_cb,
         camera_data_callback data_cb,
@@ -150,7 +163,11 @@ static void camera2_set_callbacks(struct camera_device * device,
     if(!device)
         return;
 
-    VENDOR_CALL(device, set_callbacks, notify_cb, data_cb, data_cb_timestamp, get_memory, user);
+    /* Copy the notify_cb to our user pointer */
+    UserNotifyCb = notify_cb;
+
+    /* Call the set_callbacks function substituting the notify callback with our wrapper */
+    VENDOR_CALL(device, set_callbacks, WrappedNotifyCb, data_cb, data_cb_timestamp, get_memory, user);
 }
 
 static void camera2_enable_msg_type(struct camera_device * device, int32_t msg_type)
@@ -278,8 +295,8 @@ static int camera2_auto_focus(struct camera_device * device)
     /* Call the auto_focus function */
     Ret = VENDOR_CALL(device, auto_focus);
 
-    /* Set the cancel_auto_focus time guard to now plus 1 second */
-    CancelAFTimeGuard = current_timestamp() + 1000;
+    /* Set the cancel_auto_focus time guard to now plus 500mS */
+    CancelAFTimeGuard = current_timestamp() + 500;
 
     return Ret;
 }
@@ -300,8 +317,14 @@ static int camera2_cancel_auto_focus(struct camera_device * device)
         return 0;
     }
 
+    /* Block notify callbacks whilst we are in cancel_auto_focus */
+    BlockNotifyCb = 1;
+
     /* No active time guard so call the vendor function */
     Ret = VENDOR_CALL(device, cancel_auto_focus);
+
+    /* Clear the block flag */
+    BlockNotifyCb = 0;
 
     return Ret;
 }
@@ -417,6 +440,7 @@ static int camera2_device_close(hw_device_t* device)
         free(wrapper_dev->base.ops);
     free(wrapper_dev);
 done:
+    UserNotifyCb = NULL;
     return ret;
 }
 
