@@ -1,6 +1,7 @@
 subdirs = [
     "bluetooth",
     "camera",
+	"livedisplay",
     "touch",
     "vibrator",
 ]
