@@ -21,9 +21,13 @@
 #include <cutils/log.h>
 
 #include <unistd.h>
+#include <stdatomic.h>
 
 #include "CameraWrapper.h"
 #include "Camera2Wrapper.h"
+#include "CallbackWorkerThread.h"
+
+CallbackWorkerThread cbThread;
 
 #include <sys/time.h>
 
@@ -138,17 +142,62 @@ static int camera2_set_preview_window(struct camera_device * device,
     return VENDOR_CALL(device, set_preview_window, window);
 }
 
-uint8_t BlockNotifyCb = 0;
-camera_notify_callback UserNotifyCb = NULL;
+atomic_int BlockCbs;
 
 void WrappedNotifyCb (int32_t msg_type, int32_t ext1, int32_t ext2, void *user) {
     ALOGV("%s->In", __FUNCTION__);
 
-    /* If the notify callback is valid and we are not blocking callbacks */
-    if((UserNotifyCb != NULL) && (BlockNotifyCb == 0)) {
-        ALOGV("%s->Calling UserNotifyCb", __FUNCTION__);
-        UserNotifyCb(msg_type, ext1, ext2, user);
+    /* Print a log message and return if we currently blocking adding callbacks */
+    if(BlockCbs == 1) {
+        ALOGV("%s->BlockCbs == 1", __FUNCTION__);
+        return;
     }
+
+    /* Create message to send to the callback worker */
+    WorkerMessage* newWorkerMessage = new WorkerMessage();
+    newWorkerMessage->CbType = CB_TYPE_NOTIFY;
+
+    /* Copy the callback data to our worker message */
+    newWorkerMessage->msg_type = msg_type;
+    newWorkerMessage->ext1 = ext1;
+    newWorkerMessage->ext2 = ext2;
+    newWorkerMessage->user = user;
+
+    /* Post the message to the callback worker */
+    cbThread.AddCallback(newWorkerMessage);
+
+    /* 5mS delay to slow down the camera hal thread */
+    usleep(5000);
+    ALOGV("%s->Out", __FUNCTION__);
+}
+
+void WrappedDataCb (int32_t msg_type, const camera_memory_t *data, unsigned int index,
+        camera_frame_metadata_t *metadata, void *user) {
+    ALOGV("%s->In, %i, %u", __FUNCTION__, msg_type, index);
+
+    /* Print a log message and return if we currently blocking adding callbacks */
+    if(BlockCbs == 1) {
+        ALOGV("%s->BlockCbs == 1", __FUNCTION__);
+        return;
+    }
+
+    /* Create message to send to the callback worker */
+    WorkerMessage* newWorkerMessage = new WorkerMessage();
+    newWorkerMessage->CbType = CB_TYPE_DATA;
+
+    /* Copy the callback data to our worker message */
+    newWorkerMessage->msg_type = msg_type;
+    newWorkerMessage->data = data;
+    newWorkerMessage->index= index;
+    newWorkerMessage->metadata = metadata;
+    newWorkerMessage->user = user;
+
+    /* Post the message to the callback worker */
+    cbThread.AddCallback(newWorkerMessage);
+
+    /* 20mS delay to slow down the camera hal thread */
+    usleep(20000);
+    ALOGV("%s->Out", __FUNCTION__);
 }
 
 static void camera2_set_callbacks(struct camera_device * device,
@@ -163,11 +212,16 @@ static void camera2_set_callbacks(struct camera_device * device,
     if(!device)
         return;
 
-    /* Copy the notify_cb to our user pointer */
-    UserNotifyCb = notify_cb;
+    /* Create and populate a new callback data structure */
+    CallbackData* newCallbackData = new CallbackData();
+    newCallbackData->NewUserNotifyCb = notify_cb;
+    newCallbackData->NewUserDataCb = data_cb;
+
+    /* Send it to our worker thread */
+    cbThread.SetCallbacks(newCallbackData);
 
     /* Call the set_callbacks function substituting the notify callback with our wrapper */
-    VENDOR_CALL(device, set_callbacks, WrappedNotifyCb, data_cb, data_cb_timestamp, get_memory, user);
+    VENDOR_CALL(device, set_callbacks, WrappedNotifyCb, WrappedDataCb, data_cb_timestamp, get_memory, user);
 }
 
 static void camera2_enable_msg_type(struct camera_device * device, int32_t msg_type)
@@ -218,7 +272,16 @@ static void camera2_stop_preview(struct camera_device * device)
     if(!device)
         return;
 
+    /* Block queueing more callbacks */
+    BlockCbs = 1;
+
+    /* Clear the callback queue */
+    cbThread.ClearCallbacks();
+    /* Execute stop_preview */
     VENDOR_CALL(device, stop_preview);
+
+    /* Unblock queueing more callbacks */
+    BlockCbs = 0;
 }
 
 static int camera2_preview_enabled(struct camera_device * device)
@@ -292,6 +355,9 @@ static int camera2_auto_focus(struct camera_device * device)
     if(!device)
         return -EINVAL;
 
+    /* Clear the callback queue */
+    cbThread.ClearCallbacks();
+
     /* Call the auto_focus function */
     Ret = VENDOR_CALL(device, auto_focus);
 
@@ -309,6 +375,12 @@ static int camera2_cancel_auto_focus(struct camera_device * device)
     if(!device)
         return -EINVAL;
 
+    /* Block queueing more callbacks */
+    BlockCbs = 1;
+
+    /* Clear the callback queue */
+    cbThread.ClearCallbacks();
+
     /* Calculate the difference between our guard time and now */
     long long TimeDiff = CancelAFTimeGuard - current_timestamp();
     /* Post a log message and return success (skipping the call) if the diff is greater than 0 */
@@ -317,14 +389,11 @@ static int camera2_cancel_auto_focus(struct camera_device * device)
         return 0;
     }
 
-    /* Block notify callbacks whilst we are in cancel_auto_focus */
-    BlockNotifyCb = 1;
-
     /* No active time guard so call the vendor function */
     Ret = VENDOR_CALL(device, cancel_auto_focus);
 
-    /* Clear the block flag */
-    BlockNotifyCb = 0;
+    /* Unblock queueing more callbacks */
+    BlockCbs = 0;
 
     return Ret;
 }
@@ -440,7 +509,10 @@ static int camera2_device_close(hw_device_t* device)
         free(wrapper_dev->base.ops);
     free(wrapper_dev);
 done:
-    UserNotifyCb = NULL;
+
+    /* Exit our callback dispatch thread */
+    cbThread.ExitThread();
+
     return ret;
 }
 
@@ -464,6 +536,10 @@ int camera2_device_open(const hw_module_t* module, const char* name,
     camera_device_ops_t* camera2_ops = NULL;
 
     android::Mutex::Autolock lock(gCameraWrapperLock);
+
+    /* Create our callback dispatch thread */
+    cbThread.CreateThread();
+    BlockCbs = 0;
 
     ALOGV("%s", __FUNCTION__);
 
