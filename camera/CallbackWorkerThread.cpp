@@ -1,3 +1,43 @@
+/*
+ * Copyright (C) 2019, The LineageOS Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * Camera HAL "CallbackWorkerThread" workaround description
+ *
+ * The camera HAL of the Exynos7580 (A3, A5, ... 2016) reguralry deadlocks when using
+ * most camera apps, this happens a lot when using Google Camera but does occur
+ * occasionally in Snap.
+ *
+ * The issue was tracked down to the way that Samsung operates their HAL, all operations
+ * are run in multiple threads and the different callbacks are executed from one of these
+ * threads.
+ *
+ * The deadlocks occur when the camera client executes a function like cancel_auto_focus
+ * or stop_preview and a callback from the HAL occurs at around the same time. The HAL
+ * waits for the callback functions to return before they finish processing the client
+ * calls and the client stops processing callbacks until their calling function completes.
+ *
+ * You end up in a state when both the HAL and the client are waiting for the other
+ * process to finish and so end up with a deadlock of the HAL/Client which only a reboot
+ * can cure.
+ *
+ * This worker thread offloads the actual callbacks to another thread which allows the
+ * HAL to finish the client calls and avoid the deadlock scenario.
+ *
+ */
 
 #define LOG_NDEBUG 0
 #define LOG_TAG "Camera2WrapperCbThread"
@@ -55,7 +95,7 @@ void CallbackWorkerThread::ExitThread() {
 
 void CallbackWorkerThread::AddCallback(const WorkerMessage* data) {
     /* Assert that the thread exists */
-    assert(!m_thread);
+    ALOG_ASSERT(m_thread != NULL);
 
     /* Create a new worker thread message from the data */
     ThreadMsg* threadMsg = new ThreadMsg(MSG_EXECUTE_CALLBACK, data, GetTimestamp());
@@ -68,7 +108,7 @@ void CallbackWorkerThread::AddCallback(const WorkerMessage* data) {
 
 void CallbackWorkerThread::SetCallbacks(const CallbackData* data) {
     /* Assert that the thread exists */
-    assert(!m_thread);
+    ALOG_ASSERT(m_thread != NULL);
 
     /* Create a new worker thread message from the callback data */
     ThreadMsg* threadMsg = new ThreadMsg(MSG_UPDATE_CALLBACKS, data, GetTimestamp());
@@ -81,7 +121,7 @@ void CallbackWorkerThread::SetCallbacks(const CallbackData* data) {
 
 void CallbackWorkerThread::ClearCallbacks() {
     /* Assert that the thread exists */
-    assert(!m_thread);
+    ALOG_ASSERT(m_thread != NULL);
 
     /* Lock the mutex and clear the message queue */
     std::unique_lock<std::mutex> lk(m_mutex);
@@ -122,7 +162,7 @@ void CallbackWorkerThread::Process() {
             case MSG_EXECUTE_CALLBACK:
             {
                 /* Assert that we have a valid message */
-                assert(msg->msg != NULL);
+                ALOG_ASSERT(msg->msg != NULL);
 
                 /* Cast the the ThreadMsg void* data back to a WorkerMessage* */
                 const WorkerMessage* userData = static_cast<const WorkerMessage*>(msg->msg);
@@ -163,7 +203,7 @@ void CallbackWorkerThread::Process() {
             case MSG_UPDATE_CALLBACKS:
             {
                 /* Assert that we have a valid message */
-                assert(msg->msg != NULL);
+                ALOG_ASSERT(msg->msg != NULL);
 
                 /* Cast the the ThreadMsg void* data back to a CallbackData* */
                 const CallbackData* callbackData = static_cast<const CallbackData*>(msg->msg);
@@ -200,7 +240,7 @@ void CallbackWorkerThread::Process() {
 
             default:
                 /* Error if we get here */
-	            assert(0);
+	            ALOG_ASSERT(0);
         }
     }
 }
