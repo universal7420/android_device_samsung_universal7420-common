@@ -1,0 +1,69 @@
+//
+// Copyright (C) 2017 TeamNexus
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+cc_library_static {
+	name: "libcamera_parameters_zero",
+	srcs: [
+		"CameraParameters.cpp",
+	],
+	include_dirs: [
+		"device/samsung/zero-common/include"
+	],
+}
+
+cc_library_shared {
+    name: "camera.exynos5",
+    relative_install_path: "hw",
+
+    srcs: [
+        "CameraWrapper.cpp",
+        "Camera2Wrapper.cpp",
+        "Camera3Wrapper.cpp",
+        "CallbackWorkerThread.cpp",
+    ],
+
+    export_shared_lib_headers: [
+        "android.hardware.graphics.bufferqueue@1.0",
+        "android.hardware.graphics.bufferqueue@2.0",
+    ],
+
+    generated_headers: [
+        "android.hardware.graphics.bufferqueue@1.0_genc++_headers",
+        "android.hardware.graphics.bufferqueue@2.0_genc++_headers",
+    ],
+
+    shared_libs: [
+        "libhardware",
+        "liblog",
+        "libcamera_client",
+        "libutils",
+        "libcutils",
+        "android.hidl.token@1.0-utils",
+        "android.hardware.graphics.bufferqueue@1.0",
+        "android.hardware.graphics.bufferqueue@2.0",
+    ],
+
+    include_dirs: [
+        "frameworks/native/libs/nativewindow/include",
+        "frameworks/native/libs/arect/include",
+        "frameworks/av/media/ndk/include",
+    ],
+
+    header_libs: [
+        "libnativebase_headers",
+    ],
+}
+
