@@ -48,6 +48,14 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	ro.vendor.product.manufacturer=$(PRODUCT_MANUFACTURER) \
 	ro.vendor.product.model=$(PRODUCT_MODEL)
 
+# UI performance tweaks
+PRODUCT_PROPERTY_OVERRIDES += \
+	debug.sf.latch_unsignaled=1
+	debug.sf.disable_backpressure=1
+	hwui.disable_vsync=true
+	persist.sys.ui.hw=1
+	debug.egl.hw=1
+
 
 FINAL_VENDOR_BUILD_PROPERTIES += \
 	lineage.updater.uri=$(zero_ota_url)
