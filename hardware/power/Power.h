@@ -49,6 +49,8 @@ using std::ostringstream;
 #define POWER_TOUCHSCREEN_ENABLED_FLAT    "/sys/class/input/input1/enabled"
 #define POWER_TOUCHSCREEN_ENABLED_EDGE    "/sys/class/input/input0/enabled"
 
+#define POWER_PROFILE_POLLING_FILE        "/data/.power-profile"
+
 #define __CPU_ONLINE(core, state) \
 { \
 	ostringstream cpu_state_path; \

@@ -67,6 +67,11 @@ endif
 # power-HAL
 LOCAL_CFLAGS += -DSTRICT_BEHAVIOUR
 
+# Enables support for a file-based profile selection, currently
+# based on 5-second-polling. Useful on non-LineageOS
+# (e.g. AOSP) ROMs
+# LOCAL_CFLAGS += -DENABLE_PROFILES_FILE
+
 LOCAL_CFLAGS += -DNR_CPUS=$(TARGET_NR_CPUS)
 
 include $(BUILD_EXECUTABLE)

@@ -19,13 +19,16 @@
 
 #include <log/log.h>
 
+#include <chrono>
 #include <fcntl.h>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <thread>
 #include <unistd.h>
 
 #include "Utils.h"
@@ -33,6 +36,9 @@
 namespace vendor {
 namespace nexus {
 namespace zero {
+
+using namespace ::std;
+using namespace ::std::chrono;
 
 bool Utils::isFile(const string path) {
 	return __stat_compare_mode(path, S_IFREG);
@@ -214,6 +220,39 @@ bool Utils::screenIsOn() {
 		return true;
 	}
 	return (brightness > 0);
+}
+
+void Utils::poll(const string path, std::function<bool (int value)> callback, int delay, bool ignoreFailures) {
+	thread t { [=] () {
+		bool isFirstPoll, ret;
+		int lastValue, value;
+
+		isFirstPoll = true;
+
+		do {
+			if (Utils::read(path, value)) {
+				if (isFirstPoll || value != lastValue) {
+					ret = callback(value);
+					isFirstPoll = true;
+					lastValue = value;
+				}
+			} else if (!ignoreFailures) {
+#ifdef STRICT_BEHAVIOUR
+				ALOGE("%s: failed to poll from \"%s\", exiting loop", __func__, path.c_str());
+				ret = false;
+#else
+				ALOGE("%s: failed to poll from \"%s\"", __func__, path.c_str());
+#endif
+			}
+
+			if (!ret) {
+				break;
+			}
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+		} while (true);
+	}};
+	t.detach();
 }
 
 /***********************************

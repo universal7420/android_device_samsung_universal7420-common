@@ -44,6 +44,10 @@ SecPowerProfile Profiles::kPowerProfileBalanced;
 SecPowerProfile Profiles::kPowerProfileBiasPerformance;
 SecPowerProfile Profiles::kPowerProfileHighPerformance;
 
+#if ENABLE_PROFILES_FILE
+bool Profiles::kPollingActive;
+#endif
+
 map<string, SecPowerProfile *> Profiles::kProfileNameToData = {
 	{ "screen_off", &kPowerProfileScreenOff },
 	{ "power_save", &kPowerProfilePowerSave },
@@ -64,6 +68,20 @@ void Profiles::loadProfiles() {
 		LOG_FATAL("Could not find valid power profiles XML file");
 	}
 }
+
+#if ENABLE_PROFILES_FILE
+void Profiles::startFilePolling(std::function<void (int value)> callback) {
+	kPollingActive = true;
+	Utils::poll(POWER_PROFILE_POLLING_FILE, [&] (int value) -> bool {
+		callback(value);
+		return kPollingActive;
+	});
+}
+
+void Profiles::stopFilePolling() {
+	kPollingActive = false;
+}
+#endif
 
 void Profiles::loadProfilesImpl(const char *path) {
 	xmlInitParser();

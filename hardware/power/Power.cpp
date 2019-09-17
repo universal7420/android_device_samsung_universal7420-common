@@ -73,6 +73,12 @@ Power::Power()
 	//
 	DEBUG_TIMING(profiles, Profiles::loadProfiles());
 
+#ifdef ENABLE_PROFILES_FILE
+	Profiles::startFilePolling([&] (int value) {
+		setProfile(static_cast<SecPowerProfiles>(value));
+	});
+#endif
+
 	//
 	// initial device-setup
 	//

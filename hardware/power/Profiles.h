@@ -209,6 +209,12 @@ struct SecPowerProfile {
 struct Profiles {
 
 	static void loadProfiles();
+
+#if ENABLE_PROFILES_FILE
+	static void startFilePolling(std::function<void (int value)> callback);
+	static void stopFilePolling();
+#endif
+
 	static const SecPowerProfile* getProfileData(SecPowerProfiles profile);
 	static const SecPowerProfile* getProfileData(string profileName);
 
@@ -224,6 +230,10 @@ private:
 	static SecPowerProfile kPowerProfileBalanced;
 	static SecPowerProfile kPowerProfileBiasPerformance;
 	static SecPowerProfile kPowerProfileHighPerformance;
+
+#if ENABLE_PROFILES_FILE
+	static bool kPollingActive;
+#endif
 };
 
 }  // namespace implementation

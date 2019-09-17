@@ -20,6 +20,7 @@
 #include <chrono>
 #include <map>
 #include <string>
+#include <thread>
 
 namespace vendor {
 namespace nexus {
@@ -193,6 +194,8 @@ struct Utils {
 	static bool read(const string path, int &data);
 
 	static bool screenIsOn();
+
+	static void poll(const string path, std::function<bool (int value)> callback, int delay = 5000, bool ignoreFailures = true);
 
 	static std::chrono::milliseconds getTime();
 
