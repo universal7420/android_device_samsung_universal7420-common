@@ -405,6 +405,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	android.hidl.base@1.0
 
+# Storage
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.isolated_storage=false
+
 #
 # Synapse
 #
