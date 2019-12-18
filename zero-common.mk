@@ -317,8 +317,7 @@ PRODUCT_PACKAGES += \
 # Permissions
 #
 PRODUCT_COPY_FILES += \
-	device/samsung/zero-common/configs/permissions/com.samsung.permission.HRM_EXT.xml:system/vendor/etc/permissions/com.samsung.permission.HRM_EXT.xml \
-	device/samsung/zero-common/configs/permissions/com.samsung.permission.SSENSOR.xml:system/vendor/etc/permissions/com.samsung.permission.SSENSOR.xml
+	device/samsung/zero-common/configs/permissions/com.samsung.permission.HRM_EXT.xml:system/vendor/etc/permissions/com.samsung.permission.HRM_EXT.xml
 
 #
 # Power
@@ -386,10 +385,9 @@ PRODUCT_COPY_FILES += \
 #
 PRODUCT_PACKAGES += \
 	android.hardware.sensors@1.0-impl \
-        android.hardware.sensors@1.0-service
+        android.hardware.sensors@1.0-service.samsung
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/android.hardware.sensors@1.0-service.rc:system/vendor/etc/init/android.hardware.sensors@1.0-service.rc \
     $(LOCAL_PATH)/configs/sensors/lhd.conf:system/etc/lhd.conf
 
 #

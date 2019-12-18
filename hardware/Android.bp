@@ -1,6 +1,7 @@
 subdirs = [
     "bluetooth",
     "camera",
+    "sensors",
 ]
 
 cc_library_shared {
