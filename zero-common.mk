@@ -203,6 +203,12 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/hardware/irqbalance/irqbalance.conf:system/vendor/etc/irqbalance.conf
 
 #
+# ION
+#
+PRODUCT_PACKAGES += \
+        libion
+
+#
 # Keylayouts
 #
 PRODUCT_COPY_FILES += \
