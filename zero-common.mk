@@ -412,8 +412,11 @@ PRODUCT_PACKAGES += \
 #
 # Tools
 #
+
+PRODUCT_HOST_PACKAGES += \
+        dtbhtoolExynos
+
 PRODUCT_PACKAGES += \
-	dtbhtoolExynos \
 	e2fsck_static \
 	make_ext4fs \
 	resetprop.zero \
