@@ -20,13 +20,17 @@ LOCAL_SRC_FILES := CameraSource.cpp
 
 LOCAL_C_INCLUDES := \
     $(TOP)/frameworks/av/include \
+    $(TOP)/frameworks/av/media/ndk/include \
     $(TOP)/frameworks/native/include/media/hardware \
     $(TOP)/frameworks/native/include/media/openmax \
     $(TOP)/frameworks/native/libs/arect/include \
+    $(TOP)/frameworks/native/libs/nativewindow/include \
+    $(TOP)/frameworks/native/libs/gui/include \
     $(TOP)/frameworks/native/libs/nativebase/include
 
 LOCAL_SHARED_LIBRARIES := \
     android.hardware.graphics.bufferqueue@1.0 \
+    android.hardware.graphics.bufferqueue@2.0 \
     android.hidl.token@1.0-utils \
     libbase \
     libcamera_client \
