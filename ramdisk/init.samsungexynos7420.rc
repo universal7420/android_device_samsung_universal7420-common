@@ -165,7 +165,6 @@ on post-fs-data
     chown system system /efs/drm/h2k
 
 # icd
-    check_icd
     chown system system /dev/icd
     chmod 0644 /dev/icd
     chown system system /dev/icdr
@@ -301,7 +300,6 @@ on fs
     mkdir /persdata/absolute 0750 system system
 
     wait /dev/block/platform/15570000.ufs/by-name/PERSDATA
-    check_fs /dev/block/platform/15570000.ufs/by-name/PERSDATA ext4
     mount ext4 /dev/block/platform/15570000.ufs/by-name/PERSDATA /persdata/absolute nosuid nodev barrier=1
 
     chown system system /persdata
@@ -312,7 +310,6 @@ on fs
 # For SBFS partition
     mkdir /sbfs 0755 system system
     wait /dev/block/platform/15570000.ufs/by-name/SBFS
-    check_fs /dev/block/platform/15570000.ufs/by-name/SBFS ext4
     mount ext4 /dev/block/platform/15570000.ufs/by-name/SBFS /sbfs nosuid nodev barrier=1
 
     chown system system /sbfs
