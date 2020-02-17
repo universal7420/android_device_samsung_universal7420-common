@@ -234,10 +234,6 @@ PRODUCT_PACKAGES += \
 	android.hardware.light@2.0-service \
 	lights.universal7420
 
-# LiveDisplay
-PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@2.0-service.zero
-
 #
 # Media
 #
@@ -379,12 +375,6 @@ PRODUCT_PACKAGES += \
 	android.hardware.renderscript@1.0-impl
 
 #
-# Screen
-#
-PRODUCT_PACKAGES += \
-	vendor.lineage.touch@1.0-service.zero
-
-#
 # Security
 #
 ## seccomp
@@ -444,12 +434,6 @@ PRODUCT_PACKAGES += \
 #
 PRODUCT_PACKAGES += \
 	android.hardware.usb@1.0-service.basic
-
-#
-# Vibrator
-#
-PRODUCT_PACKAGES += \
-	android.hardware.vibrator@1.0-service.zero
 
 #
 # Wifi
