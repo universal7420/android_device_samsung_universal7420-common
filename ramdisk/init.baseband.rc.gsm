@@ -1,5 +1,4 @@
 on init
-    mkdir /efs 0771 radio system
     symlink /dev/block/platform/15570000.ufs/by-name/RADIO /dev/mbin0
     restorecon /dev/mbin0
 

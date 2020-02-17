@@ -14,8 +14,6 @@ on init
 # RIL <-> audioserver comm
     chmod 0644 /proc/cmdline
 
-    mkdir /preload 0771 system system
-
 # Support legacy paths
     symlink /sdcard /storage/sdcard0
     symlink /storage/usbdisk /mnt/usbdisk
@@ -294,26 +292,6 @@ on boot
 
 on fs
     mount_all /fstab.samsungexynos7420
-
-# For Absolute Persistence Partition
-    mkdir /persdata 0755 system system
-    mkdir /persdata/absolute 0750 system system
-
-    wait /dev/block/platform/15570000.ufs/by-name/PERSDATA
-    mount ext4 /dev/block/platform/15570000.ufs/by-name/PERSDATA /persdata/absolute nosuid nodev barrier=1
-
-    chown system system /persdata
-    chmod 0755 /persdata
-    chown system system /persdata/absolute
-    chmod 0750 /persdata/absolute
-
-# For SBFS partition
-    mkdir /sbfs 0755 system system
-    wait /dev/block/platform/15570000.ufs/by-name/SBFS
-    mount ext4 /dev/block/platform/15570000.ufs/by-name/SBFS /sbfs nosuid nodev barrier=1
-
-    chown system system /sbfs
-    chmod 0755 /sbfs
 
 # Permissions for TouchScreen
     chown system radio /sys/class/sec/tsp/cmd
