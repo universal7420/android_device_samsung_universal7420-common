@@ -14,7 +14,7 @@
             <name>IDevicesFactory</name>
             <instance>default</instance>
         </interface>
-
+    </hal>
     <hal format="hidl">
         <name>android.hardware.audio</name>
         <transport arch="32+64">passthrough</transport>
@@ -23,7 +23,7 @@
             <name>IDevicesFactory</name>
             <instance>default</instance>
         </interface>
-
+    </hal>
     <hal format="hidl">
         <name>android.hardware.audio</name>
         <transport arch="32+64">passthrough</transport>
@@ -32,7 +32,7 @@
             <name>IDevicesFactory</name>
             <instance>default</instance>
         </interface>
-
+    </hal>
     <hal format="hidl">
         <name>android.hardware.audio.effect</name>
         <transport arch="32+64">passthrough</transport>
@@ -41,7 +41,7 @@
             <name>IEffectsFactory</name>
             <instance>default</instance>
         </interface>
-
+    </hal>
     <hal format="hidl">
         <name>android.hardware.audio.effect</name>
         <transport arch="32+64">passthrough</transport>
@@ -50,6 +50,7 @@
             <name>IEffectsFactory</name>
             <instance>default</instance>
         </interface>
+    </hal>
 
     <!--
         Bluetooth
