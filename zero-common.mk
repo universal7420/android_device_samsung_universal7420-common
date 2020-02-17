@@ -80,7 +80,7 @@ TARGET_SCREEN_WIDTH := 1440
 ## Packages
 PRODUCT_PACKAGES += \
 	libexynoscamera_shim \
-	android.hardware.camera.provider@2.4-impl.zero \
+	android.hardware.camera.provider@2.4-impl-legacy \
 	android.hardware.camera.provider@2.4-service
 
 ## Apps
