@@ -132,6 +132,9 @@ TARGET_SOC := exynos7420
 WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := false
 WITH_DEXPREOPT := true
 
+# Use SDFAT driver
+TARGET_EXFAT_DRIVER := sdfat
+
 #
 # Fingerprint
 #
