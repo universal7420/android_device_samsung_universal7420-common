@@ -1,8 +1,6 @@
 subdirs = [
     "bluetooth",
     "camera",
-    "touch",
-    "vibrator",
 ]
 
 cc_library_shared {
