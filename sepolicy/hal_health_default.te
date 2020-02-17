@@ -1,0 +1,2 @@
+r_dir_file(hal_health_default, sysfs_usb_supply)
+allow hal_health_default sysfs_usb_supply:file rw_file_perms;

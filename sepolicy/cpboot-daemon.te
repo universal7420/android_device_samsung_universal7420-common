@@ -5,21 +5,18 @@ type cpboot-daemon_exec, exec_type, file_type;
 net_domain(cpboot-daemon)
 init_daemon_domain(cpboot-daemon)
 wakelock_use(cpboot-daemon)
+set_prop(cpboot-daemon, modemloader_prop)
 
 allow cpboot-daemon self:capability { setuid setgid };
-
-# This would be the appropriate rule, but for some reason, SELinux chooses
-# rootfs as context, not cpboot-daemon_exec...
-# allow cpboot-daemon cpboot-daemon_exec:file { read entrypoint };
-
-# ... so use this one while figuring out what's the problem
-allow cpboot-daemon rootfs:file { read entrypoint };
 
 # FIXME neverallow rule
 # allow cpboot-daemon self:capability mknod;
 allow cpboot-daemon kernel:system syslog_read;
 allow cpboot-daemon cgroup:dir create_dir_perms;
 
+# /dev/log/*
+#allow cpboot-daemon log_device:dir r_dir_perms;
+#allow cpboot-daemon log_device:chr_file rw_file_perms;
 # /dev/kmsg (write to kernel log)
 allow cpboot-daemon kmsg_device:chr_file rw_file_perms;
 
@@ -27,20 +24,18 @@ allow cpboot-daemon kmsg_device:chr_file rw_file_perms;
 allow cpboot-daemon mif_device:chr_file rw_file_perms;
 # /dev/mbin0
 allow cpboot-daemon emmcblk_device:blk_file r_file_perms;
+# /dev/spi_boot_link
+allow cpboot-daemon radio_device:chr_file rw_file_perms;
 # /dev/block/mmcblk0p13
 allow cpboot-daemon block_device:dir r_dir_perms;
-
-# /dev/block/sda8 || /dev/block/platform/15570000.ufs/by-name/RADIO
 allow cpboot-daemon radio_block_device:blk_file r_file_perms;
-
-# /dev/mipi-lli/lli_control
-allow cpboot-daemon sysfs_mipi_writable:file rw_file_perms;
 
 # /efs
 allow cpboot-daemon efs_file:dir r_dir_perms;
 
 # /efs/nv_data.bin
 allow cpboot-daemon bin_nv_data_efs_file:file rw_file_perms;
+allow cpboot-daemon efs_file:file rw_file_perms;
 
 # /proc/cmdline
 allow cpboot-daemon proc:file r_file_perms;
@@ -49,7 +44,3 @@ allow cpboot-daemon proc:file r_file_perms;
 set_prop(cpboot-daemon, cpboot-daemon_prop)
 set_prop(cpboot-daemon, radio_prop)
 set_prop(cpboot-daemon, system_prop)
-
-# /sys
-allow cpboot-daemon sysfs:dir r_dir_perms;
-allow cpboot-daemon sysfs:file r_file_perms;

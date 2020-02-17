@@ -1,28 +1,66 @@
-### efs types
+# fingerprint
+type biometrics_data_file, file_type;
+
+# mobicore
+type mobicore_data_file, file_type;
+
+# efs types
 type app_efs_file, file_type;
 type battery_efs_file, file_type;
+type baro_delta_factoryapp_efs_file, file_type;
 type bin_nv_data_efs_file, file_type;
 type nv_log_efs_file, file_type;
+type sec_efs_file, file_type;
+
 # widewine, drm
 type cpk_efs_file, file_type;
 type drm_efs_file, file_type;
+type factorymode_factoryapp_efs_file, file_type;
 type imei_efs_file, file_type;
 type prov_efs_file, file_type;
+type radio_factoryapp_efs_file, file_type;
 type sensor_efs_file, file_type;
-type sec_efs_file, file_type;
+type sensor_factoryapp_efs_file, file_type;
 type wifi_efs_file, file_type;
+
+# gps
+type gps_data_file, file_type, data_file_type, core_data_file_type;
+type gps_socket, file_type;
+
+# proc
+type proc_vm, fs_type, proc_type;
+type proc_dt_firmware, fs_type, proc_type;
+type proc_reset_reason, fs_type, proc_type;
+type proc_simslot_count, fs_type, proc_type;
+type proc_input_devices, fs_type, proc_type;
+type proc_sec, fs_type, proc_type;
 
 ### sysfs types
 type sysfs_mdnie_writable, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_mdnie, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_mipi, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_multipdp, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_sec, fs_type, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_sensors, fs_type, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_input, fs_type, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_camera, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_gps, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_light, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_wifi, fs_type, sysfs_type, mlstrustedobject;
+type sysfs_usb_supply, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_mmc, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_graphics, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_ion, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_block, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_jack, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_v4l, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_sswap, sysfs_type, fs_type, mlstrustedobject;
+type sysfs_audience_control, fs_type, sysfs_type, mlstrustedobject;
 type sysfs_mipi_writable, fs_type, sysfs_type, mlstrustedobject;
 type sysfs_multipdp_writable, fs_type, sysfs_type, mlstrustedobject;
-type sysfs_audience_control, fs_type, sysfs_type, mlstrustedobject;
 
-allow sysfs_type tmpfs:filesystem associate;
-
-type biometrics_data_file, file_type;
-
-type mobicore_data_file, file_type;
+### data types
+type display_vendor_data_file, file_type, data_file_type;
 
 ### debugging
 type sysfs_debug, fs_type, sysfs_type, mlstrustedobject;

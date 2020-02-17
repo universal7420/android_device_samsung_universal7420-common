@@ -1,8 +1,11 @@
-# Modemloader
-type modemloader_prop, property_type;
-
 # CP-Boot Daemon
 type cpboot-daemon_prop, property_type;
 
-# rild
-type rild_prop, property_type;
+# modemloader
+type modemloader_prop, property_type;
+
+# mobicore (tee)
+type tee_prop, property_type;
+
+# sswap
+type sswap_prop, property_type;

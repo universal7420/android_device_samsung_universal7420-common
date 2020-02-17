@@ -1,0 +1,5 @@
+vndbinder_use(hal_gnss_default)
+
+# Allow gnss to access the gpsd data files
+allow hal_gnss_default gps_data_file:dir w_dir_perms;
+allow hal_gnss_default gps_data_file:fifo_file create_file_perms;

@@ -1,31 +1,22 @@
-allow kernel self:capability { mknod };
+allow kernel self:capability { chown mknod };
+
 # /dev/mbin0
 allow kernel emmcblk_device:blk_file r_file_perms;
-allow kernel device:blk_file { create setattr getattr unlink };
-# /bus/usb/001/001
-allow kernel device:dir { create write remove_name rmdir add_name };
-allow kernel device:chr_file { create setattr getattr unlink };
 
 # /sys/devices/system/cpu/cpu[0-9]/cpufreq/*
-allow kernel kernel:capability { chown };
-allow kernel sysfs_devices_system_cpu:file { setattr };
-allow kernel sysfs:file { setattr };
+allow kernel sysfs_devices_system_cpu:file setattr;
 
-allow kernel app_efs_file:dir search;
-allow kernel app_efs_file:file { read write open };
+# /efs contents
+allow kernel { app_efs_file battery_efs_file efs_file sensor_efs_file }:dir r_dir_perms;
+allow kernel { app_efs_file battery_efs_file efs_file sensor_efs_file }:file rw_file_perms;
 
-allow kernel efs_file:dir search;
-allow kernel battery_efs_file:dir { search open read };
-allow kernel battery_efs_file:file { read open };
+# /efs/wifi/.mac.info
+r_dir_file(kernel, wifi_efs_file);
 
-####################################
-# Nexus7420 Power HAL
-#
-# directory
-allow system_server power_hal_devfs:dir       r_dir_perms;
-allow system_server power_hal_sysfs:dir       r_dir_perms;
-allow system_server power_hal_data_files:dir  rw_dir_perms;
-# files
-allow system_server power_hal_devfs:file      rw_file_perms;
-allow system_server power_hal_sysfs:file      rw_file_perms;
-allow system_server power_hal_data_files:file rw_file_perms;
+# /data/misc/conn/.wifiver.info
+allow kernel wifi_data_file:file rw_file_perms;
+
+# Allow kernel to search tmpfs
+allow kernel tmpfs:dir search;
+
+allow kernel self:capability sys_module;
