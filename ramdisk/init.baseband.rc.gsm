@@ -20,6 +20,14 @@ on fs
     chmod 0660 /sys/devices/virtual/misc/umts_dm0/dm_state
     chown radio system /sys/devices/virtual/misc/umts_dm0/dm_state
 
+# CP Boot Daemon (CBD)
+service cpboot-daemon /system/bin/cbd -d -t ss333 -b s -m l -P platform/15570000.ufs/by-name/RADIO
+    class main
+    user root
+    group radio cache inet misc audio sdcard_r sdcard_rw log shell
+on property:persist.sys.cpboot=disable
+    stop cpboot-daemon
+
 #
 # RIL daemon for slot1
 #
