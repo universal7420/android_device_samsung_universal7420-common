@@ -51,14 +51,14 @@ PRODUCT_COPY_FILES += \
 
 ## Packages
 PRODUCT_PACKAGES += \
-	audio.primary.universal7420 \
 	audio.a2dp.default \
-	audio.r_submix.default \
 	audio.usb.default \
-	tinymix \
-	libtinycompress \
+	audio.r_submix.default \
+	audio.primary.universal7420 \
+	audio.primary.universal7420_32 \
 	android.hardware.audio@2.0-impl \
-	android.hardware.audio.effect@2.0-impl
+	android.hardware.audio.effect@2.0-impl \
+	libtinycompress
 
 #
 # Bluetooth
