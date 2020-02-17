@@ -568,6 +568,8 @@ on fs
     chown system radio /sys/class/sensors/irled_remote/irled_send
     chown system radio /sys/class/sensors/irled_remote/irled_send_result
 
+    setprop ro.gps.chip.vendor BCM4773_EXERCISE
+
 # Default MDNIE mode (cinema)
     write /sys/class/mdnie/mdnie/mode 4
 
@@ -694,6 +696,12 @@ service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF0000000000000
     class core
     user system
     group system
+
+# Start lhd for sensors
+service lhd /system/bin/lhd /system/etc/lhd.conf
+    class main
+    user gps
+    group system inet net_raw
 
 # on userdebug and eng builds, enable kgdb on the serial console
 on property:ro.debuggable=1
