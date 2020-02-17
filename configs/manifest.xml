@@ -104,7 +104,7 @@
       -->
     <hal format="hidl">
         <name>android.hardware.biometrics.fingerprint</name>
-        <transport>hwbinder</transport>
+        <transport arch="32+64">passthrough</transport>
         <impl level="generic"></impl>
         <version>2.1</version>
         <interface>

@@ -152,10 +152,6 @@ TARGET_LD_SHIM_LIBS += \
 #
 # GPS
 #
-## Shims
-TARGET_LD_SHIM_LIBS += \
-	/vendor/bin/gpsd|/system/lib64/libsensor.so
-
 ## SDK target overrides
 TARGET_PROCESS_SDK_VERSION_OVERRIDE += \
     /system/vendor/bin/gpsd=27 \

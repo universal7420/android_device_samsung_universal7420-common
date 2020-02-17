@@ -148,15 +148,10 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/com.nxp.mifare.xml:system/vendor/etc/permissions/com.nxp.mifare.xml \
 	frameworks/native/data/etc/handheld_core_hardware.xml:system/vendor/etc/permissions/handheld_core_hardware.xml
 
-#
 # Fingerprint
-#
 PRODUCT_PACKAGES += \
-	fingerprint.exynos5 \
-	libbauthtzcommon_shim \
-	android.hardware.biometrics.fingerprint@2.1-impl \
-	android.hardware.biometrics.fingerprint@2.1-service
-
+    libbauthtzcommon_shim \
+    android.hardware.biometrics.fingerprint@2.1-impl
 #
 # GPS
 #
