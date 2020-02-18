@@ -58,6 +58,14 @@ on fs
     chown system system /carrier
     chmod 0771 /carrier
 
+# CP Boot Daemon (CBD)
+service cpboot-daemon /system/bin/cbd -d -t ss333 -b s -m l -P platform/15570000.ufs/by-name/RADIO
+    class main
+    user root
+    group radio cache inet misc audio sdcard_r sdcard_rw log shell
+on property:persist.sys.cpboot=disable
+    stop cpboot-daemon
+
 #
 # RIL daemon for slot1
 #
