@@ -54,12 +54,7 @@ namespace init {
 void vendor_load_properties()
 {    
     string device_orig = base::GetProperty("ro.product.device", "");
-    string platform = base::GetProperty("ro.board.platform", "");
     string bootloader = base::GetProperty("ro.bootloader", "");
-
-    if (platform != ANDROID_TARGET) {
-        return;
-    }
 
     /*
      * Flat
