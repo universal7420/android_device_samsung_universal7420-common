@@ -1,0 +1,8 @@
+on fs
+    setprop ro.gps.chip.vendor BCM4773_EXERCISE
+
+# SensorHub
+service lhd /system/bin/lhd /system/etc/lhd.conf
+    class main
+    user root
+    group system inet net_raw

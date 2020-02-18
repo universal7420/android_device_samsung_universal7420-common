@@ -359,6 +359,7 @@ PRODUCT_PACKAGES += \
 	init.rilchip.sh \
 	init.samsungexynos7420.rc \
 	init.samsungexynos7420.usb.rc \
+        init.sensors.rc \
 	init.recovery.samsungexynos7420.rc \
 	ueventd.samsungexynos7420.rc
 
