@@ -79,6 +79,7 @@ ro.hwui.text_large_cache_height=2048
 debug.hwc.force_gpu=0
 debug.hwc.winupdate=0
 persist.sys.ui.hw=true
+debug.hwc.max_hw_overlays=6
 
 #
 # Logging
