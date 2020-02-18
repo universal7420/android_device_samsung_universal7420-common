@@ -1,16 +1,22 @@
 on post-fs-data
+#** Copyright 2019, AnanJaser1211@XDA-DEVELOPERS
 # GPS
     chown root system /sys/class/sec/gps/GPS_PWR_EN/value
     chmod 0664 /sys/class/sec/gps/GPS_PWR_EN/value
-    mkdir /data/system 0771 system system
-    chown system system /data/system
-    mkdir /data/system/gps 0771 system system
-    chown system system /data/system/gps
-    rm /data/system/gps/gps_started
-    rm /data/system/gps/glonass_started
-    rm /data/system/gps/beidou_started
-    rm /data/system/gps/smd_started
-    rm /data/system/gps/sv_cno.info
+    mkdir /data/vendor 0771 system system
+    chown system system /data/vendor
+    mkdir /data/vendor/gps 0771 system system
+    chown system system /data/vendor/gps
+    rm /data/vendor/gps/gps_started
+    rm /data/vendor/gps/glonass_started
+    rm /data/vendor/gps/beidou_started
+    rm /data/vendor/gps/smd_started
+    rm /data/vendor/gps/sv_cno.info
+
+    setprop ro.gps.chip.vendor BCM4773_EXERCISE
+    
+# GPS SLocation Core
+    setprop ro.gps.chip.vendor.slocation BCM4773_SLOCATION_CORE
 
 # SensorHub Debugging File Node
 chown gps system /sys/devices/platform/bbd.0/BBD
@@ -25,9 +31,6 @@ chown gps system /sys/devices/platform/bbd.0/ssi_xfer
 chown gps system /sys/devices/platform/bbd.0/ssi_count
 chown gps system /sys/devices/platform/bbd.0/ssi_trace
 chown gps system /sys/devices/platform/bbd.0/shmd
-
-write /data/system/gps/secgps.conf ""
-chown system system /data/system/gps/secgps.conf
 	
 # SensorHub (Location Hub)
 service lhd /system/bin/lhd /system/etc/lhd.conf
@@ -45,4 +48,5 @@ service gpsd /system/bin/gpsd -c /system/etc/gps.xml
 on property:init.svc.bootanim=stopped
     # start gpsd late to prevent it from changing /data/system
     start gpsd
+
 
