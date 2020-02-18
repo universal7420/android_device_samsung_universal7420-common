@@ -18,9 +18,6 @@ LOCAL_PATH := device/samsung/zero-common
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-# include private blob configs
--include vendor/samsung/zero-private/config.mk
-	
 #
 # AAPT
 #
