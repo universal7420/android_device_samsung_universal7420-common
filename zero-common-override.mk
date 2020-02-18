@@ -15,25 +15,7 @@
 # limitations under the License.
 #
 
-zero_build_fingerprint := "Samsung/$(PRODUCT_NAME)/$(PRODUCT_NAME):$(PLATFORM_VERSION)/$(BUILD_ID)/$(BUILD_NUMBER):$(TARGET_BUILD_VARIANT)/test-keys"
-zero_build_flavor      := "$(PRODUCT_NAME)-$(TARGET_BUILD_VARIANT)"
-zero_build_descr       := "$(zero_build_flavor) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER) test-keys"
-
-ifeq ($(BUILD_IS_RELEASE),true)
-  zero_ota_url := https://stor.lukasberger.at/TeamNexus/ota.php?device=$(PRODUCT_NAME)&channel=release
-else
-  zero_ota_url := https://stor.lukasberger.at/TeamNexus/ota.php?device=$(PRODUCT_NAME)&channel=testing
-endif
-
 __PRODUCT_TARGET_NAME := $(PRODUCT_NAME)
-
-# Override build-properties to avoid too long fingerprints
-PRODUCT_BUILD_PROP_OVERRIDES += \
-	BUILD_DISPLAY_ID=$(zero_build_descr) \
-    PRIVATE_BUILD_DESC=$(zero_build_descr) \
-    BUILD_FINGERPRINT=$(zero_build_fingerprint) \
-    BUILD_FINGERPRINT_FROM_FILE=$(zero_build_fingerprint) \
-	TARGET_BUILD_FLAVOR="$(zero_build_flavor)"
 
 # Set OTA-required properties in default.prop
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -55,7 +37,3 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	hwui.disable_vsync=true
 	persist.sys.ui.hw=1
 	debug.egl.hw=1
-
-
-FINAL_VENDOR_BUILD_PROPERTIES += \
-	lineage.updater.uri=$(zero_ota_url)
