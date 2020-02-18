@@ -145,6 +145,8 @@ TARGET_EXFAT_DRIVER := sdfat
 #
 # Fingerprint
 #
+TARGET_SEC_FP_HAL_VARIANT := bauth
+
 ## Shims
 TARGET_LD_SHIM_LIBS += \
 	/system/lib64/hw/fingerprint.vendor.exynos5.so|/vendor/lib64/libbauthtzcommon_shim.so
