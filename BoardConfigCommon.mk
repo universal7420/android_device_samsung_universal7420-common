@@ -365,6 +365,9 @@ ifneq ($(strip $(wildcard $(TOP)/bootable/recovery/variables.h)),)
   -include device/samsung/zero-common/twrp.mk
 endif
 
+# Vendor Security Patch Level
+VENDOR_SECURITY_PATCH := 2019-02-05
+
 #
 # WFD
 #
