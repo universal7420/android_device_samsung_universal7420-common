@@ -12,7 +12,7 @@
 	Copyright (C) 2017 Lukas (Lukas0610) Berger <mail@lukasberger.at>
 	Copyright (C) 2017 Philip (corewell) Jacobs <p.jcs@icloud.com>
 	Copyright (C) 2017 Usaamah (Usaamah99) Patel
-        Copyright (C) 2019-2020 Nathan (Lunarixus) Brooke <NathansTech@riseup.net>
+	Copyright (C) 2019-2020 Nathan (Lunarixus) Brooke <NathansTech@riseup.net>
 
 
 ### Disclaimer
