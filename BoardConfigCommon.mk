@@ -391,7 +391,7 @@ WIFI_DRIVER_FW_PATH_AP           := "/system/vendor/etc/wifi/bcmdhd_apsta.bin"
 WIFI_BAND                        := 802_11_ABG
 
 # inherit from the proprietary version
--include vendor/samsung/zero-common/BoardConfigVendor.mk
+-include vendor/samsung/noblelte-common/BoardConfigVendor.mk
 
 # inherit from the private proprietary version
 -include vendor/samsung/zero-private/BoardConfigVendor.mk

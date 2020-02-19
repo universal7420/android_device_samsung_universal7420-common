@@ -300,7 +300,7 @@ PRODUCT_PACKAGES += \
 DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay
 
 ## Variant-specific
-ifneq ($(filter zerofltespr zeroltespr,$(TARGET_DEVICE)),)
+ifneq ($(filter zerofltespr zeroltespr nobleltespr,$(TARGET_DEVICE)),)
   DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-cdma
 else
   DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-gsm
@@ -484,4 +484,4 @@ $(call inherit-product, hardware/samsung_slsi-cm/exynos7420/exynos7420.mk)
 $(call inherit-product-if-exists, vendor/samsung/zero-private/zero-private-vendor.mk)
 
 # Get non-open-source specific aspects
-$(call inherit-product-if-exists, vendor/samsung/zero-common/zero-common-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/noblelte-common/noblelte-common-vendor.mk)
