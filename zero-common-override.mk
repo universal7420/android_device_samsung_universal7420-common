@@ -15,21 +15,6 @@
 # limitations under the License.
 #
 
-__PRODUCT_TARGET_NAME := $(PRODUCT_NAME)
-
-# Set OTA-required properties in default.prop
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-	ro.product.name=$(PRODUCT_NAME) \
-	ro.product.device=$(PRODUCT_DEVICE) \
-	ro.product.brand=$(PRODUCT_BRAND) \
-	ro.product.manufacturer=$(PRODUCT_MANUFACTURER) \
-	ro.product.model=$(PRODUCT_MODEL) \
-	ro.vendor.product.name=$(PRODUCT_NAME) \
-	ro.vendor.product.device=$(PRODUCT_DEVICE) \
-	ro.vendor.product.brand=$(PRODUCT_BRAND) \
-	ro.vendor.product.manufacturer=$(PRODUCT_MANUFACTURER) \
-	ro.vendor.product.model=$(PRODUCT_MODEL)
-
 # UI performance tweaks
 PRODUCT_PROPERTY_OVERRIDES += \
 	debug.sf.latch_unsignaled=1
