@@ -427,7 +427,6 @@ PRODUCT_HOST_PACKAGES += \
 PRODUCT_PACKAGES += \
 	e2fsck_static \
 	make_ext4fs \
-	resetprop.zero \
 	resize2fs_static \
 	setup_fs
 
