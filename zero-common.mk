@@ -288,6 +288,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
 	libnfc-nci \
 	libnfc_nci_jni \
+	libsecnativefeature \
 	NfcNci \
 	Tag \
 	com.android.nfc_extras \
