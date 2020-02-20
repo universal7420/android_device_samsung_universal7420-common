@@ -145,12 +145,12 @@ TARGET_EXFAT_DRIVER := sdfat
 #
 # Fingerprint
 #
-TARGET_SEC_FP_HAL_VARIANT := bauth
+TARGET_SEC_FP_CALL_NOTIFY_ON_CANCEL := true
+TARGET_SEC_FP_USES_PERCENTAGE_SAMPLES := true
 
 ## Shims
 TARGET_LD_SHIM_LIBS += \
-	/system/lib64/libbauthserver.so|/vendor/lib64/libbauthtzcommon_shim.so|/vendor/lib64/libbauthtzcommon_shim.so
-
+	/system/lib64/libbauthserver.so|/vendor/lib64/libbauthtzcommon_shim.so
 #
 # GPS
 #
