@@ -36,6 +36,11 @@ ro.config.media_vol_steps=25
 ro.config.vc_call_vol_steps=15
 
 #
+# Camera
+#
+vendor.camera.hal1.packagelist=com.whatsapp,com.facebook.katana,com.instagram.android,com.snapchat.android
+
+#
 # Dalvik
 #
 dalvik.vm.image-dex2oat-filter=speed
