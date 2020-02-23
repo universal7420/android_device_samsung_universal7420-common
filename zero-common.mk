@@ -328,6 +328,16 @@ PRODUCT_COPY_FILES += \
 	device/samsung/zero-common/configs/permissions/com.samsung.permission.HRM_EXT.xml:system/vendor/etc/permissions/com.samsung.permission.HRM_EXT.xml
 
 #
+# Power
+#
+PRODUCT_PACKAGES += \
+	android.hardware.power@1.3-service.exynos7420-libperfmgr
+
+PRODUCT_COPY_FILES += \
+        device/samsung/zero-common/configs/power/powerhint.json:system/vendor/etc/powerhint.json \
+	device/samsung/zero-common/configs/power/powerhint.xml:system/vendor/etc/powerhint.xml
+
+#
 # Properties
 #
 TARGET_VENDOR_PROP := device/samsung/zero-common/zero-common.prop
