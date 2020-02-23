@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef POWER_LIBPERFMGR_POWER_H_
-#define POWER_LIBPERFMGR_POWER_H_
+#ifndef ANDROID_HARDWARE_POWER_V1_3_POWER_H
+#define ANDROID_HARDWARE_POWER_V1_3_POWER_H
 
 #include <atomic>
-#include <memory>
-#include <thread>
 
 #include <android/hardware/power/1.3/IPower.h>
 #include <hidl/MQDescriptor.h>
 #include <hidl/Status.h>
 #include <perfmgr/HintManager.h>
 
-#include "CameraMode.h"
 #include "InteractionHandler.h"
 
 namespace android {
@@ -35,18 +32,19 @@ namespace power {
 namespace V1_3 {
 namespace implementation {
 
-using ::InteractionHandler;
-using ::android::hardware::Return;
-using ::android::hardware::Void;
 using ::android::hardware::power::V1_0::Feature;
 using ::android::hardware::power::V1_3::IPower;
+using ::android::hardware::Return;
+using ::android::hardware::Void;
+using ::InteractionHandler;
 using PowerHint_1_0 = ::android::hardware::power::V1_0::PowerHint;
 using PowerHint_1_2 = ::android::hardware::power::V1_2::PowerHint;
 using PowerHint_1_3 = ::android::hardware::power::V1_3::PowerHint;
 using ::android::perfmgr::HintManager;
 
-class Power : public IPower {
-  public:
+constexpr char kPowerHalStateProp[] = "vendor.powerhal.state";
+
+struct Power : public IPower {
     // Methods from ::android::hardware::power::V1_0::IPower follow.
 
     Power();
@@ -67,16 +65,15 @@ class Power : public IPower {
     Return<void> powerHintAsync_1_3(PowerHint_1_3 hint, int32_t data) override;
 
     // Methods from ::android::hidl::base::V1_0::IBase follow.
-    Return<void> debug(const hidl_handle &fd, const hidl_vec<hidl_string> &args) override;
+    Return<void> debug(const hidl_handle& fd, const hidl_vec<hidl_string>& args) override;
 
-  private:
+ private:
+    static bool isSupportedGovernor();
+
     std::shared_ptr<HintManager> mHintManager;
-    std::unique_ptr<InteractionHandler> mInteractionHandler;
+    InteractionHandler mInteractionHandler;
     std::atomic<bool> mVRModeOn;
     std::atomic<bool> mSustainedPerfModeOn;
-    std::atomic<enum CameraStreamingMode> mCameraStreamingMode;
-    std::atomic<bool> mReady;
-    std::thread mInitThread;
 };
 
 }  // namespace implementation
@@ -85,4 +82,4 @@ class Power : public IPower {
 }  // namespace hardware
 }  // namespace android
 
-#endif  // POWER_LIBPERFMGR_POWER_H_
+#endif  // ANDROID_HARDWARE_POWER_V1_3_POWER_H
