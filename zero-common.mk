@@ -396,9 +396,6 @@ PRODUCT_PACKAGES += \
 	android.hardware.sensors@1.0-impl \
         android.hardware.sensors@1.0-service.samsung
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/sensors/lhd.conf:system/etc/lhd.conf
-
 #
 # Skeletons
 #
