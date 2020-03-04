@@ -145,6 +145,7 @@ import /init.rilchip.prop
 #
 ro.chipname=exynos7420
 ro.nfc.sec_hal=true
+ro.nfc.fw_dl_on_boot=false
 ro.sf.lcd_density=640
 
 #
