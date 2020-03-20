@@ -2,7 +2,6 @@ subdirs = [
     "bluetooth",
     "camera",
     "sensors",
-    "power-libperfmgr",
 ]
 
 cc_library_shared {
