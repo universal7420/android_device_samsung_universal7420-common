@@ -99,7 +99,7 @@ service macloader /vendor/bin/macloader
     oneshot
 
 # Run deferred initcalls of builtin kernel modules (bcmdhd)
-service wifiloader /system/bin/wifiloader
+service wifiloader /vendor/bin/wifiloader
     class main
     oneshot
 
