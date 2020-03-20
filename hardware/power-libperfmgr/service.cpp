@@ -21,9 +21,9 @@
 
 #include "Power.h"
 
+using android::OK;
 using android::sp;
 using android::status_t;
-using android::OK;
 
 // libhwbinder:
 using android::hardware::configureRpcThreadpool;
@@ -33,15 +33,15 @@ using android::hardware::joinRpcThreadpool;
 using android::hardware::power::V1_3::IPower;
 using android::hardware::power::V1_3::implementation::Power;
 
-int main(int /* argc */, char** /* argv */) {
-    ALOGI("Power HAL Service 1.3 for Exynos 8895 is starting");
+int main(int /* argc */, char ** /* argv */) {
+    ALOGI("Power HAL Service 1.3 for Pixel is starting.");
 
     android::sp<IPower> service = new Power();
     if (service == nullptr) {
         ALOGE("Can not create an instance of Power HAL Iface, exiting.");
         return 1;
     }
-
+    android::hardware::setMinSchedulerPolicy(service, SCHED_NORMAL, -20);
     configureRpcThreadpool(1, true /*callerWillJoin*/);
 
     status_t status = service->registerAsService();
