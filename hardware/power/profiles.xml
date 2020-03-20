@@ -1,0 +1,387 @@
+<!--
+	Copyright (C) 2018 TeamNexus
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<profiles>
+
+	<!--
+		This files contains all six profiles used in zer Zero Power HAL.
+		To override this configuration, copy this file to /data/system/power_profiles.xml
+		and make your changes in the new files. Be aware that in case of updates you will
+		need to update your custom configuration yourself.
+	-->
+
+	<!-- Profile applied in screen-off situations -->
+	<screen_off>
+		<enabled>true</enabled>
+		<cpu>
+			<enabled>true</enabled>
+			<apollo>
+				<enabled>true</enabled>
+				<governor>nexus</governor>
+				<freq_min>200000</freq_min>
+				<freq_max>600000</freq_max>
+				<freq_hispeed>400000</freq_hispeed>
+				<freq_boost>0</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
+				<!-- TODO: governor-data cannot be inherited yet -->
+				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
+					<lpr_down_ratio>0</lpr_down_ratio>
+					<lpr_down_elevation>0</lpr_down_elevation>
+					<lpr_up_ratio>0</lpr_up_ratio>
+					<lpr_up_elevation>0</lpr_up_elevation>
+					<hispeed_delay>2</hispeed_delay>
+					<hispeed_load>99</hispeed_load>
+					<io_is_busy>0</io_is_busy>
+				</governor_data>
+			</apollo>
+			<atlas>
+				<enabled>true</enabled>
+				<governor>nexus</governor>
+				<freq_min>200000</freq_min>
+				<freq_max>400000</freq_max>
+				<freq_hispeed>300000</freq_hispeed>
+				<freq_boost>0</freq_boost>
+				<cores>
+					<enabled>true</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>true</core3>
+					<core4>true</core4>
+				</cores>
+				<!-- TODO: governor-data cannot be inherited yet -->
+				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
+					<lpr_down_ratio>0</lpr_down_ratio>
+					<lpr_down_elevation>0</lpr_down_elevation>
+					<lpr_up_ratio>0</lpr_up_ratio>
+					<lpr_up_elevation>0</lpr_up_elevation>
+					<hispeed_delay>2</hispeed_delay>
+					<hispeed_load>99</hispeed_load>
+					<io_is_busy>0</io_is_busy>
+				</governor_data>
+			</atlas>
+		</cpu>
+		<cpusets>
+			<enabled>false</enabled>
+			<default>0-3</default>
+			<foreground>0-3</foreground>
+			<foreground_boost>0-3</foreground_boost>
+			<background>0-3</background>
+			<system_background>0-3</system_background>
+			<top_app>0-3</top_app>
+		</cpusets>
+		<hmp>
+			<enabled>true</enabled>
+			<boost>false</boost>
+			<semiboost>false</semiboost>
+			<power_migration>true</power_migration>
+			<active_down_migration>false</active_down_migration>
+			<aggressive_up_migration>false</aggressive_up_migration>
+			<threshold>
+				<enabled>false</enabled>
+				<down>214</down>
+				<up>479</up>
+			</threshold>
+			<sb_threshold>
+				<enabled>false</enabled>
+				<down>150</down>
+				<up>400</up>
+			</sb_threshold>
+		</hmp>
+		<gpu>
+			<enabled>true</enabled>
+			<dvfs>
+				<enabled>true</enabled>
+				<freq_min>100</freq_min>
+				<freq_max>100</freq_max>
+			</dvfs>
+			<highspeed>
+				<enabled>true</enabled>
+				<freq>100</freq>
+				<load>100</load>
+			</highspeed>
+		</gpu>
+		<kernel>
+			<enabled>false</enabled>
+			<pewq>true</pewq>
+		</kernel>
+		<ipa>
+			<enabled>true</enabled>
+			<control_temp>45</control_temp>
+		</ipa>
+		<slow>
+			<enabled>false</enabled>
+			<mode_toggle>false</mode_toggle>
+			<timer_rate>0</timer_rate>
+		</slow>
+		<input_booster>
+			<enabled>false</enabled>
+			<head>0 0 0 0 0 0</head>
+			<tail>0 0 0 0 0 0</tail>
+		</input_booster>
+	</screen_off>
+
+	<!--
+		Profile applied when user manually set profile to powersave or
+		the systems applies extreme power savings.
+	-->
+	<power_save extends="screen_off">
+		<enabled>true</enabled>
+		<cpu>
+			<apollo>
+				<freq_min>200000</freq_min>
+				<freq_max>1500000</freq_max>
+				<freq_hispeed>600000</freq_hispeed>
+				<!-- TODO: governor-data cannot be inherited yet -->
+				<governor_data>
+					<down_load>30</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>40</up_load>
+					<up_step>2</up_step>
+					<up_delay>0</up_delay>
+					<lpr_down_ratio>125</lpr_down_ratio>
+					<lpr_down_elevation>2</lpr_down_elevation>
+					<lpr_up_ratio>125</lpr_up_ratio>
+					<lpr_up_elevation>2</lpr_up_elevation>
+					<hispeed_delay>0</hispeed_delay>
+					<hispeed_load>89</hispeed_load>
+					<io_is_busy>1</io_is_busy>
+				</governor_data>
+			</apollo>
+			<atlas>
+				<freq_min>200000</freq_min>
+				<freq_max>2100000</freq_max>
+				<freq_hispeed>600000</freq_hispeed>
+				<!-- TODO: governor-data cannot be inherited yet -->
+				<governor_data>
+					<down_load>40</down_load>
+					<down_step>1</down_step>
+					<down_delay>0</down_delay>
+					<up_load>50</up_load>
+					<up_step>1</up_step>
+					<up_delay>0</up_delay>
+					<lpr_down_ratio>125</lpr_down_ratio>
+					<lpr_down_elevation>2</lpr_down_elevation>
+					<lpr_up_ratio>125</lpr_up_ratio>
+					<lpr_up_elevation>2</lpr_up_elevation>
+					<hispeed_delay>0</hispeed_delay>
+					<hispeed_load>89</hispeed_load>
+					<io_is_busy>1</io_is_busy>
+				</governor_data>
+			</atlas>
+		</cpu>
+		<gpu>
+			<dvfs>
+				<freq_min>266</freq_min>
+				<freq_max>772</freq_max>
+			</dvfs>
+			<highspeed>
+				<freq>544</freq>
+				<load>89</load>
+			</highspeed>
+		</gpu>
+		<ipa>
+			<control_temp>55</control_temp>
+		</ipa>
+	</power_save>
+
+	<!--
+		Profile for moderate power savings
+	-->
+	<bias_power_save extends="power_save">
+		<enabled>true</enabled>
+		<cpu>
+			<apollo>
+				<freq_min>400000</freq_min>
+				<freq_hispeed>900000</freq_hispeed>
+			</apollo>
+			<atlas>
+				<freq_min>400000</freq_min>
+				<freq_hispeed>900000</freq_hispeed>
+			</atlas>
+		</cpu>
+		<gpu>
+			<highspeed>
+				<freq>600</freq>
+			</highspeed>
+		</gpu>
+		<ipa>
+			<control_temp>65</control_temp>
+		</ipa>
+	</bias_power_save>
+
+	<!--
+		Profile for balanced system performance and efficiency
+	-->
+	<balanced extends="bias_power_save">
+		<enabled>true</enabled>
+		<cpu>
+			<enabled>true</enabled>
+			<apollo>
+				<freq_boost>1500000</freq_boost>
+			</apollo>
+			<atlas>
+				<freq_boost>0</freq_boost>
+			</atlas>
+		</cpu>
+		<hmp>
+			<semiboost>true</semiboost>
+		</hmp>
+		<gpu>
+			<highspeed>
+				<freq>700</freq>
+			</highspeed>
+		</gpu>
+	</balanced>
+
+	<!--
+		Profile for balanced system performance and efficiency,
+		but being closer to the performable system
+	-->
+	<bias_performance extends="balanced">
+		<enabled>true</enabled>
+		<cpu>
+			<apollo>
+				<governor>interactive</governor>
+				<freq_min>600000</freq_min>
+				<freq_hispeed>900000</freq_hispeed>
+				<governor_data>
+					<!-- Mode index -->
+					<param_index>0</param_index>
+
+					<above_hispeed_delay>19000</above_hispeed_delay>
+					<boost>0</boost>
+					<boostpulse_duration>40000</boostpulse_duration>
+					<enforced_mode>0</enforced_mode>
+					<go_hispeed_load>85</go_hispeed_load>
+					<io_is_busy>0</io_is_busy>
+					<min_sample_time>40000</min_sample_time>
+					<mode>0</mode>
+					<target_loads>75</target_loads>
+					<timer_rate>20000</timer_rate>
+					<timer_slack>20000</timer_slack>
+
+					<!-- Single mode -->
+					<single_cluster0_min_freq>0</single_cluster0_min_freq>
+					<single_enter_load>200</single_enter_load>
+					<single_enter_time>160000</single_enter_time>
+					<single_exit_load>90</single_exit_load>
+					<single_exit_time>80000</single_exit_time>
+
+					<!-- Multi mode -->
+					<multi_cluster0_min_freq>0</multi_cluster0_min_freq>
+					<multi_enter_load>800</multi_enter_load>
+					<multi_enter_time>80000</multi_enter_time>
+					<multi_exit_load>360</multi_exit_load>
+					<multi_exit_time>320000</multi_exit_time>
+				</governor_data>
+			</apollo>
+			<atlas>
+				<governor>interactive</governor>
+				<freq_min>600000</freq_min>
+				<freq_hispeed>1000000</freq_hispeed>
+				<governor_data>
+					<!-- Mode index -->
+					<param_index>0</param_index>
+
+					<above_hispeed_delay>59000 1300000:39000 1700000:19000</above_hispeed_delay>
+					<boost>0</boost>
+					<boostpulse_duration>40000</boostpulse_duration>
+					<enforced_mode>0</enforced_mode>
+					<go_hispeed_load>89</go_hispeed_load>
+					<io_is_busy>0</io_is_busy>
+					<min_sample_time>40000</min_sample_time>
+					<mode>0</mode>
+					<target_loads>65 1500000:75</target_loads>
+					<timer_rate>20000</timer_rate>
+					<timer_slack>20000</timer_slack>
+
+					<!-- Single mode -->
+					<single_cluster0_min_freq>800000</single_cluster0_min_freq>
+					<single_enter_load>95</single_enter_load>
+					<single_enter_time>199000</single_enter_time>
+					<single_exit_load>60</single_exit_load>
+					<single_exit_time>99000</single_exit_time>
+
+					<!-- Multi mode -->
+					<multi_cluster0_min_freq>1200000</multi_cluster0_min_freq>
+					<multi_enter_load>360</multi_enter_load>
+					<multi_enter_time>79000</multi_enter_time>
+					<multi_exit_load>240</multi_exit_load>
+					<multi_exit_time>299000</multi_exit_time>
+				</governor_data>
+			</atlas>
+		</cpu>
+		<hmp>
+			<power_migration>false</power_migration>
+		</hmp>
+		<gpu>
+			<dvfs>
+				<freq_min>420</freq_min>
+			</dvfs>
+			<highspeed>
+				<freq>700</freq>
+			</highspeed>
+		</gpu>
+		<ipa>
+			<control_temp>70</control_temp>
+		</ipa>
+	</bias_performance>
+
+	<!--
+		Profile for full system performance
+	-->
+	<performance extends="bias_performance">
+		<enabled>true</enabled>
+		<cpu>
+			<apollo>
+				<freq_min>800000</freq_min>
+			</apollo>
+			<atlas>
+				<freq_min>800000</freq_min>
+			</atlas>
+		</cpu>
+		<gpu>
+			<dvfs>
+				<freq_min>544</freq_min>
+			</dvfs>
+			<highspeed>
+				<freq>772</freq>
+			</highspeed>
+		</gpu>
+		<ipa>
+			<control_temp>75</control_temp>
+		</ipa>
+	</performance>
+
+</profiles>

@@ -326,6 +326,15 @@ PRODUCT_COPY_FILES += \
 	device/samsung/zero-common/configs/permissions/com.samsung.permission.HRM_EXT.xml:system/vendor/etc/permissions/com.samsung.permission.HRM_EXT.xml
 
 #
+# Power
+#
+PRODUCT_PACKAGES += \
+	android.hardware.power@1.0-service.zero
+
+PRODUCT_COPY_FILES += \
+	device/samsung/zero-common/hardware/power/profiles.xml:system/etc/power_profiles.xml
+
+#
 # Properties
 #
 TARGET_SYSTEM_PROP += device/samsung/zero-common/system.prop
