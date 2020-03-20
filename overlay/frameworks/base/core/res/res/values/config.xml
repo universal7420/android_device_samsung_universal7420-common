@@ -453,4 +453,7 @@
 
     <!-- Desable Default Navigation Bar -->
     <bool name="config_defaultToNavigationBar">false</bool>
+
+    <!-- Whether device supports button backlight -->
+    <bool name="config_button_brightness_support">true</bool>
 </resources>
