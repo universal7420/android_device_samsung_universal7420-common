@@ -59,6 +59,7 @@ ro.opengles.version=196610
 debug.sf.latch_unsignaled=1
 debug.sf.disable_backpressure=1
 persist.sys.ui.hw=1
+debug.sf.enable_gl_backpressure=1
 
 #
 # HWUI
