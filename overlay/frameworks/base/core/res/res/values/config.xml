@@ -450,4 +450,7 @@
          size set. By setting this to false, devices can opt
          out of setting a batch size, which fixes rotation. -->
     <bool name="config_useDefaultBatchingForAccel">false</bool>
+
+    <!-- Desable Default Navigation Bar -->
+    <bool name="config_defaultToNavigationBar">false</bool>
 </resources>
