@@ -344,8 +344,7 @@ PRODUCT_COPY_FILES += \
 #
 # Properties
 #
-TARGET_VENDOR_PROP := device/samsung/zero-common/zero-common.prop
-TARGET_VENDOR_PROP_OVERRIDE := true
+TARGET_SYSTEM_PROP += device/samsung/zero-common/system.prop
 
 #
 # Radio
