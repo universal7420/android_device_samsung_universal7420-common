@@ -200,7 +200,17 @@ Return<void> Power::getSubsystemLowPowerStats(getSubsystemLowPowerStats_cb _hidl
 }
 
 bool Power::isSupportedGovernor() {
-    return false;
+    std::string buf;
+    if (android::base::ReadFileToString("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", &buf)) {
+        buf = android::base::Trim(buf);
+    }
+    // Only support EAS 1.2, legacy EAS
+    if (buf == "interactive") {
+        return true;
+    } else {
+        LOG(ERROR) << "Governor not supported by powerHAL, skipping";
+        return false;
+    }
 }
 
 Return<void> Power::powerHintAsync(PowerHint_1_0 hint, int32_t data) {
