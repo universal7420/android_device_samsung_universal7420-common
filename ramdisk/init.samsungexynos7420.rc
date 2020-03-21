@@ -288,7 +288,7 @@ on boot
     chown system radio /sys/class/android_usb/android0/usb_lock
 
 # SSWAP
-    write /proc/sys/vm/swappiness 180
+    write /proc/sys/vm/swappiness 100
 
 # FM Radio
     chmod 0640 /dev/fmradio
@@ -706,7 +706,7 @@ service charger /charger
     class charger
     seclabel u:r:charger:s0
 
-service sswap /vendor/bin/sswap -s -f 1024
+service sswap /vendor/bin/sswap -s -f 2048
     class core
     user root
     group root
