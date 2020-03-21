@@ -29,7 +29,7 @@
 			<enabled>true</enabled>
 			<apollo>
 				<enabled>true</enabled>
-				<governor>nexus</governor>
+				<governor>interactive</governor>
 				<freq_min>200000</freq_min>
 				<freq_max>600000</freq_max>
 				<freq_hispeed>400000</freq_hispeed>
@@ -60,7 +60,7 @@
 			</apollo>
 			<atlas>
 				<enabled>true</enabled>
-				<governor>nexus</governor>
+				<governor>interactive</governor>
 				<freq_min>200000</freq_min>
 				<freq_max>400000</freq_max>
 				<freq_hispeed>300000</freq_hispeed>
