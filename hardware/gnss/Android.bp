@@ -1,0 +1,31 @@
+cc_library_shared {
+    name: "android.hardware.gnss@1.0-impl.zero",
+    defaults: ["hidl_defaults"],
+    vendor: true,
+    relative_install_path: "hw",
+    srcs: [
+        "ThreadCreationWrapper.cpp",
+        "AGnss.cpp",
+        "AGnssRil.cpp",
+        "Gnss.cpp",
+        "GnssBatching.cpp",
+        "GnssDebug.cpp",
+        "GnssGeofencing.cpp",
+        "GnssMeasurement.cpp",
+        "GnssNavigationMessage.cpp",
+        "GnssNi.cpp",
+        "GnssXtra.cpp",
+        "GnssConfiguration.cpp",
+        "GnssUtils.cpp",
+    ],
+
+    shared_libs: [
+        "liblog",
+        "libhidlbase",
+        "libhidltransport",
+        "libutils",
+        "android.hardware.gnss@1.0",
+        "libhardware",
+    ],
+
+}

@@ -36,7 +36,7 @@ namespace V1_0 {
 namespace implementation {
 
 using ::vendor::nexus::zero::Utils;
-	
+
 SecPowerProfile Profiles::kPowerProfileScreenOff;
 SecPowerProfile Profiles::kPowerProfilePowerSave;
 SecPowerProfile Profiles::kPowerProfileBiasPowerSave;
