@@ -90,7 +90,7 @@ PRODUCT_PACKAGES += \
 
 ## Apps
 PRODUCT_PACKAGES += \
-	Camera2
+	Snap
 
 #
 # Configstore
