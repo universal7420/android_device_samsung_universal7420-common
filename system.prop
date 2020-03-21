@@ -14,19 +14,9 @@ ro.product.board=universal7420
 ro.board.platform=exynos5
 
 #
-# ADB (rooted, with early-init support)
+# ADB
 #
-ro.adb.secure=0
-ro.secure=0
-ro.allow.mock.location=0
-ro.debuggable=1
-sys.usb.config=adb
-persist.sys.adb.shell=/system/xbin/bash
-persist.sys.usb.config=adb
-persist.service.adb.enable=1
-persist.service.debuggable=1
 sys.usb.ffs.aio_compat=1
-lineage.service.adb.root=1
 
 #
 # Audio
