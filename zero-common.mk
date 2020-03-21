@@ -53,8 +53,8 @@ PRODUCT_PACKAGES += \
 	audio.r_submix.default \
 	audio.primary.universal7420 \
 	audio.primary.universal7420_32 \
-	android.hardware.audio@2.0-impl \
-	android.hardware.audio.effect@2.0-impl \
+	android.hardware.audio@5.0-impl \
+	android.hardware.audio.effect@5.0-impl \
 	libtinycompress
 
 #
