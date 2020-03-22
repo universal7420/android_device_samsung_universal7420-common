@@ -716,5 +716,12 @@ service sswap /vendor/bin/sswap -s -f 2048
     group root
     oneshot
 
+service cameraserver /system/bin/cameraserver
+    class main
+    user cameraserver
+    group media_rw audio camera drmrpc inet shell sdcard_r system
+    ioprio rt 4
+    writepid /dev/cpuset/foreground/tasks
+
 on property:sys.boot_completed=1
     start sswap
