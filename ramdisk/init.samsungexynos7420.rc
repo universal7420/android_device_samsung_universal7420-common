@@ -725,3 +725,8 @@ service cameraserver /system/bin/cameraserver
 
 on property:sys.boot_completed=1
     start sswap
+
+on shutdown
+    # Fix permissions then store the current batt_capacity_max value in the EFS partition
+    chmod 600 /sys/class/power_supply/battery/batt_capacity_max
+    copy /sys/class/power_supply/battery/batt_capacity_max /efs/Battery/prev_batt_capacity_max
