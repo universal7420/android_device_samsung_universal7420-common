@@ -385,7 +385,10 @@ PRODUCT_COPY_FILES += \
 #
 PRODUCT_PACKAGES += \
 	android.hardware.sensors@1.0-impl \
-        android.hardware.sensors@1.0-service.samsung
+        android.hardware.sensors@1.0-service
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/sensors/android.hardware.sensors@1.0-service.rc:system/vendor/etc/init/android.hardware.sensors@1.0-service.rc
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sensors/lhd.conf:system/etc/lhd.conf
