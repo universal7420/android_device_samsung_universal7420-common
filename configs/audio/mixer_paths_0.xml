@@ -958,8 +958,11 @@
 
 	<path name="headset-mic">
 		<!-- Call recording route -->
+                <ctl name="AIF1TX1 Input 1" value="LHPF1" />
+		<ctl name="AIF1TX2 Input 1" value="LHPF1" />
 		<ctl name="LHPF1 Input 1" value="IN2L"/>
 		<ctl name="Headset Mic Switch" value="1"/>
+                <path name="gain-media-headset-mic"/>
 	</path>
 	
 	<path name="media-headset-mic">
@@ -1024,6 +1027,8 @@
 	</path>
 
 	<path name="voice-rec-headset-mic">
+                <ctl name="AIF1TX1 Input 1" value="LHPF1" />
+		<ctl name="AIF1TX2 Input 1" value="LHPF1" />
 		<ctl name="LHPF1 Input 1" value="IN2L"/>
 		<ctl name="Headset Mic Switch" value="1"/>
 		<path name="gain-recognition-headset-mic"/>
