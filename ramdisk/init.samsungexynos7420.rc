@@ -409,15 +409,11 @@ on fs
 # terminal mode
     chmod 0660 /sys/class/android_usb/android0/terminal_version
     chown system system /sys/class/android_usb/android0/terminal_version
-
 # SENSORS
 # Fingerprint_sensor
     chown system radio /sys/class/fingerprint/fingerprint/type_check
     chown system radio /sys/class/fingerprint/fingerprint/name
     chown system radio /sys/class/fingerprint/fingerprint/vendor
-    chown system radio /sys/class/fingerprint/fingerprint/regulator
-    chown system radio /sys/class/fingerprint/fingerprint/pm
-    chown system radio /sys/class/fingerprint/fingerprint/wakelocks
 
 # Accelerometer_sensor
     chown system radio /sys/class/sensors/accelerometer_sensor/raw_data
