@@ -104,10 +104,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libfwdlockengine \
     libdrmclearkeyplugin \
-     android.hardware.drm@1.0-service \
-     android.hardware.drm@1.2-service.clearkey \
-     android.hardware.drm@1.0-impl
+    android.hardware.drm@1.0-service \
+    android.hardware.drm@1.2-service.widevine \
+    android.hardware.drm@1.2-service.clearkey \
+    android.hardware.drm@1.0-impl
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/widevine/move_widevine_data.sh:$(TARGET_OUT_SYSTEM)/bin/move_widevine_data.sh \
+    $(LOCAL_PATH)/configs/widevine/android.hardware.drm@1.2-service.widevine.rc:$(TARGET_OUT_VENDOR)/etc/init/android.hardware.drm@1.2-service.widevine.rc
 
 #
 # Features
