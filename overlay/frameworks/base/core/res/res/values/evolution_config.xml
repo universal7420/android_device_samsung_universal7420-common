@@ -60,7 +60,10 @@
          pulsating and RGB control would set this config to 75. -->
     <integer name="config_deviceLightCapabilities">75</integer>
 
-       <!-- Hardware keys present on the device, stored as a bit field.
+    <!-- Whether or not swipe up gesture is enabled by default -->
+    <bool name="config_swipe_up_gesture_default">false</bool>
+
+    <!-- Hardware keys present on the device, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
          of the following keys present:
              1 - Home
@@ -87,4 +90,5 @@
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
     <integer name="config_deviceHardwareWakeKeys">65</integer>
+
 </resources>
