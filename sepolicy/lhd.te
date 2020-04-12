@@ -1,4 +1,0 @@
-#### lhd
-#
-type lhd, domain;
-type lhd_exec, exec_type, file_type;

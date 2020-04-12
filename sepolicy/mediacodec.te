@@ -1,5 +1,0 @@
-# /system/lib/omx/
-allow mediacodec system_file:dir r_dir_perms;
-
-# /sys/class/video4linux/*
-r_dir_file(mediacodec, sysfs_v4l);

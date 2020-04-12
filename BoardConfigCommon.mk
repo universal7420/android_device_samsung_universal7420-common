@@ -353,10 +353,6 @@ BOARD_USES_TRUST_KEYMASTER := true
 ## Seccomp filters
 BOARD_SECCOMP_POLICY += device/samsung/zero-common/seccomp
 
-## Sepolicy
-BOARD_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
-SELINUX_IGNORE_NEVERALLOWS := true
-
 #
 # Sensors
 #

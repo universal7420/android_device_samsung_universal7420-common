@@ -1,3 +1,0 @@
-allow healthd rtc_device:chr_file rw_file_perms;
-
-allow healthd sysfs_usb_supply:file rw_file_perms;
