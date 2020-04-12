@@ -1,0 +1,5 @@
+type widevine_service, exec_type, file_type;
+type clearkey_service, exec_type, file_type;
+
+allow widevine_service ufs_device:blk_file rw_file_perms;
+allow clearkey_service ufs_device:blk_file rw_file_perms;

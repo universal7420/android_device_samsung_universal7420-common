@@ -1,0 +1,6 @@
+# /efs
+allow vold efs_file:dir r_dir_perms;
+
+# /dev/block/sda[0-19]
+allow vold ufs_device:dir create_dir_perms;
+allow vold ufs_device:blk_file { ioctl read write create getattr setattr lock append unlink open };

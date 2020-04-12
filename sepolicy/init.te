@@ -1,0 +1,30 @@
+# Mount debugfs on /sys/kernel/debug.
+allow init debugfs:dir mounton;
+
+# Mount EFS on /efs
+allow init efs_file:dir  mounton;
+
+# /dev/block/sda[0-19]
+allow init ufs_device:blk_file rw_file_perms;
+
+allow init block_device:lnk_file { setattr };
+allow init tmpfs:lnk_file create_file_perms;
+
+# /sys/class/power_supply/battery and /sys/class/android_usb/android0
+allow init sysfs:dir w_dir_perms;
+
+# Shim libs
+allow init cameraserver:process noatsecure;
+allow init hal_fingerprint_default:process noatsecure;
+
+# /data
+allow init sdcardd_exec:file r_file_perms;
+
+# sysfs iio:device[0-9]
+allow init sysfs:lnk_file setattr;
+
+# read/chown camera firmware
+allow init sysfs_camera_writable:file { relabelto setattr };
+allow init sysfs_camera_writable:filesystem associate;
+
+unix_socket_connect(init, property, rild)

@@ -1,0 +1,2 @@
+allow uncrypt ufs_device:blk_file w_file_perms;
+allow uncrypt ufs_device:dir r_dir_perms;

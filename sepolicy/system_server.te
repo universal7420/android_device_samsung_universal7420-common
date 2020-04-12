@@ -1,0 +1,29 @@
+# /dev/mbin0
+allow system_server ufs_device:dir search;
+allow system_server ufs_device:blk_file { getattr ioctl open read write };
+
+# /efs
+allow system_server efs_file:dir r_dir_perms;
+
+# /efs/gyro_cal_data
+allow system_server sensor_efs_file:file r_file_perms;
+
+# /efs/prox_cal
+allow system_server efs_file:file r_file_perms;
+
+# /efs/FactoryApp
+allow system_server app_efs_file:dir r_dir_perms;
+allow system_server app_efs_file:file r_file_perms;
+
+# WifiMachine
+allow system_server self:capability { sys_module };
+allow system_server wifi_efs_file:dir r_dir_perms;
+allow system_server wifi_efs_file:file r_file_perms;
+
+# memtrack HAL
+allow system_server debugfs:dir r_dir_perms;
+
+# sensor HAL
+allow system_server sensor_device:chr_file rw_file_perms;
+allow system_server baro_delta_factoryapp_efs_file:file r_file_perms;
+allow system_server sensor_factoryapp_efs_file:file r_file_perms;

@@ -350,6 +350,10 @@ BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
 #
 BOARD_USES_TRUST_KEYMASTER := true
 
+# SELinux
+BOARD_SEPOLICY_DIRS += device/samsung/zero-common/sepolicy
+BOARD_SEPOLICY_VERS := $(PLATFORM_SDK_VERSION).0
+
 ## Seccomp filters
 BOARD_SECCOMP_POLICY += device/samsung/zero-common/seccomp
 

@@ -1,0 +1,3 @@
+# /dev/block/sda
+allow fsck ufs_device:blk_file rw_file_perms;
+allowxperm fsck ufs_device:blk_file ioctl { BLKDISCARDZEROES BLKROGET };

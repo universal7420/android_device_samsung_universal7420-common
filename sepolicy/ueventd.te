@@ -1,0 +1,7 @@
+# /dev/block/sda[0-19]
+allow ueventd ufs_device:blk_file { ioctl read write create getattr setattr lock append unlink open };
+allow ueventd ufs_device:blk_file { relabelfrom relabelto create setattr unlink };
+
+# read/chown camera firmware
+allow ueventd sysfs_camera_writable:file { relabelto getattr rw_file_perms };
+allow ueventd sysfs_camera_writable:filesystem associate;
