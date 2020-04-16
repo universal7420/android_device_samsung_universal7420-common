@@ -17,7 +17,7 @@
 LOCAL_PATH := device/samsung/zero-common
 TARGET_LD_SHIM_LIBS :=
 
-TARGET_SLSI_VARIANT := cm
+TARGET_SLSI_VARIANT := bsp
 
 #
 # Architecture
@@ -161,60 +161,6 @@ TARGET_LD_SHIM_LIBS += \
 TARGET_PROCESS_SDK_VERSION_OVERRIDE += \
     /system/vendor/bin/gpsd=27 \
     /vendor/bin/gpsd=27
-
-#
-# Graphics
-#
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-USE_OPENGL_RENDERER := true
-BOARD_SUPPORTS_DOZE_POWER_MODES := true
-
-## Gralloc
-TARGET_USES_GRALLOC1_ADAPTER := true
-
-## ION
-TARGET_USES_ION := true
-
-##
-## Samsung LSI Graphics
-##
-### Buffers
-BOARD_USE_ANB_OUTBUF_SHARE := true
-BOARD_USE_IMPROVED_BUFFER := true
-BOARD_USE_NON_CACHED_GRAPHICBUFFER := true
-
-### FIMG2D
-BOARD_USES_SKIA_FIMGAPI := true
-
-### GScaler
-BOARD_USES_DT := true
-BOARD_USES_SCALER := true
-
-### HDMI
-BOARD_HDMI_INCAPABLE := true
-
-### Media
-BOARD_USE_VP8ENC_SUPPORT := true
-BOARD_USE_HEVCDEC_SUPPORT := true
-BOARD_USE_HEVC_HWIP := false
-COMMON_GLOBAL_CFLAGS += -DUSE_NATIVE_SEC_NV12TILED
-## BEGIN Video scaling issue workaround ##
-TARGET_OMX_LEGACY_RESCALING := true
-## END   Video scaling issue workaround ##
-
-### Metadata
-BOARD_USE_METADATABUFFERTYPE := true
-#BOARD_USE_STOREMETADATA := true  -- not working due to invalid buffer handles
-
-### Others
-BOARD_USE_CSC_HW := false
-BOARD_USE_DMA_BUF := true
-BOARD_USE_GSC_RGB_ENCODER := true
-BOARD_USE_QOS_CTRL := false
-BOARD_USE_S3D_SUPPORT := false
-BOARD_USES_GSC_VIDEO := true
-BOARD_USES_HWC_SERVICES := true
-BOARD_USES_VIRTUAL_DISPLAY := true
 
 #
 # Hardware Classes
@@ -393,6 +339,65 @@ WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/dhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_STA          := "/system/vendor/etc/wifi/bcmdhd_sta.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/system/vendor/etc/wifi/bcmdhd_apsta.bin"
 WIFI_BAND                        := 802_11_ABG
+
+# Graphics
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+BOARD_USES_EXYNOS5_COMMON_GRALLOC := true
+
+# VR Front buffer
+#BOARD_USES_VR_FRONT_BUFFER := true
+
+# Samsung OpenMAX Video
+BOARD_USE_STOREMETADATA := true
+BOARD_USE_METADATABUFFERTYPE := true
+BOARD_USE_DMA_BUF := true
+BOARD_USE_ANB_OUTBUF_SHARE := true
+BOARD_USE_IMPROVED_BUFFER := true
+BOARD_USE_NON_CACHED_GRAPHICBUFFER := true
+BOARD_USE_GSC_RGB_ENCODER := true
+BOARD_USE_CSC_HW := false
+BOARD_USE_QOS_CTRL := false
+BOARD_USE_S3D_SUPPORT := true
+BOARD_USE_TIMESTAMP_REORDER_SUPPORT := false
+BOARD_USE_DEINTERLACING_SUPPORT := false
+BOARD_USE_VP8ENC_SUPPORT := true
+BOARD_USE_HEVCDEC_SUPPORT := true
+BOARD_USE_HEVCENC_SUPPORT := true
+BOARD_USE_HEVC_HWIP := false
+BOARD_USE_VP9DEC_SUPPORT := true
+BOARD_USE_VP9ENC_SUPPORT := false
+BOARD_USE_CUSTOM_COMPONENT_SUPPORT := true
+BOARD_USE_VIDEO_EXT_FOR_WFD_HDCP := false
+BOARD_USE_SINGLE_PLANE_IN_DRM := false
+
+# HWComposer
+BOARD_USES_VPP := true
+#BOARD_USES_VPP_V2 := true // 8890 only
+BOARD_HDMI_INCAPABLE := true
+
+# Scalar
+BOARD_USES_SCALER := true
+
+# HWCServices - requires framework support
+#BOARD_USES_HWC_SERVICES := true
+
+# WiFiDisplay
+#BOARD_USES_VIRTUAL_DISPLAY := true - depends on platform changes
+BOARD_USES_VIRTUAL_DISPLAY_DECON_EXT_WB := false
+BOARD_USE_VIDEO_EXT_FOR_WFD_DRM := false
+BOARD_USES_VDS_BGRA8888 := true
+BOARD_VIRTUAL_DISPLAY_DISABLE_IDMA_G0 := false
+
+# LIBHWJPEG
+TARGET_USES_UNIVERSAL_LIBHWJPEG := true
+
+# FIMG2D
+BOARD_USES_SKIA_FIMGAPI := true
+BOARD_USES_FIMGAPI_V5X := true
+
+# SCALER
+BOARD_USES_DEFAULT_CSC_HW_SCALER := true
+BOARD_USES_SCALER_M2M1SHOT := true
 
 # inherit from the proprietary version
 -include vendor/samsung/noblelte-common/BoardConfigVendor.mk
