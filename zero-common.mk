@@ -465,21 +465,16 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:system/vendor/etc/wifi/p2p_supplicant_overlay.conf \
 	$(LOCAL_PATH)/configs/wifi/filter_ie:system/etc/wifi/filter_ie
 
-## Packages
 PRODUCT_PACKAGES += \
-	android.hardware.wifi@1.0 \
-	android.hardware.wifi@1.0-impl \
-	android.hardware.wifi@1.0-service \
-	libnetcmdiface \
-	libwpa_client \
-	hostapd \
-	macloader \
-	wificond \
-	wifiloader \
-	wifilogd \
-	wlutil \
-	wpa_supplicant \
-	wpa_supplicant.conf
+    wifiloader \
+    hostapd \
+    wificond \
+    wifilogd \
+    wlutil \
+    libwpa_client \
+    wpa_supplicant \
+    wpa_supplicant.conf \
+    android.hardware.wifi@1.0-service.legacy
 
 # call Samsung LSI board support package
 # $(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
