@@ -255,14 +255,11 @@ PRODUCT_COPY_FILES += \
 
 ## Shims
 PRODUCT_PACKAGES += \
-	libstagefright_shim \
-	libui_shim \
-	libExynosOMX_shim
+	libstagefright_shim
 
 ## Service-overrides
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/configs/init/android.hardware.media.omx@1.0-service.rc:system/vendor/etc/init/android.hardware.media.omx@1.0-service.rc \
-	$(LOCAL_PATH)/configs/init/mediaserver.rc:system/etc/init/mediaserver.rc
 
 #
 # Memtrack
