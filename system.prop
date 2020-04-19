@@ -1,14 +1,12 @@
-###
-# BEGIN zero (SM-G92[0/5]x) device-properties
 #
-# Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOS Project
-# Copyright (C)      TeamNexus
+# Copyright (C) 2016 The  CyanogenMod Project
+# Copyright (C) 2017 The  LineageOS Project
+# Copyright (C) 2017-2019 TeamNexus
+# Copyright (C) 2020      Team Sexynos
 #
 
 #
-# Ugly hacks. Thanks to whoever the idiots were which made
-# these goddamn ugly hacks required. Big thanks.
+# Board
 #
 ro.product.board=universal7420
 ro.board.platform=exynos5
