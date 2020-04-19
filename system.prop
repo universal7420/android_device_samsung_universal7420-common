@@ -115,7 +115,6 @@ ro.sf.lcd_density=640
 # Storage
 #
 ro.sys.sdcardfs=1
-ro.sys.sdcardfs.legacy-mounting=1
 
 #
 # WiFi
@@ -129,11 +128,6 @@ wifi.direct.interface=p2p-dev-wlan0
 wlan.wfd.hdcp=disable
 persist.debug.wfd.enable=1
 persist.sys.wfd.virtual=0
-
-#
-# Zygote
-#
-ro.zygote.disable_gl_preload=1
 
 #
 # END zero device-properties
