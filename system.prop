@@ -66,20 +66,6 @@ persist.sys.ui.hw=1
 debug.sf.enable_gl_backpressure=1
 
 #
-# Logging
-#
-logd.logpersistd=logcatd
-logd.logpersistd.buffer=all
-logd.logpersistd.enable=true
-logd.logpersistd.size=1024
-logd.logpersistd.size.rotate=64
-
-#
-# Logging Suppression
-#
-import /vendor/nolog.prop
-
-#
 # Media
 #
 media.sf.omx-plugin=libffmpeg_omx.so,libsomxcore.so
