@@ -266,6 +266,16 @@ void vendor_load_properties()
     property_override("ro.vendor.product.device", device);
     property_override("ro.build.description", description_orig);
     property_override("ro.build.fingerprint", fingerprint_orig);
+    property_override("ro.boot.warranty_bit", "0");
+    property_override("ro.warranty_bit", "0");
+    property_override("ro.boot.veritymode", "enforcing");
+    property_override("ro.boot.verifiedbootstate", "green");
+    property_override("ro.boot.flash.locked", "1");
+    property_override("ro.boot.ddrinfo", "00000001");
+    property_override("ro.build.selinux", "1");
+    property_override("ro.fmp_config", "1");
+    property_override("ro.boot.fmp_config", "1");
+    property_override("sys.oem_unlock_allowed", "0");
 }
 
 }
