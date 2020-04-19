@@ -25,11 +25,6 @@ af.fast_track_multiplier=1
 audio_hal.force_voice_config=wide
 
 #
-# Camera
-#
-vendor.camera.hal1.packagelist=com.whatsapp,com.facebook.katana,com.instagram.android,com.snapchat.android
-
-#
 # Dalvik
 #
 dalvik.vm.image-dex2oat-filter=speed
