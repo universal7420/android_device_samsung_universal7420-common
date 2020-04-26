@@ -1,5 +1,6 @@
 #
 # Copyright (C) 2018 TeamNexus
+# Copyright (C) 2020 TeamSexynos
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,22 +15,8 @@
 # limitations under the License.
 #
 
-#
-# Disk optimizations
-#
-on late-fs
-	write /sys/block/sda/queue/scheduler "row"
-    write /sys/block/sda/queue/add_random 0
-	write /sys/block/sda/queue/iostats 0
-	write /sys/block/sda/queue/read_ahead_kb 256
-    write /sys/block/sda/queue/rotational 0
-    write /sys/block/sda/queue/rq_affinity 2
-	write /sys/block/sda/queue/iosched/slice_idle 0
-
-#
-# init.power.rc
-#
 on init
+
 # change own for camera preview lagging
     chown system system /sys/kernel/hmp/down_threshold
 
@@ -37,13 +24,6 @@ on init
     chmod 0660 /sys/kernel/hmp/down_threshold
 
 on boot
-
-# cpusets
-    write /dev/cpuset/foreground/cpus 0-7
-    write /dev/cpuset/foreground/boost/cpus 4-7
-    write /dev/cpuset/background/cpus 0-4
-    write /dev/cpuset/system-background/cpus 0-4
-    write /dev/cpuset/top-app/cpus 4-7
 
 # Change permission for dvfshelper
     chown radio system /sys/power/cpufreq_table
@@ -72,9 +52,6 @@ on boot
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
-
-# Use higher control-temperature for IPA (default: 45)
-    write /sys/power/ipa/control_temp "65"
 
     chown radio system /sys/devices/platform/exynos7-devfreq-mif/devfreq/exynos7-devfreq-mif/available_frequencies
     chmod 0664 /sys/devices/platform/exynos7-devfreq-mif/devfreq/exynos7-devfreq-mif/available_frequencies
@@ -182,28 +159,45 @@ on boot
     chmod 0664 /sys/devices/system/cpu/cpu6/online
     chown system system /sys/devices/system/cpu/cpu7/online
     chmod 0664 /sys/devices/system/cpu/cpu7/online
-	
-# Make sure all cores are online on boot
-	write /sys/devices/system/cpu/cpu0/online "1"
-	write /sys/devices/system/cpu/cpu1/online "1"
-	write /sys/devices/system/cpu/cpu2/online "1"
-	write /sys/devices/system/cpu/cpu3/online "1"
-	write /sys/devices/system/cpu/cpu4/online "1"
-	write /sys/devices/system/cpu/cpu5/online "1"
-	write /sys/devices/system/cpu/cpu6/online "1"
-	write /sys/devices/system/cpu/cpu7/online "1"
-
-# Setup cpusets with default values
-    write /dev/cpuset/foreground/cpus          "0-7"
-    write /dev/cpuset/foreground/boost/cpus    "0-7"
-    write /dev/cpuset/background/cpus          "0-7"
-    write /dev/cpuset/system-background/cpus   "0-7"
-    write /dev/cpuset/top-app/cpus             "0-7"
-    write /dev/cpuset/cpus                     "0-7"
 
 # CPU Idle
     chown system system /sys/module/cpuidle_exynos64/parameters/enable_mask
 
 # Kernel Workqueue
-	chown system system /sys/module/workqueue/parameters/power_efficient
+    chown system system /sys/module/workqueue/parameters/power_efficient
     chmod 0664 /sys/module/workqueue/parameters/power_efficient
+
+# Balanced
+    # LITTLE cluster tuning
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 19000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration 40000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 99
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "65 900000:75 1104000:80"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
+
+    # BIG cluster tuning
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 40000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 99
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 1
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "70 1200000:80 1600000:85"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
+
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1400000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1400000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1400000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1400000
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1800000
+    write /sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq 1800000
+    write /sys/devices/system/cpu/cpu6/cpufreq/scaling_max_freq 1800000
+    write /sys/devices/system/cpu/cpu7/cpufreq/scaling_max_freq 1800000
+
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 400000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 400000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 400000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 400000
