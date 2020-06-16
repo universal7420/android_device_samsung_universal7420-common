@@ -272,6 +272,7 @@ BOARD_USES_TRUST_KEYMASTER := true
 # SELinux
 BOARD_SEPOLICY_DIRS += device/samsung/zero-common/sepolicy
 BOARD_SEPOLICY_VERS := $(PLATFORM_SDK_VERSION).0
+SELINUX_IGNORE_NEVERALLOWS := true
 
 ## Seccomp filters
 BOARD_SECCOMP_POLICY += device/samsung/zero-common/seccomp
