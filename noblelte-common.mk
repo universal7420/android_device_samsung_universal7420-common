@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/zero-common
+LOCAL_PATH := device/samsung/noblelte-common
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
@@ -298,18 +298,18 @@ PRODUCT_PACKAGES += \
 # Overlays
 #
 ## Common
-DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay
+DEVICE_PACKAGE_OVERLAYS += device/samsung/noblelte-common/overlay
 
 ## Variant-specific
 ifneq ($(filter zerofltespr zeroltespr nobleltespr,$(TARGET_DEVICE)),)
-  DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-cdma
+  DEVICE_PACKAGE_OVERLAYS += device/samsung/noblelte-common/overlay-cdma
 else
-  DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-gsm
+  DEVICE_PACKAGE_OVERLAYS += device/samsung/noblelte-common/overlay-gsm
 endif
 
 ## ROM-specific
 ifneq ($(NEXUS_VERSION),)
-  DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-nexus
+  DEVICE_PACKAGE_OVERLAYS += device/samsung/noblelte-common/overlay-nexus
 endif
 
 #
@@ -324,7 +324,7 @@ PRODUCT_PACKAGES += \
 # Permissions
 #
 PRODUCT_COPY_FILES += \
-	device/samsung/zero-common/configs/permissions/com.samsung.permission.HRM_EXT.xml:system/vendor/etc/permissions/com.samsung.permission.HRM_EXT.xml
+	device/samsung/noblelte-common/configs/permissions/com.samsung.permission.HRM_EXT.xml:system/vendor/etc/permissions/com.samsung.permission.HRM_EXT.xml
 
 #
 # Power
@@ -333,12 +333,12 @@ PRODUCT_PACKAGES += \
 	android.hardware.power@1.0-service.zero
 
 PRODUCT_COPY_FILES += \
-	device/samsung/zero-common/hardware/power/profiles.xml:system/etc/power_profiles.xml
+	device/samsung/noblelte-common/hardware/power/profiles.xml:system/etc/power_profiles.xml
 
 #
 # Properties
 #
-TARGET_SYSTEM_PROP += device/samsung/zero-common/system.prop
+TARGET_SYSTEM_PROP += device/samsung/noblelte-common/system.prop
 
 #
 # Radio
@@ -416,7 +416,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 #
 # Synapse
 #
-# include device/samsung/zero-common/synapse/synapse.mk
+# include device/samsung/noblelte-common/synapse/synapse.mk
 
 #
 # Touch
@@ -482,7 +482,7 @@ PRODUCT_PACKAGES += \
 # $(call inherit-product, hardware/samsung_slsi-cm/exynos7420/exynos7420.mk)
 
 # Get private non-open-source blobs
-$(call inherit-product-if-exists, vendor/samsung/zero-private/zero-private-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/noblelte-private/noblelte-private-vendor.mk)
 
 # Get non-open-source specific aspects
 $(call inherit-product-if-exists, vendor/samsung/noblelte-common/noblelte-common-vendor.mk)

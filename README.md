@@ -1,4 +1,4 @@
-# Common Device Tree for the Samsung Galaxy S6
+# Common Device Tree for the Samsung Galaxy Note 5
 
 -> Work In Progress. <-
 
@@ -13,6 +13,7 @@
 	Copyright (C) 2017 Philip (corewell) Jacobs <p.jcs@icloud.com>
 	Copyright (C) 2017 Usaamah (Usaamah99) Patel
 	Copyright (C) 2019-2020 Nathan (Lunarixus) Brooke <NathansTech@riseup.net>
+	Copyright (C) 2020 Joshua (JoshuaDoes) Wickings <joshuadoes@joshuadoes.com>
 
 
 ### Disclaimer

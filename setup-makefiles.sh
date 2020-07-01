@@ -34,7 +34,7 @@ fi
 setup_vendor "$DEVICE_COMMON" "$VENDOR" "$CM_ROOT" true
 
 # Copyright headers and common guards
-write_headers "zerofltedv zerofltemtr zerofltespr zerofltetmo zerofltexx zeroltetmo zeroltexx"
+write_headers "zerofltedv zerofltemtr zerofltespr zerofltetmo zerofltexx zeroltetmo zeroltexx nobleltetmo"
 
 write_makefiles "$MY_DIR"/common-proprietary-blobs.txt
 
