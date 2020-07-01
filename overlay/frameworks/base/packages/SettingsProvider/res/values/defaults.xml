@@ -17,8 +17,10 @@
  */
 -->
 <resources>
-    <bool name="def_screen_brightness_automatic_mode">true</bool>
-    
-    <!-- Set to true to turn on BT by default -->	
-    <bool name="def_bluetooth_on">true</bool>
+    <string name="def_device_name">Samsung Galaxy Note 5</string> <!-- %1$s %2$s -->
+    <string name="def_device_name_simple">SM-%1$s</string> <!-- %1$s -->
+    <bool name="def_screen_brightness_automatic_mode">true</bool> <!-- false -->
+    <bool name="def_double_tap_to_wake">false</bool> <!-- true -->
+    <integer name="def_location_mode">0</integer> <!-- 3 -->
 </resources>
+
