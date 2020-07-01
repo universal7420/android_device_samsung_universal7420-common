@@ -17,3 +17,4 @@
          the sensor embedded in the power key and listening all the time
          causes a poor experience. -->
     <bool name="config_fingerprintWakeAndUnlock">false</bool>
+</resources>
