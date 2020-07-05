@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/zero-common
+LOCAL_PATH := device/samsung/universal7420-common
 TARGET_LD_SHIM_LIBS :=
 
 TARGET_SLSI_VARIANT := bsp
@@ -168,7 +168,7 @@ TARGET_PROCESS_SDK_VERSION_OVERRIDE += \
 ## LineageOS HW
 JAVA_SOURCE_OVERLAYS := \
     org.lineageos.hardware|hardware/samsung/lineagehw|**/*.java \
-    org.lineageos.hardware|device/samsung/zero-common/lineagehw|**/*.java
+    org.lineageos.hardware|device/samsung/universal7420-common/lineagehw|**/*.java
 
 #
 # Init
@@ -197,7 +197,7 @@ TARGET_CUSTOM_DTBTOOL := dtbhtoolExynos
 #
 # Manifest
 #
-DEVICE_MANIFEST_FILE += device/samsung/zero-common/configs/manifest.xml
+DEVICE_MANIFEST_FILE += device/samsung/universal7420-common/configs/manifest.xml
 
 #
 # Networking
@@ -256,7 +256,7 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 BOARD_HAS_DOWNLOAD_MODE := true
 
 ## Releasetools - for resizing system filesystem
-TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/zero-common/releasetools
+TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/universal7420-common/releasetools
 
 #
 # Renderscript
@@ -270,12 +270,12 @@ BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
 BOARD_USES_TRUST_KEYMASTER := true
 
 # SELinux
-BOARD_SEPOLICY_DIRS += device/samsung/zero-common/sepolicy
+BOARD_SEPOLICY_DIRS += device/samsung/universal7420-common/sepolicy
 BOARD_SEPOLICY_VERS := $(PLATFORM_SDK_VERSION).0
 SELINUX_IGNORE_NEVERALLOWS := true
 
 ## Seccomp filters
-BOARD_SECCOMP_POLICY += device/samsung/zero-common/seccomp
+BOARD_SECCOMP_POLICY += device/samsung/universal7420-common/seccomp
 
 #
 # Sensors
@@ -286,7 +286,7 @@ TARGET_NO_SENSOR_PERMISSION_CHECK := true
 # TWRP
 #
 ifneq ($(strip $(wildcard $(TOP)/bootable/recovery/variables.h)),)
-  -include device/samsung/zero-common/twrp.mk
+  -include device/samsung/universal7420-common/twrp.mk
 endif
 
 # Vendor Security Patch Level
