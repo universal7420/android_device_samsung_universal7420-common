@@ -15,7 +15,7 @@
 #
 
 INSTALLED_ZERO_NOLOG_PROP_TARGET := $(TARGET_OUT_VENDOR)/nolog.prop
-INSTALLED_ZERO_NOLOG_PROP_SOURCE := device/samsung/zero-common/configs/logging/nolog.txt
+INSTALLED_ZERO_NOLOG_PROP_SOURCE := device/samsung/universal7420-common/configs/logging/nolog.txt
 
 ALL_DEFAULT_INSTALLED_MODULES += $(INSTALLED_ZERO_NOLOG_PROP_TARGET)
 
