@@ -1,4 +1,4 @@
-# Common Device Tree for the Samsung Galaxy S6
+# Common Device Tree for Samsung Exynos7420
 
 -> Work In Progress. <-
 
