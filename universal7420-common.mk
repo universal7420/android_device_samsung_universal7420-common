@@ -337,6 +337,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
 	device/samsung/universal7420-common/hardware/power/profiles.xml:system/etc/power_profiles.xml
 
+ifneq ($(filter zeroflte zerofltecan zeroflteduo zeroflteskt zerofltespr zerofltetmo zerofltexx zerolte zeroltecan zerolteduo zerolteskt zeroltespr zeroltetmo zeroltexx,$(TARGET_DEVICE)),)
+  device/samsung/universal7420-common/overlay-zero/frameworks/base/core/res/res/xml/power_profile.xml:device/samsung/universal7420-common/overlay/frameworks/base/core/res/res/xml/power_profile.xml
+else ifneq ($(filter noblelte nobleltecan nobleltedd nobleltedv nobleltejv nobleltektt nobleltelgt noblelteskt nobleltetmo nobleltextc nobleltezt zenlte zenltecan zenltedd zenltedv zenltejv zenltektt zenltelgt zenlteskt zenltetmo zenltexx zenltezt,$(TARGET_DEVICE)),)
+  device/samsung/universal7420-common/overlay-noble-zen/frameworks/base/core/res/res/xml/power_profile.xml:device/samsung/universal7420-common/overlay/frameworks/base/core/res/res/xml/power_profile.xml
+endif
+
 #
 # Properties
 #
