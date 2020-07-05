@@ -390,6 +390,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     SamsungDoze
 
+# Screen Density
+ifneq ($(filter zeroflte zerofltecan zeroflteduo zeroflteskt zerofltespr zerofltetmo zerofltexx zerolte zeroltecan zerolteduo zerolteskt zeroltespr zeroltetmo zeroltexx,$(TARGET_DEVICE)),)
+  TARGET_SCREEN_DENSITY := 640
+else ifneq ($(filter noblelte nobleltecan nobleltedd nobleltedv nobleltejv nobleltektt nobleltelgt noblelteskt nobleltetmo nobleltextc nobleltezt zenlte zenltecan zenltedd zenltedv zenltejv zenltektt zenltelgt zenlteskt zenltetmo zenltexx zenltezt,$(TARGET_DEVICE)),)
+  TARGET_SCREEN_DENSITY := 560
+endif
+
 #
 # Security
 #
