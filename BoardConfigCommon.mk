@@ -375,6 +375,3 @@ BOARD_USES_SCALER_M2M1SHOT := true
 
 # inherit from the proprietary version
 -include vendor/samsung/universal7420-common/BoardConfigVendor.mk
-
-# inherit from the private proprietary version
--include vendor/samsung/zero-private/BoardConfigVendor.mk

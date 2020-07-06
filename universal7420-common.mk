@@ -486,10 +486,6 @@ PRODUCT_PACKAGES += \
     wpa_supplicant.conf \
     android.hardware.wifi@1.0-service.legacy
 
-# call Samsung LSI board support package
-# $(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
-# $(call inherit-product, hardware/samsung_slsi-cm/exynos7420/exynos7420.mk)
-
 # Get non-open-source specific aspects
 $(call inherit-product-if-exists, vendor/samsung/universal7420-common/universal7420-common-vendor.mk)
 
