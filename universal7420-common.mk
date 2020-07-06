@@ -303,7 +303,7 @@ PRODUCT_PACKAGES += \
 DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay
 
 ## Variant-specific
-ifneq ($(filter zerofltespr zeroltespr nobleltespr,$(TARGET_DEVICE)),)
+ifeq ($(TARGET_DEVICE_IS_CDMA), true)
   DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-cdma
 else
   DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-gsm
