@@ -320,10 +320,8 @@ else
 endif
 ifeq ($(TARGET_DEVICE_IS_ZERO), true)
   DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-zero
-  TARGET_SCREEN_DENSITY := 640
 else ifeq ($(TARGET_DEVICE_IS_NOBLE_ZEN), true)
   DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-noble-zen
-  TARGET_SCREEN_DENSITY := 560
 endif
 
 ## ROM-specific
