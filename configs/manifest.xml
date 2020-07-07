@@ -196,19 +196,6 @@
     </hal>
 
     <!--
-        LiveDisplay
-      -->
-    <hal format="hidl">
-        <name>vendor.lineage.livedisplay</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IColor</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-
-    <!--
         Location
       -->
     <hal format="hidl">
@@ -256,32 +243,6 @@
         <version>1.0</version>
         <interface>
             <name>ILineagePower</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-
-    <!--
-        Touch
-      -->
-    <hal format="hidl">
-        <name>vendor.lineage.touch</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IKeyDisabler</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-
-    <!--
-        Trust
-      -->
-    <hal format="hidl">
-        <name>vendor.lineage.trust</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IUsbRestrict</name>
             <instance>default</instance>
         </interface>
     </hal>
