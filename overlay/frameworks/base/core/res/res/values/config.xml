@@ -418,7 +418,7 @@
 
     <!-- Whether device supports button backlight -->
     <bool name="config_button_brightness_support">true</bool>
-    
+
     <!-- Hardware keys present on the device, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
          of the following keys present:
@@ -446,32 +446,14 @@
          For example, a device with Home, Back and Menu keys would set this	
          config to 7. -->	
     <integer name="config_deviceHardwareWakeKeys">65</integer>
-    
+
     <!-- do not use H265 encoder for screen recordings -->
     <bool name="config_useNewScreenRecEncoder">false</bool>
-
-    <!-- System info -->
-    <string name="config_sysCPUTemp">/sys/class/thermal/thermal_zone0/temp</string>
-    <string name="config_sysBatteryTemp">/sys/class/power_supply/battery/temp</string>
-    <string name="config_sysGPUFreq">/sys/kernel/gpu/gpu_clock</string>
-    <string name="config_sysGPULoad">/sys/kernel/gpu/gpu_busy</string>
-    <integer name="config_sysCPUTempMultiplier">1000</integer>
-    <integer name="config_sysBatteryTempMultiplier">10</integer>
-
-    <!-- Smart charging -->
-    <bool name="config_smartChargingAvailable">false</bool>
-
-    <!-- Whether to use in-built Screen Record service -->
-    <bool name="config_showScreenRecord">true</bool>
-
-    <!-- Whether to artificially interpret all signal strengths as one bar higher than they actually are -->
-    <bool name="config_inflateSignalStrength">true</bool>
-
-    <!-- Whether the device supports Smart Pixels -->
-    <bool name="config_enableSmartPixels">true</bool>
-
-    <!-- True if the firmware supports connected MAC randomization -->
-    <bool name="config_wifi_connected_mac_randomization_supported">true</bool>
     
+    <!-- True if the home button has the ability to wake up phone from lockscreen-->
+    <bool name="config_HomeWakeButton">true</bool>
+
+    <!-- Use home button as wake button-->
+    <bool name="config_enableHomeButtonWake">true</bool>
 </resources>
 

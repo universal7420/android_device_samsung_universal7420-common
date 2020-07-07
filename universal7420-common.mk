@@ -138,8 +138,10 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:system/vendor/etc/permissions/android.hardware.sensor.stepdetector.xml \
 	frameworks/native/data/etc/android.hardware.sensor.heartrate.ecg.xml:system/vendor/etc/permissions/android.hardware.sensor.heartrate.ecg.xml \
 	frameworks/native/data/etc/android.hardware.sensor.heartrate.xml:system/vendor/etc/permissions/android.hardware.sensor.heartrate.xml \
-	frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/vendor/etc/permissions/android.hardware.telephony.gsm.xml \
+	frameworks/native/data/etc/android.hardware.telephony.carrierlock.xml:system/vendor/etc/permissions/android.hardware.telephony.carrierlock.xml \
 	frameworks/native/data/etc/android.hardware.telephony.cdma.xml:system/vendor/etc/permissions/android.hardware.telephony.cdma.xml \
+	frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/vendor/etc/permissions/android.hardware.telephony.gsm.xml \
+	frameworks/native/data/etc/android.hardware.telephony.ims.xml:system/vendor//etc/permissions/android.hardware.telephony.ims.xml \
 	frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/vendor/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
 	frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/vendor/etc/permissions/android.hardware.usb.accessory.xml \
 	frameworks/native/data/etc/android.hardware.usb.host.xml:system/vendor/etc/permissions/android.hardware.usb.host.xml \
@@ -182,6 +184,10 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@2.0-impl \
     libhwc2on1adapter
 
+# IMS
+PRODUCT_PACKAGES += \
+    com.android.ims.rcsmanager
+    
 #
 # Init
 #
@@ -234,6 +240,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.device_id_attestation.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_id_attestation.xml
 
+# LatinIME lib
+PRODUCT_PACKAGES += \
+    libjni_latinimegoogle
+    
 #
 # Lights
 #
@@ -382,10 +392,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	CustomDoze
 
-# SamsungDoze
-#PRODUCT_PACKAGES += \
-#    SamsungDoze
-
 #
 # Security
 #
@@ -422,12 +428,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
 #
 # include device/samsung/universal7420-common/synapse/synapse.mk
 
-#
-# Touch
-#
+# Telephony
 PRODUCT_PACKAGES += \
-	vendor.lineage.touch@1.0-service.samsung
-
+    ims-ext-common \
+    ims_ext_common.xml \
+    qti-telephony-hidl-wrapper \
+    qti_telephony_hidl_wrapper.xml \
+    qti-telephony-utils \
+    qti_telephony_utils.xml \
+    telephony-ext
+    
 #
 # Tools
 #
