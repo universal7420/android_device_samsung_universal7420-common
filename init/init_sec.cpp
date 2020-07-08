@@ -476,7 +476,9 @@ void vendor_load_properties()
 
     // set model-specific properties
     if (dualsim == true) {
+        property_override("persist.radio.multisim.config", "dsds");
         property_override("ro.multisim.simslotcount", "2");
+        property_override("ro.telephony.default_network", "9,9");
     }
 }
 
