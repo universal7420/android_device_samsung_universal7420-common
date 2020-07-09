@@ -76,6 +76,11 @@ persist.data.netmgrd.qos.enable=false
 ro.use_data_netmgrd=false
 
 #
+# OTA
+#
+lineage.updater.uri=https://files.joshuadoes.com/LineageOS/lineage-17.1/OTA/{device}.json
+
+#
 # Power
 #
 sys.power.profiles=true
