@@ -386,8 +386,8 @@ PRODUCT_PACKAGES += \
 	android.hardware.renderscript@1.0-impl
 
 # SamsungDoze
-PRODUCT_PACKAGES += \
-    SamsungDoze
+#PRODUCT_PACKAGES += \
+#    SamsungDoze
 
 #
 # Security
