@@ -352,13 +352,6 @@ BOARD_HDMI_INCAPABLE := true
 # Scalar
 BOARD_USES_SCALER := true
 
-# Screen Density
-ifeq ($(TARGET_DEVICE_IS_ZERO), true)
-  TARGET_SCREEN_DENSITY := 640
-else ifeq ($(TARGET_DEVICE_IS_NOBLE_ZEN), true)
-  TARGET_SCREEN_DENSITY := 560
-endif
-
 # HWCServices - requires framework support
 #BOARD_USES_HWC_SERVICES := true
 
