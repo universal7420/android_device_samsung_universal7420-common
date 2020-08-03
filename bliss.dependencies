@@ -1,6 +1,6 @@
 [
     {
-        "repository": "android_hardware_samsung",
+        "repository": "platform_hardware_samsung",
         "target_path": "hardware/samsung"
     },
     {
