@@ -379,6 +379,10 @@ BOARD_USES_FIMGAPI_V5X := true
 BOARD_USES_DEFAULT_CSC_HW_SCALER := true
 BOARD_USES_SCALER_M2M1SHOT := true
 
+#Remove packages
+TARGET_GAPPS_OVERRIDE += \
+    AudioFX
+
 # inherit target conditionals
 -include device/samsung/universal7420-common/target.mk
 
