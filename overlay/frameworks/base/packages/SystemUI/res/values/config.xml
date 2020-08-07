@@ -37,6 +37,4 @@
          RemoteInput.Builder.setEditChoicesBeforeSending. -->
     <bool name="config_smart_replies_in_notifications_edit_choices_before_sending">true</bool>
 
-    <!-- Whether the device supports Smart Pixels -->
-    <bool name="config_enableSmartPixels">true</bool>
 </resources>
