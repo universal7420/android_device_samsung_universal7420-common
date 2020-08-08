@@ -37,4 +37,7 @@
          RemoteInput.Builder.setEditChoicesBeforeSending. -->
     <bool name="config_smart_replies_in_notifications_edit_choices_before_sending">true</bool>
 
+    <!-- Allow devices to enforce the H265 encoder for screen recordings -->
+    <bool name="config_useNewScreenRecEncoder">false</bool>
+
 </resources>
