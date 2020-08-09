@@ -90,7 +90,7 @@
 
 # lights
 /sys/devices/virtual/sec/sec_touchkey/brightness        u:object_r:sysfs_light_writable:s0
-/sys/devices/14800000.dsim/backlight/panel(/.*)?        u:object_r:sysfs_light_writable:s0
+/sys/devices/13900000.dsim/backlight/panel(/.*)?        u:object_r:sysfs_light_writable:s0
 /sys/class/leds(/.*)?                                   u:object_r:sysfs_light_writable:s0
 /sys/devices/virtual/sec/led(/.*)?                      u:object_r:sysfs_light_writable:s0
 
