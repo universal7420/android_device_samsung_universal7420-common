@@ -25,56 +25,6 @@
 
 using namespace std;
 
-enum device_variant {
-
-    UNKNOWN = -1,
-
-	/* Flat */
-    G920F,
-    G920I,
-    G920K,
-    G920L,
-    G920P,
-    G920S,
-    G920T,
-    G920W8,
-
-	/* Edge */
-    G925F,
-    G925I,
-    G925J,
-    G925K,
-    G925L,
-    G925P,
-    G925S,
-    G925T,
-    G925W8,
-    
-    	/* Edge Plus */	
-    G928C,	
-    G928F,	
-    G928G,	
-    G928I,	
-    G928K,	
-    G928L,	
-    G928S,	
-    G928T,	
-    G928W8,	
-
-        /* Note 5 */	
-    N9208,	
-    N920C,	
-    N920G,	
-    N920I,
-    N920P,
-    N920S,	
-    N920K,	
-    N920L,	
-    N920T,	
-    N920W8
-	
-};
-
 inline bool replace(string& str, const string& from, const string& to) {
     size_t start_pos = str.find(from);
     if(start_pos == string::npos)
