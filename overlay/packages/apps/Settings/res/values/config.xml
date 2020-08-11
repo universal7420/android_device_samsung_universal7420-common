@@ -23,5 +23,6 @@
     -->
     <integer name="config_fingerprintSensorLocation">1</integer>
 
+     <!-- Flag to disable/enable support for battery health stats in settings -->
     <bool name="config_supportBatteryHealth">false</bool>
 </resources>
