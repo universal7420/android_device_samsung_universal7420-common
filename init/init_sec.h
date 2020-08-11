@@ -88,7 +88,7 @@ inline void property_override(const char prop[], const string value)
     prop_info *pi;
     const char* c_value = value.c_str();
 
-	ALOGI("%s: overriding '%s' with '%s'", prop, c_value);
+	ALOGI("init_sec: overriding '%s' with '%s'", prop, c_value);
 
     pi = (prop_info*) __system_property_find(prop);
     if (pi)
