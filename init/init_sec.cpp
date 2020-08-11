@@ -478,6 +478,8 @@ void vendor_load_properties()
     if (dualsim == true) {
         property_set("persist.multisim.config", "dsds");
         property_override("persist.radio.multisim.config", "dsds");
+        property_override("rild.libpath", "/system/vendor/lib64/libsec-ril.so");
+        property_override("rild.libpath2", "/system/vendor/lib64/libsec-ril-dsds.so");
         property_override("ro.multisim.simslotcount", "2");
         property_override("ro.telephony.default_network", "9,9");
     }
