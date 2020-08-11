@@ -168,7 +168,7 @@ void vendor_load_properties()
     }
     
     string model, device, product;
-    bool dualsim;
+    bool dualsim = false;
 
     switch (variant) {
 

@@ -302,18 +302,6 @@ PRODUCT_PACKAGES += \
 ## Common
 DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay
 
-## Variant-specific
-ifeq ($(TARGET_DEVICE_IS_CDMA), true)
-  DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-cdma
-else
-  DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-gsm
-endif
-ifeq ($(TARGET_DEVICE_IS_ZERO), true)
-  DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-zero
-else ifeq ($(TARGET_DEVICE_IS_NOBLE_ZEN), true)
-  DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-noble-zen
-endif
-
 ## ROM-specific
 ifneq ($(NEXUS_VERSION),)
   DEVICE_PACKAGE_OVERLAYS += device/samsung/universal7420-common/overlay-nexus

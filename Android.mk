@@ -16,26 +16,8 @@
 
 LOCAL_PATH := $(call my-dir)
 
-TARGET_DEVICE_IS_ZERO ?= false
-TARGET_DEVICE_IS_NOBLE_ZEN ?= false
-TARGET_DEVICE_IS_CDMA ?= false
-
 ifeq ($(BOARD_VENDOR),samsung)
-
-	ifneq ($(filter noblelte nobleltecan nobleltedd nobleltedv nobleltejv nobleltektt nobleltelgt noblelteskt nobleltespr nobleltetmo nobleltextc nobleltezt zenlte zenltecan zenltedd zenltedv zenltejv zenltektt zenltelgt zenlteskt zenltetmo zenltexx zenltezt,$(TARGET_DEVICE)),)
-		TARGET_DEVICE_IS_NOBLE_ZEN = true
-	endif
-
-	ifneq ($(filter zeroflte zerofltecan zeroflteduo zeroflteskt zerofltespr zerofltetmo zerofltexx zerolte zeroltecan zerolteduo zerolteskt zeroltespr zeroltetmo zeroltexx,$(TARGET_DEVICE)),)
-		TARGET_DEVICE_IS_ZERO = true
-	endif
-
-	ifneq ($(filter zerofltespr zeroltespr nobleltespr,$(TARGET_DEVICE)),)
-		TARGET_DEVICE_IS_CDMA = true
-	endif
-
-	ifneq ($(filter $(TARGET_DEVICE_IS_ZERO) $(TARGET_DEVICE_IS_NOBLE_ZEN),true),)
-		include $(call all-subdir-makefiles,$(LOCAL_PATH))
-	endif
-
+  ifneq ($(filter $(TARGET_DEVICE_IS_ZERO) $(TARGET_DEVICE_IS_NOBLE_ZEN),true),)
+    include $(call all-subdir-makefiles,$(LOCAL_PATH))
+  endif
 endif
