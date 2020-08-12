@@ -14,4 +14,6 @@
     <!-- Message shown in fingerprint enrollment dialog to locate the sensor -->
     <string name="security_settings_fingerprint_enroll_find_sensor_message">
         Locate the home button on the front of your phone.</string>
+    <!-- Maintainer name -->        
+    <string name="bliss_maintainer">xSil3nt/Shazin</string>
 </resources>
