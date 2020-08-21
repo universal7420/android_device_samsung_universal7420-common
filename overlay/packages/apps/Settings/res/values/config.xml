@@ -25,4 +25,8 @@
 
      <!-- Flag to disable/enable support for battery health stats in settings -->
     <bool name="config_supportBatteryHealth">false</bool>
+
+     <!-- Device specific doze package -->
+    <string name="config_customDozePackage">com.custom.ambient.display/com.custom.ambient.display.DozeSettings</string>
+
 </resources>
