@@ -376,8 +376,12 @@ BOARD_USES_SCALER_M2M1SHOT := true
 
 #Remove packages
 TARGET_GAPPS_OVERRIDE += \
-    AudioFX
-
+    AudioFX \
+    Email \
+    Exchange \
+    Exchange2 \
+    UnifiedEmail
+    
 # inherit target conditionals
 -include device/samsung/universal7420-common/target.mk
 
