@@ -29,4 +29,7 @@
      <!-- Device specific doze package -->
     <string name="config_customDozePackage">com.custom.ambient.display/com.custom.ambient.display.DozeSettings</string>
 
+    <!-- Volume Rocker Wake -->
+    <bool name="config_show_volumeRockerWake">true</bool>
+    
 </resources>
