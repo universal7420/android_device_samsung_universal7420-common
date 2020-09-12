@@ -16,7 +16,7 @@
 #
 
 RILCHIP_STATE=$1
-RILCHIP_RESETPROP="/vendor/bin/resetprop.zero -n"
+RILCHIP_RESETPROP="/vendor/bin/resetprop.universal7420 -n"
 
 function log {
 	echo "[init.rilchip.sh] $1 ($RILCHIP_STATE): $2" > /dev/kmsg
@@ -86,11 +86,17 @@ if [ "$RILCHIP_STATE" == "init" ]; then
 		# RIL configuration
 		$RILCHIP_RESETPROP ro.multisim.simslotcount        1
 		$RILCHIP_RESETPROP persist.radio.multisim.config   none
+		$RILCHIP_RESETPROP rild.libpath                    /system/vendor/lib64/libsec-ril.so
+		$RILCHIP_RESETPROP ro.telephony.default_network    9
 		$RILCHIP_RESETPROP ro.telephony.ril.config         simactivation
 	elif [ "$SIMSLOT_COUNT" == "2" ]; then
 		# RIL configuration
 		$RILCHIP_RESETPROP ro.multisim.simslotcount        2
 		$RILCHIP_RESETPROP persist.radio.multisim.config   dsds
+		$RILCHIP_RESETPROP persist.multisim.config         dsds
+		$RILCHIP_RESETPROP rild.libpath                    /system/vendor/lib64/libsec-ril.so
+		$RILCHIP_RESETPROP rild.libpath2                   /system/vendor/lib64/libsec-ril-dsds.so
+		$RILCHIP_RESETPROP ro.telephony.default_network    9,9
 		$RILCHIP_RESETPROP ro.telephony.ril.config         simactivation
 	fi
 
