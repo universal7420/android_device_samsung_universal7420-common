@@ -90,13 +90,12 @@ sys.power.profiles=true
 #
 persist.radio.add_power_save=1
 persist.radio.apm_sim_not_pwdn=1
-persist.radio.multisim.config=""
-ro.multisim.simslotcount=1
+rild.libpath=/system/vendor/lib64/libsec-ril.so
+rild.libpath2=/system/vendor/lib64/libsec-ril-dsds.so
 ro.ril.force_eri_from_xml=true
 ro.ril.gprsclass=10
 ro.ril.hsxpa=1
 ro.ril.telephony.mqanelements=6
-ro.telephony.default_network=9
 ro.telephony.get_imsi_from_sim=true
 ro.telephony.ril_class=SlteRIL
 telephony.lteOnGsmDevice=1
