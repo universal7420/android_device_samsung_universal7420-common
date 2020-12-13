@@ -219,7 +219,8 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/configs/keylayout/sec_touchscreen.kl:system/vendor/usr/keylayout/sec_touchscreen.kl \
 	$(LOCAL_PATH)/configs/idc/Synaptics_HID_TouchPad.idc:system/vendor/usr/idc/Synaptics_HID_TouchPad.idc \
 	$(LOCAL_PATH)/configs/idc/ft5x06_ts.idc:system/vendor/usr/idc/ft5x06_ts.idc \
-	$(LOCAL_PATH)/configs/idc/sec_touchscreen.idc:system/vendor/usr/idc/sec_touchscreen.idc
+	$(LOCAL_PATH)/configs/idc/sec_touchscreen.idc:system/vendor/usr/idc/sec_touchscreen.idc \
+	$(LOCAL_PATH)/configs/idc/sec_e-pen.idc:system/vendor/usr/idc/sec_e-pen.idc
 
 #
 # Keymaster
