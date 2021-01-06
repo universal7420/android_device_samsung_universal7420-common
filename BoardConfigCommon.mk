@@ -174,7 +174,7 @@ JAVA_SOURCE_OVERLAYS := \
 #
 # Init
 #
-TARGET_INIT_VENDOR_LIB := libinit_sec
+TARGET_INIT_VENDOR_LIB := //$(LOCAL_PATH):libinit_sec
 TARGET_UNIFIED_DEVICE := true
 
 #
@@ -282,6 +282,11 @@ BOARD_SECCOMP_POLICY += device/samsung/universal7420-common/seccomp
 # Sensors
 #
 TARGET_NO_SENSOR_PERMISSION_CHECK := true
+
+#
+# Soong namespaces
+#
+PRODUCT_SOONG_NAMESPACES += $(LOCAL_PATH)
 
 #
 # TWRP
