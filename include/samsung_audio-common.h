@@ -54,9 +54,6 @@
 
 #define RIL_UNSOL_SNDMGR_WB_AMR_REPORT RIL_UNSOL_WB_AMR_STATE
 
-/* DSP offload */
-#define SOUND_COMPRESS_OFFLOAD_DEVICE 11
-
 /* Unusupported
 #define SOUND_CAPTURE_LOOPBACK_AEC_DEVICE 1
 #define SOUND_CAPTURE_HOTWORD_DEVICE 0
@@ -74,12 +71,6 @@
  * fast mode. See /proc/asound/irq_affinity
  */
 #define SUPPORTS_IRQ_AFFINITY 0
-
-/*
- * ril_set_call_clock_sync() may cause unknown problems with the call-mic.
- * Uncomment this to disable the support for it.
- */
-#define DISABLE_CALL_CLOCK_SYNC
 
 /*
  * The Wolfson/Cirruslogic chips need to shutdown the DAPM route completely
