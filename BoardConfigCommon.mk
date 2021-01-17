@@ -385,6 +385,3 @@ TARGET_GAPPS_OVERRIDE += \
 
 # inherit target conditionals
 -include device/samsung/universal7420-common/target.mk
-
-# inherit from the proprietary version
--include vendor/samsung/universal7420-common/BoardConfigVendor.mk
