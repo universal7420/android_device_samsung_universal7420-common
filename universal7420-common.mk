@@ -480,6 +480,8 @@ PRODUCT_PACKAGES += \
     wifilogd \
     wlutil \
     libwpa_client \
+    libnetcmdiface \
+    macloader \
     wpa_supplicant \
     wpa_supplicant.conf \
     android.hardware.wifi@1.0-service.legacy
