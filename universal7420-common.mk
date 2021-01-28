@@ -183,12 +183,6 @@ PRODUCT_PACKAGES += \
     libhwc2on1adapter
 
 #
-# Init
-#
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/init/zero.wifi.rc:system/vendor/etc/init/zero.wifi.rc
-
-#
 # IR
 #
 PRODUCT_PACKAGES += \
@@ -368,6 +362,7 @@ PRODUCT_PACKAGES += \
 	init.samsungexynos7420.usb.rc \
         init.sensors.rc \
 	init.recovery.samsungexynos7420.rc \
+	init.wifi.rc \
 	ueventd.samsungexynos7420.rc
 
 #
