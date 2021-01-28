@@ -198,7 +198,7 @@ TARGET_CUSTOM_DTBTOOL := dtbhtoolExynos
 #
 # Manifest
 #
-DEVICE_MANIFEST_FILE += device/samsung/universal7420-common/configs/manifest.xml
+DEVICE_MANIFEST_FILE += device/samsung/universal7420-common/manifest.xml
 
 #
 # Networking
