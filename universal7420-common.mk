@@ -183,12 +183,6 @@ PRODUCT_PACKAGES += \
     libhwc2on1adapter
 
 #
-# Init
-#
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/init/zero.wifi.rc:system/vendor/etc/init/zero.wifi.rc
-
-#
 # IR
 #
 PRODUCT_PACKAGES += \
@@ -368,6 +362,7 @@ PRODUCT_PACKAGES += \
 	init.samsungexynos7420.usb.rc \
         init.sensors.rc \
 	init.recovery.samsungexynos7420.rc \
+	init.wifi.rc \
 	ueventd.samsungexynos7420.rc
 
 #
@@ -469,8 +464,6 @@ PRODUCT_PACKAGES += \
 #
 ## Configs
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf:system/vendor/etc/wifi/wpa_supplicant_overlay.conf \
-	$(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:system/vendor/etc/wifi/p2p_supplicant_overlay.conf \
 	$(LOCAL_PATH)/configs/wifi/filter_ie:system/etc/wifi/filter_ie
 
 PRODUCT_PACKAGES += \
@@ -480,6 +473,8 @@ PRODUCT_PACKAGES += \
     wifilogd \
     wlutil \
     libwpa_client \
+    libnetcmdiface \
+    macloader \
     wpa_supplicant \
     wpa_supplicant.conf \
     android.hardware.wifi@1.0-service.legacy
