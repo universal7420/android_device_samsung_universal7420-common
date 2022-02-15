@@ -328,7 +328,7 @@ PRODUCT_COPY_FILES += \
 # Power
 #
 PRODUCT_PACKAGES += \
-	android.hardware.power@1.0-service.zero
+	android.hardware.power@1.0-service.universal7420
 
 PRODUCT_COPY_FILES += \
 	device/samsung/universal7420-common/hardware/power/profiles.xml:system/etc/power_profiles.xml
@@ -379,12 +379,12 @@ PRODUCT_PACKAGES += \
 #
 # CustomDoze
 #
-PRODUCT_PACKAGES += \
-	CustomDoze
+#PRODUCT_PACKAGES += \
+#	CustomDoze
 
 # SamsungDoze
-#PRODUCT_PACKAGES += \
-#    SamsungDoze
+PRODUCT_PACKAGES += \
+    SamsungDoze
 
 #
 # Security

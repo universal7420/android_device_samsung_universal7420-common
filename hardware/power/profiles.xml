@@ -29,7 +29,7 @@
 			<enabled>true</enabled>
 			<apollo>
 				<enabled>true</enabled>
-				<governor>interactive</governor>
+				<governor>powersave</governor>
 				<freq_min>200000</freq_min>
 				<freq_max>600000</freq_max>
 				<freq_hispeed>400000</freq_hispeed>
@@ -60,7 +60,7 @@
 			</apollo>
 			<atlas>
 				<enabled>true</enabled>
-				<governor>interactive</governor>
+				<governor>powersave</governor>
 				<freq_min>200000</freq_min>
 				<freq_max>400000</freq_max>
 				<freq_hispeed>300000</freq_hispeed>
@@ -91,12 +91,12 @@
 			</atlas>
 		</cpu>
 		<cpusets>
-			<enabled>false</enabled>
-			<default>0-3</default>
+			<enabled>true</enabled>
+			<default>4-7</default>
 			<foreground>0-3</foreground>
 			<foreground_boost>0-3</foreground_boost>
-			<background>0-3</background>
-			<system_background>0-3</system_background>
+			<background>4-7</background>
+			<system_background>4-7</system_background>
 			<top_app>0-3</top_app>
 		</cpusets>
 		<hmp>
@@ -222,10 +222,12 @@
 		<enabled>true</enabled>
 		<cpu>
 			<apollo>
+				<governor>conservative</governor>
 				<freq_min>400000</freq_min>
 				<freq_hispeed>900000</freq_hispeed>
 			</apollo>
 			<atlas>
+				<governor>conservative</governor>
 				<freq_min>400000</freq_min>
 				<freq_hispeed>900000</freq_hispeed>
 			</atlas>
@@ -248,9 +250,11 @@
 		<cpu>
 			<enabled>true</enabled>
 			<apollo>
+				<governor>ondemand</governor>
 				<freq_boost>1500000</freq_boost>
 			</apollo>
 			<atlas>
+				<governor>ondemand</governor>
 				<freq_boost>0</freq_boost>
 			</atlas>
 		</cpu>
@@ -365,9 +369,11 @@
 		<enabled>true</enabled>
 		<cpu>
 			<apollo>
+				<governor>performance</governor>
 				<freq_min>800000</freq_min>
 			</apollo>
 			<atlas>
+				<governor>performance</governor>
 				<freq_min>800000</freq_min>
 			</atlas>
 		</cpu>

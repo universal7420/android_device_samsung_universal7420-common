@@ -155,10 +155,15 @@ Return<void> Power::powerHint(PowerHint hint, int32_t data)  {
 
 	switch_uint32_t (hint)
 	{
+#ifdef POWER_HAS_LINEAGE_HINTS
+		case_uint32_t (LineagePowerHint::CPU_BOOST):
+		{
+			boostpulse(data);
+			break;
+		}
 		/*
 		 * Profiles
 		 */
-#ifdef POWER_HAS_LINEAGE_HINTS
 		case_uint32_t (LineagePowerHint::SET_PROFILE):
 		{
 			ALOGV("%s: LineagePowerHint::SET_PROFILE(%d)", __func__, data);
@@ -181,7 +186,7 @@ Return<void> Power::powerHint(PowerHint hint, int32_t data)  {
 		{
 			ALOGV("%s: PowerHint::SUSTAINED_PERFORMANCE(%d)", __func__, data);
 			if (data) {
-				setProfile(SecPowerProfiles::HIGH_PERFORMANCE);
+				setProfile(SecPowerProfiles::BIAS_PERFORMANCE);
 			} else {
 				resetProfile();
 			}
@@ -209,12 +214,18 @@ Return<void> Power::powerHint(PowerHint hint, int32_t data)  {
 		}
 		case_uint32_t (PowerHint::LAUNCH):
 		{
+			boostpulse(10);
 			// ALOGV("%s: PowerHint::LAUNCH(%d)", __func__, data);
 			break;
 		}
 		case_uint32_t (PowerHint::VSYNC):
 		{
-			// ALOGV("%s: PowerHint::VSYNC(%d)", __func__, data);
+			ALOGV("%s: PowerHint::VSYNC(%d)", __func__, data);
+			if (data) {
+				setProfile(SecPowerProfiles::BALANCED);
+			} else {
+				resetProfile();
+			}
 			break;
 		}
 	}
@@ -282,7 +293,8 @@ void Power::boostpulse(int duration) {
 	std::lock_guard<std::mutex> autolock(mBoostpulseLock);
 
 	if (duration <= 0) {
-		duration = (1000 / 60) * 10;
+		//duration = (1000 / 60) * 10; //This is giving us 166.67ms of boost every time the duration is 0, how about no?
+		return;
 	}
 
 	// get current profile data
