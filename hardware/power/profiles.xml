@@ -29,7 +29,7 @@
 			<enabled>true</enabled>
 			<apollo>
 				<enabled>true</enabled>
-				<governor>powersave</governor>
+				<governor>conservative</governor>
 				<freq_min>200000</freq_min>
 				<freq_max>600000</freq_max>
 				<freq_hispeed>400000</freq_hispeed>
@@ -60,7 +60,7 @@
 			</apollo>
 			<atlas>
 				<enabled>true</enabled>
-				<governor>powersave</governor>
+				<governor>conservative</governor>
 				<freq_min>200000</freq_min>
 				<freq_max>400000</freq_max>
 				<freq_hispeed>300000</freq_hispeed>
@@ -159,7 +159,7 @@
 		<cpu>
 			<apollo>
 				<freq_min>200000</freq_min>
-				<freq_max>1500000</freq_max>
+				<freq_max>1200000</freq_max>
 				<freq_hispeed>600000</freq_hispeed>
 				<!-- TODO: governor-data cannot be inherited yet -->
 				<governor_data>
@@ -180,7 +180,7 @@
 			</apollo>
 			<atlas>
 				<freq_min>200000</freq_min>
-				<freq_max>2100000</freq_max>
+				<freq_max>1200000</freq_max>
 				<freq_hispeed>600000</freq_hispeed>
 				<!-- TODO: governor-data cannot be inherited yet -->
 				<governor_data>
@@ -222,13 +222,15 @@
 		<enabled>true</enabled>
 		<cpu>
 			<apollo>
-				<governor>conservative</governor>
-				<freq_min>400000</freq_min>
+				<governor>interactive</governor>
+				<freq_min>200000</freq_min>
+				<freq_max>1200000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
 			</apollo>
 			<atlas>
 				<governor>conservative</governor>
-				<freq_min>400000</freq_min>
+				<freq_min>200000</freq_min>
+				<freq_max>1200000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
 			</atlas>
 		</cpu>
@@ -251,10 +253,14 @@
 			<enabled>true</enabled>
 			<apollo>
 				<governor>ondemand</governor>
+				<freq_min>200000</freq_min>
+				<freq_max>1500000</freq_max>
 				<freq_boost>1500000</freq_boost>
 			</apollo>
 			<atlas>
-				<governor>ondemand</governor>
+				<governor>interactive</governor>
+				<freq_min>200000</freq_min>
+				<freq_max>1500000</freq_max>
 				<freq_boost>0</freq_boost>
 			</atlas>
 		</cpu>
@@ -276,8 +282,9 @@
 		<enabled>true</enabled>
 		<cpu>
 			<apollo>
-				<governor>interactive</governor>
-				<freq_min>600000</freq_min>
+				<governor>ondemand</governor>
+				<freq_min>200000</freq_min>
+				<freq_max>1500000</freq_max>
 				<freq_hispeed>900000</freq_hispeed>
 				<governor_data>
 					<!-- Mode index -->
@@ -311,8 +318,9 @@
 				</governor_data>
 			</apollo>
 			<atlas>
-				<governor>interactive</governor>
-				<freq_min>600000</freq_min>
+				<governor>ondemand</governor>
+				<freq_min>200000</freq_min>
+				<freq_max>1800000</freq_max>
 				<freq_hispeed>1000000</freq_hispeed>
 				<governor_data>
 					<!-- Mode index -->
@@ -370,11 +378,13 @@
 		<cpu>
 			<apollo>
 				<governor>performance</governor>
-				<freq_min>800000</freq_min>
+				<freq_min>200000</freq_min>
+				<freq_max>1500000</freq_max>
 			</apollo>
 			<atlas>
 				<governor>performance</governor>
-				<freq_min>800000</freq_min>
+				<freq_min>200000</freq_min>
+				<freq_max>2100000</freq_max>
 			</atlas>
 		</cpu>
 		<gpu>
